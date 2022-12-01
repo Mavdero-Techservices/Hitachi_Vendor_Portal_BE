@@ -1,0 +1,29 @@
+{
+  "name": "hitachi_vendor_portal_be",
+  "version": "1.0.0",
+  "description": "Backend Hitachi Vendor Portal",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mavdero-Techservices/Hitachi_Vendor_Portal_BE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mavdero-Techservices/Hitachi_Vendor_Portal_BE/issues"
+  },
+  "homepage": "https://github.com/Mavdero-Techservices/Hitachi_Vendor_Portal_BE#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
+    "nodemon": "^2.0.20",
+    "pm2": "^5.2.2",
+    "sequelize": "^6.26.0"
+  }
+}
