@@ -20,5 +20,6 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.singUp = require("./signUp.model")(sequelize, Sequelize);
+db.tutorial = require("./tutorial.model")(sequelize, Sequelize);
 
 module.exports = db;

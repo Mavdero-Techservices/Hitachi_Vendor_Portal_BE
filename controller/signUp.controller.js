@@ -1,13 +1,15 @@
 const db = require("../model");
 const SignUpSchema = db.singUp;
-
-//Save data
+//SignUp
 exports.postSingUp = (req, res) => {
   const signUp = {
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    contactNumber: req.body.contactNumber,
+    companyName: req.body.companyName,
+    phoneNumber: req.body.phoneNumber,
+    contactPerson: req.body.contactPerson,
+    emailId: req.body.emailId,
+    password: req.body.password,
+    confirmPassword: req.body.confirmPassword,
+    verifiedUser: req.body.verifiedUser
   };
   SignUpSchema.create(signUp)
     .then(data => {
@@ -17,41 +19,19 @@ exports.postSingUp = (req, res) => {
       return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
     });
 };
-// Find with an id
-exports.getUserById = (req, res) => {
-  const id = req.params.id;
-  SignUpSchema.findByPk(id)
-    .then(data => {
-      return res.status(200).json({ msg: "success", result: data });
-    })
-    .catch(err => {
-      return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
-    });
-};
-
-// Update by id in the request
-exports.updateUserById = (req, res) => {
-  const id = req.params.id;
-
-  SignUpSchema.update(req.body, {
-    where: { id: id }
+//login
+exports.postLogin = (req, res) => {
+  const emailId = req.params.emailId;
+  SignUpSchema.findOne({
+    where: { emailId: emailId },
   })
-    .then(data => {
-      return res.status(200).json({ msg: "success", result: "updated successfully" });
-    })
-    .catch(err => {
-      return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
-    });
-};
-
-// Delete with the specified id in the request
-exports.deleteUserById = (req, res) => {
-  const id = req.params.id;
-  SignUpSchema.destroy({
-    where: { id: id }
-  })
-    .then(data => {
-      return res.status(200).json({ msg: "success", result: "deleted successfully" });
+    .then(user => {
+      if (!user) {
+        return res.status(200).json("invalid user");
+      }
+      else {
+        return res.status(200).json({ msg: "success", result: user });
+      }
     })
     .catch(err => {
       return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });

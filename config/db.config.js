@@ -1,7 +1,7 @@
 module.exports = {
-    HOST: "localhost",
-    USER: "root",
-    PASSWORD: "test12345",
+    HOST: "db4free.net",
+    USER: "mavdero",
+    PASSWORD: "test1234",
     DB: "mavdero",
     dialect: "mysql",
     pool: {

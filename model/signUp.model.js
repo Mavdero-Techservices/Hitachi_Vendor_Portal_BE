@@ -1,19 +1,28 @@
 module.exports = (sequelize, Sequelize) => {
     const SignUpSchema = sequelize.define("signUp", {
-        firstName: {
+        companyName: {
             type: Sequelize.STRING,
             unique: true
         },
-        lastName: {
+        phoneNumber: {
             type: Sequelize.STRING,
             unique: true
         },
-        email: {
+        contactPerson: {
             type: Sequelize.STRING
         },
-        contactNumber: {
-            type: Sequelize.INTEGER
-        }
+        emailId: {
+            type: Sequelize.STRING
+        },
+        password: {
+            type: Sequelize.STRING
+        },
+        confirmPassword: {
+            type: Sequelize.STRING
+        },
+        verifiedUser: {
+            type: Sequelize.STRING
+        },
     });
 
     return SignUpSchema;

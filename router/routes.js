@@ -1,18 +1,21 @@
-module.exports = app => {
-    const signUp = require("../controller/signUp.controller");
+const express = require('express');
+const signUp = require("../controller/signUp.controller");
+const tutorialApi = require("../controller/tutorial.controller");
+const router = express.Router();
+// signUp
+router.post("/signUp", signUp.postSingUp);
+//login
+router.get("/login/:emailId", signUp.postLogin);
+//tutorialApi's Crud
+// Create
+router.post("/save", tutorialApi.save);
+//Retrieve all data
+router.get("/getAll", tutorialApi.getAll);
+// Retrieve data with id
+router.get("/getById/:id", tutorialApi.getById);
+// Update with id
+router.put("/updateById/:id", tutorialApi.updateById);
+// Delete with id
+router.delete("/deleteById/:id", tutorialApi.deleteById);
 
-    var router = require("express").Router();
-
-    // Create
-    router.post("/signUp", signUp.postSingUp);
-
-    // Retrieve a single data with id
-    router.get("/getUserById/:id", signUp.getUserById);
-
-    // Update with id
-    router.put("/updateUserById/:id", signUp.updateUserById);
-
-    // Delete with id
-    router.delete("/deleteUserById/:id", signUp.deleteUserById);
-
-};
+module.exports = router;
