@@ -12,7 +12,8 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         emailId: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            unique: true
         },
         password: {
             type: Sequelize.STRING
@@ -24,6 +25,5 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
     });
-
     return SignUpSchema;
 };
