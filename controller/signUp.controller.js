@@ -2,6 +2,7 @@ const db = require("../model");
 const SignUpSchema = db.singUp;
 const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
+var jwt = require("jsonwebtoken");
 //SignUp
 exports.postSingUp = [
   //validate form
@@ -54,7 +55,7 @@ exports.postSingUp = [
         })
           .then(user => {
             if (user) {
-              return res.status(200).json("user already exist");
+              return res.status(200).json("User already exist");
             }
             else {
               const companyName = req.body.companyName;
@@ -63,6 +64,7 @@ exports.postSingUp = [
               const emailId = req.body.emailId;
               const password = req.body.password;
               const verifiedUser = req.body.verifiedUser;
+              const phoneNoConfirmationCode = Math.floor(100000 + Math.random() * 900000);
               bcrypt
                 .hash(password, 12)
                 .then(hashedPassword => {
@@ -73,11 +75,13 @@ exports.postSingUp = [
                     emailId: emailId,
                     password: hashedPassword,
                     confirmPassword: hashedPassword,
+                    phoneNoConfirmationCode: phoneNoConfirmationCode,
                     verifiedUser: verifiedUser
                   });
                   user.save()
                     .then(result => {
-                      return res.status(200).json({ status: "success", result, message: "Registered Successfully" });
+                      smsintegration(req, res, phoneNoConfirmationCode, phoneNumber);
+                      return res.status(200).json({ status: "success", message: "Registered Successfully", result });
                     })
                 })
             }
@@ -87,15 +91,11 @@ exports.postSingUp = [
           });
       }
       catch (err) {
-        console.log('Error in signUp api', err);
         return res.status(200).json({ status: 'error', data: 'Error Response' });
       }
     }
-
   }
-
 ];
-
 //login
 exports.postLogin = (req, res) => {
   const emailId = req.params.emailId;
@@ -107,10 +107,36 @@ exports.postLogin = (req, res) => {
         return res.status(200).json("invalid user");
       }
       else {
-        return res.status(200).json({ msg: "success", result: user });
+        // JWT Token Generation
+        const token = jwt.sign(
+          { user_id: user._id },
+          process.env.TOKEN_KEY,
+          {
+            expiresIn: "1h",
+          }
+        );
+        user.token = token;
+        return res.json({
+          token,
+          result: { _id: user.id, companyName: user.companyName, emailId: user.emailId }
+        })
       }
     })
     .catch(err => {
       return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
     });
 };
+//smsIntegration
+function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
+  const accountSid = 'AC7dd6eea117c28296a64945c0d5e69d27';
+  const authToken = '4a6876e0cd44abce7d4e7a171cdf5ab9';
+  const client = require('twilio')(accountSid, authToken);
+  client.messages
+    .create({
+      body: `please verify your account ${phoneNoConfirmationCode}`,
+      from: '+14055544570',
+      to: phoneNumber
+    })
+    .then(message => console.log(message.sid))
+    .done();
+}
