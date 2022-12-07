@@ -64,6 +64,7 @@ exports.postSingUp = [
               const emailId = req.body.emailId;
               const password = req.body.password;
               const verifiedUser = req.body.verifiedUser;
+              const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
               const phoneNoConfirmationCode = Math.floor(100000 + Math.random() * 900000);
               bcrypt
                 .hash(password, 12)
@@ -75,12 +76,14 @@ exports.postSingUp = [
                     emailId: emailId,
                     password: hashedPassword,
                     confirmPassword: hashedPassword,
+                    mailConfirmationCode: mailConfirmationCode,
                     phoneNoConfirmationCode: phoneNoConfirmationCode,
                     verifiedUser: verifiedUser
                   });
                   user.save()
                     .then(result => {
                       smsintegration(req, res, phoneNoConfirmationCode, phoneNumber);
+                      exports.emailNotification(req, res, mailConfirmationCode, contactPerson);
                       return res.status(200).json({ status: "success", message: "Registered Successfully", result });
                     })
                 })
@@ -126,6 +129,36 @@ exports.postLogin = (req, res) => {
       return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
     });
 };
+//email Verification mail
+var nodemailer = require('nodemailer');
+const config = require("../config/auth.config");
+const user = config.user;
+const pass = config.pass;
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: user,
+    pass: pass,
+  }
+});
+exports.emailNotification = (req, res, mailConfirmationCode, contactPerson) => {
+  var mailOptions = {
+    from: user,
+    to: "testmail@gmail.com",
+    subject: "Please confirm your account",
+    html: `<h1>Email Confirmation</h1>
+        <h2>Hello,${contactPerson}</h2>
+        <p>Please confirm your email,Your Verification code is ${mailConfirmationCode} </p>
+        </div>`,
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: 'error', data: error });
+    } else {
+      return res.status(200).json({ status: 'success', data: 'mail sent Successfully' });
+    }
+  });
+}
 //smsIntegration
 function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
   const accountSid = 'AC7dd6eea117c28296a64945c0d5e69d27';

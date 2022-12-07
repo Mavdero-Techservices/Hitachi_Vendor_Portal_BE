@@ -18,12 +18,21 @@
   },
   "homepage": "https://github.com/Mavdero-Techservices/Hitachi_Vendor_Portal_BE#readme",
   "dependencies": {
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
+    "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
     "pm2": "^5.2.2",
-    "sequelize": "^6.26.0"
+    "sequelize": "^6.26.0",
+    "twilio": "^3.83.4",
+    "winston": "^3.8.2",
+    "winston-daily-rotate-file": "^4.7.1"
   }
 }

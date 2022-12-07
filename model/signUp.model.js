@@ -24,6 +24,9 @@ module.exports = (sequelize, Sequelize) => {
         verifiedUser: {
             type: Sequelize.STRING
         },
+        mailConfirmationCode: {
+            type: Sequelize.STRING
+        },
         phoneNoConfirmationCode: {
             type: Sequelize.STRING
         },
