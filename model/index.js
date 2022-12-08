@@ -22,5 +22,8 @@ db.sequelize = sequelize;
 db.singUp = require("./signUp.model")(sequelize, Sequelize);
 db.tutorial = require("./tutorial.model")(sequelize, Sequelize);
 db.fileUpload = require("./fileUploads.model")(sequelize, Sequelize);
+db.vdetail = require("./vendorDetails.model")(sequelize, Sequelize);
+db.fdetail = require("./financialDetails.model")(sequelize, Sequelize);
+db.bankdetail = require("./bankDetails.model")(sequelize,Sequelize);
 
 module.exports = db;

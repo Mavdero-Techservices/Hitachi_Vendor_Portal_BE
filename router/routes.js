@@ -1,7 +1,10 @@
 const express = require('express');
 const signUp = require("../controller/signUp.controller");
 const tutorialApi = require("../controller/tutorial.controller");
+const vdetail = require("../controller/vendorDetails.controller");
+const bankdetail = require("../controller/bankDetails.controller");
 const fileUploadcontroller = require("../controller/fileUploads.controller");
+const fdetail = require("../controller/financialDetails.controller");
 const router = express.Router();
 // signUp
 router.post("/signUp", signUp.postSingUp);
@@ -20,5 +23,11 @@ router.get("/getById/:id", tutorialApi.getById);
 router.put("/updateById/:id", tutorialApi.updateById);
 // Delete with id
 router.delete("/deleteById/:id", tutorialApi.deleteById);
+//vdetail schema - create
+router.post("/saveVdetail", vdetail.postVdetail);
+//fdetail schema - Create
+router.post("/saveFdetail", fdetail.postFdetail);
+//bankdetail schema - Create
+router.post("/saveBdetail", bankdetail.postBankdetail);
 
 module.exports = router;
