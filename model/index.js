@@ -25,5 +25,6 @@ db.fileUpload = require("./fileUploads.model")(sequelize, Sequelize);
 db.vdetail = require("./vendorDetails.model")(sequelize, Sequelize);
 db.fdetail = require("./financialDetails.model")(sequelize, Sequelize);
 db.bankdetail = require("./bankDetails.model")(sequelize,Sequelize);
+db.statdetail = require("./statDetails.model")(sequelize,Sequelize);
 
 module.exports = db;
