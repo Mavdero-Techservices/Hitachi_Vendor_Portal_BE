@@ -30,6 +30,10 @@ module.exports = (sequelize, Sequelize) => {
         phoneNoConfirmationCode: {
             type: Sequelize.STRING
         },
+        role:
+        {
+            type: Sequelize.STRING
+        }
     });
     return SignUpSchema;
 };

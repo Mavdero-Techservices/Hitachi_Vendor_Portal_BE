@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require('cors');
 const routes = require('./router/routes');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -16,6 +17,7 @@ db.sequelize.sync()
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
 // });
+app.use(cors())
 app.use(routes);
 const PORT = process.env.PORT || 12707;
 app.listen(PORT, () => {

@@ -66,6 +66,7 @@ exports.postSingUp = [
               const verifiedUser = req.body.verifiedUser;
               const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
               const phoneNoConfirmationCode = Math.floor(100000 + Math.random() * 900000);
+              const role = req.body.role;
               bcrypt
                 .hash(password, 12)
                 .then(hashedPassword => {
@@ -78,7 +79,8 @@ exports.postSingUp = [
                     confirmPassword: hashedPassword,
                     mailConfirmationCode: mailConfirmationCode,
                     phoneNoConfirmationCode: phoneNoConfirmationCode,
-                    verifiedUser: verifiedUser
+                    verifiedUser: verifiedUser,
+                    role: role
                   });
                   user.save()
                     .then(result => {
@@ -99,37 +101,58 @@ exports.postSingUp = [
     }
   }
 ];
+
 //login
 exports.postLogin = (req, res) => {
   const emailId = req.params.emailId;
+  const password = req.params.password;
   SignUpSchema.findOne({
-    where: { emailId: emailId },
+    where: { emailId: emailId, password: password },
   })
     .then(user => {
       if (!user) {
         return res.status(200).json("invalid user");
       }
       else {
-        // JWT Token Generation
-        const token = jwt.sign(
-          { user_id: user._id },
-          process.env.TOKEN_KEY,
-          {
-            expiresIn: "1h",
-          }
-        );
-        user.token = token;
-        return res.json({
-          token,
-          result: { _id: user.id, companyName: user.companyName, emailId: user.emailId }
-        })
+        bcrypt
+          .compare(password, user.password).then(doMatch => {
+            if (doMatch) {
+              // Create token
+              const token = jwt.sign(
+                { user_id: user._id },
+                process.env.TOKEN_KEY,
+                {
+                  expiresIn: "1h",
+                }
+              );
+              // save user token 
+              user.token = token;
+              return res.json({
+                token,
+                result: { _id: user.id, companyName: user.companyName, emailId: user.emailId, role: user.role }
+              })
+            }
+            else {
+              return res.status(200).json("invalid user");
+            }
+
+          })
+
       }
     })
     .catch(err => {
       return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
     });
 };
-//email Verification mail
+
+exports.signout = (req, res) => {
+  res.clearCookie("t")
+  return res.status('200').json({
+    message: "signed out"
+  })
+}
+
+//send email
 var nodemailer = require('nodemailer');
 const config = require("../config/auth.config");
 const user = config.user;
@@ -141,10 +164,11 @@ var transporter = nodemailer.createTransport({
     pass: pass,
   }
 });
+
 exports.emailNotification = (req, res, mailConfirmationCode, contactPerson) => {
   var mailOptions = {
     from: user,
-    to: "testmail@gmail.com",
+    to: "test@gmail.com",
     subject: "Please confirm your account",
     html: `<h1>Email Confirmation</h1>
         <h2>Hello,${contactPerson}</h2>
@@ -159,10 +183,9 @@ exports.emailNotification = (req, res, mailConfirmationCode, contactPerson) => {
     }
   });
 }
-//smsIntegration
 function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
-  const accountSid = 'AC7dd6eea117c28296a64945c0d5e69d27';
-  const authToken = '4a6876e0cd44abce7d4e7a171cdf5ab9';
+  const accountSid = 'AC7dd6eea117c28296a64945c0d5e69d22';
+  const authToken = '4a6876e0cd44abce7d4e7a17cdf5abc6';
   const client = require('twilio')(accountSid, authToken);
   client.messages
     .create({

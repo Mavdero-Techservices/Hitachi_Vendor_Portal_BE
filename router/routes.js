@@ -10,6 +10,8 @@ const router = express.Router();
 router.post("/signUp", signUp.postSingUp);
 //login
 router.get("/login/:emailId", signUp.postLogin);
+
+router.get('signout', signUp.signout);
 //fileUpload
 router.post("/fileUpload", fileUploadcontroller.fileUpload);
 //tutorialApi's Crud
