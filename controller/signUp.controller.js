@@ -101,23 +101,24 @@ exports.postSingUp = [
     }
   }
 ];
-
 //login
 exports.postLogin = (req, res) => {
-  const emailId = req.params.emailId;
-  const password = req.params.password;
+  const emailId = req.body.emailId;
+  const password = req.body.password;
   SignUpSchema.findOne({
-    where: { emailId: emailId, password: password },
+    where: { emailId: emailId},
   })
     .then(user => {
       if (!user) {
         return res.status(200).json("invalid user");
       }
       else {
+
         bcrypt
-          .compare(password, user.password).then(doMatch => {
-            if (doMatch) {
-              // Create token
+        .compare(password, user.password)
+        .then(doMatch => {
+          if (doMatch) {
+                     // Create token
               const token = jwt.sign(
                 { user_id: user._id },
                 process.env.TOKEN_KEY,
@@ -131,18 +132,48 @@ exports.postLogin = (req, res) => {
                 token,
                 result: { _id: user.id, companyName: user.companyName, emailId: user.emailId, role: user.role }
               })
-            }
-            else {
-              return res.status(200).json("invalid user");
-            }
-
-          })
+          }
+          else {
+            return res.status(200).json("invalid user");
+          }
+        })
 
       }
     })
     .catch(err => {
       return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
     });
+};
+//resetPassword
+exports.resetPassword = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  SignUpSchema.findOne({ email: email })
+    .then(user => {
+     if (!user) {
+      return res.status(200).json("invalid user");
+    }
+    else
+    {
+    return bcrypt
+      .hash(password, 12)
+      .then(hashedPassword => {
+        SignUpSchema.update({
+          password: hashedPassword
+        }, {
+          where: { id: user.id },
+          returning: true,
+          plain: true
+        }).then(result => {
+            return res.status(200).json({ status: "success", data: "password Updated Successfully" });
+          }).catch(err => {
+            console.log("Error in password update api:", err);
+          
+          })
+      })
+    }
+    })
+    .catch(err => console.log(err));
 };
 
 exports.signout = (req, res) => {

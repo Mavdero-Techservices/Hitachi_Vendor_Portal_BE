@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const SignUpSchema = sequelize.define("signUp", {
+    const SignUpSchema = sequelize.define("signUpTest", {
         companyName: {
             type: Sequelize.STRING,
             unique: true

@@ -4,17 +4,25 @@ const tutorialApi = require("../controller/tutorial.controller");
 const vdetail = require("../controller/vendorDetails.controller");
 const bankdetail = require("../controller/bankDetails.controller");
 const fileUploadcontroller = require("../controller/fileUploads.controller");
+const imageUploadcontroller = require("../controller/imageUpload.controller");
 const fdetail = require("../controller/financialDetails.controller");
 const statdetail = require("../controller/statDetails.controller")
 const router = express.Router();
 // signUp
 router.post("/signUp", signUp.postSingUp);
 //login
-router.get("/login/:emailId", signUp.postLogin);
+router.post("/login", signUp.postLogin);
 
 router.get('signout', signUp.signout);
 //fileUpload
 router.post("/fileUpload", fileUploadcontroller.fileUpload);
+//resetPassword
+router.put("/resetPassword", signUp.resetPassword);
+//imageUpload
+router.post("/imageUpload", imageUploadcontroller.imageUpload);
+//getImage
+router.get("/getImage", imageUploadcontroller.getImage);
+
 //tutorialApi's Crud
 // Create
 router.post("/save", tutorialApi.save);

@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Mavdero-Techservices/Hitachi_Vendor_Portal_BE#readme",
   "dependencies": {
+    "base64-img": "^1.0.4",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
