@@ -33,28 +33,27 @@ exports.postStatdetail = [
         .not()
         .isEmpty()
         .isLength({ min: 2, max: 20 })
-        .withMessage("IEC_NO is required"),
+        .withMessage("MSME_NO is required"),
     check("MSME_Type")
         .not()
         .isEmpty()
-        .isLength({ min: 2, max: 20 })
         .withMessage("MSME_Type is required"),
+    check("PAN_Doc")
+        .not()
+        .isEmpty()
+        .withMessage("PAN_Doc is required"),
+    check("GST_Doc")
+        .not()
+        .isEmpty()
+        .withMessage("GST_Doc is required"),
+    check("MSME_Doc")
+        .not()
+        .isEmpty()
+        .withMessage("MSME_Doc is required"),
     check("CI_Doc")
         .not()
         .isEmpty()
         .withMessage("PAN_Doc is required"),
-    check("RPD_Doc")
-        .not()
-        .isEmpty()
-        .withMessage("GST_Doc is required"),
-    check("COC_Doc")
-        .not()
-        .isEmpty()
-        .withMessage("TAN_Doc is required"),
-    check("ND_Doc")
-        .not()
-        .isEmpty()
-        .withMessage("TIN_Doc is required"),
 async (req,res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -62,17 +61,17 @@ async (req,res) => {
     }
     try {
         const statdetail = await StatDetailSchema.create({
-            GST_NO: req.body.GST_NO,
-            PAN_NO: req.body.PAN_NO,
-            TAN_NO: req.body.TAN_NO,
-            TIN_NO: req.body.TIN_NO,
-            CIN_NO: req.body.CIN_NO,
-            MSME_NO: req.body.MSME_NO,
+            GST_No: req.body.GST_No,
+            PAN_No: req.body.PAN_No,
+            TAN_No: req.body.TAN_No,
+            TIN_No: req.body.TIN_No,
+            CIN_No: req.body.CIN_No,
+            MSME_No: req.body.MSME_No,
             MSME_Type: req.body.MSME_Type,
+            PAN_Doc: req.body.PAN_Doc,
+            GST_Doc: req.body.GST_Doc,
+            MSME_Doc: req.body.MSME_Doc,
             CI_Doc: req.body.CI_Doc,
-            RPD_Doc: req.body.RPD_Doc,
-            COC_Doc: req.body.COC_Doc,
-            ND_Doc: req.body.ND_Doc
         });
         res.send({
             message: "Statdetail was registered successfully!",

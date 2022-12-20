@@ -27,5 +27,6 @@ db.fdetail = require("./financialDetails.model")(sequelize, Sequelize);
 db.bankdetail = require("./bankDetails.model")(sequelize,Sequelize);
 db.statdetail = require("./statDetails.model")(sequelize,Sequelize);
 db.imageUpload = require("./imageUpload.model")(sequelize,Sequelize);
+db.compdetail = require("./compDetails.model")(sequelize,Sequelize);
 
 module.exports = db;

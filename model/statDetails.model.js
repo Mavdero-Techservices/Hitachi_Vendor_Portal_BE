@@ -1,59 +1,54 @@
 module.exports = (sequelize, Sequelize) => {
-    const StatDetailsSchema = sequelize.define("statutory_details", {
+    const StatDetailsSchema = sequelize.define("statDetails", {
         StatutoryId: {
             type: Sequelize.INTEGER,
-            unique: true,
+            allowNull: false,
             primaryKey: true,
             autoIncrement: true
         },
         GST_No: {
             type: Sequelize.STRING,
-            unique: true
+            allowNull: false
         },
         PAN_No: {
             type: Sequelize.STRING,
-            unique: true
+            allowNull: false
         },
         TAN_No: {
             type: Sequelize.STRING,
-            unique: true
+            allowNull: false
         },
         TIN_No: {
             type: Sequelize.STRING,
-            unique: true
+            allowNull: false
         },
         CIN_No: {
             type: Sequelize.STRING,
-            unique: true
+            allowNull: false
         },
         MSME_No: {
             type: Sequelize.STRING,
-            unique: true
+            allowNull: false
         },
         MSME_Type: {
             type: Sequelize.STRING,
-            unique: true
+            allowNull: false
         },
         PAN_Doc: {
             type: Sequelize.BLOB('long'),
+            allowNull: false
         },
         GST_Doc: {
             type: Sequelize.BLOB('long'),
+            allowNull: false
         },
         MSME_Doc: {
             type: Sequelize.BLOB('long'),
+            allowNull: false
         },
         CI_Doc: {
             type: Sequelize.BLOB('long'),
-        },
-        RPD_Doc: {
-            type: Sequelize.BLOB('long'),
-        },
-        COC_Doc: {
-            type: Sequelize.BLOB('long'),
-        },
-        ND_Doc: {
-            type: Sequelize.BLOB('long'),
+            allowNull: false
         },
     });
     return StatDetailsSchema;

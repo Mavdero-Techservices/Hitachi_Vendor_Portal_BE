@@ -7,6 +7,7 @@ const fileUploadcontroller = require("../controller/fileUploads.controller");
 const imageUploadcontroller = require("../controller/imageUpload.controller");
 const fdetail = require("../controller/financialDetails.controller");
 const statdetail = require("../controller/statDetails.controller")
+const compDetail = require("../controller/compDetail.controller");
 const router = express.Router();
 // signUp
 router.post("/signUp", signUp.postSingUp);
@@ -40,7 +41,10 @@ router.post("/saveVdetail", vdetail.postVdetail);
 router.post("/saveFdetail", fdetail.postFdetail);
 //bankdetail schema - Create
 router.post("/saveBdetail", bankdetail.postBankdetail);
-//statdetails shcema - create
+//statdetails schema - create
 router.post("/saveStatdetail", statdetail.postStatdetail);
+//compdetails schema - create
+router.post("/saveCompdetail", compDetail.postCompdetail);
+
 
 module.exports = router;
