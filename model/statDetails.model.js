@@ -1,55 +1,60 @@
 module.exports = (sequelize, Sequelize) => {
-    const StatDetailsSchema = sequelize.define("statDetails", {
-        StatutoryId: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        GST_No: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        PAN_No: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        TAN_No: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        TIN_No: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        CIN_No: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        MSME_No: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        MSME_Type: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        PAN_Doc: {
-            type: Sequelize.BLOB('long'),
-            allowNull: false
-        },
-        GST_Doc: {
-            type: Sequelize.BLOB('long'),
-            allowNull: false
-        },
-        MSME_Doc: {
-            type: Sequelize.BLOB('long'),
-            allowNull: false
-        },
-        CI_Doc: {
-            type: Sequelize.BLOB('long'),
-            allowNull: false
-        },
-    });
-    return StatDetailsSchema;
+  const StatDetailsSchema = sequelize.define("statDetails", {
+    StatutoryId: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    userid: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+    GST_type: {
+      type: Sequelize.STRING,
+    },
+    GST_No: {
+      type: Sequelize.STRING,
+    },
+    GST_Doc: {
+      type: Sequelize.BLOB("long"),   
+    },
+    PAN_No: {
+      type: Sequelize.STRING,
+    },
+    PAN_Doc: {
+      type: Sequelize.BLOB("long"),
+    },
+    CIN_No: {
+      type: Sequelize.STRING,
+    },
+    form_10f:{
+      type: Sequelize.BLOB("long"),
+    },
+    pe_declaration: {
+      type: Sequelize.BLOB("long"),
+    },
+    MSME_status: {
+      type: Sequelize.STRING,
+    },
+    MSME_No: {
+      type: Sequelize.STRING,
+    },
+    MSME_Doc: {
+      type: Sequelize.BLOB("long"),
+    },
+    MSME_Type: {
+      type: Sequelize.STRING,
+    },
+    TAN_No: {
+      type: Sequelize.STRING,
+    },
+    TAN_Doc: {
+      type: Sequelize.BLOB("long"),
+    },
+    Tax_residency: {
+      type: Sequelize.BLOB("long"),
+    },
+  });
+  return StatDetailsSchema;
 };

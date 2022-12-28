@@ -8,6 +8,9 @@ const imageUploadcontroller = require("../controller/imageUpload.controller");
 const fdetail = require("../controller/financialDetails.controller");
 const statdetail = require("../controller/statDetails.controller")
 const compDetail = require("../controller/compDetail.controller");
+const commsDetail = require("../controller/commsDetails.controller")
+const hisysContact = require("../controller/hisysContact.controller")
+
 const router = express.Router();
 // signUp
 router.post("/signUp", signUp.postSingUp);
@@ -35,8 +38,14 @@ router.get("/getById/:id", tutorialApi.getById);
 router.put("/updateById/:id", tutorialApi.updateById);
 // Delete with id
 router.delete("/deleteById/:id", tutorialApi.deleteById);
+
 //vdetail schema - create
 router.post("/saveVdetail", vdetail.postVdetail);
+//vdetail schema - update
+router.put("/updateVdetail/:userid", vdetail.updateVendor);
+
+//commsdetail schema - create
+router.post("/saveCommsdetail", commsDetail.postCommsdetail);
 //fdetail schema - Create
 router.post("/saveFdetail", fdetail.postFdetail);
 //bankdetail schema - Create
@@ -45,6 +54,8 @@ router.post("/saveBdetail", bankdetail.postBankdetail);
 router.post("/saveStatdetail", statdetail.postStatdetail);
 //compdetails schema - create
 router.post("/saveCompdetail", compDetail.postCompdetail);
+//hisysContact schema - create
+router.post("/saveHisysContact", hisysContact.postHisysContact);
 
 
 module.exports = router;

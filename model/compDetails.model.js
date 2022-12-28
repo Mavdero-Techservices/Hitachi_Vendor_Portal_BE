@@ -6,17 +6,18 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             autoIncrement: true,
         },
+        userid: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
         RPD_Doc: {
             type: Sequelize.BLOB('long'),
-            allowNull: false 
         },
         COC_Doc: {
-            type: Sequelize.BLOB('long'),
-            allowNull: false          
+            type: Sequelize.BLOB('long'),         
         },
         NDA_Doc: {
             type: Sequelize.BLOB('long'),
-            allowNull: false
         },
     })
     return CompdetailSchema;

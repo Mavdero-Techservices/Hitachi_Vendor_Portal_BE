@@ -23,6 +23,7 @@ exports.postCompdetail = [
         }
         try {
             const compdetail = await CompdetailSchema.create({
+                userid: req.body.userid,
                 RPD_Doc: req.body.RPD_Doc,
                 COC_Doc: req.body.COC_Doc,
                 NDA_Doc: req.body.NDA_Doc,

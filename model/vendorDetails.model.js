@@ -2,57 +2,38 @@ module.exports = (sequelize, Sequelize) => {
     const VdetailSchema = sequelize.define("vDetail", {
         userid: {
             type: Sequelize.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
+            allowNull: false,
         },
         vendorId: {
             type: Sequelize.INTEGER,
-            allowNull: false
+            primaryKey: true,
+            allowNull: false,
+            autoIncrement: true,
         },
-        address1: {
-            type: Sequelize.TEXT,
-            allowNull: false
-        },
-        address2: {
-            type: Sequelize.TEXT,
-            allowNull: false
-        },
-        country: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        state: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        city: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        pinCode: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
-        contactName: {
-            type: Sequelize.STRING,
-            allowNull: false
+        company_logo: {
+            type: Sequelize.BLOB('long'),
         },
         companyName: {
             type: Sequelize.STRING,
-            allowNull: false
         },
-        designation: {
-            type: Sequelize.STRING,
-            allowNull: false
+        address1: {
+            type: Sequelize.TEXT,
         },
-        phoneNumber: {
-            type: Sequelize.STRING,
-            allowNull: false
+        address2: {
+            type: Sequelize.TEXT,        
         },
-        emailId: {
+        country: {
             type: Sequelize.STRING,
-            allowNull: false
-        }
+        },
+        state: {
+            type: Sequelize.STRING,
+        },
+        city: {
+            type: Sequelize.STRING,
+        },
+        pinCode: {
+            type: Sequelize.INTEGER,
+        },
     })
     return VdetailSchema;
 }
