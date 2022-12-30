@@ -1,14 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const VdetailSchema = sequelize.define("vDetail", {
-        userid: {
-            type: Sequelize.INTEGER,
-            primaryKey: true,
-            autoIncrement: true
-        },
-        vendorId: {
-            type: Sequelize.INTEGER,
-            allowNull: false
-        },
+    const VdetailSchema = sequelize.define("vendorDetail", {
         address1: {
             type: Sequelize.TEXT,
             allowNull: false
@@ -33,26 +24,12 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             allowNull: false
         },
-        contactName: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
         companyName: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        designation: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        phoneNumber: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        emailId: {
             type: Sequelize.STRING,
             allowNull: false
         }
     })
     return VdetailSchema;
 }
+
+

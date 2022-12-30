@@ -13,11 +13,15 @@ router.post("/signUp", signUp.postSingUp);
 //login
 router.post("/login", signUp.postLogin);
 
-router.get('signout', signUp.signout);
+router.get('/signout', signUp.signout);
+
+router.get('/getCountry', signUp.getCountry);
 //fileUpload
 router.post("/fileUpload", fileUploadcontroller.fileUpload);
 //resetPassword
-router.put("/resetPassword", signUp.resetPassword);
+router.post("/resetPassword", signUp.resetPassword);
+//resetPasswordByCode
+router.post("/resetPasswordByCode", signUp.resetPasswordByCode);
 //imageUpload
 router.post("/imageUpload", imageUploadcontroller.imageUpload);
 //getImage
@@ -36,6 +40,8 @@ router.put("/updateById/:id", tutorialApi.updateById);
 router.delete("/deleteById/:id", tutorialApi.deleteById);
 //vdetail schema - create
 router.post("/saveVdetail", vdetail.postVdetail);
+//save vendor-communication details
+router.post("/SaveVendorCommunication", vdetail.SaveVendorCommunication);
 //fdetail schema - Create
 router.post("/saveFdetail", fdetail.postFdetail);
 //bankdetail schema - Create
