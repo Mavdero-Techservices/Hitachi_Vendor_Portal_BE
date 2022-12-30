@@ -4,33 +4,30 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER,
             primaryKey: true
         },
+        userid: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+        },
         bankAccountName: {
             type: Sequelize.STRING,
-            allowNull: false 
-        },
-        bankAccountNumber: {
-            type: Sequelize.STRING,
-            allowNull: false
-        },
-        ifscCode: {
-            type: Sequelize.STRING,
-            allowNull: false
         },
         bankName: {
             type: Sequelize.STRING,
-            allowNull: false
+        },
+        bankAccountNumber: {
+            type: Sequelize.STRING,
+        },
+        ifscCode: {
+            type: Sequelize.STRING,
         },
         MICRcode: {
             type: Sequelize.STRING,
-            allowNull: false
         },
-        bankAddress: {
+        branchAddress: {
             type: Sequelize.STRING,
-            allowNull: false
         },
-        bankDoc: {
-            type: Sequelize.BLOB('long'),
-            allowNull: false          
+        bankdetailDoc: {
+            type: Sequelize.BLOB('long'),          
         }
     })
     return BankdetailSchema;

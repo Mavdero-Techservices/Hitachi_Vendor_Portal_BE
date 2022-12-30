@@ -2,23 +2,18 @@ module.exports = (sequelize, Sequelize) => {
     const VdetailSchema = sequelize.define("vendorDetail", {
         address1: {
             type: Sequelize.TEXT,
-            allowNull: false
         },
         address2: {
-            type: Sequelize.TEXT,
-            allowNull: false
+            type: Sequelize.TEXT,        
         },
         country: {
             type: Sequelize.STRING,
-            allowNull: false
         },
         state: {
             type: Sequelize.STRING,
-            allowNull: false
         },
         city: {
             type: Sequelize.STRING,
-            allowNull: false
         },
         pinCode: {
             type: Sequelize.INTEGER,

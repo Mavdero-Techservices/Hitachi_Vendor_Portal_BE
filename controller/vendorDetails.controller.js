@@ -15,21 +15,21 @@ exports.postVdetail = [
     .isEmpty()
     .isLength({ min: 2, max: 50 })
     .withMessage("address2 is required"),
-  check("city")
-    .not()
-    .isEmpty()
-    .isLength({ min: 2, max: 20 })
-    .withMessage("city is required"),
-  check("state")
-    .not()
-    .isEmpty()
-    .isLength({ min: 2, max: 20 })
-    .withMessage("state is required"),
   check("country")
     .not()
     .isEmpty()
     .isLength({ min: 2, max: 20 })
     .withMessage("country is required"),
+  check("state")
+    .not()
+    .isEmpty()
+    .isLength({ min: 2, max: 20 })
+    .withMessage("state is required"),
+  check("city")
+    .not()
+    .isEmpty()
+    .isLength({ min: 2, max: 20 })
+    .withMessage("city is required"),
   check("pinCode")
     .not()
     .isEmpty()
@@ -48,9 +48,9 @@ exports.postVdetail = [
     } else {
       const address1 = req.body.address1;
       const address2 = req.body.address2;
-      const city = req.body.city;
-      const state = req.body.state;
       const country = req.body.country;
+      const state = req.body.state;
+      const city = req.body.city;
       const pinCode = req.body.pinCode;
       const contactName = req.body.contactName;
       const companyName = req.body.companyName;
@@ -69,7 +69,7 @@ exports.postVdetail = [
         return res.status(200).json({
           status: "success",
           result,
-          message: "Registered Successfully",
+          message: "Vendor details inserted Successfully",
         });
       } catch (err) {
         return res
