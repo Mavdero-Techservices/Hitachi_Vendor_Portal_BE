@@ -18,8 +18,9 @@ router.post("/signUp", signUp.postSingUp);
 router.post("/login", signUp.postLogin);
 
 router.get('/signout', signUp.signout);
+//saveUser
+router.post("/saveUser", signUp.saveUser);
 
-router.get('/getCountry', signUp.getCountry);
 //fileUpload
 router.post("/fileUpload", fileUploadcontroller.fileUpload);
 //resetPassword
@@ -47,6 +48,10 @@ router.delete("/deleteById/:id", tutorialApi.deleteById);
 router.post("/saveVdetail", vdetail.postVdetail);
 //save vendor-communication details
 router.post("/SaveVendorCommunication", vdetail.SaveVendorCommunication);
+//getCountry
+router.get('/getCountry', vdetail.getCountry);
+//getStateAndcityByzipcode
+router.get('/getStateAndcityByzipcode/:code/:pinCode', vdetail.getStateAndcityByzipcode);
 //fdetail schema - Create
 router.post("/saveFdetail", fdetail.postFdetail);
 //bankdetail schema - Create

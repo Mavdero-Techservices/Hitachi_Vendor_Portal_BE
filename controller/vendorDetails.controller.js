@@ -2,6 +2,8 @@ const db = require("../model");
 const VdetailSchema = db.vdetail;
 const vendorCommunicationDetails = db.vendorCommunicationDetails;
 const { check, validationResult } = require("express-validator");
+var geoCountryZipCode = require('geonames-country-zipcode-lookup');
+const { getData } = require('country-list');
 
 exports.postVdetail = [
   //validate form
@@ -54,6 +56,7 @@ exports.postVdetail = [
       const pinCode = req.body.pinCode;
       const contactName = req.body.contactName;
       const companyName = req.body.companyName;
+      const image = new Buffer(req.body.image, 'base64').toString('binary');
       const user = new VdetailSchema({
         address1: address1,
         address2: address2,
@@ -63,6 +66,7 @@ exports.postVdetail = [
         pinCode: pinCode,
         contactName: contactName,
         companyName: companyName,
+        image: image,
       });
       try {
         const result = await user.save();
@@ -111,3 +115,23 @@ exports.SaveVendorCommunication = (req, res) => {
       return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
     });
 };
+
+//getCountry
+exports.getCountry = (req, res, next) => {
+  var country = getData();
+  return res.status(200).json({ status: "success", data: country });
+}
+//getState&cityByzipcode
+exports.getStateAndcityByzipcode = (req, res, next) => {
+  var code = req.params.code;
+  var pinCode = req.params.pinCode;
+  const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${pinCode}&country=${code}&username=karthiga`
+  const axios = require('axios')
+  axios.get(url)
+    .then(result => {
+      return res.json({ status: "success", data: result.data });
+    })
+    .catch(err => console.log(err))
+  // const result = geoCountryZipCode.lookup(code,pinCode); 
+  // return res.status(200).json({ status: "success", data: result });
+}

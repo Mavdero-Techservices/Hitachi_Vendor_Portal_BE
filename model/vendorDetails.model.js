@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.TEXT,
         },
         address2: {
-            type: Sequelize.TEXT,        
+            type: Sequelize.TEXT,
         },
         country: {
             type: Sequelize.STRING,
@@ -22,7 +22,10 @@ module.exports = (sequelize, Sequelize) => {
         companyName: {
             type: Sequelize.STRING,
             allowNull: false
-        }
+        },
+        image: {
+            type: Sequelize.BLOB,
+        },
     })
     return VdetailSchema;
 }

@@ -1,12 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
-    const SignUpSchema = sequelize.define("signUpTest", {
+    const SignUpSchema = sequelize.define("signUp", {
         companyName: {
             type: Sequelize.STRING,
-            unique: true
         },
         phoneNumber: {
             type: Sequelize.STRING,
-            unique: true
         },
         contactPerson: {
             type: Sequelize.STRING
@@ -30,10 +28,9 @@ module.exports = (sequelize, Sequelize) => {
         phoneNoConfirmationCode: {
             type: Sequelize.STRING
         },
-        role:
-        {
+        vendorId: {
             type: Sequelize.STRING
-        }
+        },
     });
     return SignUpSchema;
 };
