@@ -1,14 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
-    const CompdetailSchema = sequelize.define("compDetail", {
-        compId: {
-            type: Sequelize.INTEGER,
-            primaryKey: true,
-            allowNull: false,
-            autoIncrement: true,
+    const compliancedetailSchema = sequelize.define("complianceDetail", {
+        complianceId: {
+            type: Sequelize.STRING,
         },
-        userid: {
-            type: Sequelize.INTEGER,
-            allowNull: false,
+        userId: {
+            type: Sequelize.STRING,
         },
         RPD_Doc: {
             type: Sequelize.BLOB('long'),
@@ -20,5 +16,5 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.BLOB('long'),
         },
     })
-    return CompdetailSchema;
+    return compliancedetailSchema;
 }

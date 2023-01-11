@@ -7,6 +7,9 @@ module.exports = (sequelize, Sequelize) => {
         emailId: {
             type: Sequelize.STRING
         },
+        password: {
+            type: Sequelize.STRING
+        }
     });
     return tutorialSchema;
 };

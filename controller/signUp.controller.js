@@ -319,11 +319,9 @@ exports.saveUser = (req, res) => {
                       <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
                       </div>`;
             var returnFlag = false;
-
             exports.emailNotification(req, res, subject, emailContent, returnFlag, result.emailId);
             return res.status(200).json({ status: "success", message: "Registered Successfully", result });
           })
-
       }
     })
     .catch(err => {
