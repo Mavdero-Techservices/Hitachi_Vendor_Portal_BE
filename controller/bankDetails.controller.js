@@ -64,7 +64,7 @@ exports.postBankdetail = [
     } catch (err) {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Bankdetail.",
+          err.message || "Some error occurred while creating the Bankdetail schema.",
       });
     }
   },

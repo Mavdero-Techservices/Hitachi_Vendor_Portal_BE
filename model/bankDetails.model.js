@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         userid: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            allowNull: false
         },
         bankAccountName: {
             type: Sequelize.STRING,
