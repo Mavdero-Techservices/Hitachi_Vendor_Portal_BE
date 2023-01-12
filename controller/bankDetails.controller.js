@@ -4,11 +4,6 @@ const { check, validationResult } = require("express-validator");
 
 exports.postBankdetail = [
   //validate form
-  check("bankId")
-    .not()
-    .isEmpty()
-    .isNumeric()
-    .withMessage("bankId is required"),
   check("bankAccountName")
     .not()
     .isEmpty()
