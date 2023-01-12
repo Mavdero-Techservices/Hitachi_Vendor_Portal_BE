@@ -58,8 +58,9 @@ router.post("/saveFdetail", fdetail.postFdetail);
 router.post("/saveBdetail", bankdetail.postBankdetail);
 //statdetails schema - create
 router.post("/saveStatdetail", statdetail.postStatdetail);
+router.post("/saveStatutoryDetail", statdetail.saveStatutoryDetail);
 //compdetails schema - create
-router.post("/saveCompdetail", compDetail.postCompdetail);
+router.post("/saveComplianceDetail", compDetail.saveComplianceDetail);
 //hisysContact schema - create
 router.post("/saveHisysContact", hisysContact.postHisysContact);
 

@@ -1,14 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
-  const StatDetailsSchema = sequelize.define("statDetails", {
+  const StatDetailsSchema = sequelize.define("statutoryDetail", {
     StatutoryId: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
+      type: Sequelize.STRING,
     },
-    userid: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
+    userId: {
+      type: Sequelize.STRING,
     },
     GST_type: {
       type: Sequelize.STRING,
@@ -28,10 +24,18 @@ module.exports = (sequelize, Sequelize) => {
     CIN_No: {
       type: Sequelize.STRING,
     },
-    form_10f:{
+    form_10f:
+    {
+      type: Sequelize.STRING,
+    },
+    PE_DeclarationNo:
+    {
+      type: Sequelize.STRING,
+    },
+    form_10f_Doc:{
       type: Sequelize.BLOB("long"),
     },
-    pe_declaration: {
+    PE_Declaration_Doc: {
       type: Sequelize.BLOB("long"),
     },
     MSME_status: {
@@ -52,9 +56,12 @@ module.exports = (sequelize, Sequelize) => {
     TAN_Doc: {
       type: Sequelize.BLOB("long"),
     },
-    Tax_residency: {
+    Tax_residency_Doc: {
       type: Sequelize.BLOB("long"),
     },
+    Tax_residency_No:{
+      type: Sequelize.STRING,
+    }
   });
   return StatDetailsSchema;
 };

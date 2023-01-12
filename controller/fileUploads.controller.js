@@ -1,5 +1,6 @@
-const UserInfo = require('../model/fileUploads.model');
 const { v4: uuidv4 } = require('uuid');
+const db = require("../model");
+const UserInfo = db.fileUpload;
 // upload file
 var multer = require('multer');
 var DocPath = '';
@@ -60,6 +61,7 @@ exports.fileUpload = (req, res, next) => {
       });
       fileUpload.save()
         .then(result => {
+          console.log("test");
           return res.status(200).json({ status: "success", result, message: "File uploaded Successfully" });
         })
         .catch(err => {
