@@ -10,6 +10,7 @@ const statdetail = require("../controller/statDetails.controller")
 const compDetail = require("../controller/compDetail.controller");
 const commsDetail = require("../controller/commsDetails.controller")
 const hisysContact = require("../controller/hisysContact.controller")
+const contactTeam = require("../controller/ContactTeam.controller")
 
 const router = express.Router();
 // signUp
@@ -53,7 +54,8 @@ router.get('/getCountry', vdetail.getCountry);
 //getStateAndcityByzipcode
 router.get('/getStateAndcityByzipcode/:code/:pinCode', vdetail.getStateAndcityByzipcode);
 //fdetail schema - Create
-router.post("/saveFdetail", fdetail.postFdetail);
+// router.post("/saveFdetail", fdetail.postFdetail);
+router.post("/saveFinacialDetail", fdetail.saveFinacialDetail);
 //bankdetail schema - Create
 router.post("/saveBdetail", bankdetail.postBankdetail);
 //statdetails schema - create
@@ -61,8 +63,12 @@ router.post("/saveStatdetail", statdetail.postStatdetail);
 router.post("/saveStatutoryDetail", statdetail.saveStatutoryDetail);
 //compdetails schema - create
 router.post("/saveComplianceDetail", compDetail.saveComplianceDetail);
+
+router.get('/downloadPdf/:name', compDetail.downloadPdf);
+router.get('/readPdf', compDetail.readPdf);
 //hisysContact schema - create
 router.post("/saveHisysContact", hisysContact.postHisysContact);
+router.post("/saveContactTeam", contactTeam.saveContactTeam);
 
 
 module.exports = router;

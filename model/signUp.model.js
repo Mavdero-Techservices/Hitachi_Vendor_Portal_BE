@@ -31,6 +31,12 @@ module.exports = (sequelize, Sequelize) => {
         vendorId: {
             type: Sequelize.STRING
         },
+        userName:{
+            type: Sequelize.STRING 
+        },
+        userId:{
+            type: Sequelize.STRING 
+        }
     });
     return SignUpSchema;
 };

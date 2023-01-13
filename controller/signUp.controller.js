@@ -104,10 +104,10 @@ exports.postSingUp = [
 ];
 //login
 exports.postLogin = (req, res) => {
-  const emailId = req.body.emailId;
+  const userName = req.body.userName;
   const password = req.body.password;
   SignUpSchema.findOne({
-    where: { emailId: emailId },
+    where: { userName: userName },
   })
     .then(user => {
       if (!user) {
@@ -117,8 +117,14 @@ exports.postLogin = (req, res) => {
 
         bcrypt
           .compare(password, user.password)
-          .then(doMatch => {
+          .then(async doMatch => {
             if (doMatch) {
+              await SignUpSchema.update(
+                { verifiedUser: 'approved' },
+                { where: { userName: user.userName } }
+              ).then(result => {
+                console.log("updated verified user");
+              })
               // Create token
               const token = jwt.sign(
                 { user_id: user._id },
@@ -131,7 +137,7 @@ exports.postLogin = (req, res) => {
               user.token = token;
               return res.json({
                 token,
-                result: { _id: user.id, companyName: user.companyName, emailId: user.emailId, verifiedUser: user.verifiedUser }
+                result: { _id: user.id, companyName: user.companyName, emailId: user.emailId, verifiedUser: user.verifiedUser, userId: user.userId, userName: user.userName }
               })
             }
             else {
@@ -147,10 +153,10 @@ exports.postLogin = (req, res) => {
 };
 //ResetPassword-confirmationCode
 exports.resetPasswordByCode = (req, res, next) => {
-  const emailId = req.body.emailId;
+  const userName = req.body.userName;
   SignUpSchema.findOne({
     where: {
-      emailId: emailId,
+      userName: userName,
     },
   })
     .then(async user => {
@@ -187,6 +193,7 @@ exports.resetPassword = (req, res, next) => {
   const mailConfirmationCode = req.body.mailConfirmationCode;
   const confirmPassword = req.body.confirmPassword;
   const password = req.body.password;
+  const userName = req.body.userName;
   SignUpSchema.findOne({
     where: {
       emailId: emailId,
@@ -205,7 +212,8 @@ exports.resetPassword = (req, res, next) => {
               {
                 password: hashedPassword,
                 confirmPassword: hashedPassword,
-                verifiedUser: 'approved'
+                userName: userName,
+
               },
               { where: { id: user.id } }
             ).then(code => {
@@ -284,6 +292,17 @@ function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
 
 //signUpApi
 exports.saveUser = (req, res) => {
+  var password = '';
+  var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+    'abcdefghijklmnopqrstuvwxyz0123456789@#$';
+
+  for (let i = 1; i <= 8; i++) {
+    var char = Math.floor(Math.random()
+      * str.length + 1);
+
+    password += str.charAt(char)
+  }
+
   SignUpSchema.findOne({
     where: { emailId: req.body.emailId, companyName: req.body.companyName, phoneNumber: req.body.phoneNumber },
   })
@@ -297,30 +316,44 @@ exports.saveUser = (req, res) => {
         const contactPerson = req.body.contactPerson;
         const emailId = req.body.emailId;
         const verifiedUser = 'Pending';
+        const userId = `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
         const vendorId = 'vendor' + Math.floor(100000 + Math.random() * 900000);
         const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
         const phoneNoConfirmationCode = Math.floor(100000 + Math.random() * 900000);
-        const user = new SignUpSchema({
-          companyName: companyName,
-          phoneNumber: phoneNumber,
-          contactPerson: contactPerson,
-          emailId: emailId,
-          mailConfirmationCode: mailConfirmationCode,
-          phoneNoConfirmationCode: phoneNoConfirmationCode,
-          verifiedUser: verifiedUser,
-          vendorId: vendorId
-        });
-        user.save()
-          .then(result => {
-            var subject = `confirmation mail for VendorId and password`;
-            var emailContent = `<h1>Email Confirmation</h1>
+        const userName = contactPerson + Math.floor(100000 + Math.random() * 900000);
+        bcrypt
+          .hash(password, 12)
+          .then(hashedPassword => {
+            const user = new SignUpSchema({
+              companyName: companyName,
+              phoneNumber: phoneNumber,
+              contactPerson: contactPerson,
+              emailId: emailId,
+              mailConfirmationCode: mailConfirmationCode,
+              phoneNoConfirmationCode: phoneNoConfirmationCode,
+              verifiedUser: verifiedUser,
+              vendorId: vendorId,
+              userId: userId,
+              userName: userName,
+              password: password,
+              confirmPassword: password,
+
+            });
+
+            user.save()
+              .then(result => {
+                var subject = `confirmation mail for userName and password`;
+                var emailContent = `<h1>Email Confirmation</h1>
                       <h2>Hello ${contactPerson}</h2>
-                      <p>Your vendor Id is ${vendorId}, please click the below link to create password.</p>
+                      <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
                       <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
                       </div>`;
-            var returnFlag = false;
-            exports.emailNotification(req, res, subject, emailContent, returnFlag, result.emailId);
-            return res.status(200).json({ status: "success", message: "Registered Successfully", result });
+                var returnFlag = false;
+                exports.emailNotification(req, res, subject, emailContent, returnFlag, result.emailId);
+                return res.status(200).json({ status: "success", message: "Registered Successfully", result });
+              }).catch(err => {
+                return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
+              });
           })
       }
     })

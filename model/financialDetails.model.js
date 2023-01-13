@@ -1,13 +1,10 @@
 module.exports = (sequelize, Sequelize) => {
-    const FdetailSchema = sequelize.define("fDetail", {
+    const FdetailSchema = sequelize.define("financialDetail", {
         financial_id: {
             type: Sequelize.INTEGER,
-            autoIncrement: true,
-            primaryKey: true
         },
         userid: {
             type: Sequelize.INTEGER,
-            allowNull: false,
         },
         yearOfAuditedFinancial: {
             type: Sequelize.DATE, 

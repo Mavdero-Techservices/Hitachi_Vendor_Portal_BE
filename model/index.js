@@ -29,4 +29,5 @@ db.statdetail = require("./statDetails.model")(sequelize, Sequelize);
 db.imageUpload = require("./imageUpload.model")(sequelize, Sequelize);
 db.vendorCommunicationDetails = require("./communicationDetail.model")(sequelize, Sequelize);
 db.complianceDetail = require("./compDetails.model")(sequelize, Sequelize);
+db.contactTeam = require("./contactTeam.model")(sequelize, Sequelize);
 module.exports = db;

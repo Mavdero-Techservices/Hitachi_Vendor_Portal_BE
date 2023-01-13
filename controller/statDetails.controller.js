@@ -150,167 +150,167 @@ var storage = multer.diskStorage({
         console.log("GST_Doc")
         if (file.mimetype === 'image/gif') {
             filetype = 'gif';
-            GST_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            GST_DocPath = directory_name+ "/" +'GST_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/png') {
             filetype = 'png';
-            GST_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            GST_DocPath = directory_name+ "/" +'GST_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/jpeg') {
             filetype = 'jpg';
-            GST_DocPath = "../uploads/" +'image-' + Date.now() + '.' + filetype;
+            GST_DocPath = "../uploads/" +'GST_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'application/pdf') {
             filetype = 'pdf';
-            GST_DocPath = directory_name+ "/" + 'image-' + Date.now() + '.' + filetype;
+            GST_DocPath = directory_name+ "/" + 'GST_Doc-' + Date.now() + '.' + filetype;
          
           }
-          cb(null, 'image-' + Date.now() + '.' + filetype);
+          cb(null, 'GST_Doc-' + Date.now() + '.' + filetype);
       }
       if (file.fieldname === "PAN_Doc") { 
         console.log("PAN_Doc")
         if (file.mimetype === 'image/gif') {
             filetype = 'gif';
-            PAN_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            PAN_DocPath = directory_name+ "/" +'PAN_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/png') {
             filetype = 'png';
-            PAN_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            PAN_DocPath = directory_name+ "/" +'PAN_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/jpeg') {
             filetype = 'jpg';
-            PAN_DocPath = "../uploads/" +'image-' + Date.now() + '.' + filetype;
+            PAN_DocPath = "../uploads/" +'PAN_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'application/pdf') {
             filetype = 'pdf';
-            PAN_DocPath = directory_name+ "/" + 'image-' + Date.now() + '.' + filetype;
+            PAN_DocPath = directory_name+ "/" + 'PAN_Doc-' + Date.now() + '.' + filetype;
          
           }
-          cb(null, 'image-' + Date.now() + '.' + filetype);
+          cb(null, 'PAN_Doc-' + Date.now() + '.' + filetype);
       }
       if (file.fieldname === "form_10f_Doc") { 
         console.log("form_10f_Doc")
         if (file.mimetype === 'image/gif') {
             filetype = 'gif';
-            form_10f_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            form_10f_DocPath = directory_name+ "/" +'form_10f_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/png') {
             filetype = 'png';
-            form_10f_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            form_10f_DocPath = directory_name+ "/" +'form_10f_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/jpeg') {
             filetype = 'jpg';
-            form_10f_DocPath = "../uploads/" +'image-' + Date.now() + '.' + filetype;
+            form_10f_DocPath = "../uploads/" +'form_10f_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'application/pdf') {
             filetype = 'pdf';
-            form_10f_DocPath = directory_name+ "/" + 'image-' + Date.now() + '.' + filetype;
+            form_10f_DocPath = directory_name+ "/" + 'form_10f_Doc-' + Date.now() + '.' + filetype;
          
           }
-          cb(null, 'image-' + Date.now() + '.' + filetype);
+          cb(null, 'form_10f_Doc-' + Date.now() + '.' + filetype);
       }
       if (file.fieldname === "TAN_Doc") { 
         console.log("TAN_Doc")
         if (file.mimetype === 'image/gif') {
             filetype = 'gif';
-            TAN_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            TAN_DocPath = directory_name+ "/" +'TAN_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/png') {
             filetype = 'png';
-            TAN_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            TAN_DocPath = directory_name+ "/" +'TAN_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/jpeg') {
             filetype = 'jpg';
-            TAN_DocPath = "../uploads/" +'image-' + Date.now() + '.' + filetype;
+            TAN_DocPath = "../uploads/" +'TAN_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'application/pdf') {
             filetype = 'pdf';
-            TAN_DocPath = directory_name+ "/" + 'image-' + Date.now() + '.' + filetype;
+            TAN_DocPath = directory_name+ "/" + 'TAN_Doc-' + Date.now() + '.' + filetype;
          
           }
-          cb(null, 'image-' + Date.now() + '.' + filetype);
+          cb(null, 'TAN_Doc-' + Date.now() + '.' + filetype);
       }
       if (file.fieldname === "PE_Declaration_Doc") { 
         console.log("PE_Declaration_Doc")
         if (file.mimetype === 'image/gif') {
             filetype = 'gif';
-            PE_Declaration_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            PE_Declaration_DocPath = directory_name+ "/" +'PE_Declaration_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/png') {
             filetype = 'png';
-            PE_Declaration_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            PE_Declaration_DocPath = directory_name+ "/" +'PE_Declaration_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/jpeg') {
             filetype = 'jpg';
-            PE_Declaration_DocPath = "../uploads/" +'image-' + Date.now() + '.' + filetype;
+            PE_Declaration_DocPath = "../uploads/" +'PE_Declaration_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'application/pdf') {
             filetype = 'pdf';
-            PE_Declaration_DocPath = directory_name+ "/" + 'image-' + Date.now() + '.' + filetype;
+            PE_Declaration_DocPath = directory_name+ "/" + 'PE_Declaration_Doc-' + Date.now() + '.' + filetype;
          
           }
-          cb(null, 'image-' + Date.now() + '.' + filetype);
+          cb(null, 'PE_Declaration_Doc-' + Date.now() + '.' + filetype);
       }
       if (file.fieldname === "MSME_Doc") { 
         console.log("MSME_Doc")
         if (file.mimetype === 'image/gif') {
             filetype = 'gif';
-            MSME_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            MSME_DocPath = directory_name+ "/" +'MSME_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/png') {
             filetype = 'png';
-            MSME_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            MSME_DocPath = directory_name+ "/" +'MSME_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/jpeg') {
             filetype = 'jpg';
-            MSME_DocPath = "../uploads/" +'image-' + Date.now() + '.' + filetype;  
+            MSME_DocPath = "../uploads/" +'MSME_Doc-' + Date.now() + '.' + filetype;  
           }
           if (file.mimetype === 'application/pdf') {
             filetype = 'pdf';
-            MSME_DocPath = directory_name+ "/" + 'image-' + Date.now() + '.' + filetype;
+            MSME_DocPath = directory_name+ "/" + 'MSME_Doc-' + Date.now() + '.' + filetype;
           }
-          cb(null, 'image-' + Date.now() + '.' + filetype);
+          cb(null, 'MSME_Doc-' + Date.now() + '.' + filetype);
       }
       if (file.fieldname === "Tax_residency_Doc") { 
         console.log("TAN_Doc")
         if (file.mimetype === 'image/gif') {
             filetype = 'gif';
-            Tax_residency_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            Tax_residency_DocPath = directory_name+ "/" +'Tax_residency_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/png') {
             filetype = 'png';
-            Tax_residency_DocPath = directory_name+ "/" +'image-' + Date.now() + '.' + filetype;
+            Tax_residency_DocPath = directory_name+ "/" +'Tax_residency_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'image/jpeg') {
             filetype = 'jpg';
-            Tax_residency_DocPath = "../uploads/" +'image-' + Date.now() + '.' + filetype;
+            Tax_residency_DocPath = "../uploads/" +'Tax_residency_Doc-' + Date.now() + '.' + filetype;
          
           }
           if (file.mimetype === 'application/pdf') {
             filetype = 'pdf';
-            Tax_residency_DocPath = directory_name+ "/" + 'image-' + Date.now() + '.' + filetype;
+            Tax_residency_DocPath = directory_name+ "/" + 'Tax_residency_Doc-' + Date.now() + '.' + filetype;
          
           }
-          cb(null, 'image-' + Date.now() + '.' + filetype);
+          cb(null, 'Tax_residency_Doc-' + Date.now() + '.' + filetype);
       } 
     } 
   });
