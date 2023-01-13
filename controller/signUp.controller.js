@@ -292,7 +292,7 @@ function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
 
 //signUpApi
 exports.saveUser = (req, res) => {
-  var password = '';
+  var pass = '';
   var str = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
     'abcdefghijklmnopqrstuvwxyz0123456789@#$';
 
@@ -300,7 +300,7 @@ exports.saveUser = (req, res) => {
     var char = Math.floor(Math.random()
       * str.length + 1);
 
-    password += str.charAt(char)
+    pass += str.charAt(char)
   }
 
   SignUpSchema.findOne({
@@ -321,6 +321,7 @@ exports.saveUser = (req, res) => {
         const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
         const phoneNoConfirmationCode = Math.floor(100000 + Math.random() * 900000);
         const userName = contactPerson + Math.floor(100000 + Math.random() * 900000);
+       const password=pass;
         bcrypt
           .hash(password, 12)
           .then(hashedPassword => {
@@ -335,8 +336,8 @@ exports.saveUser = (req, res) => {
               vendorId: vendorId,
               userId: userId,
               userName: userName,
-              password: password,
-              confirmPassword: password,
+              password: hashedPassword,
+              confirmPassword: hashedPassword,
 
             });
 
