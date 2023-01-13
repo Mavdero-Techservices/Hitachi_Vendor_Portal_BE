@@ -4,11 +4,6 @@ const { check, validationResult } = require("express-validator");
 
 exports.postBankdetail = [
   //validate form
-  check("bankId")
-    .not()
-    .isEmpty()
-    .isNumeric()
-    .withMessage("bankId is required"),
   check("bankAccountName")
     .not()
     .isEmpty()
@@ -69,7 +64,7 @@ exports.postBankdetail = [
     } catch (err) {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Bankdetail.",
+          err.message || "Some error occurred while creating the Bankdetail schema.",
       });
     }
   },

@@ -2,11 +2,12 @@ module.exports = (sequelize, Sequelize) => {
     const BankdetailSchema = sequelize.define("bankDetail", {
         bankId: {
             type: Sequelize.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         userid: {
             type: Sequelize.INTEGER,
-            allowNull: false,
+            allowNull: false
         },
         bankAccountName: {
             type: Sequelize.STRING,
