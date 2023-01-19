@@ -13,6 +13,13 @@ const hisysContact = require("../controller/hisysContact.controller")
 const contactTeam = require("../controller/ContactTeam.controller")
 
 const router = express.Router();
+/* GET home page. */
+router.get('/', function(req, res, next) {
+    res.json( { 
+        title: 'Express',
+        message: 'Welcome to the API'
+    });
+  });
 // signUp
 router.post("/signUp", signUp.postSingUp);
 //login
@@ -57,7 +64,7 @@ router.get('/getStateAndcityByzipcode/:code/:pinCode', vdetail.getStateAndcityBy
 // router.post("/saveFdetail", fdetail.postFdetail);
 router.post("/saveFinacialDetail", fdetail.saveFinacialDetail);
 //bankdetail schema - Create
-router.post("/saveBdetail", bankdetail.postBankdetail);
+router.post("/saveBankDetail", bankdetail.saveBankDetail);
 //statdetails schema - create
 router.post("/saveStatdetail", statdetail.postStatdetail);
 router.post("/saveStatutoryDetail", statdetail.saveStatutoryDetail);
