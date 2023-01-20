@@ -3,9 +3,8 @@ module.exports = (sequelize, Sequelize) => {
         bankId: {
             type: Sequelize.STRING,
         },
-        userid: {
-            type: Sequelize.INTEGER,
-            allowNull: false
+        userId: {
+            type: Sequelize.STRING,
         },
         bankAccountName: {
             type: Sequelize.STRING,

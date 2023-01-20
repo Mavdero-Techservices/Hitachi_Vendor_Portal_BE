@@ -77,11 +77,9 @@ var storage = multer.diskStorage({
 
   },
   filename: (req, file, cb) => {
-    console.log(file);
     var filetype = '';
 
     if (file.fieldname === "financial_data") {
-      console.log("RPD_Doc")
       if (file.mimetype === 'image/gif') {
         filetype = 'gif';
         financial_data_DocPath = directory_name + "/" + 'financial_data-' + Date.now() + '.' + filetype;
@@ -105,7 +103,6 @@ var storage = multer.diskStorage({
       cb(null, 'financial_data-' + Date.now() + '.' + filetype);
     }
     if (file.fieldname === "financial_data2") {
-      console.log("financial_data_DocPath")
       if (file.mimetype === 'image/gif') {
         filetype = 'gif';
         financial_data2_DocPath = directory_name + "/" + 'financial_data2-' + Date.now() + '.' + filetype;
@@ -156,8 +153,8 @@ exports.saveFinacialDetail = (req, res) => {
       const netWorth = req.body.netWorth;
       const currentAssets = req.body.currentAssets;
       const directorDetails = req.body.directorDetails;
+
       const user = new FdetailSchema({
-        financial_id: 'financial' + Math.floor(100000 + Math.random() * 900000),
         financial_data: financial_data,
         financial_data2: financial_data2,
         yearOfAuditedFinancial: yearOfAuditedFinancial,
