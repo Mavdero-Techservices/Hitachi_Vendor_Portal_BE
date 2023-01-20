@@ -209,6 +209,7 @@ exports.readPdf = (req, res, next) => {
 //create Pdf
 exports.createRelatedDisclosurePdf = (req, res, next) => {
   var companyName = req.body.companyName;
+  var userName=req.body.userName;
   const content1 = `We,${companyName}, Vendor of Hitachi Systems India Private Limited (“Company”),in the Capacity of relationship Manager, hereby declare, that:`;
   const content2 = `We have/do not have any financial or beneficial interest, or association with or in any entity, enterprise, establishment, organization, undertaking (including individual, sole proprietorship, partnership, limited partnership, joint venture, corporation, private company, or public company) with which the Company (i) does any business (directly or indirectly); or (ii) deals in any manner whatsoever; or (iii) with which the Company has any commercial or financial interest.`;
   const content3 = `We agree and certify that in case there is any change in the above declaration we shall promptly and without any delay whatsoever inform the Company.`;
@@ -287,11 +288,11 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
     width: 410,
     align: 'justify',
     underline: true,
-
+continued:true
 
 
   }
-  );
+  ).text(`${userName}`);
   doc.moveDown();
   doc.fontSize(8);
   doc.fillColor('red');
@@ -311,7 +312,6 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
     align: 'justify',
     underline: true,
     continued: true
-
   }
   ).text(`${date}`);
   ;
@@ -332,6 +332,7 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
 }
 exports.createCompliancePdf = (req, res, next) => {
   var companyName = req.body.companyName;
+  var userName=req.body.userName;
   const content1 = `We warrant and represent that we have never taken and will never take any actions in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money,or anything else of value, to (i) any person who engages in services for national or local governments; (ii) any person who engages in services for an agency or organization affiliated with a government entity;(iii) any person who engages in services for a public enterprise or state-owned entity; 1 (iv) any person who engages in public services for an international public organization; 2 (v) any political party, party official, or candidate for political office; or (vi) any person authorized by a government entity to exercise a public function -- all of the foregoing being referred to as “Public Officers”-- or to any other person while knowing that all or some portion of the money or value was or will be offered, given or promised to a Public Officer for the purposes of obtaining or retaining business or securing any improper advantage or influencing official action.`;
   const content2 = `We agree that no part of the payments received by us from Hitachi Systems India Pvt ltd will be used for any purpose which would cause a violation of laws,including,without limitation,the anti-bribery laws of any country or jurisdiction,by Hitachi Systems India Pvt ltd.`
   const content3 = `We agree that we will conduct our business in compliance with laws, including, without limitation, the anti-bribery laws of any country or jurisdiction.`;
@@ -463,8 +464,12 @@ exports.createCompliancePdf = (req, res, next) => {
   doc.text(`${content8}:`, {
     width: 410,
     align: 'justify',
+    continued:true
   }
-  );
+  ).text(`${userName}`,
+  {
+    underline: true
+  });
   doc.moveDown();
   doc.fontSize(8);
   doc.fillColor('black');
@@ -511,6 +516,7 @@ exports.createCompliancePdf = (req, res, next) => {
 }
 exports.createnonDisclosure = (req, res, next) => {
   var companyName = req.body.companyName;
+  var userName = req.body.userName;
   const date = new Date().toLocaleDateString();
   const content1 = `This Confidentiality and Non-Disclosure Agreement (“Agreement”) dated ${date} is entered into by and between`;
   const content2 = `Hitachi Systems India Private Limited a company incorporated under the provisions of Companies Act 2013 and having its principal place of business at E-44/2, Okhla Industrial Area, Phase-2, New Delhi-110020 (hereinafter referred to as “Party.” which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries and assigns),`
@@ -671,7 +677,7 @@ h) This agreement may be executed in two counterparts, each of which shall be de
       width: colWidth,
       underline: true,
     })
-    .text(`Name:`, col2LeftPos, col3Top, { width: colWidth, underline: true, })
+    .text(`Name:${userName}`, col2LeftPos, col3Top, { width: colWidth, underline: true, })
   doc.moveDown().fontSize(8)
     .text('Title:Finance Controller', col1LeftPos, col4Top, {
       width: colWidth,
