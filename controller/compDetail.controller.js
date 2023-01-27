@@ -292,7 +292,7 @@ continued:true
 
 
   }
-  ).text(`${userName}`);
+  ).text(`  ${userName}`);
   doc.moveDown();
   doc.fontSize(8);
   doc.fillColor('red');
@@ -466,7 +466,7 @@ exports.createCompliancePdf = (req, res, next) => {
     align: 'justify',
     continued:true
   }
-  ).text(`${userName}`,
+  ).text(`  ${userName}`,
   {
     underline: true
   });
@@ -677,7 +677,7 @@ h) This agreement may be executed in two counterparts, each of which shall be de
       width: colWidth,
       underline: true,
     })
-    .text(`Name:${userName}`, col2LeftPos, col3Top, { width: colWidth, underline: true, })
+    .text(`Name:  ${userName}`, col2LeftPos, col3Top, { width: colWidth, underline: true, })
   doc.moveDown().fontSize(8)
     .text('Title:Finance Controller', col1LeftPos, col4Top, {
       width: colWidth,
@@ -695,3 +695,17 @@ h) This agreement may be executed in two counterparts, each of which shall be de
 
   });
 }
+
+
+exports.getfinacialYear = (req, res) => {
+  
+  var fiscalyear = "";
+  var fiscalmonth = "";
+  var today = new Date();
+  if ((today.getMonth() + 1) <= 3) {
+    fiscalyear = (today.getFullYear() - 1) + "-" + today.getFullYear()
+  } else {
+    fiscalyear = today.getFullYear() + "-" + (today.getFullYear() + 1)
+  }
+  console.log(fiscalyear);
+};

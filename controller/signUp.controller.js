@@ -111,7 +111,7 @@ exports.postLogin = (req, res) => {
   })
     .then(user => {
       if (!user) {
-        return res.status(200).json("invalid user");
+        return res.status(200).json({ status: 'error', data: { message: 'invalid user'} });
       }
       else {
 
@@ -135,13 +135,13 @@ exports.postLogin = (req, res) => {
               );
               // save user token 
               user.token = token;
-              return res.json({
+              return res.status(200).json({status: 'success',
                 token,
                 result: { _id: user.id, companyName: user.companyName, emailId: user.emailId, verifiedUser: user.verifiedUser, userId: user.userId, userName: user.userName }
               })
             }
             else {
-              return res.status(200).json("invalid user");
+              return res.status(200).json({ status: 'error', data: { message: 'Incorrect password'} });
             }
           })
 
@@ -304,11 +304,11 @@ exports.saveUser = (req, res) => {
   }
 
   SignUpSchema.findOne({
-    where: { emailId: req.body.emailId, companyName: req.body.companyName, phoneNumber: req.body.phoneNumber },
+    where: { emailId: req.body.emailId, phoneNumber: req.body.phoneNumber },
   })
     .then(user => {
       if (user) {
-        return res.status(200).json("User already exist");
+        return res.status(200).json({ status: "success", message: "User already exist"});
       }
       else {
         const companyName = req.body.companyName;
