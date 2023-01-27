@@ -71,8 +71,13 @@ router.post("/saveStatutoryDetail", statdetail.saveStatutoryDetail);
 //compdetails schema - create
 router.post("/saveComplianceDetail", compDetail.saveComplianceDetail);
 
+router.post('/createRelatedDisclosurePdf', compDetail.createRelatedDisclosurePdf);
+router.post('/createCompliancePdf', compDetail.createCompliancePdf);
+router.post('/createnonDisclosure', compDetail.createnonDisclosure);
+//downloadLog
 router.get('/downloadPdf/:name', compDetail.downloadPdf);
 router.get('/readPdf', compDetail.readPdf);
+
 //hisysContact schema - create
 router.post("/saveHisysContact", hisysContact.postHisysContact);
 router.post("/saveContactTeam", contactTeam.saveContactTeam);
