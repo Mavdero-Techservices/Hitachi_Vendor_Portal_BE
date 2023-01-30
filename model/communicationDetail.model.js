@@ -60,6 +60,9 @@ module.exports = (sequelize, Sequelize) => {
         email: {
             type: Sequelize.STRING,
         },
+        userId: {
+            type: Sequelize.STRING,
+        },
     })
     return vendorCommunicationDetailsSchema;
 }

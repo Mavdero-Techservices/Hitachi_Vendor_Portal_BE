@@ -1,7 +1,13 @@
 
 const db = require("../model");
 const contactTeamSchema = db.contactTeam;
-
+const VdetailSchema = db.vdetail;
+const vendorCommunicationDetails = db.vendorCommunicationDetails;
+const StatDetailSchema = db.statdetail;
+const CompliancedetailSchema = db.complianceDetail;
+const FdetailSchema = db.fdetail;
+const BankdetailSchema = db.bankdetail;
+var database = require('../config/db.config');
 exports.saveContactTeam = (req, res) => {
     const contactId = 'contactId' + Math.floor(100000 + Math.random() * 900000);
     const userId = req.body.userId;
@@ -32,4 +38,53 @@ exports.saveContactTeam = (req, res) => {
         .then(result => {
             return res.status(200).json({ status: "success", message: "Registered Successfully", result });
         })
+}
+
+exports.getAllCollection = async (req, res) => {
+    var userId = req.params.userId;
+    const basicInfoArray = [];
+    const CommunicationDetailsArray = [];
+    const StatDetailArray = [];
+    const CompliancedetailArray = [];
+    const FdetailArray = [];
+    const bankdetailArray = [];
+    await VdetailSchema.findOne({
+        where: { userId: userId },
+    }).then(async basicInfo => {
+        basicInfoArray.push(basicInfo);
+       await vendorCommunicationDetails.findOne({
+            where: { userId: userId },
+        }).then(async CommunicationDetails => {          
+             CommunicationDetailsArray.push(CommunicationDetails);
+             await StatDetailSchema.findOne({
+                where: { userId: userId },
+            }).then(async StatDetail => {
+                StatDetailArray.push(StatDetail);
+                await CompliancedetailSchema.findOne({
+                    where: { userId: userId },
+                }).then(async Compliancedetail => {
+                    CompliancedetailArray.push(Compliancedetail);
+                    await FdetailSchema.findOne({
+                        where: { userId: userId },
+                    }).then(async Fdetail => {
+                        FdetailArray.push(Fdetail);
+                        await BankdetailSchema.findOne({
+                            where: { userId: userId },
+                        }).then(async Bankdetail => {
+                            bankdetailArray.push(Bankdetail);
+                        })
+                    })
+                })
+            })
+        })
+    })
+        res.status(200).json({ status: "success", basicInfo: basicInfoArray,CommunicationDetails:CommunicationDetailsArray,Statutory:StatDetailArray,ComplianceDetail:CompliancedetailArray, FinancialDetail: FdetailArray ,Bankdetail:bankdetailArray});
+}
+exports.getvendorDetail = async (req, res) => {
+    var userId = req.params.userId;
+    VdetailSchema.findOne({
+        where: { userId: userId },
+    }).then(basicInfo => {
+        res.status(200).json({ status: "success", message: "basicInfo", country: basicInfo.country });
+    })
 }

@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
         financial_id: {
             type: Sequelize.STRING,
         },
-        userid: {
+        userId: {
             type: Sequelize.STRING,
         },
         yearOfAuditedFinancial: {

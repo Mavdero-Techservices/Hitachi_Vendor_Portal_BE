@@ -156,6 +156,7 @@ exports.saveFinacialDetail = (req, res) => {
       const netWorth = req.body.netWorth;
       const currentAssets = req.body.currentAssets;
       const directorDetails = req.body.directorDetails;
+      const userId=req.body.userId;
       const user = new FdetailSchema({
         financial_id: 'financial' + Math.floor(100000 + Math.random() * 900000),
         financial_data: financial_data,
@@ -166,6 +167,7 @@ exports.saveFinacialDetail = (req, res) => {
         netWorth: netWorth,
         currentAssets: currentAssets,
         directorDetails: directorDetails,
+        userId:userId,
 
       });
       user.save()

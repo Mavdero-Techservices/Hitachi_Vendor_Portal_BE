@@ -81,6 +81,7 @@ router.get('/readPdf', compDetail.readPdf);
 //hisysContact schema - create
 router.post("/saveHisysContact", hisysContact.postHisysContact);
 router.post("/saveContactTeam", contactTeam.saveContactTeam);
-
+router.get("/getAllCollection/:userId", contactTeam.getAllCollection);
+router.get("/getvendorDetail/:userId", contactTeam.getvendorDetail);
 
 module.exports = router;

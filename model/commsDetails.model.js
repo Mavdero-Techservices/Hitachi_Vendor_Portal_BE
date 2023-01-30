@@ -2,13 +2,9 @@ module.exports = (sequelize, Sequelize) => {
     const CommsdetailSchema = sequelize.define("commsDetail",{
         commsId: {
             type: Sequelize.INTEGER,
-            primaryKey: true,
-            autoIncrement: true,
-            allowNull: false,
         },
-        userid: {
+        userId: {
             type: Sequelize.INTEGER,
-            allowNull: false,
         },
         fs_ContactName: {
             type: Sequelize.STRING,
