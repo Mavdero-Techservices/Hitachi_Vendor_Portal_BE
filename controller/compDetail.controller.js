@@ -2,6 +2,7 @@ const db = require("../model");
 const CompliancedetailSchema = db.complianceDetail;
 const { check, validationResult } = require("express-validator");
 const PDFDocument = require('pdfkit');
+const PDFDocument2 = require("pdfkit-table");
 const fs = require('fs');
 const blobStream = require('blob-stream');
 // exports.postCompdetail = [
@@ -206,12 +207,17 @@ exports.readPdf = (req, res, next) => {
   });
 
 }
-//create Pdf
+
 exports.createRelatedDisclosurePdf = (req, res, next) => {
   var companyName = req.body.companyName;
-  var userName=req.body.userName;
-  const content1 = `We,${companyName}, Vendor of Hitachi Systems India Private Limited (“Company”),in the Capacity of relationship Manager, hereby declare, that:`;
-  const content2 = `We have/do not have any financial or beneficial interest, or association with or in any entity, enterprise, establishment, organization, undertaking (including individual, sole proprietorship, partnership, limited partnership, joint venture, corporation, private company, or public company) with which the Company (i) does any business (directly or indirectly); or (ii) deals in any manner whatsoever; or (iii) with which the Company has any commercial or financial interest.`;
+  var userName = req.body.userName;
+  const content1 = `We, `;
+  const content01 = `${companyName}, `;
+  const content001 = `Vendor of Hitachi Systems India Private Limited (“Company”),in the Capacity of relationship Manager, hereby declare, that:`;
+  const content2 = `We `;
+  const content02 = `have/do not have `;
+  const content002 = `any financial or beneficial interest, or association with or in any entity, enterprise, establishment, organization, undertaking (including individual, sole proprietorship, partnership, limited partnership, joint venture, corporation, private company, or public company) with which the Company (i) does any business (directly or indirectly); or (ii) deals in any manner whatsoever; or (iii) with which the Company has any commercial or financial interest.`;
+  const content11 = `if Vendor select "do not have any" then they need to fill N/A in the mentioned table./if Vendor select ""have" then they have to fill the detail in table and submit the same. `
   const content3 = `We agree and certify that in case there is any change in the above declaration we shall promptly and without any delay whatsoever inform the Company.`;
   const content4 = `We do hereby certify that the information provided hereinabove is true, complete and any false information contained herein may constitute ground(s) for any action taken by the Company which it deems fit including criminal and / or civil action as per law.`;
   const content5 = `We agree and certify that the Company reserves the right to decide whether any violations have been committed by me in terms of this Declaration and in regard to the terms of my appointment. Further We agree and certify that, in case the Company concludes that we have violated or breached any of the terms of this Declaration, the Company can initiate appropriate legal as well as disciplinary action which shall not be limited to suspension, immediate termination, recovery of financial loss, adjustment / withholding of my dues. We agree and certify that the Company will have the right to recover any amount due to any loss (including tax impact), damage, proceeding which the Company might suffer due to this Declaration being false and the same shall be deductible from my cost to the Company.`;
@@ -220,61 +226,119 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
   const content8 = `Designation:`;
   const content9 = `Date:`;
   const date = new Date().toLocaleDateString();
-  const content10 = `Association includes close relationship with any person of authority (in such entity),shareholding or any position such as director, manager, employee or beneficial interest of any nature whatsoever`;
-  const doc = new PDFDocument();
+  const content10 = `*Association includes close relationship with any person of authority (in such entity),shareholding or any position such as director, manager, employee or beneficial interest of any nature whatsoever`;
+  const doc = new PDFDocument2({ margin: 50, size: 'A4' });
   const stream = doc.pipe(blobStream());
   var fileName = `${companyName}` + 'Rpd.pdf';
   let directory_name = "./pdf/" + fileName;
   const filepath = '../pdf/' + `${companyName}` + 'RelatedDisclosure.pdf';
+
   doc.pipe(fs.createWriteStream(directory_name));
   doc.moveUp();
   doc.font('Times-Roman')
-  doc.fontSize(10);
-  doc.text('DECLARATION OF NO CONFLICT OF INTEREST', 100, 100, {
+  doc.fontSize(14);
+  doc.text('DECLARATION OF NO CONFLICT OF INTEREST', {
     align: 'center'
   }
   );
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.text(`${content1}`, {
-    width: 410,
+    continued: true,
+    align: 'justify'
+  }
+  ).font('Times-Bold').text(`${content01}`, {
+    continued: true,
+    align: 'justify'
+  }).font('Times-Roman').text(`${content001}`, {
+    continued: false,
+    align: 'justify'
+  });
+
+  doc.moveDown();
+  doc.fontSize(12);
+  doc.text(`${content2}`, {
+    continued: true,
+    align: 'justify'
+  }
+  ).font('Times-Bold').text(`${content02}`, {
+    continued: true,
+    align: 'justify'
+  }).font('Times-Roman').text(`${content002}`, {
+    continued: false,
+    align: 'justify'
+  });
+
+  doc.moveDown();
+  doc.fontSize(10);
+  doc.text(`${content11}`, {
+    height: 100,
+    align: 'justify'
+  }
+  );
+  doc.moveDown();
+  doc.moveDown();
+  const table = {
+    headers: ["Name of entity(ies) or individual(s) involved with the actual or potential conflict of interest", "Details of business dealing (direct or indirect) of the Company with such entity(ies) or individual(s) which might constitute as a potential or actual conflict of interest", "Nature of my interest (financial or beneficial) / relation / involvement with such entity(ies) or individual(s)"],
+    rows: [
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+      ["", "", ""],
+    ],
+  };
+  doc.table(table, {
+    columnSpacing: 10,
+    padding: 10,
+    columnsSize: [160, 170, 160],
+    align: "justify",
+    // prepareHeader: () => doc.font('Times-Roman').fontSize(10),
+    prepareRow: (row, indexColumn, indexRow, rectRow, rectCell) => {
+      const { x, y, width, height } = rectCell;
+      if (indexColumn === 0) {
+        doc
+          .lineWidth(.5)
+          .moveTo(x, y)
+          .lineTo(x, y + height)
+          .stroke();
+      }
+      doc
+        .lineWidth(.5)
+        .moveTo(x + width, y)
+        .lineTo(x + width, y + height)
+        .stroke();
+      doc.fontSize(12).font('Times-Roman').fillColor('#292929');
+
+    },
+
+  });
+
+
+  doc.moveDown();
+  doc.font("Times-Roman")
+  doc.fontSize(12);
+  doc.text(`${content3}`, {
     align: 'justify'
   }
   );
 
   doc.moveDown();
-  doc.fontSize(8);
-  doc.text(`${content2}`, {
-    width: 410,
-    align: 'justify'
-  }
-  );
-  doc.moveDown();
-  doc.fontSize(8);
-  doc.text(`${content3}`, {
-    width: 410,
-    align: 'justify'
-  }
-  );
-  doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.text(`${content4}`, {
-    width: 410,
     align: 'justify'
   }
   );
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.text(`${content5}`, {
-    width: 410,
     align: 'justify'
   }
   );
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('red')
   doc.text(`${content6}`, {
-    width: 410,
     align: 'justify',
     underline: true,
   }
@@ -282,33 +346,30 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
 
 
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('red')
   doc.text(`${content7}`, {
-    width: 410,
     align: 'justify',
     underline: true,
-continued:true
+    continued: true
 
 
   }
   ).text(`  ${userName}`);
+
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('red');
   doc.text(`${content8}`, {
-    width: 410,
     align: 'justify',
     underline: true,
-
-
   }
   );
+
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('red');
   doc.text(`${content9}`, {
-    width: 410,
     align: 'justify',
     underline: true,
     continued: true
@@ -316,13 +377,13 @@ continued:true
   ).text(`${date}`);
   ;
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(10);
   doc.fillColor('black');
   doc.text(`${content10}`, {
-    width: 410,
     align: 'justify',
   }
   );
+
   doc.end();
   stream.on('finish', function () {
     const blob = stream.toBlob('application/pdf');
@@ -330,9 +391,10 @@ continued:true
     return res.status(200).json({ status: "success", message: "Registered Successfully", url });
   });
 }
+
 exports.createCompliancePdf = (req, res, next) => {
   var companyName = req.body.companyName;
-  var userName=req.body.userName;
+  var userName = req.body.userName;
   const content1 = `We warrant and represent that we have never taken and will never take any actions in furtherance of an offer, payment, promise to pay, or authorization of the payment or giving of money,or anything else of value, to (i) any person who engages in services for national or local governments; (ii) any person who engages in services for an agency or organization affiliated with a government entity;(iii) any person who engages in services for a public enterprise or state-owned entity; 1 (iv) any person who engages in public services for an international public organization; 2 (v) any political party, party official, or candidate for political office; or (vi) any person authorized by a government entity to exercise a public function -- all of the foregoing being referred to as “Public Officers”-- or to any other person while knowing that all or some portion of the money or value was or will be offered, given or promised to a Public Officer for the purposes of obtaining or retaining business or securing any improper advantage or influencing official action.`;
   const content2 = `We agree that no part of the payments received by us from Hitachi Systems India Pvt ltd will be used for any purpose which would cause a violation of laws,including,without limitation,the anti-bribery laws of any country or jurisdiction,by Hitachi Systems India Pvt ltd.`
   const content3 = `We agree that we will conduct our business in compliance with laws, including, without limitation, the anti-bribery laws of any country or jurisdiction.`;
@@ -350,30 +412,29 @@ exports.createCompliancePdf = (req, res, next) => {
   const signatureHeight = 390;
   const startLine1 = 145;
   const endLine1 = 135 + lineSize;
-  const doc = new PDFDocument();
+  const doc = new PDFDocument({ margin: 50, size: 'A4' });
   const stream = doc.pipe(blobStream());
   var fileName = `${companyName}` + 'COC.pdf';
   let directory_name = "./pdf/" + fileName;
   doc.pipe(fs.createWriteStream(directory_name));
   doc.moveUp();
-  doc.font('Times-Roman')
-  doc.fontSize(10);
-  doc.text('Compliance Certification', 100, 100, {
+  doc.font('Times-Bold')
+  doc.fontSize(12);
+  doc.text('Compliance Certification', {
     align: 'center'
   }
   );
 
   doc.moveDown();
-  doc.fontSize(8);
+  doc.font('Times-Roman')
+  doc.fontSize(12);
   doc.text(`${content1}`, {
-    width: 410,
     align: 'justify'
   }
   );
   doc.moveDown();
   doc.fillColor('black')
     .text(content2.slice(0, 58), {
-      width: 465,
       continued: true,
       align: 'justify',
     }).fillColor('black').font('Times-Bold')
@@ -382,30 +443,27 @@ exports.createCompliancePdf = (req, res, next) => {
       continued: true,
       align: 'justify',
     }).fillColor('black').font('Times-Roman').text(content2.slice(88, 240), {
-      width: 465,
       align: 'justify',
       underline: false,
       continued: true
     }).fillColor('black').font('Times-Bold')
-    .text(content2.slice(241, 272), {
+    .text(content2.slice(240, 272), {
       underline: true,
       align: 'justify',
       continued: false
     });
 
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.font('Times-Roman').text(`${content3}`, {
-    width: 410,
     align: 'justify',
     continued: false,
     underline: false,
   }
   );
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.font('Times-Roman').text(content4.slice(0, 255), {
-    width: 410,
     align: 'justify',
     continued: false,
     underline: false,
@@ -417,9 +475,8 @@ exports.createCompliancePdf = (req, res, next) => {
       align: 'justify',
     });
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.font('Times-Roman').text(content5.slice(0, 85), {
-    width: 410,
     align: 'justify',
     continued: true,
     underline: false,
@@ -437,10 +494,9 @@ exports.createCompliancePdf = (req, res, next) => {
     });
   ;
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('black');
   doc.text(`${content6}:`, {
-    width: 410,
     align: 'justify',
     continued: true
 
@@ -451,30 +507,27 @@ exports.createCompliancePdf = (req, res, next) => {
     });
 
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('black');
   doc.text(`${content7}:`, {
-    width: 410,
     align: 'justify',
   }
   );
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('black');
-  doc.text(`${content8}:`, {
-    width: 410,
+  doc.text(`${content8}: `, {
     align: 'justify',
-    continued:true
+    continued: true
   }
   ).text(`  ${userName}`,
-  {
-    underline: true
-  });
+    {
+      underline: true
+    });
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('black');
   doc.text(`${content9}:`, {
-    width: 410,
     align: 'justify',
     continued: true
   }
@@ -483,26 +536,25 @@ exports.createCompliancePdf = (req, res, next) => {
       underline: true
     });
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(12);
   doc.fillColor('black');
   doc.text(`${content10}:`, {
-    width: 410,
     align: 'justify',
   }
   );
   doc.moveDown();
-  doc.fontSize(8);
+  doc.moveDown();
+  doc.moveDown();
+  doc.fontSize(10);
   doc.fillColor('black');
   doc.text(`${content11}:`, {
-    width: 410,
     align: 'justify',
   }
   );
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(10);
   doc.fillColor('black');
   doc.text(`${content12}:`, {
-    width: 410,
     align: 'justify',
   }
   );
@@ -511,20 +563,28 @@ exports.createCompliancePdf = (req, res, next) => {
     const blob = stream.toBlob('application/pdf');
     const url = stream.toBlobURL('application/pdf');
     return res.status(200).json({ status: "success", message: "Registered Successfully", url });
-
   });
 }
 exports.createnonDisclosure = (req, res, next) => {
+  console.log("req========================>>>>>", req.body)
   var companyName = req.body.companyName;
   var userName = req.body.userName;
   const date = new Date().toLocaleDateString();
-  const content1 = `This Confidentiality and Non-Disclosure Agreement (“Agreement”) dated ${date} is entered into by and between`;
-  const content2 = `Hitachi Systems India Private Limited a company incorporated under the provisions of Companies Act 2013 and having its principal place of business at E-44/2, Okhla Industrial Area, Phase-2, New Delhi-110020 (hereinafter referred to as “Party.” which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries and assigns),`
+  const content1 = `This Confidentiality and Non-Disclosure Agreement (“Agreement”) dated `;
+  const content01 = `${date} `;
+  const content001 = `is entered into by and between`;
+  const content2 = `Hitachi Systems India Private Limited `
+  const content02 =`a company incorporated under the provisions of Companies Act 2013 and having its principal place of business `;
+  const content002=`at E-44/2, Okhla Industrial Area, Phase-2, New Delhi-110020 `;
+  const content0002=`(hereinafter referred to as `
+  const content00002=`“Party.” `
+  const content000002=`which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries and assigns),`
+
   const content3 = `And`;
   const content4 = `Company Name The company incorporated under the provisions of Companies Act,2013 and having its principal place of business at Address, City Name, State, Country PIN Code (hereinafter referred to as “Party” which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries, and assigns)`
-  const content5 = `
+  const content5 = 
 
-Purpose
+  `Purpose
 
 Discussion on Information Technologies  enable Software Services and supply of hardware/software/IT Services, to protect the said confidential information both the party’s desires to sign this Non- Disclosure agreement.
 
@@ -575,71 +635,76 @@ f)	If any part of this Agreement is found invalid or unenforceable, that part wi
 
 g)	This Agreement constitutes the entire agreement between the parties relating to this subject matter and supersedes all prior or simultaneous representations, discussions, negotiations, and agreements, whether written or oral.
 
-h) This agreement may be executed in two counterparts, each of which shall be deemed to be an original but all of which together shall constitute one and the same agreement.
-
-
-
-
-`
+h) This agreement may be executed in two counterparts, each of which shall be deemed to be an original but all of which together shall constitute one and the same agreement.`
   const content6 = `Accepted and agreed as of the date first above written by the following authorized Party representatives:`;
   const content7 = `For Hitachi Systems India Private Limited`
-  const doc = new PDFDocument();
+  const doc = new PDFDocument({ margin: 50, bufferPages: true });
+
   const stream = doc.pipe(blobStream());
   var fileName = `${companyName}` + 'NDA.pdf';
   let directory_name = "./pdf/" + fileName;
   doc.pipe(fs.createWriteStream(directory_name));
   doc.moveUp();
-  doc.font('Times-Roman')
+  doc.font('Times-Bold')
   doc.fontSize(10);
-  doc.text('MUTUAL CONFIDENTIALITY AND NON DISCLOSURE AGREEMENT', 100, 100, {
+  doc.text('MUTUAL CONFIDENTIALITY AND NON DISCLOSURE AGREEMENT', {
     align: 'center'
   }
   );
 
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(10);
+  doc.font('Times-Roman')
   doc.text(`${content1}`, {
-    width: 410,
+    continued: true,
     align: 'justify'
   }
-  );
-  doc.moveDown();
-  doc.fillColor('black')
-    .text(content2.slice(0, 58), {
-      width: 465,
-      continued: true,
-      align: 'justify',
-    }).fillColor('black').font('Times-Bold')
-    .text(content2.slice(58, 88), {
-      underline: true,
-      continued: true,
-      align: 'justify',
-    }).fillColor('black').font('Times-Roman').text(content2.slice(88, 240), {
-      width: 465,
-      align: 'justify',
-      underline: false,
-      continued: true
-    }).fillColor('black').font('Times-Bold')
-    .text(content2.slice(241, 272), {
-      underline: true,
-      align: 'justify',
-      continued: false
-    });
+  ).font('Times-Bold').text(`${content01}`, {
+    continued: true,
+    align: 'justify'
+  }).font('Times-Roman').text(`${content001}`, {
+    continued: false,
+    align: 'justify'
+  })
 
   doc.moveDown();
-  doc.fontSize(8);
+  doc.fontSize(10).font('Times-Bold')
+    .text(`${content2}`, {
+      continued: true,
+      align: 'justify',
+    }).font('Times-Roman').text(`${content02}`, {        
+      continued: true,
+      align: 'justify'
+    }).font('Times-Bold').text(`${content002}`, {
+      continued: true,
+      align: 'justify'
+    }).font('Times-Roman').text(`${content0002}`, {
+      continued: true,
+      align: 'justify'
+    }).font('Times-Bold').text(`${content00002}`, {
+      continued: true,
+      align: 'justify'
+    })
+    .font('Times-Roman').text(`${content000002}`, {
+      continued: false,
+      align: 'justify'
+    })
+
+  doc.moveDown();
+  doc.fontSize(10);
   doc.font('Times-Roman').text(`${content3}`, {
-    width: 410,
     align: 'justify',
     continued: false,
     underline: false,
   }
-  );
+  ).text(content4), {
+    align: 'justify',
+  };
+  doc.moveDown();
   doc.text(`${content5}`, {
     columns: 2,
     columnGap: 15,
-    height: 1000,
-    width: 465,
+    // height: 1000,
     align: 'justify'
   });
   doc.moveDown()
@@ -647,7 +712,6 @@ h) This agreement may be executed in two counterparts, each of which shall be de
     .fillColor('black')
     .font('Times-Bold')
     .text(`${content6}`, {
-      width: 410,
       align: 'justify',
       continued: false,
       underline: false,
@@ -660,35 +724,33 @@ h) This agreement may be executed in two counterparts, each of which shall be de
   let col4Top = 180;
   let colWidth = 250;
   let col2LeftPos = colWidth + col1LeftPos + 40;
-  doc.moveDown().fontSize(8)
+  doc.moveDown().fontSize(10)
     .text(`${content7}`, col1LeftPos, colTop, {
       width: colWidth,
       underline: true,
     })
     .text(`For ${companyName}`, col2LeftPos, colTop, { width: colWidth, underline: true, })
-  doc.moveDown().fontSize(8)
+  doc.moveDown().fontSize(10)
     .text('By:', col1LeftPos, colsecondTop, {
       width: colWidth,
       underline: true,
     })
     .text(`By:`, col2LeftPos, colsecondTop, { width: colWidth, underline: true, })
-  doc.moveDown().fontSize(8)
+  doc.moveDown().fontSize(10)
     .text('Name: Anil Kumar Sharma', col1LeftPos, col3Top, {
       width: colWidth,
       underline: true,
     })
     .text(`Name:  ${userName}`, col2LeftPos, col3Top, { width: colWidth, underline: true, })
-  doc.moveDown().fontSize(8)
-    .text('Title:Finance Controller', col1LeftPos, col4Top, {
+  doc.moveDown().fontSize(10)
+    .text('Title: Finance Controller', col1LeftPos, col4Top, {
       width: colWidth,
       underline: true,
     })
     .text(`Title:`, col2LeftPos, col4Top, { width: colWidth, underline: true, })
 
-  // Finaliz'ske PDF file
   doc.end();
   stream.on('finish', function () {
-    // get a blob you can do whatever you like with
     const blob = stream.toBlob('application/pdf');
     const url = stream.toBlobURL('application/pdf');
     return res.status(200).json({ status: "success", message: "Registered Successfully", url });
@@ -696,9 +758,7 @@ h) This agreement may be executed in two counterparts, each of which shall be de
   });
 }
 
-
 exports.getfinacialYear = (req, res) => {
-  
   var fiscalyear = "";
   var fiscalmonth = "";
   var today = new Date();
