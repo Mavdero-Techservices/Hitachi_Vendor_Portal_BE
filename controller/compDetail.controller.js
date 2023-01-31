@@ -1,5 +1,6 @@
 const db = require("../model");
 const CompliancedetailSchema = db.complianceDetail;
+const VdetailSchema = db.vdetail;
 const { check, validationResult } = require("express-validator");
 const PDFDocument = require('pdfkit');
 const PDFDocument2 = require("pdfkit-table");
@@ -565,26 +566,33 @@ exports.createCompliancePdf = (req, res, next) => {
     return res.status(200).json({ status: "success", message: "Registered Successfully", url });
   });
 }
-exports.createnonDisclosure = (req, res, next) => {
-  console.log("req========================>>>>>", req.body)
+exports.createnonDisclosure = async (req, res, next) => {
   var companyName = req.body.companyName;
   var userName = req.body.userName;
+  var vDetails = await VdetailSchema.findOne({
+    where: { userId: req.body.userId },
+  })
   const date = new Date().toLocaleDateString();
   const content1 = `This Confidentiality and Non-Disclosure Agreement (“Agreement”) dated `;
   const content01 = `${date} `;
   const content001 = `is entered into by and between`;
   const content2 = `Hitachi Systems India Private Limited `
-  const content02 =`a company incorporated under the provisions of Companies Act 2013 and having its principal place of business `;
-  const content002=`at E-44/2, Okhla Industrial Area, Phase-2, New Delhi-110020 `;
-  const content0002=`(hereinafter referred to as `
-  const content00002=`“Party.” `
-  const content000002=`which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries and assigns),`
+  const content02 = `a company incorporated under the provisions of Companies Act 2013 and having its principal place of business `;
+  const content002 = `at E-44/2, Okhla Industrial Area, Phase-2, New Delhi-110020 `;
+  const content0002 = `(hereinafter referred to as `
+  const content00002 = `“Party.” `
+  const content000002 = `which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries and assigns),`
 
   const content3 = `And`;
-  const content4 = `Company Name The company incorporated under the provisions of Companies Act,2013 and having its principal place of business at Address, City Name, State, Country PIN Code (hereinafter referred to as “Party” which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries, and assigns)`
-  const content5 = 
+  const content4 = `${companyName} `;
+  const content04 = `The company incorporated under the provisions of Companies Act,2013 and having its principal place of business at `;
+  const content004 = `${vDetails?.address1}, ${vDetails?.city}, ${vDetails?.state}, ${vDetails?.pinCode} `
+  const content0004 = `(hereinafter referred to as `
+  const content00004 = `“Party” `
+  const content000004 = `which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries, and assigns)`
+  const content5 =
 
-  `Purpose
+    `Purpose
 
 Discussion on Information Technologies  enable Software Services and supply of hardware/software/IT Services, to protect the said confidential information both the party’s desires to sign this Non- Disclosure agreement.
 
@@ -672,7 +680,7 @@ h) This agreement may be executed in two counterparts, each of which shall be de
     .text(`${content2}`, {
       continued: true,
       align: 'justify',
-    }).font('Times-Roman').text(`${content02}`, {        
+    }).font('Times-Roman').text(`${content02}`, {
       continued: true,
       align: 'justify'
     }).font('Times-Bold').text(`${content002}`, {
@@ -697,9 +705,33 @@ h) This agreement may be executed in two counterparts, each of which shall be de
     continued: false,
     underline: false,
   }
-  ).text(content4), {
-    align: 'justify',
-  };
+  );
+
+  doc.moveDown();
+  doc.fontSize(10).font('Times-Bold')
+    .text(`${content4}`, {
+      continued: true,
+      align: 'justify',
+    }).font('Times-Roman').text(`${content04}`, {
+      continued: true,
+      align: 'justify'
+    }).font('Times-Bold').text(`${content004}`, {
+      continued: true,
+      align: 'justify'
+    })
+    .font('Times-Roman').text(`${content0004}`, {
+      continued: true,
+      align: 'justify'
+    })
+    .font('Times-Bold').text(`${content00004}`, {
+      continued: true,
+      align: 'justify'
+    })
+    .font('Times-Roman').text(`${content000004}`, {
+      continued: false,
+      align: 'justify'
+    })
+
   doc.moveDown();
   doc.text(`${content5}`, {
     columns: 2,
