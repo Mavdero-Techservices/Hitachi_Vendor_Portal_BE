@@ -1,5 +1,5 @@
 module.exports = {
-  service: 'gmail',
-    user: "karthigapalani4@gmail.com", 
-    pass: "okiqnfsjlyeemsns", 
+  service: 'outlook',
+    user: "karthigapalani@outlook.com", 
+    pass: "fowjjgzsndlumgbs",
   };

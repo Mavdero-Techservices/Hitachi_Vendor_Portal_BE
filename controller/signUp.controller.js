@@ -249,7 +249,7 @@ const config = require("../config/auth.config");
 const user = config.user;
 const pass = config.pass;
 var transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: 'outlook',
   auth: {
     user: user,
     pass: pass,
