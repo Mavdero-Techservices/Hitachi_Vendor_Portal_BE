@@ -792,12 +792,19 @@ h) This agreement may be executed in two counterparts, each of which shall be de
 
 exports.getfinacialYear = (req, res) => {
   var fiscalyear = "";
-  var fiscalmonth = "";
+  var startYear = "";
+  var endYear = "";
   var today = new Date();
   if ((today.getMonth() + 1) <= 3) {
     fiscalyear = (today.getFullYear() - 1) + "-" + today.getFullYear()
+    startYear = today.getFullYear() - 1;
+    endYear = today.getFullYear();
   } else {
     fiscalyear = today.getFullYear() + "-" + (today.getFullYear() + 1)
+    startYear = today.getFullYear();
+    endYear = today.getFullYear() + 1;
   }
-  console.log(fiscalyear);
+  return res.status(200).json({ status: "success", message: "fiscalyear", fiscalyear, startDate: "01/04/" + startYear, endDate: "31/03/" + endYear });
+
+
 };

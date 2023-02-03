@@ -26,6 +26,7 @@ router.post("/signUp", signUp.postSingUp);
 router.post("/login", signUp.postLogin);
 
 router.get('/signout', signUp.signout);
+router.get('/emailNotification', signUp.emailNotification);
 //saveUser
 router.post("/saveUser", signUp.saveUser);
 
@@ -77,11 +78,13 @@ router.post('/createnonDisclosure', compDetail.createnonDisclosure);
 //downloadLog
 router.get('/downloadPdf/:name', compDetail.downloadPdf);
 router.get('/readPdf', compDetail.readPdf);
-
+router.get('/getfinacialYear', compDetail.getfinacialYear);
 //hisysContact schema - create
 router.post("/saveHisysContact", hisysContact.postHisysContact);
 router.post("/saveContactTeam", contactTeam.saveContactTeam);
 router.get("/getAllCollection/:userId", contactTeam.getAllCollection);
 router.get("/getvendorDetail/:userId", contactTeam.getvendorDetail);
+router.get("/getAllUserDetail", contactTeam.getAllUserDetail);
+
 
 module.exports = router;

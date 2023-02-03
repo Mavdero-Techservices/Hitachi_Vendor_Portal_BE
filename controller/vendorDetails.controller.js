@@ -64,7 +64,8 @@ exports.SaveVendorCommunication = (req, res) => {
     designation: req.body.designation,
     phoneNo: req.body.phoneNo,
     email: req.body.email,
-    userId:req.body.userId
+    userId:req.body.userId,
+    mastervendor_email:req.body.mastervendor_email,
   };
   vendorCommunicationDetails.create(VendorCommunication)
     .then(data => {

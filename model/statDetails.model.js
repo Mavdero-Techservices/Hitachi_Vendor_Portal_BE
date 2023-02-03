@@ -61,7 +61,10 @@ module.exports = (sequelize, Sequelize) => {
     },
     Tax_residency_No:{
       type: Sequelize.STRING,
-    }
+    },
+    fileDisclosure:{
+      type: Sequelize.BLOB("long"),
+    },
   });
   return StatDetailsSchema;
 };

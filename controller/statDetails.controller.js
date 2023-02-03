@@ -136,6 +136,7 @@ var PE_Declaration_DocPath = '';
 var TAN_DocPath = '';
 var MSME_DocPath = '';
 var Tax_residency_DocPath = '';
+var fileDisclosure_DocPath='';
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -169,6 +170,30 @@ var storage = multer.diskStorage({
          
           }
           cb(null, 'GST_Doc-' + Date.now() + '.' + filetype);
+      }
+      if (file.fieldname === "fileDisclosure") { 
+        console.log("fileDisclosure")
+        if (file.mimetype === 'image/gif') {
+            filetype = 'gif';
+            fileDisclosure_DocPath = directory_name+ "/" +'fileDisclosure-' + Date.now() + '.' + filetype;
+         
+          }
+          if (file.mimetype === 'image/png') {
+            filetype = 'png';
+            fileDisclosure = directory_name+ "/" +'fileDisclosure-' + Date.now() + '.' + filetype;
+         
+          }
+          if (file.mimetype === 'image/jpeg') {
+            filetype = 'jpg';
+            fileDisclosure = "../uploads/" +'fileDisclosure-' + Date.now() + '.' + filetype;
+         
+          }
+          if (file.mimetype === 'application/pdf') {
+            filetype = 'pdf';
+            fileDisclosure = directory_name+ "/" + 'fileDisclosure-' + Date.now() + '.' + filetype;
+         
+          }
+          cb(null, 'fileDisclosure-' + Date.now() + '.' + filetype);
       }
       if (file.fieldname === "PAN_Doc") { 
         console.log("PAN_Doc")
@@ -316,7 +341,6 @@ var storage = multer.diskStorage({
   });
 //savestatutory
 exports.saveStatutoryDetail = (req, res) => {
-    console.log("wrk");
     var upload = multer({ storage: storage }).fields(
         [
           {
@@ -358,6 +382,7 @@ exports.saveStatutoryDetail = (req, res) => {
             const GST_type=req.body.GST_type;
             const GST_No=req.body.GST_No;
             const GST_Doc = GST_DocPath;
+            const fileDisclosure=fileDisclosure_DocPath;
             const PAN_No=req.body.PAN_No;
             const PAN_Doc = PAN_DocPath;
             const form_10f_Doc = form_10f_DocPath;
@@ -395,8 +420,8 @@ exports.saveStatutoryDetail = (req, res) => {
               MSME_No:MSME_No,
               MSME_Type:MSME_Type,
               TAN_No:TAN_No,
-              Tax_residency_No:Tax_residency_No
-              
+              Tax_residency_No:Tax_residency_No,
+              fileDisclosure:fileDisclosure
           });
           user.save()
           .then(result => {

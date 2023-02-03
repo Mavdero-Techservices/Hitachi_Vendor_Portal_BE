@@ -63,6 +63,9 @@ module.exports = (sequelize, Sequelize) => {
         userId: {
             type: Sequelize.STRING,
         },
+        mastervendor_email:{
+            type: Sequelize.STRING,
+        }
     })
     return vendorCommunicationDetailsSchema;
 }

@@ -39,7 +39,6 @@ exports.saveContactTeam = (req, res) => {
             return res.status(200).json({ status: "success", message: "Registered Successfully", result });
         })
 }
-
 exports.getAllCollection = async (req, res) => {
     var userId = req.params.userId;
     const basicInfoArray = [];
@@ -51,26 +50,88 @@ exports.getAllCollection = async (req, res) => {
     await VdetailSchema.findOne({
         where: { userId: userId },
     }).then(async basicInfo => {
-        basicInfoArray.push(basicInfo);
-       await vendorCommunicationDetails.findOne({
+        if (basicInfo === null) {
+            basicInfoArray.push("All details filled");
+        }
+        else {
+            basicInfoArray.push(basicInfo);
+        }
+        await vendorCommunicationDetails.findOne({
             where: { userId: userId },
-        }).then(async CommunicationDetails => {          
-             CommunicationDetailsArray.push(CommunicationDetails);
-             await StatDetailSchema.findOne({
+        }).then(async CommunicationDetails => {
+            if (CommunicationDetails === null) {
+                CommunicationDetailsArray.push("All details filled");
+            }
+            else {
+                CommunicationDetailsArray.push(CommunicationDetails);
+            }
+            await StatDetailSchema.findOne({
                 where: { userId: userId },
             }).then(async StatDetail => {
-                StatDetailArray.push(StatDetail);
+                if (StatDetail === null) {
+                    StatDetailArray.push("All details filled");
+                }
+                else {
+                    StatDetailArray.push(StatDetail);
+                }
+
                 await CompliancedetailSchema.findOne({
                     where: { userId: userId },
                 }).then(async Compliancedetail => {
-                    CompliancedetailArray.push(Compliancedetail);
+                    if (Compliancedetail === null) {
+                        CompliancedetailArray.push("All details filled");
+                    }
+                    else {
+                        CompliancedetailArray.push(Compliancedetail);
+                    }
+
                     await FdetailSchema.findOne({
                         where: { userId: userId },
                     }).then(async Fdetail => {
-                        FdetailArray.push(Fdetail);
+                        if (Fdetail === null) {
+                            FdetailArray.push("All details filled");
+                        }
+                        else {
+                            FdetailArray.push(Fdetail);
+                        }
+
                         await BankdetailSchema.findOne({
                             where: { userId: userId },
                         }).then(async Bankdetail => {
+                            if (Bankdetail === null) {
+                                bankdetailArray.push("All details filled");
+                            }
+                            else {
+                                bankdetailArray.push(Bankdetail);
+                            }
+
+                        })
+                    })
+                })
+            })
+        })
+    })
+
+    res.status(200).json({ status: "success", basicInfo: basicInfoArray, CommunicationDetails: CommunicationDetailsArray, Statutory: StatDetailArray, ComplianceDetail: CompliancedetailArray, FinancialDetail: FdetailArray, Bankdetail: bankdetailArray });
+}
+exports.getAllUserDetail = async (req, res) => {
+    const basicInfoArray = [];
+    const CommunicationDetailsArray = [];
+    const StatDetailArray = [];
+    const CompliancedetailArray = [];
+    const FdetailArray = [];
+    const bankdetailArray = [];
+    await VdetailSchema.findAll().then(async basicInfo => {
+        basicInfoArray.push(basicInfo);
+        await vendorCommunicationDetails.findAll().then(async CommunicationDetails => {
+            CommunicationDetailsArray.push(CommunicationDetails);
+            await StatDetailSchema.findAll().then(async StatDetail => {
+                StatDetailArray.push(StatDetail);
+                await CompliancedetailSchema.findAll().then(async Compliancedetail => {
+                    CompliancedetailArray.push(Compliancedetail);
+                    await FdetailSchema.findAll().then(async Fdetail => {
+                        FdetailArray.push(Fdetail);
+                        await BankdetailSchema.findAll().then(async Bankdetail => {
                             bankdetailArray.push(Bankdetail);
                         })
                     })
@@ -78,13 +139,17 @@ exports.getAllCollection = async (req, res) => {
             })
         })
     })
-        res.status(200).json({ status: "success", basicInfo: basicInfoArray,CommunicationDetails:CommunicationDetailsArray,Statutory:StatDetailArray,ComplianceDetail:CompliancedetailArray, FinancialDetail: FdetailArray ,Bankdetail:bankdetailArray});
+    res.status(200).json({ status: "success", basicInfo: basicInfoArray, CommunicationDetails: CommunicationDetailsArray, Statutory: StatDetailArray, ComplianceDetail: CompliancedetailArray, FinancialDetail: FdetailArray, Bankdetail: bankdetailArray });
 }
 exports.getvendorDetail = async (req, res) => {
     var userId = req.params.userId;
     VdetailSchema.findOne({
         where: { userId: userId },
     }).then(basicInfo => {
-        res.status(200).json({ status: "success", message: "basicInfo", country: basicInfo.country });
-    })
+        if (basicInfo) {
+            res.status(200).json({ status: "success", message: "basicInfo", country: basicInfo.country });
+        }
+    }).catch(err => {
+        return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
+    });
 }
