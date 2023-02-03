@@ -55,8 +55,12 @@ router.delete("/deleteById/:id", tutorialApi.deleteById);
 
 //vdetail schema - create
 router.post("/saveVdetail", vdetail.postVdetail);
+// update vdetail
+router.put("/updateVdetail/:userId", vdetail.updateVendor);
 //save vendor-communication details
 router.post("/SaveVendorCommunication", vdetail.SaveVendorCommunication);
+//update communication details
+router.put("/updateCommunication/:userId", vdetail.updateCommunication);
 //getCountry
 router.get('/getCountry', vdetail.getCountry);
 //getStateAndcityByzipcode
@@ -82,7 +86,12 @@ router.get('/getfinacialYear', compDetail.getfinacialYear);
 //hisysContact schema - create
 router.post("/saveHisysContact", hisysContact.postHisysContact);
 router.post("/saveContactTeam", contactTeam.saveContactTeam);
+//update contact team
+router.put("/updateContactTeam/:userId", contactTeam.updateContactTeam);
 router.get("/getAllCollection/:userId", contactTeam.getAllCollection);
+//update all collection
+router.put("/updateAllCollection/:userId", contactTeam.updateAllCollection);
+
 router.get("/getvendorDetail/:userId", contactTeam.getvendorDetail);
 router.get("/getAllUserDetail", contactTeam.getAllUserDetail);
 

@@ -141,6 +141,31 @@ exports.getAllUserDetail = async (req, res) => {
     })
     res.status(200).json({ status: "success", basicInfo: basicInfoArray, CommunicationDetails: CommunicationDetailsArray, Statutory: StatDetailArray, ComplianceDetail: CompliancedetailArray, FinancialDetail: FdetailArray, Bankdetail: bankdetailArray });
 }
+
+//update all 
+exports.updateAllCollection = async (req, res) => {
+    var userId = req.params.userId;
+    const promises = [
+        VdetailSchema.update({ ...req.body.basicInfo }, { where: { userId: userId } }),
+        vendorCommunicationDetails.update({ ...req.body.CommunicationDetails }, { where: { userId: userId } }),
+    ];
+    try {
+        const [basicInfo, CommunicationDetails] = await Promise.all(promises);
+        console.log(basicInfo)
+        res.status(200).json({
+            status: "success",
+            basicInfo,
+            CommunicationDetails,
+        });
+    } catch (err) {
+        res.status(500).json({
+            status: "error",
+            message: "An error occurred while updating the collections",
+        });
+    }
+};
+    
+
 exports.getvendorDetail = async (req, res) => {
     var userId = req.params.userId;
     VdetailSchema.findOne({
@@ -153,3 +178,28 @@ exports.getvendorDetail = async (req, res) => {
         return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
     });
 }
+
+exports.updateContactTeam = async (req, res) => {
+    const userId = req.params.userId;
+    const updates = req.body;
+    // check if there are any empty fields
+    for (const key in updates) {
+        if (!updates[key]) {
+        updates[key] = null;
+        }
+    }
+    const updateResult = await contactTeamSchema.update(req.body, {
+      where: { userId }
+    });
+    if (updateResult[0]) {
+      res.status(200).json({
+        status: "success",
+        message: "Contact Team details updated successfully",
+      });
+    } else {
+      res.status(404).json({
+        status: "error",
+        message: "Contact Team details not found"
+      });
+    }
+};

@@ -95,3 +95,58 @@ exports.getStateAndcityByzipcode = (req, res, next) => {
   // const result = geoCountryZipCode.lookup(code,pinCode); 
   // return res.status(200).json({ status: "success", data: result });
 }
+
+exports.updateVendor = async (req, res) => {
+  const userId = req.params.userId;
+  const updates = req.body;
+
+  // check if there are any empty fields
+  for (const key in updates) {
+    if (!updates[key]) {
+      updates[key] = null;
+    }
+  }
+
+  const updateResult = await VdetailSchema.update(updates, {
+    where: { userId }
+  });
+
+  if (updateResult[0]) {
+    res.status(200).json({
+      status: "success",
+      message: "Vendor updated successfully",
+    });
+  } else {
+    res.status(404).json({
+      status: "error",
+      message: "Vendor not found"
+    });
+  }
+};
+
+exports.updateCommunication = async (req, res) => {
+  const userId = req.params.userId;
+  const updates = req.body;
+
+  // check if there are any empty fields
+  for (const key in updates) {
+    if (!updates[key]) {
+      updates[key] = null;
+    }
+  }
+  const updateResult = await vendorCommunicationDetails.update(req.body, {
+    where: { userId }
+  });
+
+  if (updateResult[0]) {
+    res.status(200).json({
+      status: "success",
+      message: "Communication details updated successfully",
+    });
+  } else {
+    res.status(404).json({
+      status: "error",
+      message: "Communication details not found"
+    });
+  }
+};
