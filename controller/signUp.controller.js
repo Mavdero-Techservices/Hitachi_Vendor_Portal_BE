@@ -249,7 +249,11 @@ const config = require("../config/auth.config");
 const user = config.user;
 const pass = config.pass;
 var transporter = nodemailer.createTransport({
-  service: 'outlook',
+  host: 'smtp.office365.com',
+  port: '587',
+  tls:{
+    rejectUnauthorized: false
+},
   auth: {
     user: user,
     pass: pass,
