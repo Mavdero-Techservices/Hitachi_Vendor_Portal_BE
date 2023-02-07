@@ -134,6 +134,7 @@ var storage = multer.diskStorage({
   }
 });
 exports.saveComplianceDetail = (req, res) => {
+
   var upload = multer({ storage: storage }).fields(
     [
       {
@@ -155,9 +156,29 @@ exports.saveComplianceDetail = (req, res) => {
       return "err";
     }
     else {
-      const NDA_Doc = NDA_DocPath;
-      const COC_Doc = COC_DocPath;
-      const RPD_Doc = RPD_DocPath;
+      var Rpd = '';
+      var COC = '';
+      var NDA = '';
+      var file = req.files;
+      var path = Object.entries(file).map(([key, value]) => {
+        Object.entries(value).map(([key2, value2]) => {
+          if (value2.fieldname === 'RPD_Doc') {
+            Rpd = value2.path;
+          }
+          if (value2.fieldname === 'NDA_Doc') {
+            NDA = value2.path;
+          }
+          if (value2.fieldname === 'COC_Doc') {
+            COC = value2.path;
+          }
+        })
+
+
+      })
+
+      const NDA_Doc = NDA;
+      const COC_Doc = COC;
+      const RPD_Doc = Rpd;
       const complianceId = 'compliance' + Math.floor(100000 + Math.random() * 900000);
       const userId = req.body.userId;
 
@@ -179,6 +200,11 @@ exports.saveComplianceDetail = (req, res) => {
 exports.downloadPdf = (req, res, next) => {
   var fileName = req.params.name;
   let directory_name = "./pdf/" + fileName;
+  res.download(directory_name);
+}
+exports.downloadPdfUploads = (req, res, next) => {
+  var fileName = req.params.name;
+  let directory_name = "./uploads/" + fileName;
   res.download(directory_name);
 }
 exports.readPdf = (req, res, next) => {
@@ -208,7 +234,33 @@ exports.readPdf = (req, res, next) => {
   });
 
 }
+exports.readPdfUploads = (req, res, next) => {
+  const fs = require("fs");
+  var hostName = req.header('host');
+  const baseUrl = `http://localhost:12707/downloadPdfUploads/`;
+  let directory_name = "uploads";
+  fs.readdir(directory_name, function (err, files) {
+    if (err) {
+      res.status(500).send({
+        message: "Unable to scan files!",
+      });
+    }
+    files.sort(function (a, b) {
+      return fs.statSync(directory_name + '/' + a).mtime.getTime() -
+        fs.statSync(directory_name + '/' + b).mtime.getTime();
+    });
+    let fileInfos = [];
+    files.forEach((file) => {
+      fileInfos.push({
+        name: file,
+        url: baseUrl + file,
 
+      });
+    })
+    res.status(200).send(fileInfos);
+  });
+
+}
 exports.createRelatedDisclosurePdf = (req, res, next) => {
   var companyName = req.body.companyName;
   var userName = req.body.userName;

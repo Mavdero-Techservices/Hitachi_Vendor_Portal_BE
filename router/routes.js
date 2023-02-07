@@ -14,12 +14,12 @@ const contactTeam = require("../controller/ContactTeam.controller")
 
 const router = express.Router();
 /* GET home page. */
-router.get('/', function(req, res, next) {
-    res.json( { 
-        title: 'Express',
-        message: 'Welcome to the API'
-    });
+router.get('/', function (req, res, next) {
+  res.json({
+    title: 'Express',
+    message: 'Welcome to the API'
   });
+});
 // signUp
 router.post("/signUp", signUp.postSingUp);
 //login
@@ -81,7 +81,10 @@ router.post('/createCompliancePdf', compDetail.createCompliancePdf);
 router.post('/createnonDisclosure', compDetail.createnonDisclosure);
 //downloadLog
 router.get('/downloadPdf/:name', compDetail.downloadPdf);
+router.get('/downloadPdfUploads/:name', compDetail.downloadPdfUploads);
 router.get('/readPdf', compDetail.readPdf);
+router.get('/readPdfUploads', compDetail.readPdfUploads);
+
 router.get('/getfinacialYear', compDetail.getfinacialYear);
 //hisysContact schema - create
 router.post("/saveHisysContact", hisysContact.postHisysContact);
