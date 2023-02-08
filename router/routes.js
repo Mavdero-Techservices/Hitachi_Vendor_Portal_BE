@@ -68,13 +68,23 @@ router.get('/getStateAndcityByzipcode/:code/:pinCode', vdetail.getStateAndcityBy
 //fdetail schema - Create
 // router.post("/saveFdetail", fdetail.postFdetail);
 router.post("/saveFinacialDetail", fdetail.saveFinacialDetail);
+//Update
+router.put("/updateFinacialDetail/:userId", fdetail.updateFinacialDetail);
 //bankdetail schema - Create
 router.post("/saveBankDetail", bankdetail.saveBankDetail);
+//bankdetail - Update
+router.put("/updateBankDetail/:userId", bankdetail.updateBankDetail);
+
+// router.delete("/deleteFile/:filename",bankdetail.deleteFile);
 //statdetails schema - create
 router.post("/saveStatdetail", statdetail.postStatdetail);
 router.post("/saveStatutoryDetail", statdetail.saveStatutoryDetail);
+
+router.put("/updateStatutoryDetail/:userId", statdetail.updateStatutoryDetail)
 //compdetails schema - create
 router.post("/saveComplianceDetail", compDetail.saveComplianceDetail);
+
+router.put("/updateComplianceDetail/:userId", compDetail.updateComplianceDetail);
 
 router.post('/createRelatedDisclosurePdf', compDetail.createRelatedDisclosurePdf);
 router.post('/createCompliancePdf', compDetail.createCompliancePdf);

@@ -197,6 +197,53 @@ exports.saveComplianceDetail = (req, res) => {
     }
   })
 }
+exports.updateComplianceDetail = async (req, res) => {
+  NDA_DocPath = "";
+  COC_DocPath = "";
+  RPD_DocPath = "";
+  var userId = req.params.userId;
+
+  var upload = multer({ storage: storage }).fields(
+    [
+      {
+        name: 'RPD_Doc',
+        maxCount: 1
+      },
+      {
+        name: 'COC_Doc',
+        maxCount: 1
+      },
+      {
+        name: 'NDA_Doc',
+        maxCount: 1
+      },
+
+    ]);
+  upload(req, res, function (err) {
+    if (err) {
+      return "err";
+    } else {
+      const NDA_Doc = NDA_DocPath;
+      const COC_Doc = COC_DocPath;
+      const RPD_Doc = RPD_DocPath;
+      req.body.NDA_Doc = NDA_Doc;
+      req.body.COC_Doc = COC_Doc;
+      req.body.RPD_Doc = RPD_Doc;
+      CompliancedetailSchema.update(req.body, {
+        where: { userId },
+      }).then(() => {
+        res.status(200).send({
+          message: "Compliancedetail was updated successfully!",
+          status: "success"
+        });
+      })
+        .catch(err => {
+          res.status(500).send({ message: err.message || "Some error occurred while updating the Compliancedetail schema." });
+        });
+    }
+  })
+
+}
 exports.downloadPdf = (req, res, next) => {
   var fileName = req.params.name;
   let directory_name = "./pdf/" + fileName;

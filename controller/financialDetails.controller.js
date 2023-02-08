@@ -187,3 +187,44 @@ exports.saveFinacialDetail = (req, res) => {
     }
   })
 } 
+exports.updateFinacialDetail = (req, res) => {
+	financial_data_DocPath = "";
+	financial_data2_DocPath = "";
+	var userId = req.params.userId;
+	var upload = multer({ storage: storage }).fields(
+		[
+			{
+				name: 'financial_data',
+				maxCount: 1
+			},
+			{
+				name: 'financial_data2',
+				maxCount: 1
+			},
+		]);
+
+
+	upload(req, res, function (err) {
+		if (err) {
+			console.log("InsideErr", err);
+			return "err";
+		} else {
+			const financial_data = financial_data_DocPath;
+			const financial_data2 = financial_data2_DocPath;
+			req.body.financial_data = financial_data;
+			req.body.financial_data2 = financial_data2;
+			FdetailSchema.update(req.body, {
+				where: { userId },
+			}).then(() => {
+				res.status(200).send({
+					message: "Financialdetail was updated successfully!",
+					status: "success"
+				});
+			})
+				.catch(err => {
+					res.status(500).send({ message: err.message || "Some error occurred while updating the Financialdetail schema." });
+				});
+
+		}
+	})
+}
