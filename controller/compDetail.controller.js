@@ -270,7 +270,7 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
   const content2 = `We `;
   const content02 = `have/do not have `;
   const content002 = `any financial or beneficial interest, or association with or in any entity, enterprise, establishment, organization, undertaking (including individual, sole proprietorship, partnership, limited partnership, joint venture, corporation, private company, or public company) with which the Company (i) does any business (directly or indirectly); or (ii) deals in any manner whatsoever; or (iii) with which the Company has any commercial or financial interest.`;
-  const content11 = `if Vendor select "do not have any" then they need to fill N/A in the mentioned table./if Vendor select ""have" then they have to fill the detail in table and submit the same. `
+  const content11 = `if Vendor select "do not have any" then they need to fill N/A in the mentioned table./if Vendor select "have" then they have to fill the detail in table and submit the same. `
   const content3 = `We agree and certify that in case there is any change in the above declaration we shall promptly and without any delay whatsoever inform the Company.`;
   const content4 = `We do hereby certify that the information provided hereinabove is true, complete and any false information contained herein may constitute ground(s) for any action taken by the Company which it deems fit including criminal and / or civil action as per law.`;
   const content5 = `We agree and certify that the Company reserves the right to decide whether any violations have been committed by me in terms of this Declaration and in regard to the terms of my appointment. Further We agree and certify that, in case the Company concludes that we have violated or breached any of the terms of this Declaration, the Company can initiate appropriate legal as well as disciplinary action which shall not be limited to suspension, immediate termination, recovery of financial loss, adjustment / withholding of my dues. We agree and certify that the Company will have the right to recover any amount due to any loss (including tax impact), damage, proceeding which the Company might suffer due to this Declaration being false and the same shall be deductible from my cost to the Company.`;
@@ -323,9 +323,8 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
   });
 
   doc.moveDown();
-  doc.fontSize(10);
+  doc.fontSize(8).font('Helvetica-Oblique');
   doc.text(`${content11}`, {
-    height: 100,
     align: 'justify'
   }
   );
@@ -404,11 +403,7 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
   doc.text(`${content7}`, {
     align: 'justify',
     underline: true,
-    continued: true
-
-
-  }
-  ).text(`  ${userName}`);
+  });
 
   doc.moveDown();
   doc.fontSize(12);
@@ -425,10 +420,8 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
   doc.text(`${content9}`, {
     align: 'justify',
     underline: true,
-    continued: true
-  }
-  ).text(`${date}`);
-  ;
+  });
+
   doc.moveDown();
   doc.fontSize(10);
   doc.fillColor('black');
@@ -551,14 +544,8 @@ exports.createCompliancePdf = (req, res, next) => {
   doc.fillColor('black');
   doc.text(`${content6}:`, {
     align: 'justify',
-    continued: true
-
-  }
-  ).text(`${date}`,
-    {
-      underline: true
-    });
-
+    continued: false
+  })
   doc.moveDown();
   doc.fontSize(12);
   doc.fillColor('black');
@@ -571,12 +558,9 @@ exports.createCompliancePdf = (req, res, next) => {
   doc.fillColor('black');
   doc.text(`${content8}: `, {
     align: 'justify',
-    continued: true
-  }
-  ).text(`  ${userName}`,
-    {
-      underline: true
-    });
+    continued: false
+  })
+
   doc.moveDown();
   doc.fontSize(12);
   doc.fillColor('black');
@@ -626,7 +610,7 @@ exports.createnonDisclosure = async (req, res, next) => {
   })
   const date = new Date().toLocaleDateString();
   const content1 = `This Confidentiality and Non-Disclosure Agreement (“Agreement”) dated `;
-  const content01 = `${date} `;
+  const content01 = `___________ `;
   const content001 = `is entered into by and between`;
   const content2 = `Hitachi Systems India Private Limited `
   const content02 = `a company incorporated under the provisions of Companies Act 2013 and having its principal place of business `;
@@ -825,7 +809,7 @@ h) This agreement may be executed in two counterparts, each of which shall be de
       width: colWidth,
       underline: true,
     })
-    .text(`Name:  ${userName}`, col2LeftPos, col3Top, { width: colWidth, underline: true, })
+    .text(`Name:`, col2LeftPos, col3Top, { width: colWidth, underline: true, })
   doc.moveDown().fontSize(10)
     .text('Title: Finance Controller', col1LeftPos, col4Top, {
       width: colWidth,
