@@ -1,7 +1,6 @@
 const db = require("../model");
 const BankdetailSchema = db.bankdetail;
 const { check, validationResult } = require("express-validator");
-
 let directory_name = "uploads";
 const path = require('path');
 var multer = require('multer');
@@ -50,7 +49,16 @@ exports.saveBankDetail = (req, res) => {
       return "err";
     }
     else {
-      const bankdetailDoc = bankdetailDocPath
+      var bankdetailDocPath = '';
+      var file = req.files;
+      var path = Object.entries(file).map(([key, value]) => {
+        Object.entries(value).map(([key2, value2]) => {
+          if (value2.fieldname === 'bankdetailDoc') {
+            bankdetailDocPath = value2.path;
+          }
+        })
+      })
+      const bankdetailDoc = bankdetailDocPath;
       const bankId = 'bank' + Math.floor(100000 + Math.random() * 900000);
       const userId = req.body.userId;
       const user = new BankdetailSchema({

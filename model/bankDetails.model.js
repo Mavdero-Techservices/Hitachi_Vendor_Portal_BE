@@ -25,7 +25,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         bankdetailDoc: {
-            type: Sequelize.BLOB('long'),          
+            type: Sequelize.STRING,        
         }
     })
     return BankdetailSchema;

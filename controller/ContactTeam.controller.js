@@ -51,7 +51,7 @@ exports.getAllCollection = async (req, res) => {
         where: { userId: userId },
     }).then(async basicInfo => {
         if (basicInfo === null) {
-            basicInfoArray.push("All details filled");
+            basicInfoArray.push("null");
         }
         else {
             basicInfoArray.push(basicInfo);
@@ -60,7 +60,7 @@ exports.getAllCollection = async (req, res) => {
             where: { userId: userId },
         }).then(async CommunicationDetails => {
             if (CommunicationDetails === null) {
-                CommunicationDetailsArray.push("All details filled");
+                CommunicationDetailsArray.push("null");
             }
             else {
                 CommunicationDetailsArray.push(CommunicationDetails);
@@ -69,7 +69,7 @@ exports.getAllCollection = async (req, res) => {
                 where: { userId: userId },
             }).then(async StatDetail => {
                 if (StatDetail === null) {
-                    StatDetailArray.push("All details filled");
+                    StatDetailArray.push("null");
                 }
                 else {
                     StatDetailArray.push(StatDetail);
@@ -79,7 +79,7 @@ exports.getAllCollection = async (req, res) => {
                     where: { userId: userId },
                 }).then(async Compliancedetail => {
                     if (Compliancedetail === null) {
-                        CompliancedetailArray.push("All details filled");
+                        CompliancedetailArray.push("null");
                     }
                     else {
                         CompliancedetailArray.push(Compliancedetail);
@@ -89,7 +89,7 @@ exports.getAllCollection = async (req, res) => {
                         where: { userId: userId },
                     }).then(async Fdetail => {
                         if (Fdetail === null) {
-                            FdetailArray.push("All details filled");
+                            FdetailArray.push("null");
                         }
                         else {
                             FdetailArray.push(Fdetail);
@@ -99,7 +99,7 @@ exports.getAllCollection = async (req, res) => {
                             where: { userId: userId },
                         }).then(async Bankdetail => {
                             if (Bankdetail === null) {
-                                bankdetailArray.push("All details filled");
+                                bankdetailArray.push("null");
                             }
                             else {
                                 bankdetailArray.push(Bankdetail);
@@ -151,7 +151,6 @@ exports.updateAllCollection = async (req, res) => {
     ];
     try {
         const [basicInfo, CommunicationDetails] = await Promise.all(promises);
-        console.log(basicInfo)
         res.status(200).json({
             status: "success",
             basicInfo,

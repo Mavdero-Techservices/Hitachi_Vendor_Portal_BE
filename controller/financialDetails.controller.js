@@ -77,11 +77,9 @@ var storage = multer.diskStorage({
 
   },
   filename: (req, file, cb) => {
-    console.log(file);
     var filetype = '';
 
     if (file.fieldname === "financial_data") {
-      console.log("RPD_Doc")
       if (file.mimetype === 'image/gif') {
         filetype = 'gif';
         financial_data_DocPath = directory_name + "/" + 'financial_data-' + Date.now() + '.' + filetype;
@@ -105,7 +103,6 @@ var storage = multer.diskStorage({
       cb(null, 'financial_data-' + Date.now() + '.' + filetype);
     }
     if (file.fieldname === "financial_data2") {
-      console.log("financial_data_DocPath")
       if (file.mimetype === 'image/gif') {
         filetype = 'gif';
         financial_data2_DocPath = directory_name + "/" + 'financial_data2-' + Date.now() + '.' + filetype;
@@ -148,15 +145,28 @@ exports.saveFinacialDetail = (req, res) => {
       return "err";
     }
     else {
-      const financial_data = financial_data_DocPath;
-      const financial_data2 = financial_data2_DocPath;
+      var financial_data_DocPath1 = '';
+      var financial_data_DocPath2 = '';
+      var file = req.files;
+      var path = Object.entries(file).map(([key, value]) => {
+        Object.entries(value).map(([key2, value2]) => {
+          if (value2.fieldname === 'financial_data') {
+            financial_data_DocPath1 = value2.path;
+          }
+          if (value2.fieldname === 'financial_data2') {
+            financial_data_DocPath2 = value2.path;
+          }
+        })
+      })
+      const financial_data = financial_data_DocPath1;
+      const financial_data2 = financial_data_DocPath2;
       const yearOfAuditedFinancial = req.body.yearOfAuditedFinancial;
       const Revenue = req.body.Revenue;
       const Profit = req.body.Profit;
       const netWorth = req.body.netWorth;
       const currentAssets = req.body.currentAssets;
       const directorDetails = req.body.directorDetails;
-      const userId=req.body.userId;
+      const userId = req.body.userId;
       const user = new FdetailSchema({
         financial_id: 'financial' + Math.floor(100000 + Math.random() * 900000),
         financial_data: financial_data,
@@ -167,7 +177,7 @@ exports.saveFinacialDetail = (req, res) => {
         netWorth: netWorth,
         currentAssets: currentAssets,
         directorDetails: directorDetails,
-        userId:userId,
+        userId: userId,
 
       });
       user.save()

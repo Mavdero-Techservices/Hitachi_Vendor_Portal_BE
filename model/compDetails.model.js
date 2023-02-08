@@ -7,13 +7,13 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         RPD_Doc: {
-            type: Sequelize.BLOB('long'),
+            type: Sequelize.STRING,
         },
         COC_Doc: {
-            type: Sequelize.BLOB('long'),         
+            type: Sequelize.STRING,    
         },
         NDA_Doc: {
-            type: Sequelize.BLOB('long'),
+            type: Sequelize.STRING,
         },
     })
     return compliancedetailSchema;

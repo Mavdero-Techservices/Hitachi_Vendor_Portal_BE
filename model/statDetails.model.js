@@ -13,13 +13,13 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     GST_Doc: {
-      type: Sequelize.BLOB("long"),   
+      type: Sequelize.STRING,
     },
     PAN_No: {
       type: Sequelize.STRING,
     },
     PAN_Doc: {
-      type: Sequelize.BLOB("long"),
+      type: Sequelize.STRING,
     },
     CIN_No: {
       type: Sequelize.STRING,
@@ -33,10 +33,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     form_10f_Doc:{
-      type: Sequelize.BLOB("long"),
+      type: Sequelize.STRING,
     },
     PE_Declaration_Doc: {
-      type: Sequelize.BLOB("long"),
+      type: Sequelize.STRING,
     },
     MSME_status: {
       type: Sequelize.STRING,
@@ -45,7 +45,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     MSME_Doc: {
-      type: Sequelize.BLOB("long"),
+      type: Sequelize.STRING,
     },
     MSME_Type: {
       type: Sequelize.STRING,
