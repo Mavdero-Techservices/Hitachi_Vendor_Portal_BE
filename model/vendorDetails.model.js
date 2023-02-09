@@ -27,6 +27,15 @@ module.exports = (sequelize, Sequelize) => {
         image: {
             type: Sequelize.BLOB('long'),
         },
+        vendorType: {
+            type: Sequelize.STRING,
+        },
+        vendorManager: {
+            type: Sequelize.STRING        
+        },
+        mkDenialCheque: {
+            type: Sequelize.STRING
+        }
     })
     return VdetailSchema;
 }
