@@ -47,11 +47,13 @@ exports.getAllCollection = async (req, res) => {
     const CompliancedetailArray = [];
     const FdetailArray = [];
     const bankdetailArray = [];
+    const contactTeamArray = [];
     await VdetailSchema.findOne({
         where: { userId: userId },
     }).then(async basicInfo => {
         if (basicInfo === null) {
-            basicInfoArray.push("null");
+           basicInfoArray.length = 0;
+          
         }
         else {
             basicInfoArray.push(basicInfo);
@@ -60,7 +62,7 @@ exports.getAllCollection = async (req, res) => {
             where: { userId: userId },
         }).then(async CommunicationDetails => {
             if (CommunicationDetails === null) {
-                CommunicationDetailsArray.push("null");
+                CommunicationDetailsArray.length = 0;
             }
             else {
                 CommunicationDetailsArray.push(CommunicationDetails);
@@ -69,7 +71,7 @@ exports.getAllCollection = async (req, res) => {
                 where: { userId: userId },
             }).then(async StatDetail => {
                 if (StatDetail === null) {
-                    StatDetailArray.push("null");
+                    StatDetailArray.length = 0;
                 }
                 else {
                     StatDetailArray.push(StatDetail);
@@ -79,7 +81,7 @@ exports.getAllCollection = async (req, res) => {
                     where: { userId: userId },
                 }).then(async Compliancedetail => {
                     if (Compliancedetail === null) {
-                        CompliancedetailArray.push("null");
+                        CompliancedetailArray.length = 0;
                     }
                     else {
                         CompliancedetailArray.push(Compliancedetail);
@@ -89,7 +91,7 @@ exports.getAllCollection = async (req, res) => {
                         where: { userId: userId },
                     }).then(async Fdetail => {
                         if (Fdetail === null) {
-                            FdetailArray.push("null");
+                            FdetailArray.length = 0;
                         }
                         else {
                             FdetailArray.push(Fdetail);
@@ -99,12 +101,22 @@ exports.getAllCollection = async (req, res) => {
                             where: { userId: userId },
                         }).then(async Bankdetail => {
                             if (Bankdetail === null) {
-                                bankdetailArray.push("null");
+                                bankdetailArray.length = 0;
                             }
                             else {
                                 bankdetailArray.push(Bankdetail);
                             }
-
+                            await contactTeamSchema.findOne({
+                                where: { userId: userId },
+                            }).then(async contactTeam => {
+                                if (contactTeam === null) {
+                                    contactTeamArray.length = 0;
+                                }
+                                else {
+                                    contactTeamArray.push(contactTeam);
+                                }
+    
+                            })
                         })
                     })
                 })
@@ -112,7 +124,7 @@ exports.getAllCollection = async (req, res) => {
         })
     })
 
-    res.status(200).json({ status: "success", basicInfo: basicInfoArray, CommunicationDetails: CommunicationDetailsArray, Statutory: StatDetailArray, ComplianceDetail: CompliancedetailArray, FinancialDetail: FdetailArray, Bankdetail: bankdetailArray });
+    res.status(200).json({ status: "success", basicInfo: basicInfoArray, CommunicationDetails: CommunicationDetailsArray, Statutory: StatDetailArray, ComplianceDetail: CompliancedetailArray, FinancialDetail: FdetailArray, Bankdetail: bankdetailArray , contactDetail:contactTeamArray });
 }
 exports.getAllUserDetail = async (req, res) => {
     const basicInfoArray = [];
