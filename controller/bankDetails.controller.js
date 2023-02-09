@@ -89,6 +89,40 @@ exports.saveBankDetail = (req, res) => {
     }
   })
 }
+exports.updateBankDetail = (req, res) => {
+
+  bankdetailDocPath = "";
+
+  var userId = req.params.userId;
+
+  var upload = multer({ storage: storage }).fields(
+    [
+      { name: 'bankdetailDoc', maxCount: 1 },
+    ]);
+  upload(req, res, function (err) {
+    if (err) {
+      console.log("InsideErr", err);
+      return "err";
+    }
+    else {
+      const bankdetailDoc = bankdetailDocPath;
+      req.body.bankdetailDoc = bankdetailDoc;
+      BankdetailSchema.update(req.body, {
+        where: {
+          userId: userId,
+        }
+      }).then(() => {
+        res.status(200).send({
+          message: "Bankdetail was updated successfully!",
+          status: "success"
+        });
+      })
+        .catch(err => {
+          res.status(500).send({ message: err.message || "Some error occurred while updating the Bankdetail schema." });
+        });
+    }
+  })
+};
 
 // Path: routes\routes.js
 exports.postBankdetail = (req, res) => {

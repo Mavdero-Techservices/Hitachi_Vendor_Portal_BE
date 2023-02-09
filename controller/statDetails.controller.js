@@ -453,4 +453,79 @@ exports.saveStatutoryDetail = (req, res) => {
         })
     }
   })
-}  
+}
+exports.updateStatutoryDetail = async (req, res) => {
+  GST_DocPath = "";
+  PAN_DocPath = "";
+  TAN_DocPath = "";
+  form_10f_DocPath = "";
+  PE_Declaration_DocPath = "";
+  MSME_DocPath = "";
+  Tax_residency_DocPath = "";
+  var userId = req.params.userId;
+  var upload = multer({ storage: storage }).fields(
+      [
+          {
+              name: 'GST_Doc',
+              maxCount: 1
+          },
+          {
+              name: 'PAN_Doc',
+              maxCount: 1
+          },
+          {
+              name: 'form_10f_Doc',
+              maxCount: 1
+          },
+          {
+              name: 'TAN_Doc',
+              maxCount: 1
+          },
+          {
+              name: 'PE_Declaration_Doc',
+              maxCount: 1
+          },
+          {
+              name: 'MSME_Doc',
+              maxCount: 1
+          },
+          {
+              name: 'Tax_residency_Doc',
+              maxCount: 1
+          },
+      ]);
+  upload(req, res, function (err) {
+      if (err) {
+          console.log("InsideErr", err);
+          return "err";
+      } else {
+          const GST_Doc = GST_DocPath;
+          const PAN_Doc = PAN_DocPath;
+          const TAN_Doc = TAN_DocPath;
+          const form_10f_Doc = form_10f_DocPath;
+          const PE_Declaration_Doc = PE_Declaration_DocPath;
+          const MSME_Doc = MSME_DocPath;
+          const Tax_residency_Doc = Tax_residency_DocPath;
+          req.body.GST_Doc = GST_Doc;
+          req.body.PAN_Doc = PAN_Doc;
+          req.body.TAN_Doc = TAN_Doc;
+          req.body.form_10f_Doc = form_10f_Doc;
+          req.body.PE_Declaration_Doc = PE_Declaration_Doc;
+          req.body.MSME_Doc = MSME_Doc;
+          req.body.Tax_residency_Doc = Tax_residency_Doc;
+
+          StatDetailSchema.update(req.body, {
+              where: { userId },
+          }).then(() => {
+              res.status(200).send({
+                  message: "StatutoryDetail was updated successfully!",
+                  status: "success"
+              });
+          })
+              .catch(err => {
+                  res.status(500).send({ message: err.message || "Some error occurred while updating the StatutoryDetail schema." });
+              });
+      }
+
+  })
+} 
