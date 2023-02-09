@@ -52,8 +52,8 @@ exports.getAllCollection = async (req, res) => {
         where: { userId: userId },
     }).then(async basicInfo => {
         if (basicInfo === null) {
-           basicInfoArray.length = 0;
-          
+            basicInfoArray.length = 0;
+
         }
         else {
             basicInfoArray.push(basicInfo);
@@ -115,7 +115,7 @@ exports.getAllCollection = async (req, res) => {
                                 else {
                                     contactTeamArray.push(contactTeam);
                                 }
-    
+
                             })
                         })
                     })
@@ -124,7 +124,7 @@ exports.getAllCollection = async (req, res) => {
         })
     })
 
-    res.status(200).json({ status: "success", basicInfo: basicInfoArray, CommunicationDetails: CommunicationDetailsArray, Statutory: StatDetailArray, ComplianceDetail: CompliancedetailArray, FinancialDetail: FdetailArray, Bankdetail: bankdetailArray , contactDetail:contactTeamArray });
+    res.status(200).json({ status: "success", basicInfo: basicInfoArray, CommunicationDetails: CommunicationDetailsArray, Statutory: StatDetailArray, ComplianceDetail: CompliancedetailArray, FinancialDetail: FdetailArray, Bankdetail: bankdetailArray, contactDetail: contactTeamArray });
 }
 exports.getAllUserDetail = async (req, res) => {
     const basicInfoArray = [];
@@ -175,7 +175,7 @@ exports.updateAllCollection = async (req, res) => {
         });
     }
 };
-    
+
 
 exports.getvendorDetail = async (req, res) => {
     var userId = req.params.userId;
@@ -196,21 +196,21 @@ exports.updateContactTeam = async (req, res) => {
     // check if there are any empty fields
     for (const key in updates) {
         if (!updates[key]) {
-        updates[key] = null;
+            updates[key] = null;
         }
     }
     const updateResult = await contactTeamSchema.update(req.body, {
-      where: { userId }
+        where: { userId }
     });
     if (updateResult[0]) {
-      res.status(200).json({
-        status: "success",
-        message: "Contact Team details updated successfully",
-      });
+        res.status(200).json({
+            status: "success",
+            message: "Contact Team details updated successfully",
+        });
     } else {
-      res.status(404).json({
-        status: "error",
-        message: "Contact Team details not found"
-      });
+        res.status(404).json({
+            status: "error",
+            message: "Contact Team details not found"
+        });
     }
 };
