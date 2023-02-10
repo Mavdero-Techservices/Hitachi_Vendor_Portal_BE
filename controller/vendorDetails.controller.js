@@ -16,6 +16,9 @@ exports.postVdetail = (req, res, next) => {
       const contactName = req.body.contactName;
       const companyName = req.body.companyName;
       const image = new Buffer(req.body.image, 'base64').toString('binary');
+      const vendorType = req.body.vendorType;
+      const vendorManager = req.body.vendorManager;
+      const mkDenialCheque = req.body.mkDenialCheque;
       const user = new VdetailSchema({
         address1: address1,
         address2: address2,
@@ -26,6 +29,9 @@ exports.postVdetail = (req, res, next) => {
         contactName: contactName,
         companyName: companyName,
         image: image,
+        vendorType: vendorType,
+        vendorManager: vendorManager,
+        mkDenialCheque: mkDenialCheque,
         userId:userId,
       });
       try {
