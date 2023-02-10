@@ -54,16 +54,16 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     TAN_Doc: {
-      type: Sequelize.BLOB("long"),
+      type: Sequelize.STRING,
     },
     Tax_residency_Doc: {
-      type: Sequelize.BLOB("long"),
+      type: Sequelize.STRING,
     },
     Tax_residency_No:{
       type: Sequelize.STRING,
     },
     fileDisclosure:{
-      type: Sequelize.BLOB("long"),
+      type: Sequelize.STRING,
     },
   });
   return StatDetailsSchema;
