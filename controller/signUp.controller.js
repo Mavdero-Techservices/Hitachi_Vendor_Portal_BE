@@ -67,7 +67,7 @@ exports.postSingUp = [
               const verifiedUser = req.body.verifiedUser;
               const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
               const phoneNoConfirmationCode = Math.floor(100000 + Math.random() * 900000);
-              const role = req.body.role;
+              const role = "user";
               bcrypt
                 .hash(password, 12)
                 .then(hashedPassword => {
@@ -111,7 +111,7 @@ exports.postLogin = (req, res) => {
   })
     .then(user => {
       if (!user) {
-        return res.status(200).json({ status: 'error', data: { message: 'invalid user'} });
+        return res.status(200).json({ status: 'error', data: { message: 'invalid user' } });
       }
       else {
 
@@ -135,13 +135,14 @@ exports.postLogin = (req, res) => {
               );
               // save user token 
               user.token = token;
-              return res.status(200).json({status: 'success',
+              return res.status(200).json({
+                status: 'success',
                 token,
-                result: { _id: user.id, companyName: user.companyName, emailId: user.emailId, verifiedUser: user.verifiedUser, userId: user.userId, userName: user.userName }
+                result: { _id: user.id, companyName: user.companyName, emailId: user.emailId, verifiedUser: user.verifiedUser, userId: user.userId, userName: user.userName, role: user.role }
               })
             }
             else {
-              return res.status(200).json({ status: 'error', data: { message: 'Incorrect password'} });
+              return res.status(200).json({ status: 'error', data: { message: 'Incorrect password' } });
             }
           })
 
@@ -248,17 +249,14 @@ var nodemailer = require('nodemailer');
 const config = require("../config/auth.config");
 const user = config.user;
 const pass = config.pass;
+
 var transporter = nodemailer.createTransport({
-  host: 'smtp.office365.com',
-  port: '587',
-  tls:{
-    rejectUnauthorized: false
-},
   auth: {
     user: user,
     pass: pass,
   }
 });
+
 exports.emailNotification = (req, res, subject, emailContent, returnFlag, emailId) => {
   var mailOptions = {
     from: user,
@@ -279,7 +277,6 @@ exports.emailNotification = (req, res, subject, emailContent, returnFlag, emailI
     }
   });
 }
-
 function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
   const accountSid = 'AC7dd6eea117c28296a64945c0d5e69d22';
   const authToken = '4a6876e0cd44abce7d4e7a17cdf5abc6';
@@ -312,7 +309,7 @@ exports.saveUser = (req, res) => {
   })
     .then(user => {
       if (user) {
-        return res.status(200).json({ status: "success", message: "User already exist"});
+        return res.status(200).json({ status: "success", message: "User already exist" });
       }
       else {
         const companyName = req.body.companyName;
@@ -325,7 +322,8 @@ exports.saveUser = (req, res) => {
         const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
         const phoneNoConfirmationCode = Math.floor(100000 + Math.random() * 900000);
         const userName = contactPerson + Math.floor(100000 + Math.random() * 900000);
-       const password=pass;
+        const role = 'user'
+        const password = pass;
         bcrypt
           .hash(password, 12)
           .then(hashedPassword => {
@@ -342,9 +340,8 @@ exports.saveUser = (req, res) => {
               userName: userName,
               password: hashedPassword,
               confirmPassword: hashedPassword,
-
+              role: role,
             });
-
             user.save()
               .then(result => {
                 var subject = `confirmation mail for userName and password`;
