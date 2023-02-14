@@ -155,133 +155,114 @@ exports.getAllUserDetail = async (req, res) => {
 }
 
 // update all
-exports.updateAllCollection = async (req, res) => {
-    var userId = req.params.userId;
-    const promises = [
-        VdetailSchema.update({ ...req.body.basicInfo }, { where: { userId: userId } }),
-        vendorCommunicationDetails.update({ ...req.body.CommunicationDetails }, { where: { userId: userId } }),
-        contactTeamSchema.update({ ...req.body.contactTeamSchema  }, { where: { userId: userId } }),
-        BankdetailSchema.update({ ...req.body.BankdetailSchema }, {where: {userId: userId} }), 
-        StatDetailSchema.update({ ...req.body.StatDetailSchema }, {where: { userId: userId} }),
-        CompliancedetailSchema.update({ ...req.body.CompliancedetailSchema }, { where: { userId: userId } }),
-        FdetailSchema.update({ ...req.body.FdetailSchema }, { where: { userId: userId} })
-    ];
-    try {
-        const [basicInfo, CommunicationDetails, contactTeam, bankdetail, statutoryDetail, complianceDetail, Fdetail] = await Promise.all(promises);
-        console.log(statutoryDetail)
-        console.log(req.body.StatDetailSchema)
-        console.log(req.body.FdetailSchema)
-        res.status(200).json({
-            status: "success",
-            basicInfo,
-            CommunicationDetails,
-            contactTeam,
-            bankdetail,
-            statutoryDetail,
-            complianceDetail,
-            Fdetail
-        });
-    } catch (err) {
-        res.status(500).json({
-            status: "error",
-            message: "An error occurred while updating the collections",
-        });
-    }
-};
-
-// const path = require('path');
-// const multer = require('multer');
-// const directory_name = "uploads";
-
-// const docPaths = {
-//   financial_data_DocPath: "",
-//   financial_data2_DocPath: "",
-//   GST_DocPath: "",
-//   PAN_DocPath: "",
-//   form_10f_DocPath: "",
-//   PE_Declaration_DocPath: "",
-//   TAN_DocPath: "",
-//   MSME_DocPath: "",
-//   Tax_residency_DocPath: "",
-//   fileDisclosure_DocPath: "",
-//   RPD_DocPath: "",
-//   COC_DocPath: "",
-//   NDA_DocPath: "",
-//   bankdetailDocPath: ""
-// };
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => cb(null, path.join(directory_name, '/')),
-//   filename: (req, file, cb) => {
-//     let filetype = '';
-//     const fieldname = file.fieldname;
-//     switch (file.mimetype) {
-//       case 'image/gif':
-//         filetype = 'gif';
-//         break;
-//       case 'image/png':
-//         filetype = 'png';
-//         break;
-//       case 'image/jpeg':
-//         filetype = 'jpg';
-//         break;
-//       case 'application/pdf':
-//         filetype = 'pdf';
-//         break;
-//       default:
-//         break;
-//     }
-//     docPaths[`${fieldname}_DocPath`] = `${directory_name}/${fieldname}-${Date.now()}.${filetype}`;
-//     cb(null, `${fieldname}-${Date.now()}.${filetype}`);
-//   }
-// });
-  
 // exports.updateAllCollection = async (req, res) => {
 //     var userId = req.params.userId;
-//     // Use the upload middleware for the file fields in the request
-//     upload.array(['bankdetailDoc'], 1)(req, res, async (err) => {
-//       if (err) {
-//         res.status(500).json({
-//           status: "error",
-//           message: "An error occurred while uploading the files",
-//         });
-//       }
-//       const promises = [
+//     const promises = [
 //         VdetailSchema.update({ ...req.body.basicInfo }, { where: { userId: userId } }),
 //         vendorCommunicationDetails.update({ ...req.body.CommunicationDetails }, { where: { userId: userId } }),
-//         contactTeamSchema.update({ ...req.body.contactTeamSchema }, { where: { userId: userId } }),
-//         BankdetailSchema.update({ ...req.body.BankdetailSchema }, { where: { userId: userId } }),
-//         StatDetailSchema.update({ ...req.body.StatDetailSchema }, { where: { userId: userId } }),
+//         contactTeamSchema.update({ ...req.body.contactTeamSchema  }, { where: { userId: userId } }),
+//         BankdetailSchema.update({ ...req.body.BankdetailSchema }, {where: {userId: userId} }), 
+//         StatDetailSchema.update({ ...req.body.StatDetailSchema }, {where: { userId: userId} }),
 //         CompliancedetailSchema.update({ ...req.body.CompliancedetailSchema }, { where: { userId: userId } }),
-//         FdetailSchema.update({ ...req.body.FdetailSchema }, { where: { userId: userId } })
-//       ];
-//       try {
-//         const [
-//             basicInfo, 
-//             CommunicationDetails, 
-//             contactTeam, 
-//             bankdetail, 
-//             statutoryDetail, complianceDetail, Fdetail
-//         ] = await Promise.all(promises);
+//         FdetailSchema.update({ ...req.body.FdetailSchema }, { where: { userId: userId} })
+//     ];
+//     try {
+//         const [basicInfo, CommunicationDetails, contactTeam, bankdetail, statutoryDetail, complianceDetail, Fdetail] = await Promise.all(promises);
+//         console.log(statutoryDetail)
+//         console.log(req.body.StatDetailSchema)
+//         console.log(req.body.FdetailSchema)
 //         res.status(200).json({
-//           status: "success",
-//           basicInfo,
-//           CommunicationDetails,
-//           contactTeam,
-//           bankdetail,
-//           statutoryDetail,
-//           complianceDetail,
-//           Fdetail
+//             status: "success",
+//             basicInfo,
+//             CommunicationDetails,
+//             contactTeam,
+//             bankdetail,
+//             statutoryDetail,
+//             complianceDetail,
+//             Fdetail
 //         });
-//       } catch (err) {
+//     } catch (err) {
 //         res.status(500).json({
-//           status: "error",
-//           message: "An error occurred while updating the collections",
+//             status: "error",
+//             message: "An error occurred while updating the collections",
 //         });
-//       }
-//     });
-//   };
+//     }
+// };
 
+const multer = require('multer');
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now());
+  },
+});
+const upload = multer({ storage });
+exports.updateAllCollection = async (req, res) => {
+  var userId = req.params.userId;  
+  // Use the upload middleware for the file fields in the request    
+  upload.array(['bankdetailDoc', 'GST_Doc', 'PAN_Doc', 'form_10f_Doc', 'PE_Declaration_Doc', 'TAN_Doc', 'Tax_residency_Doc', 'fileDisclosure', 'RPD_Doc', 'COC_Doc', 'NDA_Doc', 'financial_data', 'financial_data2' ], 13)(req, res, async (err) => {
+    if (err) {
+      res.status(500).json({
+        status: "error",
+        message: "An error occurred while uploading the files",
+      });
+    }
+    let bankdetailDoc = req.files[0] ? req.files[0].path : null;
+    let GST_Doc = req.files[1] ? req.files[1].path : null;
+    let PAN_Doc = req.files[2] ? req.files[2].path : null;
+    let form_10f_Doc = req.files[3] ? req.files[3].path : null;
+    let PE_Declaration_Doc = req.files[4] ? req.files[4].path : null;
+    let TAN_Doc = req.files[5] ? req.files[5].path : null;
+    let Tax_residency_Doc = req.files[6] ? req.files[6].path : null;
+    let fileDisclosure = req.files[7] ? req.files[7].path : null;
+    let RPD_Doc = req.files[8] ? req.files[8].path : null;
+    let COC_Doc = req.files[9] ? req.files[9].path : null;
+    let NDA_Doc = req.files[10] ? req.files[10].path : null;
+    let financial_data = req.files[11] ? req.files[11].path : null;
+    let financial_data2 = req.files[12] ? req.files[12].path : null;
+
+    const promises = [
+      VdetailSchema.update({ ...req.body.basicInfo }, { where: { userId: userId } }),
+      vendorCommunicationDetails.update({ ...req.body.CommunicationDetails }, { where: { userId: userId } }),
+      contactTeamSchema.update({ ...req.body.contactTeamSchema }, { where: { userId: userId } }),
+      BankdetailSchema.update({ ...req.body.BankdetailSchema, bankdetailDoc }, { where: { userId: userId } }),
+      StatDetailSchema.update({
+        ...req.body.StatDetailSchema,GST_Doc,PAN_Doc,form_10f_Doc,PE_Declaration_Doc,TAN_Doc,Tax_residency_Doc,fileDisclosure,
+      }, { where: { userId: userId } }),
+      CompliancedetailSchema.update({ 
+        ...req.body.CompliancedetailSchema,
+        RPD_Doc,
+        COC_Doc,
+        NDA_Doc,
+     }, { where: { userId: userId } }),
+      FdetailSchema.update({ 
+        ...req.body.FdetailSchema,
+        financial_data,
+        financial_data2, 
+    }, { where: { userId: userId } })
+    ];
+    try {
+      const [basicInfo, CommunicationDetails, contactTeam, bankdetail, statutoryDetail, complianceDetail, Fdetail] = await Promise.all(promises);
+      res.status(200).json({
+        status: "success",
+        basicInfo,
+        CommunicationDetails,
+        contactTeam,
+        bankdetail,
+        statutoryDetail,
+        complianceDetail,
+        Fdetail
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: "error",
+        message: "An error occurred while updating the collections",
+      });
+    }
+  });
+};
   
   
 exports.getvendorDetail = async (req, res) => {
