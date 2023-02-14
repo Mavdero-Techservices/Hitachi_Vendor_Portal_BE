@@ -77,7 +77,7 @@ router.put("/updateBankDetail/:userId", bankdetail.updateBankDetail);
 
 // router.delete("/deleteFile/:filename",bankdetail.deleteFile);
 //statdetails schema - create
-router.post("/saveStatdetail", statdetail.postStatdetail);
+// router.post("/saveStatdetail", statdetail.postStatdetail);
 router.post("/saveStatutoryDetail", statdetail.saveStatutoryDetail);
 
 router.put("/updateStatutoryDetail/:userId", statdetail.updateStatutoryDetail)

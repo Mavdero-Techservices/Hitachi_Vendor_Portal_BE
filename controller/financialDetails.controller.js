@@ -1,7 +1,7 @@
 const db = require("../model");
 const FdetailSchema = db.fdetail;
 const { check, validationResult } = require("express-validator");
-
+const fs = require("fs");
 // exports.postFdetail = [
 //     //validate form
 //     check("yearOfAuditedFinancial")
@@ -66,98 +66,125 @@ const { check, validationResult } = require("express-validator");
 //     }
 // ];
 let directory_name = "uploads";
-const path = require('path');
-var multer = require('multer');
-var financial_data_DocPath = '';
-var financial_data2_DocPath = '';
+const path = require("path");
+var multer = require("multer");
+var financial_data_DocPath = "";
+var financial_data2_DocPath = "";
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(directory_name, '/'));
-
+    cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-    var filetype = '';
+    var filetype = "";
 
     if (file.fieldname === "financial_data") {
-      if (file.mimetype === 'image/gif') {
-        filetype = 'gif';
-        financial_data_DocPath = directory_name + "/" + 'financial_data-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/gif") {
+        filetype = "gif";
+        financial_data_DocPath =
+          directory_name +
+          "/" +
+          "financial_data-" +
+          Date.now() +
+          "." +
+          filetype;
       }
-      if (file.mimetype === 'image/png') {
-        filetype = 'png';
-        financial_data_DocPath = directory_name + "/" + 'financial_data-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/png") {
+        filetype = "png";
+        financial_data_DocPath =
+          directory_name +
+          "/" +
+          "financial_data-" +
+          Date.now() +
+          "." +
+          filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        financial_data_DocPath = "../uploads/" + 'financial_data-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        financial_data_DocPath =
+          "../uploads/" + "financial_data-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'application/pdf') {
-        filetype = 'pdf';
-        financial_data_DocPath = directory_name + "/" + 'financial_data-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "application/pdf") {
+        filetype = "pdf";
+        financial_data_DocPath =
+          directory_name +
+          "/" +
+          "financial_data-" +
+          Date.now() +
+          "." +
+          filetype;
       }
-      cb(null, 'financial_data-' + Date.now() + '.' + filetype);
+      cb(null, "financial_data-" + Date.now() + "." + filetype);
     }
     if (file.fieldname === "financial_data2") {
-      if (file.mimetype === 'image/gif') {
-        filetype = 'gif';
-        financial_data2_DocPath = directory_name + "/" + 'financial_data2-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/gif") {
+        filetype = "gif";
+        financial_data2_DocPath =
+          directory_name +
+          "/" +
+          "financial_data2-" +
+          Date.now() +
+          "." +
+          filetype;
       }
-      if (file.mimetype === 'image/png') {
-        filetype = 'png';
-        financial_data2_DocPath = directory_name + "/" + 'financial_data2-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/png") {
+        filetype = "png";
+        financial_data2_DocPath =
+          directory_name +
+          "/" +
+          "financial_data2-" +
+          Date.now() +
+          "." +
+          filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        financial_data2_DocPath = "../uploads/" + 'financial_data2-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        financial_data2_DocPath =
+          "../uploads/" + "financial_data2-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'application/pdf') {
-        filetype = 'pdf';
-        financial_data2_DocPath = directory_name + "/" + 'financial_data2-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "application/pdf") {
+        filetype = "pdf";
+        financial_data2_DocPath =
+          directory_name +
+          "/" +
+          "financial_data2-" +
+          Date.now() +
+          "." +
+          filetype;
       }
-      cb(null, 'financial_data2-' + Date.now() + '.' + filetype);
+      cb(null, "financial_data2-" + Date.now() + "." + filetype);
     }
-  }
+  },
 });
 exports.saveFinacialDetail = (req, res) => {
-  var upload = multer({ storage: storage }).fields(
-    [
-      {
-        name: 'financial_data',
-        maxCount: 1
-      },
-      {
-        name: 'financial_data2',
-        maxCount: 1
-      },
-    ]);
+  var upload = multer({ storage: storage }).fields([
+    {
+      name: "financial_data",
+      maxCount: 1,
+    },
+    {
+      name: "financial_data2",
+      maxCount: 1,
+    },
+  ]);
   upload(req, res, function (err) {
     if (err) {
       console.log("InsideErr", err);
       return "err";
-    }
-    else {
-      var financial_data_DocPath1 = '';
-      var financial_data_DocPath2 = '';
+    } else {
+      var financial_data_DocPath1 = "";
+      var financial_data_DocPath2 = "";
       var file = req.files;
       var path = Object.entries(file).map(([key, value]) => {
         Object.entries(value).map(([key2, value2]) => {
-          if (value2.fieldname === 'financial_data') {
+          if (value2.fieldname === "financial_data") {
             financial_data_DocPath1 = value2.path;
           }
-          if (value2.fieldname === 'financial_data2') {
+          if (value2.fieldname === "financial_data2") {
             financial_data_DocPath2 = value2.path;
           }
-        })
-      })
+        });
+      });
       const financial_data = financial_data_DocPath1;
       const financial_data2 = financial_data_DocPath2;
       const yearOfAuditedFinancial = req.body.yearOfAuditedFinancial;
@@ -168,7 +195,7 @@ exports.saveFinacialDetail = (req, res) => {
       const directorDetails = req.body.directorDetails;
       const userId = req.body.userId;
       const user = new FdetailSchema({
-        financial_id: 'financial' + Math.floor(100000 + Math.random() * 900000),
+        financial_id: "financial" + Math.floor(100000 + Math.random() * 900000),
         financial_data: financial_data,
         financial_data2: financial_data2,
         yearOfAuditedFinancial: yearOfAuditedFinancial,
@@ -178,53 +205,150 @@ exports.saveFinacialDetail = (req, res) => {
         currentAssets: currentAssets,
         directorDetails: directorDetails,
         userId: userId,
-
       });
-      user.save()
-        .then(result => {
-          return res.status(200).json({ status: "success", message: "Registered Successfully", result });
-        })
+      user.save().then((result) => {
+        return res.status(200).json({
+          status: "success",
+          message: "Registered Successfully",
+          result,
+        });
+      });
     }
-  })
-} 
-exports.updateFinacialDetail = (req, res) => {
-	financial_data_DocPath = "";
-	financial_data2_DocPath = "";
-	var userId = req.params.userId;
-	var upload = multer({ storage: storage }).fields(
-		[
-			{
-				name: 'financial_data',
-				maxCount: 1
-			},
-			{
-				name: 'financial_data2',
-				maxCount: 1
-			},
-		]);
+  });
+};
+exports.updateFinacialDetail = async (req, res) => {
+  financial_data_DocPath = "";
+  financial_data2_DocPath = "";
 
+  var userId = req.params.userId;
+  var upload = multer({ storage: storage }).fields([
+    {
+      name: "financial_data",
+      maxCount: 1,
+    },
+    {
+      name: "financial_data2",
+      maxCount: 1,
+    },
+  ]);
 
-	upload(req, res, function (err) {
-		if (err) {
-			console.log("InsideErr", err);
-			return "err";
-		} else {
-			const financial_data = financial_data_DocPath;
-			const financial_data2 = financial_data2_DocPath;
-			req.body.financial_data = financial_data;
-			req.body.financial_data2 = financial_data2;
-			FdetailSchema.update(req.body, {
-				where: { userId },
-			}).then(() => {
-				res.status(200).send({
-					message: "Financialdetail was updated successfully!",
-					status: "success"
-				});
-			})
-				.catch(err => {
-					res.status(500).send({ message: err.message || "Some error occurred while updating the Financialdetail schema." });
-				});
+  upload(req, res, async function (err) {
+    var fDetails = await FdetailSchema.findOne({
+      where: { userId: req.params.userId },
+    });
 
-		}
-	})
-}
+    if (err) {
+      console.log("InsideErr", err);
+      return "err";
+    } else {
+      if (
+        req.files.financial_data?.length > 0 ||
+        req.files.financial_data2?.length > 0
+      ) {
+        if (
+          (fDetails.financial_data === req.files.financial_data
+            ? req.files.financial_data[0].path
+            : "") ||
+          (fDetails.financial_data2 === req.files.financial_data2
+            ? req.files.financial_data2[0].path
+            : "")
+        ) {
+          const financial_data = financial_data_DocPath;
+          const financial_data2 = financial_data2_DocPath;
+          req.body.financial_data = financial_data;
+          req.body.financial_data2 = financial_data2;
+          FdetailSchema.update(req.body, {
+            where: { userId },
+          })
+            .then(() => {
+              res.status(200).send({
+                message: "Financialdetail was updated successfully!",
+                status: "success",
+              });
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message:
+                  err.message ||
+                  "Some error occurred while updating the Financialdetail schema.",
+              });
+            });
+        } else {
+          const financial_data = financial_data_DocPath;
+          const financial_data2 = financial_data2_DocPath;
+          req.body.financial_data = financial_data;
+          req.body.financial_data2 = financial_data2;
+          FdetailSchema.update(req.body, {
+            where: { userId },
+          })
+            .then(() => {
+              res.status(200).send({
+                message: "Financial was updated successfully!",
+                status: "success",
+              });
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message:
+                  err.message ||
+                  "Some error occurred while updating the Financialdetail schema.",
+              });
+            });
+          directoryFiananceOneDelete = fDetails.financial_data;
+          directoryFiananceTwoDelete = fDetails.financial_data2;
+          if (directoryFiananceOneDelete) {
+            fs.unlink(directoryFiananceOneDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+          if (directoryFiananceTwoDelete) {
+            fs.unlink(directoryFiananceTwoDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+        }
+      } else {
+        const financial_data = financial_data_DocPath;
+        const financial_data2 = financial_data2_DocPath;
+        req.body.financial_data = financial_data;
+        req.body.financial_data2 = financial_data2;
+        FdetailSchema.update(req.body, {
+          where: { userId },
+        })
+          .then(() => {
+            res.status(200).send({
+              message: "Financialdetail was updated successfully!",
+              status: "success",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while updating the Financialdetail schema.",
+            });
+          });
+        directoryFiananceOneDelete = fDetails.financial_data;
+        directoryFiananceTwoDelete = fDetails.financial_data2;
+        if (directoryFiananceOneDelete) {
+          fs.unlink(directoryFiananceOneDelete, (err) => {
+            if (err) {
+              throw err;
+            }
+          });
+        }
+        if (directoryFiananceTwoDelete) {
+          fs.unlink(directoryFiananceTwoDelete, (err) => {
+            if (err) {
+              throw err;
+            }
+          });
+        }
+      }
+    }
+  });
+};

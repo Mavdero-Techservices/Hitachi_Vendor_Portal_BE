@@ -2,64 +2,66 @@ const db = require("../model");
 const BankdetailSchema = db.bankdetail;
 const { check, validationResult } = require("express-validator");
 let directory_name = "uploads";
-const path = require('path');
-var multer = require('multer');
-var bankdetailDocPath = '';
+const path = require("path");
+var multer = require("multer");
+const { log, Console } = require("console");
+var bankdetailDocPath = "";
+const fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(directory_name, '/'));
+    cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-    var filetype = '';
+    var filetype = "";
 
     if (file.fieldname === "bankdetailDoc") {
-      if (file.mimetype === 'image/gif') {
-        filetype = 'gif';
-        bankdetailDocPath = directory_name + "/" + 'bankdetailDoc-' + Date.now() + '.' + filetype;
+      if (file.mimetype === "image/gif") {
+        filetype = "gif";
+        bankdetailDocPath =
+          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'image/png') {
-        filetype = 'png';
-        bankdetailDocPath = directory_name + "/" + 'bankdetailDoc-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/png") {
+        filetype = "png";
+        bankdetailDocPath =
+          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        bankdetailDocPath = "../uploads/" + 'bankdetailDoc-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        bankdetailDocPath =
+        directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'application/pdf') {
-        filetype = 'pdf';
-        bankdetailDocPath = directory_name + "/" + 'bankdetailDoc-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "application/pdf") {
+        filetype = "pdf";
+        bankdetailDocPath =
+          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
       }
-      cb(null, 'bankdetailDoc-' + Date.now() + '.' + filetype);
+      cb(null, "bankdetailDoc-" + Date.now() + "." + filetype);
     }
-  }
+  },
 });
 
 exports.saveBankDetail = (req, res) => {
-  var upload = multer({ storage: storage }).fields(
-    [
-      { name: 'bankdetailDoc', maxCount: 1 },
-    ]);
+  bankdetailDocPath = "";
+
+  var upload = multer({ storage: storage }).fields([
+    { name: "bankdetailDoc", maxCount: 1 },
+  ]);
   upload(req, res, function (err) {
     if (err) {
       console.log("InsideErr", err);
       return "err";
-    }
-    else {
-      var bankdetailDocPath = '';
+    } else {
       var file = req.files;
       var path = Object.entries(file).map(([key, value]) => {
         Object.entries(value).map(([key2, value2]) => {
-          if (value2.fieldname === 'bankdetailDoc') {
+          if (value2.fieldname === "bankdetailDoc") {
             bankdetailDocPath = value2.path;
           }
-        })
-      })
+        });
+      });
       const bankdetailDoc = bankdetailDocPath;
-      const bankId = 'bank' + Math.floor(100000 + Math.random() * 900000);
+      const bankId = "bank" + Math.floor(100000 + Math.random() * 900000);
       const userId = req.body.userId;
       const user = new BankdetailSchema({
         bankId: bankId,
@@ -72,56 +74,137 @@ exports.saveBankDetail = (req, res) => {
         branchAddress: req.body.branchAddress,
         bankdetailDoc: bankdetailDoc,
       });
-      user.save()
-        .then(data => {
+      user
+        .save()
+        .then((data) => {
           return res.status(200).json({
             message: "Bankdetail was created successfully!",
             status: "success",
             data: data,
-          })
+          });
         })
-        .catch(err => {
+        .catch((err) => {
           return res.status(500).json({
             message:
-              err.message || "Some error occurred while creating the Bankdetail schema.",
+              err.message ||
+              "Some error occurred while creating the Bankdetail schema.",
           });
         });
     }
-  })
-}
-exports.updateBankDetail = (req, res) => {
+  });
+};
 
+exports.updateBankDetail = async (req, res) => {
   bankdetailDocPath = "";
 
   var userId = req.params.userId;
 
-  var upload = multer({ storage: storage }).fields(
-    [
-      { name: 'bankdetailDoc', maxCount: 1 },
-    ]);
-  upload(req, res, function (err) {
+  var upload = multer({ storage: storage }).fields([
+    { name: "bankdetailDoc", maxCount: 1 },
+  ]);
+
+  upload(req, res, async function (err) {
+    var bDetails = await BankdetailSchema.findOne({
+      where: { userId: req.params.userId },
+    });
+
     if (err) {
       console.log("InsideErr", err);
       return "err";
-    }
-    else {
-      const bankdetailDoc = bankdetailDocPath;
-      req.body.bankdetailDoc = bankdetailDoc;
-      BankdetailSchema.update(req.body, {
-        where: {
-          userId: userId,
+    } else {
+      if (req.files.bankdetailDoc) {
+        if (bDetails.bankdetailDoc === req.files.bankdetailDoc.path) {
+          const bankdetailDoc = bankdetailDocPath;
+          req.body.bankdetailDoc = bankdetailDoc;
+          BankdetailSchema.update(req.body, {
+            where: {
+              userId: userId,
+            },
+          })
+            .then(() => {
+              res.status(200).send({
+                message: "Bankdetail was updated successfully!",
+                status: "success",
+              });
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message:
+                  err.message ||
+                  "Some error occurred while updating the Bankdetail schema.",
+              });
+            });
+        } else {
+          const bankdetailDoc = bankdetailDocPath;
+          req.body.bankdetailDoc = bankdetailDoc;
+          BankdetailSchema.update(req.body, {
+            where: {
+              userId: userId,
+            },
+          })
+            .then(() => {
+              res.status(200).send({
+                message: "Bankdetail was updated successfully!",
+                status: "success",
+              });
+            })
+            .catch((err) => {
+              res.status(500).send({
+                message:
+                  err.message ||
+                  "Some error occurred while updating the Bankdetail schema.",
+              });
+            });
+          directoryDelete = bDetails.bankdetailDoc;
+          if (directoryDelete) {
+
+            fs.unlink(directoryDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-      }).then(() => {
-        res.status(200).send({
-          message: "Bankdetail was updated successfully!",
-          status: "success"
-        });
-      })
-        .catch(err => {
-          res.status(500).send({ message: err.message || "Some error occurred while updating the Bankdetail schema." });
-        });
+      } else {
+        const bankdetailDoc = bankdetailDocPath;
+        req.body.bankdetailDoc = bankdetailDoc;
+        BankdetailSchema.update(req.body, {
+          where: {
+            userId: userId,
+          },
+        })
+          .then(() => {
+            res.status(200).send({
+              message: "Bankdetail was updated successfully!",
+              status: "success",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while updating the Bankdetail schema.",
+            });
+          });
+
+        directoryDelete = bDetails.bankdetailDoc;
+        if (directoryDelete) {
+          fs.unlink(directoryDelete, (err) => {
+            if (err) {
+              throw err;
+            }
+          });
+        } else {
+        }
+      }
     }
-  })
+  });
+};
+
+// delete-FileId
+
+exports.deleteBankDetailFile = (req, res) => {
+  console.log("req", req);
 };
 
 // Path: routes\routes.js
@@ -142,4 +225,4 @@ exports.postBankdetail = (req, res) => {
     status: "success",
     data: bankdetail,
   });
-}
+};
