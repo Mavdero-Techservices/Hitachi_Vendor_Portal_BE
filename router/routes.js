@@ -11,6 +11,7 @@ const compDetail = require("../controller/compDetail.controller");
 const commsDetail = require("../controller/commsDetails.controller")
 const hisysContact = require("../controller/hisysContact.controller")
 const contactTeam = require("../controller/ContactTeam.controller")
+const approvalStatus = require("../controller/approval.controller")
 
 const router = express.Router();
 /* GET home page. */
@@ -107,6 +108,10 @@ router.put("/updateAllCollection/:userId", contactTeam.updateAllCollection);
 
 router.get("/getvendorDetail/:userId", contactTeam.getvendorDetail);
 router.get("/getAllUserDetail", contactTeam.getAllUserDetail);
+
+router.post("/saveApproval", approvalStatus.saveApprovalStatus);
+
+router.put("/updateApprovalStatus/:userId", approvalStatus.updateApprovalStatus);
 
 
 module.exports = router;
