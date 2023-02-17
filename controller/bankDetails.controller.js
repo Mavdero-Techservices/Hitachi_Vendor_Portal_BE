@@ -26,17 +26,10 @@ var storage = multer.diskStorage({
         bankdetailDocPath =
           directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
       }
-<<<<<<< Updated upstream
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        bankdetailDocPath =
-        directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-=======
       if (file.mimetype === 'image/jpeg') {
         filetype = 'jpg';
         bankdetailDocPath = directory_name + "/" + 'bankdetailDoc-' + Date.now() + '.' + filetype;
 
->>>>>>> Stashed changes
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";

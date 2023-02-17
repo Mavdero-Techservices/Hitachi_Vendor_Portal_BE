@@ -71,16 +71,10 @@ var storage = multer.diskStorage({
         RPD_DocPath =
           directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
       }
-<<<<<<< Updated upstream
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        RPD_DocPath = "../uploads/" + "RPD_Doc-" + Date.now() + "." + filetype;
-=======
       if (file.mimetype === 'image/jpeg') {
         filetype = 'jpg';
         RPD_DocPath = directory_name + "/" + 'RPD_Doc-' + Date.now() + '.' + filetype;
 
->>>>>>> Stashed changes
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -100,16 +94,10 @@ var storage = multer.diskStorage({
         COC_DocPath =
           directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
       }
-<<<<<<< Updated upstream
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        COC_DocPath = "../uploads/" + "COC_Doc-" + Date.now() + "." + filetype;
-=======
       if (file.mimetype === 'image/jpeg') {
         filetype = 'jpg';
         COC_DocPath =directory_name + "/" + 'COC_Doc-' + Date.now() + '.' + filetype;
 
->>>>>>> Stashed changes
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -129,16 +117,10 @@ var storage = multer.diskStorage({
         NDA_DocPath =
           directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
       }
-<<<<<<< Updated upstream
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        NDA_DocPath = "../uploads/" + "NDA_Doc-" + Date.now() + "." + filetype;
-=======
       if (file.mimetype === 'image/jpeg') {
         filetype = 'jpg';
         NDA_DocPath = directory_name + "/" + 'NDA_Doc-' + Date.now() + '.' + filetype;
 
->>>>>>> Stashed changes
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
