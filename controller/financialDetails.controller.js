@@ -99,10 +99,17 @@ var storage = multer.diskStorage({
           "." +
           filetype;
       }
+<<<<<<< Updated upstream
       if (file.mimetype === "image/jpeg") {
         filetype = "jpg";
         financial_data_DocPath =
           "../uploads/" + "financial_data-" + Date.now() + "." + filetype;
+=======
+      if (file.mimetype === 'image/jpeg') {
+        filetype = 'jpg';
+        financial_data_DocPath = directory_name + "/"+ 'financial_data-' + Date.now() + '.' + filetype;
+
+>>>>>>> Stashed changes
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -137,10 +144,17 @@ var storage = multer.diskStorage({
           "." +
           filetype;
       }
+<<<<<<< Updated upstream
       if (file.mimetype === "image/jpeg") {
         filetype = "jpg";
         financial_data2_DocPath =
           "../uploads/" + "financial_data2-" + Date.now() + "." + filetype;
+=======
+      if (file.mimetype === 'image/jpeg') {
+        filetype = 'jpg';
+        financial_data2_DocPath = directory_name + "/" + 'financial_data2-' + Date.now() + '.' + filetype;
+
+>>>>>>> Stashed changes
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";

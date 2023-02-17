@@ -11,7 +11,11 @@ const compDetail = require("../controller/compDetail.controller");
 const commsDetail = require("../controller/commsDetails.controller")
 const hisysContact = require("../controller/hisysContact.controller")
 const contactTeam = require("../controller/ContactTeam.controller")
+
 const approvalStatus = require("../controller/approval.controller")
+
+
+const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
 
 const router = express.Router();
 /* GET home page. */
@@ -111,6 +115,7 @@ router.put("/updateAllCollection/:userId", contactTeam.updateAllCollection);
 router.get("/getvendorDetail/:userId", contactTeam.getvendorDetail);
 router.get("/getAllUserDetail", contactTeam.getAllUserDetail);
 
+
 router.post("/saveApproval", approvalStatus.saveApprovalStatus);
 
 router.put("/updateApprovalStatus/:userId", approvalStatus.updateApprovalStatus);
@@ -118,5 +123,11 @@ router.put("/updateApprovalStatus/:userId", approvalStatus.updateApprovalStatus)
 router.get('/getApprovedStatus', approvalStatus.getApprovedStatus);
 
 router.get('/getRejectStatus', approvalStatus.getRejectStatus);
+
+
+router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUser);
+router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSubUserById);
+router.get("/getAllMasterVendorSubUser",MasterVendorSubUser.getAllMasterVendorSubUser);
+router.post("/UpdateMasterVendorSubUserById",MasterVendorSubUser.UpdateMasterVendorSubUserById);
 
 module.exports = router;

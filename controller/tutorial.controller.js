@@ -6,6 +6,7 @@ exports.save = (req, res) => {
     const tutorial = {
         name: req.body.name,
         emailId: req.body.emailId,
+        userId:req.body.userId
     };
     tutorialSchema.create(tutorial)
         .then(data => {

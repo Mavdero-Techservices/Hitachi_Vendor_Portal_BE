@@ -9,7 +9,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         password: {
             type: Sequelize.STRING
-        }
+        },
+        userId: {
+            type: Sequelize.STRING
+        },
     });
     return tutorialSchema;
 };

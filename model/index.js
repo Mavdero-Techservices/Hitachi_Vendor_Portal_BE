@@ -30,5 +30,6 @@ db.imageUpload = require("./imageUpload.model")(sequelize, Sequelize);
 db.vendorCommunicationDetails = require("./communicationDetail.model")(sequelize, Sequelize);
 db.complianceDetail = require("./compDetails.model")(sequelize, Sequelize);
 db.contactTeam = require("./contactTeam.model")(sequelize, Sequelize);
-db.approvalStatus = require("./approval.model")(sequelize, Sequelize);
+db.MasterVendorSubUser = require("./MasterVendorSubUser.model")(sequelize, Sequelize);
+
 module.exports = db;
