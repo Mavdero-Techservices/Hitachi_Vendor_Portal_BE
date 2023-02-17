@@ -203,3 +203,28 @@ exports.updateApprovalStatus = async (req, res) => {
     }
   });
 };
+
+exports.getApprovedStatus = (req, res, next) => {
+  ApprovalSchema.findAll({ where: { level1Status: "approved" } })
+    .then((data) => {
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
+};
+
+exports.getRejectStatus = (req, res, next) => {
+  ApprovalSchema.findAll({ where: { level1Status: "rejected" } })
+    .then((data) => {
+      console.log("data", data);
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
+};

@@ -76,6 +76,8 @@ router.post("/saveBankDetail", bankdetail.saveBankDetail);
 //bankdetail - Update
 router.put("/updateBankDetail/:userId", bankdetail.updateBankDetail);
 
+
+
 // router.delete("/deleteFile/:filename",bankdetail.deleteFile);
 //statdetails schema - create
 // router.post("/saveStatdetail", statdetail.postStatdetail);
@@ -113,5 +115,8 @@ router.post("/saveApproval", approvalStatus.saveApprovalStatus);
 
 router.put("/updateApprovalStatus/:userId", approvalStatus.updateApprovalStatus);
 
+router.get('/getApprovedStatus', approvalStatus.getApprovedStatus);
+
+router.get('/getRejectStatus', approvalStatus.getRejectStatus);
 
 module.exports = router;
