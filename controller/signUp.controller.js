@@ -251,6 +251,8 @@ const user = config.user;
 const pass = config.pass;
 
 var transporter = nodemailer.createTransport({
+  service: 'gmail',
+   // service: 'Outlook365',
   auth: {
     user: user,
     pass: pass,
