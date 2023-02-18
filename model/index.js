@@ -31,5 +31,6 @@ db.vendorCommunicationDetails = require("./communicationDetail.model")(sequelize
 db.complianceDetail = require("./compDetails.model")(sequelize, Sequelize);
 db.contactTeam = require("./contactTeam.model")(sequelize, Sequelize);
 db.MasterVendorSubUser = require("./MasterVendorSubUser.model")(sequelize, Sequelize);
+db.approvalStatus = require("./approval.model")(sequelize, Sequelize);
 
 module.exports = db;

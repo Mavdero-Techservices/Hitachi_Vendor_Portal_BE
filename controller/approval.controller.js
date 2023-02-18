@@ -1,5 +1,6 @@
 const db = require("../model");
 const ApprovalSchema = db.approvalStatus;
+const SignUpSchema = db.singUp;
 const { check, validationResult } = require("express-validator");
 let directory_name = "uploads";
 const path = require("path");
@@ -58,13 +59,13 @@ var storage = multer.diskStorage({
       }
       cb(null, "level1rejectFileDoc-" + Date.now() + "." + filetype);
     }
-    if (file.fieldname === "rejectFile2DocPath") {
+    if (file.fieldname === "level2rejectFileDoc") {
       if (file.mimetype === "image/gif") {
         filetype = "gif";
         rejectFile2DocPath =
           directory_name +
           "/" +
-          "rejectFile2DocPath-" +
+          "level2rejectFileDoc-" +
           Date.now() +
           "." +
           filetype;
@@ -74,7 +75,7 @@ var storage = multer.diskStorage({
         rejectFile2DocPath =
           directory_name +
           "/" +
-          "rejectFile2DocPath-" +
+          "level2rejectFileDoc-" +
           Date.now() +
           "." +
           filetype;
@@ -82,7 +83,7 @@ var storage = multer.diskStorage({
       if (file.mimetype === "image/jpeg") {
         filetype = "jpg";
         rejectFile2DocPath =
-          "../uploads/" + "rejectFile2DocPath-" + Date.now() + "." + filetype;
+          "../uploads/" + "level2rejectFileDoc-" + Date.now() + "." + filetype;
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -94,23 +95,112 @@ var storage = multer.diskStorage({
           "." +
           filetype;
       }
-      cb(null, "rejectFile2DocPath-" + Date.now() + "." + filetype);
+      cb(null, "level2rejectFileDoc-" + Date.now() + "." + filetype);
     }
   },
 });
 
-exports.saveApprovalStatus = (req, res) => {
+var nodemailer = require("nodemailer");
+const config = require("../config/auth.config");
+const user = config.user;
+const pass = config.pass;
 
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  // service: 'Outlook365',
+  auth: {
+    user: user,
+    pass: pass,
+  },
+});
+
+exports.emailNotification = (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId,
+  level1rejectFileDoc
+) => {
+  console.log("level1rejectFileDoc", level1rejectFileDoc);
+
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+    attachments: [
+      {   // utf-8 string as an attachment
+          filename: 'text1.txt',
+          content: level1rejectFileDoc
+      },
+      {   // binary buffer as an attachment
+          filename: 'text2.txt',
+          content: level1rejectFileDoc
+      },
+      {   // file on disk as an attachment
+          filename: 'text3.txt',
+          path: level1rejectFileDoc // stream this file
+      },
+      {   // filename and content type is derived from path
+          path: level1rejectFileDoc
+      },
+      {   // stream as an attachment
+          filename: 'text4.txt',
+          content: level1rejectFileDoc
+      },
+      {   // define custom content type for the attachment
+          filename: 'text.bin',
+          content: 'hello world!',
+          contentType: level1rejectFileDoc
+      },
+      {   // use URL as an attachment
+          filename: 'license.txt',
+          path: level1rejectFileDoc
+      },
+      {   // encoded string as an attachment
+          filename: 'text1.txt',
+          content: level1rejectFileDoc,
+          encoding: 'base64'
+      },
+      {   // data uri as an attachment
+          path: level1rejectFileDoc
+      }
+   ]
+  };
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: "error", data: error });
+    } else {
+      if (returnFlag === true) {
+        return res
+          .status(200)
+          .json({ status: "error", data: "Error Response" });
+      } else {
+        return res
+          .status(200)
+          .json({ status: "success", data: "mail sent Successfully" });
+      }
+    }
+  });
+};
+
+exports.saveApprovalStatus = (req, res) => {
   rejectFile1DocPath = "";
   rejectFile2DocPath = "";
 
   var upload = multer({ storage: storage }).fields([
     { name: "level1rejectFileDoc", maxCount: 1 },
-    { name: "level2rejectFileDoc", maxCount: 1 }
+    { name: "level2rejectFileDoc", maxCount: 1 },
   ]);
-  upload(req, res, function (err) {
-    console.log("req", req.files);
-    console.log("req", req.body);
+  upload(req, res, async function (err) {
+
+    var userEmailId = await SignUpSchema.findOne({
+      where: { userId: req.body.userId },
+    });
+
+
     if (err) {
       console.log("InsideErr", err);
       return "err";
@@ -129,6 +219,8 @@ exports.saveApprovalStatus = (req, res) => {
       const level1rejectFileDoc = rejectFile1DocPath;
       const level2rejectFileDoc = rejectFile2DocPath;
       const userId = req.body.userId;
+      const emailId = userEmailId.emailId;
+
       const user = new ApprovalSchema({
         userId: userId,
         level1Status: req.body.level1Status,
@@ -141,10 +233,47 @@ exports.saveApprovalStatus = (req, res) => {
       user
         .save()
         .then((data) => {
+          if (data.level1Status === "approved") {
+            var subject = `Hitachi Vendor Approval`;
+            var emailContent = `
+                        <h1>Hi ${data.userId}</h1>
+                        <h4>Your Vendor Registration request is approved by Vendor Creation Team and proceeded for next stage of Approval.</h4>
+                        <p>Thanks & regards,</p>
+                        </div>`;
+            var returnFlag = false;
+            exports.emailNotification(
+              req,
+              res,
+              subject,
+              emailContent,
+              returnFlag,
+              emailId
+            );
+          } else {
+            var subject = `Hitachi Vendor Request Rejected`;
+            var emailContent = `
+                        <h1>Hi ${data.userId}</h1>
+                        <h4>Your Vendor Registration request is Rejected by Vendor Creation Team because of,</h4>
+                        <h4>${data.level1RejectComment}</h4>
+                        <h6>${data.level1rejectFileDoc}</h6>
+                        </div>`;
+            var returnFlag = false;
+            exports.emailNotification(
+              req,
+              res,
+              subject,
+              emailContent,
+              returnFlag,
+              emailId,
+              level1rejectFileDoc
+            );
+          }
+          console.log("data", data);
+
           return res.status(200).json({
-            message: "ApprovalDetail was created successfully!",
             status: "success",
-            data: data,
+            message: "Approval Detail Saved Successfully",
+            data,
           });
         })
         .catch((err) => {
@@ -159,6 +288,7 @@ exports.saveApprovalStatus = (req, res) => {
 };
 
 exports.updateApprovalStatus = async (req, res) => {
+
   rejectFile1DocPath = "";
   rejectFile2DocPath = "";
 
@@ -175,7 +305,6 @@ exports.updateApprovalStatus = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
-
     if (err) {
       console.log("InsideErr", err);
       return "err";
@@ -185,7 +314,7 @@ exports.updateApprovalStatus = async (req, res) => {
       req.body.level1rejectFileDoc = level1rejectFileDoc;
       req.body.level2rejectFileDoc = level2rejectFileDoc;
       ApprovalSchema.update(req.body, {
-        where: { userId },
+        where: { userId: userId },
       })
         .then(() => {
           res.status(200).send({
@@ -219,7 +348,6 @@ exports.getApprovedStatus = (req, res, next) => {
 exports.getRejectStatus = (req, res, next) => {
   ApprovalSchema.findAll({ where: { level1Status: "rejected" } })
     .then((data) => {
-      console.log("data", data);
       return res.status(200).json({ msg: "success", result: data });
     })
     .catch((err) => {
