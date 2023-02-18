@@ -117,12 +117,10 @@ router.get("/getAllUserDetail", contactTeam.getAllUserDetail);
 
 
 router.post("/saveApproval", approvalStatus.saveApprovalStatus);
-
 router.put("/updateApprovalStatus/:userId", approvalStatus.updateApprovalStatus);
-
 router.get('/getApprovedStatus', approvalStatus.getApprovedStatus);
-
 router.get('/getRejectStatus', approvalStatus.getRejectStatus);
+router.get('/getApprovalList', approvalStatus.getApprovalList);
 
 
 router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUser);

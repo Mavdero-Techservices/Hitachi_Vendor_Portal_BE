@@ -356,3 +356,17 @@ exports.getRejectStatus = (req, res, next) => {
         .json({ status: "error", data: { message: "Error Response", err } });
     });
 };
+
+
+exports.getApprovalList = (req, res, next) => {
+  ApprovalSchema.findAll()
+    .then((data) => {
+      console.log("data", data);
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
+};
