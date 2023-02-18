@@ -83,7 +83,7 @@ var storage = multer.diskStorage({
       if (file.mimetype === "image/jpeg") {
         filetype = "jpg";
         rejectFile2DocPath =
-          "../uploads/" + "level2rejectFileDoc-" + Date.now() + "." + filetype;
+        directory_name + "/" + "level2rejectFileDoc-" + Date.now() + "." + filetype;
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -124,6 +124,8 @@ exports.emailNotification = (
   level1rejectFileDoc
 ) => {
   console.log("level1rejectFileDoc", level1rejectFileDoc);
+  const format = level1rejectFileDoc.split('.')
+  console.log("format",format[1])
 
   var mailOptions = {
     from: user,
@@ -132,39 +134,7 @@ exports.emailNotification = (
     html: emailContent,
     attachments: [
       {   // utf-8 string as an attachment
-          filename: 'text1.txt',
-          content: level1rejectFileDoc
-      },
-      {   // binary buffer as an attachment
-          filename: 'text2.txt',
-          content: level1rejectFileDoc
-      },
-      {   // file on disk as an attachment
-          filename: 'text3.txt',
-          path: level1rejectFileDoc // stream this file
-      },
-      {   // filename and content type is derived from path
-          path: level1rejectFileDoc
-      },
-      {   // stream as an attachment
-          filename: 'text4.txt',
-          content: level1rejectFileDoc
-      },
-      {   // define custom content type for the attachment
-          filename: 'text.bin',
-          content: 'hello world!',
-          contentType: level1rejectFileDoc
-      },
-      {   // use URL as an attachment
-          filename: 'license.txt',
-          path: level1rejectFileDoc
-      },
-      {   // encoded string as an attachment
-          filename: 'text1.txt',
-          content: level1rejectFileDoc,
-          encoding: 'base64'
-      },
-      {   // data uri as an attachment
+          filename: 'attachment.' + format[1],
           path: level1rejectFileDoc
       }
    ]
@@ -206,16 +176,16 @@ exports.saveApprovalStatus = (req, res) => {
       return "err";
     } else {
       var file = req.files;
-      var path = Object.entries(file).map(([key, value]) => {
-        Object.entries(value).map(([key2, value2]) => {
-          if (value2.fieldname === "level1rejectFileDoc") {
-            rejectFile1DocPath = value2.path;
-          }
-          if (value2.fieldname === "level2rejectFileDoc") {
-            rejectFile2DocPath = value2.path;
-          }
-        });
-      });
+      // var path = Object.entries(file).map(([key, value]) => {
+      //   Object.entries(value).map(([key2, value2]) => {
+      //     if (value2.fieldname === "level1rejectFileDoc") {
+      //       rejectFile1DocPath = value2.path;
+      //     }
+      //     if (value2.fieldname === "level2rejectFileDoc") {
+      //       rejectFile2DocPath = value2.path;
+      //     }
+      //   });
+      // });
       const level1rejectFileDoc = rejectFile1DocPath;
       const level2rejectFileDoc = rejectFile2DocPath;
       const userId = req.body.userId;
@@ -253,9 +223,7 @@ exports.saveApprovalStatus = (req, res) => {
             var subject = `Hitachi Vendor Request Rejected`;
             var emailContent = `
                         <h1>Hi ${data.userId}</h1>
-                        <h4>Your Vendor Registration request is Rejected by Vendor Creation Team because of,</h4>
-                        <h4>${data.level1RejectComment}</h4>
-                        <h6>${data.level1rejectFileDoc}</h6>
+                        <h4>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.level1RejectComment}</h4>
                         </div>`;
             var returnFlag = false;
             exports.emailNotification(
