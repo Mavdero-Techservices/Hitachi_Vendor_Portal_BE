@@ -114,7 +114,42 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-exports.emailNotification = (
+exports.emailApprovalNotification = (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId,
+) => {
+
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+  };
+
+  console.log("mailOptions--->", mailOptions);
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: "error", data: error });
+    } else {
+      if (returnFlag === true) {
+        return res
+          .status(200)
+          .json({ status: "error", data: "Error Response" });
+      } else {
+        return res
+          .status(200)
+          .json({ status: "success", data: "mail sent Successfully" });
+      }
+    }
+  });
+};
+
+exports.emailRejectNotification = (
   req,
   res,
   subject,
@@ -166,6 +201,8 @@ exports.saveApprovalStatus = (req, res) => {
   ]);
   upload(req, res, async function (err) {
 
+    console.log("req", req.body);
+
     var userEmailId = await SignUpSchema.findOne({
       where: { userId: req.body.userId },
     });
@@ -203,7 +240,10 @@ exports.saveApprovalStatus = (req, res) => {
       user
         .save()
         .then((data) => {
+          console.log("data", data);
           if (data.level1Status === "approved") {
+            console.log("1111111111111");
+            console.log("level1Status", data.level1Status);
             var subject = `Hitachi Vendor Approval`;
             var emailContent = `
                         <h1>Hi ${data.userId}</h1>
@@ -211,7 +251,7 @@ exports.saveApprovalStatus = (req, res) => {
                         <p>Thanks & regards,</p>
                         </div>`;
             var returnFlag = false;
-            exports.emailNotification(
+            exports.emailApprovalNotification(
               req,
               res,
               subject,
@@ -226,7 +266,7 @@ exports.saveApprovalStatus = (req, res) => {
                         <h4>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.level1RejectComment}</h4>
                         </div>`;
             var returnFlag = false;
-            exports.emailNotification(
+            exports.emailRejectNotification(
               req,
               res,
               subject,
@@ -236,7 +276,7 @@ exports.saveApprovalStatus = (req, res) => {
               level1rejectFileDoc
             );
           }
-          console.log("data", data);
+          
 
           return res.status(200).json({
             status: "success",
