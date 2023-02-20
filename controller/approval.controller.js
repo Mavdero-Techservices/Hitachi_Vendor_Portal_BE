@@ -8,6 +8,7 @@ var multer = require("multer");
 const { log, Console } = require("console");
 var rejectFile1DocPath = "";
 var rejectFile2DocPath = "";
+var rejectFile3DocPath = "";
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -96,6 +97,44 @@ var storage = multer.diskStorage({
           filetype;
       }
       cb(null, "level2rejectFileDoc-" + Date.now() + "." + filetype);
+    }
+    if (file.fieldname === "level3rejectFileDoc") {
+      if (file.mimetype === "image/gif") {
+        filetype = "gif";
+        rejectFile3DocPath =
+          directory_name +
+          "/" +
+          "level3rejectFileDoc-" +
+          Date.now() +
+          "." +
+          filetype;
+      }
+      if (file.mimetype === "image/png") {
+        filetype = "png";
+        rejectFile3DocPath =
+          directory_name +
+          "/" +
+          "level3rejectFileDoc-" +
+          Date.now() +
+          "." +
+          filetype;
+      }
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        rejectFile3DocPath =
+        directory_name + "/" + "level3rejectFileDoc-" + Date.now() + "." + filetype;
+      }
+      if (file.mimetype === "application/pdf") {
+        filetype = "pdf";
+        rejectFile3DocPath =
+          directory_name +
+          "/" +
+          "financial_data2-" +
+          Date.now() +
+          "." +
+          filetype;
+      }
+      cb(null, "level3rejectFileDoc-" + Date.now() + "." + filetype);
     }
   },
 });
@@ -299,6 +338,7 @@ exports.updateApprovalStatus = async (req, res) => {
 
   rejectFile1DocPath = "";
   rejectFile2DocPath = "";
+  rejectFile3DocPath = "";
 
   var userId = req.params.userId;
   var upload = multer({ storage: storage }).fields([
@@ -310,6 +350,10 @@ exports.updateApprovalStatus = async (req, res) => {
       name: "level2rejectFileDoc",
       maxCount: 1,
     },
+    {
+      name: "level3rejectFileDoc",
+      maxCount: 1,
+    },
   ]);
 
   upload(req, res, async function (err) {
@@ -319,8 +363,10 @@ exports.updateApprovalStatus = async (req, res) => {
     } else {
       const level1rejectFileDoc = rejectFile1DocPath;
       const level2rejectFileDoc = rejectFile2DocPath;
+      const level3rejectFileDoc = rejectFile3DocPath;
       req.body.level1rejectFileDoc = level1rejectFileDoc;
       req.body.level2rejectFileDoc = level2rejectFileDoc;
+      req.body.level3rejectFileDoc = level3rejectFileDoc;
       ApprovalSchema.update(req.body, {
         where: { userId: userId },
       })

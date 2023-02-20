@@ -21,6 +21,15 @@ module.exports = (sequelize, Sequelize) => {
         level2rejectFileDoc: {
             type: Sequelize.STRING,
         },
+        level3Status: {
+            type: Sequelize.STRING,
+        },
+        level3RejectComment: {
+            type: Sequelize.STRING,
+        },
+        level3rejectFileDoc: {
+            type: Sequelize.STRING,
+        },
     })
     return ApprovalSchema;
 }
