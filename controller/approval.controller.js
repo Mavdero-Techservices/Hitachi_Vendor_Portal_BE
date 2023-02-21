@@ -5,7 +5,6 @@ const { check, validationResult } = require("express-validator");
 let directory_name = "uploads";
 const path = require("path");
 var multer = require("multer");
-const { log, Console } = require("console");
 var rejectFile1DocPath = "";
 var rejectFile2DocPath = "";
 var rejectFile3DocPath = "";
@@ -91,7 +90,7 @@ var storage = multer.diskStorage({
         rejectFile2DocPath =
           directory_name +
           "/" +
-          "financial_data2-" +
+          "level2rejectFileDoc-" +
           Date.now() +
           "." +
           filetype;
@@ -129,7 +128,7 @@ var storage = multer.diskStorage({
         rejectFile3DocPath =
           directory_name +
           "/" +
-          "financial_data2-" +
+          "level3rejectFileDoc-" +
           Date.now() +
           "." +
           filetype;
@@ -153,6 +152,8 @@ var transporter = nodemailer.createTransport({
   },
 });
 
+
+
 exports.emailApprovalNotification = (
   req,
   res,
@@ -169,7 +170,6 @@ exports.emailApprovalNotification = (
     html: emailContent,
   };
 
-  console.log("mailOptions--->", mailOptions);
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
@@ -197,9 +197,7 @@ exports.emailRejectNotification = (
   emailId,
   level1rejectFileDoc
 ) => {
-  console.log("level1rejectFileDoc", level1rejectFileDoc);
   const format = level1rejectFileDoc.split('.')
-  console.log("format",format[1])
 
   var mailOptions = {
     from: user,
@@ -230,17 +228,170 @@ exports.emailRejectNotification = (
   });
 };
 
+exports.emailJapanApprovalNotification = (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId,
+) => {
+
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+  };
+
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: "error", data: error });
+    } else {
+      if (returnFlag === true) {
+        return res
+          .status(200)
+          .json({ status: "error", data: "Error Response" });
+      } else {
+        return res
+          .status(200)
+          .json({ status: "success", data: "mail sent Successfully" });
+      }
+    }
+  });
+};
+
+
+exports.emailJapanRejectNotification = (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId,
+  level2rejectFileDoc
+) => {
+  const format = level2rejectFileDoc.split('.')
+
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+    attachments: [
+      {   // utf-8 string as an attachment
+          filename: 'attachment.' + format[1],
+          path: level2rejectFileDoc
+      }
+   ]
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: "error", data: error });
+    } else {
+      if (returnFlag === true) {
+        return res
+          .status(200)
+          .json({ status: "error", data: "Error Response" });
+      } else {
+        return res
+          .status(200)
+          .json({ status: "success", data: "mail sent Successfully" });
+      }
+    }
+  });
+};
+
+exports.emailMRTApprovalNotification = (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId,
+) => {
+
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+  };
+
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: "error", data: error });
+    } else {
+      if (returnFlag === true) {
+        return res
+          .status(200)
+          .json({ status: "error", data: "Error Response" });
+      } else {
+        return res
+          .status(200)
+          .json({ status: "success", data: "mail sent Successfully" });
+      }
+    }
+  });
+};
+
+exports.emailMRTRejectNotification = (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId,
+  level3rejectFileDoc
+) => {
+  const format = level3rejectFileDoc.split('.')
+
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+    attachments: [
+      {   // utf-8 string as an attachment
+          filename: 'attachment.' + format[1],
+          path: level3rejectFileDoc
+      }
+   ]
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: "error", data: error });
+    } else {
+      if (returnFlag === true) {
+        return res
+          .status(200)
+          .json({ status: "error", data: "Error Response" });
+      } else {
+        return res
+          .status(200)
+          .json({ status: "success", data: "mail sent Successfully" });
+      }
+    }
+  });
+};
+
+
 exports.saveApprovalStatus = (req, res) => {
   rejectFile1DocPath = "";
   rejectFile2DocPath = "";
+  rejectFile3DocPath = "";
 
   var upload = multer({ storage: storage }).fields([
     { name: "level1rejectFileDoc", maxCount: 1 },
     { name: "level2rejectFileDoc", maxCount: 1 },
+    { name: "level3rejectFileDoc", maxCount: 1,},
   ]);
   upload(req, res, async function (err) {
 
-    console.log("req", req.body);
 
     var userEmailId = await SignUpSchema.findOne({
       where: { userId: req.body.userId },
@@ -264,6 +415,7 @@ exports.saveApprovalStatus = (req, res) => {
       // });
       const level1rejectFileDoc = rejectFile1DocPath;
       const level2rejectFileDoc = rejectFile2DocPath;
+      const level3rejectFileDoc = rejectFile3DocPath;
       const userId = req.body.userId;
       const emailId = userEmailId.emailId;
 
@@ -275,14 +427,14 @@ exports.saveApprovalStatus = (req, res) => {
         level2Status: req.body.level2Status,
         level2RejectComment: req.body.level2RejectComment,
         level2rejectFileDoc: level2rejectFileDoc,
+        level3Status: req.body.level3Status,
+        level3RejectComment: req.body.level3RejectComment,
+        level3rejectFileDoc: level3rejectFileDoc
       });
       user
         .save()
         .then((data) => {
-          console.log("data", data);
           if (data.level1Status === "approved") {
-            console.log("1111111111111");
-            console.log("level1Status", data.level1Status);
             var subject = `Hitachi Vendor Approval`;
             var emailContent = `
                         <h1>Hi ${data.userId}</h1>
@@ -357,6 +509,11 @@ exports.updateApprovalStatus = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
+
+    var userEmailId = await SignUpSchema.findOne({
+      where: { userId: req.body.userId },
+    });
+
     if (err) {
       console.log("InsideErr", err);
       return "err";
@@ -367,10 +524,79 @@ exports.updateApprovalStatus = async (req, res) => {
       req.body.level1rejectFileDoc = level1rejectFileDoc;
       req.body.level2rejectFileDoc = level2rejectFileDoc;
       req.body.level3rejectFileDoc = level3rejectFileDoc;
+      const emailId = userEmailId.emailId;
       ApprovalSchema.update(req.body, {
         where: { userId: userId },
       })
         .then(() => {
+          if (req.body.level2Status === "approved") {
+            var subject = `Hitachi Japan Team Approval`;
+            var emailContent = `
+                        <h1>Hi ${req.body.userId}</h1>
+                        <h4>Your Vendor Registration request is approved by Japan Team and proceeded for next stage of Approval.</h4>
+                        <p>Thanks & regards,</p>
+                        </div>`;
+            var returnFlag = false;
+            exports.emailJapanApprovalNotification(
+              req,
+              res,
+              subject,
+              emailContent,
+              returnFlag,
+              emailId
+            );
+          }
+          if (req.body.level2rejectFileDoc) {
+            var subject = `Hitachi Japan Team Request Rejected`;
+            var emailContent = `
+                        <h1>Hi ${req.body.userId}</h1>
+                        <h4>Your Vendor Registration request is Rejected by Japan Team because of, ${req.body.level2RejectComment}</h4>
+                        </div>`;
+            var returnFlag = false;
+            exports.emailJapanRejectNotification(
+              req,
+              res,
+              subject,
+              emailContent,
+              returnFlag,
+              emailId,
+              level2rejectFileDoc
+            );
+          }
+          if (req.body.level3Status === "approved") {
+            var subject = `Hitachi MRT Team Approval`;
+            var emailContent = `
+                        <h1>Hi ${req.body.userId}</h1>
+                        <h4>Your Vendor Registration request is approved by MRT Team and proceeded for next stage of Approval.</h4>
+                        <p>Thanks & regards,</p>
+                        </div>`;
+            var returnFlag = false;
+            exports.emailMRTApprovalNotification(
+              req,
+              res,
+              subject,
+              emailContent,
+              returnFlag,
+              emailId
+            );
+          }
+          if (req.body.level3rejectFileDoc) {
+            var subject = `Hitachi MRT Request Rejected`;
+            var emailContent = `
+                        <h1>Hi ${req.body.userId}</h1>
+                        <h4>Your Vendor Registration request is Rejected by MRT Team because of, ${req.body.level2RejectComment}</h4>
+                        </div>`;
+            var returnFlag = false;
+            exports.emailMRTRejectNotification(
+              req,
+              res,
+              subject,
+              emailContent,
+              returnFlag,
+              emailId,
+              level3rejectFileDoc
+            );
+          }
           res.status(200).send({
             message: "ApprovalStatus was updated successfully!",
             status: "success",
@@ -415,7 +641,6 @@ exports.getRejectStatus = (req, res, next) => {
 exports.getApprovalList = (req, res, next) => {
   ApprovalSchema.findAll()
     .then((data) => {
-      console.log("data", data);
       return res.status(200).json({ msg: "success", result: data });
     })
     .catch((err) => {
