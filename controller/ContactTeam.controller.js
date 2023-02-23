@@ -28,9 +28,11 @@ const fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    console.log("file", file);
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
+    console.log("filename", file);
     var filetype = "";
 
     if (file.fieldname === "bankdetailDoc") {
@@ -682,6 +684,8 @@ exports.updateAllCollection = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
+    console.log("req", req.body);
+    console.log("req", req.files);
 
     const basicDetails = {
       userId: req.body.userId,
@@ -694,8 +698,8 @@ exports.updateAllCollection = async (req, res) => {
       pinCode: req.body.pinCode,
       image: req.body.image,
       vendorType: req.body.vendorType,
-      vendorManager: req.body.acManager,
-      mkDenialCheque: req.body.mkcheck,
+      vendorManager: req.body.vendorManager,
+      mkDenialCheque: req.body.mkDenialCheque,
     };
 
     const communicationDetails = {
@@ -708,6 +712,10 @@ exports.updateAllCollection = async (req, res) => {
       operationSpocdesignation: req.body.operationSpocdesignation,
       operationSpocphoneNo: req.body.operationSpocphoneNo,
       operationSpocemail: req.body.operationSpocemail,
+      collectionSpoccontactName: req.body.collectionSpoccontactName,
+      collectionSpocdesignation: req.body.collectionSpocdesignation,
+      collectionSpocphoneNo: req.body.collectionSpocphoneNo,
+      collectionSpocemail: req.body.collectionSpocemail,
       managementSpoccontactName: req.body.managementSpoccontactName,
       managementSpocdesignation: req.body.managementSpocdesignation,
       managementSpocphoneNo: req.body.managementSpocphoneNo,
@@ -716,15 +724,35 @@ exports.updateAllCollection = async (req, res) => {
       designation: req.body.designation,
       phoneNo: req.body.phoneNo,
       email: req.body.others_Email,
+      mastervendor_email: req.body.mastervendor_email,
     };
 
-    const GST_Doc = GST_DocPath;
-    const PAN_Doc = PAN_DocPath;
-    const TAN_Doc = TAN_DocPath;
-    const form_10f_Doc = form_10f_DocPath;
-    const PE_Declaration_Doc = PE_Declaration_DocPath;
-    const MSME_Doc = MSME_DocPath;
-    const Tax_residency_Doc = Tax_residency_DocPath;
+    let GST_Doc = GST_DocPath;
+    let PAN_Doc = PAN_DocPath;
+    let TAN_Doc = TAN_DocPath;
+    let form_10f_Doc = form_10f_DocPath;
+    let PE_Declaration_Doc = PE_Declaration_DocPath;
+    let MSME_Doc = MSME_DocPath;
+    let Tax_residency_Doc = Tax_residency_DocPath;
+
+    if (GST_Doc || PAN_Doc || TAN_Doc || form_10f_Doc || PE_Declaration_Doc || MSME_Doc || Tax_residency_Doc) {
+      req.body.GST_Doc = GST_Doc;
+      req.body.PAN_Doc = PAN_Doc;
+      req.body.TAN_Doc = TAN_Doc;
+      req.body.form_10f_Doc = form_10f_Doc;
+      req.body.PE_Declaration_Doc = PE_Declaration_Doc;
+      req.body.MSME_Doc = MSME_Doc;
+      req.body.Tax_residency_Doc = Tax_residency_Doc;
+    } else {
+      GST_Doc = req.body.GST_Doc;
+      PAN_Doc = req.body.PAN_Doc;
+      TAN_Doc = req.body.TAN_Doc;
+      form_10f_Doc = req.body.form_10f_Doc;
+      PE_Declaration_Doc = req.body.PE_Declaration_Doc;
+      MSME_Doc = req.body.MSME_Doc;
+      Tax_residency_Doc = req.body.Tax_residency_Doc;
+    }
+
     req.body.GST_Doc = GST_Doc;
     req.body.PAN_Doc = PAN_Doc;
     req.body.TAN_Doc = TAN_Doc;
@@ -752,12 +780,20 @@ exports.updateAllCollection = async (req, res) => {
       Tax_residency_Doc: Tax_residency_Doc,
     };
 
-    const NDA_Doc = NDA_DocPath;
-    const COC_Doc = COC_DocPath;
-    const RPD_Doc = RPD_DocPath;
-    req.body.NDA_Doc = NDA_Doc;
-    req.body.COC_Doc = COC_Doc;
-    req.body.RPD_Doc = RPD_Doc;
+    let NDA_Doc = NDA_DocPath;
+    let COC_Doc = COC_DocPath;
+    let RPD_Doc = RPD_DocPath;
+
+    if (RPD_Doc || COC_Doc || NDA_Doc) {
+      req.body.NDA_Doc = NDA_Doc;
+      req.body.COC_Doc = COC_Doc;
+      req.body.RPD_Doc = RPD_Doc;
+    } else {
+      NDA_Doc = req.body.NDA_Doc;
+      COC_Doc = req.body.COC_Doc;
+      RPD_Doc = req.body.RPD_Doc;
+    }
+
     const complianceDetails = {
       userId: req.body.userId,
       RPD_Doc: RPD_Doc,
@@ -765,10 +801,16 @@ exports.updateAllCollection = async (req, res) => {
       NDA_Doc: NDA_Doc,
     };
 
-    const financial_data = financial_data_DocPath;
-    const financial_data2 = financial_data2_DocPath;
-    req.body.financial_data = financial_data;
-    req.body.financial_data2 = financial_data2;
+    let financial_data = financial_data_DocPath;
+    let financial_data2 = financial_data2_DocPath;
+
+    if (financial_data || financial_data2) {
+      req.body.financial_data = financial_data;
+      req.body.financial_data2 = financial_data2;
+    } else {
+      financial_data = req.body.financial_data;
+      financial_data = req.body.financial_data;
+    }
 
     const financeDetails = {
       userId: req.body.userId,
@@ -782,8 +824,13 @@ exports.updateAllCollection = async (req, res) => {
       directorDetails: req.body.directorDetails,
     };
 
-    const bankdetailDoc = bankdetailDocPath;
-    req.body.bankdetailDoc = bankdetailDoc;
+    let bankdetailDoc = bankdetailDocPath;
+    if (bankdetailDoc) {
+      req.body.bankdetailDoc = bankdetailDoc;
+    } else {
+      bankdetailDoc = req.body.bankdetailDoc;
+    }
+
     const bankDetails = {
       userId: req.body.userId,
       bankAccountName: req.body.bankAccountName,
@@ -810,15 +857,27 @@ exports.updateAllCollection = async (req, res) => {
 
     const promises = [
       VdetailSchema.update(basicDetails, { where: { userId: userId } }),
-      vendorCommunicationDetails.update(communicationDetails, { where: { userId: userId } }),
+      vendorCommunicationDetails.update(communicationDetails, {
+        where: { userId: userId },
+      }),
       contactTeamSchema.update(contactDetails, { where: { userId: userId } }),
       BankdetailSchema.update(bankDetails, { where: { userId: userId } }),
-        StatDetailSchema.update(statutoryDetails, { where: { userId: userId } }),
-        CompliancedetailSchema.update(complianceDetails, { where: { userId: userId } }),
-        FdetailSchema.update(financeDetails, { where: { userId: userId } })
+      StatDetailSchema.update(statutoryDetails, { where: { userId: userId } }),
+      CompliancedetailSchema.update(complianceDetails, {
+        where: { userId: userId },
+      }),
+      FdetailSchema.update(financeDetails, { where: { userId: userId } }),
     ];
     try {
-      const [basicDetails,bankDetails,statutoryDetails,complianceDetails,financeDetails,communicationDetails,contactDetails] = await Promise.all(promises);
+      const [
+        basicDetails,
+        bankDetails,
+        statutoryDetails,
+        complianceDetails,
+        financeDetails,
+        communicationDetails,
+        contactDetails,
+      ] = await Promise.all(promises);
       res.status(200).json({
         status: "success",
         basicDetails,
@@ -827,7 +886,7 @@ exports.updateAllCollection = async (req, res) => {
         statutoryDetails,
         complianceDetails,
         financeDetails,
-        contactDetails
+        contactDetails,
       });
     } catch (err) {
       res.status(500).json({
