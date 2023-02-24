@@ -11,9 +11,8 @@ const compDetail = require("../controller/compDetail.controller");
 const commsDetail = require("../controller/commsDetails.controller")
 const hisysContact = require("../controller/hisysContact.controller")
 const contactTeam = require("../controller/ContactTeam.controller")
-
 const approvalStatus = require("../controller/approval.controller")
-
+const periodicRequest = require("../controller/periodicReq.controller")
 
 const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
 
@@ -122,6 +121,10 @@ router.get('/getApprovedStatus', approvalStatus.getApprovedStatus);
 router.get('/getRejectStatus', approvalStatus.getRejectStatus);
 router.get('/getApprovalList', approvalStatus.getApprovalList);
 
+router.post("/savePeriodicReq", periodicRequest.savePeriodicRequest);
+router.put("/updatePeriodicReq/:userId", periodicRequest.updatePeriodicRequest);
+router.get("/getPeriodicReq", periodicRequest.periodicReqList);
+router.delete("/deletePeriodicReq/:userId", periodicRequest.periodicReqdelete);
 
 router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUser);
 router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSubUserById);

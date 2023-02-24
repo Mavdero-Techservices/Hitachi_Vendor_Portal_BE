@@ -32,5 +32,6 @@ db.complianceDetail = require("./compDetails.model")(sequelize, Sequelize);
 db.contactTeam = require("./contactTeam.model")(sequelize, Sequelize);
 db.MasterVendorSubUser = require("./MasterVendorSubUser.model")(sequelize, Sequelize);
 db.approvalStatus = require("./approval.model")(sequelize, Sequelize);
+db.periodicRequest = require("./periodicReq.model")(sequelize, Sequelize);
 
 module.exports = db;
