@@ -124,7 +124,7 @@ router.get('/getApprovalList', approvalStatus.getApprovalList);
 router.post("/savePeriodicReq", periodicRequest.savePeriodicRequest);
 router.put("/updatePeriodicReq/:userId", periodicRequest.updatePeriodicRequest);
 router.get("/getPeriodicReq", periodicRequest.periodicReqList);
-router.delete("/deletePeriodicReq/:userId", periodicRequest.periodicReqdelete);
+router.delete("/deletePeriodicReq/:id", periodicRequest.periodicReqdelete);
 
 router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUser);
 router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSubUserById);

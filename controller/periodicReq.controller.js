@@ -214,11 +214,11 @@ exports.periodicReqList = (req, res, next) => {
 };
 
 exports.periodicReqdelete = (req, res) => {
-  const userId = req.params.userId;
+  const id = req.params.id;
 
   PeriodicReqSchema
     .destroy({
-      where: { userId: userId },
+      where: { id: id },
     })
     .then((data) => {
       return res
