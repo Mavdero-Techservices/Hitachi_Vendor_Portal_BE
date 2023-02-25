@@ -71,10 +71,10 @@ var storage = multer.diskStorage({
         RPD_DocPath =
           directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        RPD_DocPath = directory_name + "/" + 'RPD_Doc-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        RPD_DocPath =
+          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -94,10 +94,10 @@ var storage = multer.diskStorage({
         COC_DocPath =
           directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        COC_DocPath =directory_name + "/" + 'COC_Doc-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        COC_DocPath =
+          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -117,10 +117,10 @@ var storage = multer.diskStorage({
         NDA_DocPath =
           directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        NDA_DocPath = directory_name + "/" + 'NDA_Doc-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        NDA_DocPath =
+          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -310,12 +310,21 @@ exports.updateComplianceDetail = async (req, res) => {
           }
         }
       } else {
-        const NDA_Doc = NDA_DocPath;
-        const COC_Doc = COC_DocPath;
-        const RPD_Doc = RPD_DocPath;
-        req.body.NDA_Doc = NDA_Doc;
-        req.body.COC_Doc = COC_Doc;
-        req.body.RPD_Doc = RPD_Doc;
+
+        let NDA_Doc = NDA_DocPath;
+        let COC_Doc = COC_DocPath;
+        let RPD_Doc = RPD_DocPath;
+
+        if (RPD_Doc || COC_Doc || NDA_Doc) {
+          req.body.NDA_Doc = NDA_Doc;
+          req.body.COC_Doc = COC_Doc;
+          req.body.RPD_Doc = RPD_Doc;
+        } else {
+          NDA_Doc = req.body.NDA_Doc;
+          COC_Doc = req.body.COC_Doc;
+          RPD_Doc = req.body.RPD_Doc;
+        }
+
         CompliancedetailSchema.update(req.body, {
           where: { userId },
         })
@@ -332,25 +341,26 @@ exports.updateComplianceDetail = async (req, res) => {
                 "Some error occurred while updating the Compliancedetail schema.",
             });
           });
+
         ComplianceOneDelete = cDetails.NDA_Doc;
         ComplianceTwoDelete = cDetails.COC_Doc;
         ComplianceThreeDelete = cDetails.RPD_Doc;
 
-        if (ComplianceOneDelete) {
+        if (ComplianceOneDelete && !req.body.NDA_Doc) {
           fs.unlink(ComplianceOneDelete, (err) => {
             if (err) {
               throw err;
             }
           });
         }
-        if (ComplianceTwoDelete) {
+        if (ComplianceTwoDelete && !req.body.COC_Doc) {
           fs.unlink(ComplianceTwoDelete, (err) => {
             if (err) {
               throw err;
             }
           });
         }
-        if (ComplianceThreeDelete) {
+        if (ComplianceThreeDelete && !req.body.RPD_Doc) {
           fs.unlink(ComplianceThreeDelete, (err) => {
             if (err) {
               throw err;

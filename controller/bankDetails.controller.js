@@ -26,10 +26,10 @@ var storage = multer.diskStorage({
         bankdetailDocPath =
           directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        bankdetailDocPath = directory_name + "/" + 'bankdetailDoc-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        bankdetailDocPath =
+          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -104,6 +104,7 @@ exports.updateBankDetail = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
+
     var bDetails = await BankdetailSchema.findOne({
       where: { userId: req.params.userId },
     });
@@ -156,8 +157,8 @@ exports.updateBankDetail = async (req, res) => {
               });
             });
           directoryDelete = bDetails.bankdetailDoc;
-          if (directoryDelete) {
 
+          if (directoryDelete) {
             fs.unlink(directoryDelete, (err) => {
               if (err) {
                 throw err;
@@ -166,8 +167,14 @@ exports.updateBankDetail = async (req, res) => {
           }
         }
       } else {
-        const bankdetailDoc = bankdetailDocPath;
-        req.body.bankdetailDoc = bankdetailDoc;
+
+        let bankdetailDoc = bankdetailDocPath;
+        if (bankdetailDoc) {
+          req.body.bankdetailDoc = bankdetailDoc;
+        } else {
+          bankdetailDoc = req.body.bankdetailDoc;
+        }
+
         BankdetailSchema.update(req.body, {
           where: {
             userId: userId,
@@ -187,14 +194,16 @@ exports.updateBankDetail = async (req, res) => {
             });
           });
 
-        directoryDelete = bDetails.bankdetailDoc;
-        if (directoryDelete) {
-          fs.unlink(directoryDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
-        } else {
+        if (!req.body.bankdetailDoc) {
+          directoryDelete = bDetails.bankdetailDoc;
+          if (directoryDelete) {
+            fs.unlink(directoryDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          } else {
+          }
         }
       }
     }

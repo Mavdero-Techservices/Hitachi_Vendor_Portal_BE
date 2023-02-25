@@ -99,10 +99,15 @@ var storage = multer.diskStorage({
           "." +
           filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        financial_data_DocPath = directory_name + "/"+ 'financial_data-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        financial_data_DocPath =
+          directory_name +
+          "/" +
+          "financial_data-" +
+          Date.now() +
+          "." +
+          filetype;
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -137,10 +142,15 @@ var storage = multer.diskStorage({
           "." +
           filetype;
       }
-      if (file.mimetype === 'image/jpeg') {
-        filetype = 'jpg';
-        financial_data2_DocPath = directory_name + "/" + 'financial_data2-' + Date.now() + '.' + filetype;
-
+      if (file.mimetype === "image/jpeg") {
+        filetype = "jpg";
+        financial_data2_DocPath =
+          directory_name +
+          "/" +
+          "financial_data2-" +
+          Date.now() +
+          "." +
+          filetype;
       }
       if (file.mimetype === "application/pdf") {
         filetype = "pdf";
@@ -312,10 +322,18 @@ exports.updateFinacialDetail = async (req, res) => {
           }
         }
       } else {
-        const financial_data = financial_data_DocPath;
-        const financial_data2 = financial_data2_DocPath;
-        req.body.financial_data = financial_data;
-        req.body.financial_data2 = financial_data2;
+
+        let financial_data = financial_data_DocPath;
+        let financial_data2 = financial_data2_DocPath;
+
+        if (financial_data || financial_data2) {
+          req.body.financial_data = financial_data;
+          req.body.financial_data2 = financial_data2;
+        } else {
+          financial_data = req.body.financial_data;
+          financial_data = req.body.financial_data;
+        }
+
         FdetailSchema.update(req.body, {
           where: { userId },
         })
@@ -332,16 +350,17 @@ exports.updateFinacialDetail = async (req, res) => {
                 "Some error occurred while updating the Financialdetail schema.",
             });
           });
+
         directoryFiananceOneDelete = fDetails.financial_data;
         directoryFiananceTwoDelete = fDetails.financial_data2;
-        if (directoryFiananceOneDelete) {
+        if (directoryFiananceOneDelete && !req.body.financial_data) {
           fs.unlink(directoryFiananceOneDelete, (err) => {
             if (err) {
               throw err;
             }
           });
         }
-        if (directoryFiananceTwoDelete) {
+        if (directoryFiananceTwoDelete && !req.body.financial_data2) {
           fs.unlink(directoryFiananceTwoDelete, (err) => {
             if (err) {
               throw err;
