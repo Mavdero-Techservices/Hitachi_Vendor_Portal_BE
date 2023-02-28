@@ -6,6 +6,6 @@ module.exports = {
   // pass: "May64863",
   service: 'gmail',
   user: "karthigapalani4@gmail.com", 
-  pass: "okiqnfsjlyeemsns", 
-
+  host: 'smtp.gmail.com',
+  pass: "lrgzcunyeqkszxiq", 
 };
