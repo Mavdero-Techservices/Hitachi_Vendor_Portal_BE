@@ -5,6 +5,7 @@ const path = require("path");
 var multer = require("multer");
 var documentFileDocPath = "";
 const fs = require("fs");
+var Sequelize = require("sequelize");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -101,104 +102,24 @@ exports.savePeriodicRequest = (req, res) => {
 };
 
 exports.updatePeriodicRequest = async (req, res) => {
-  var userId = req.params.userId;
 
-  documentFileDocPath = "";
+  for (let i = 0; i < req.body.length; i++) {
+    const row = { ...req.body[i] };
 
-  var pDetails = await PeriodicReqSchema.findOne({
-    where: { userId: req.params.userId },
-  });
+    PeriodicReqSchema.update(row, {
+      where: { userId: row.userId },
+      validate: true,
+      returning: true,
+    });
+  }
 
-  var upload = multer({ storage: storage }).fields([
-    { name: "documentFileDoc", maxCount: 1 },
-  ]);
+    res.status(200).send({
+      message: "PeriodicRequest Details was updated successfully!",
+      status: "success",
+    });
+   
 
-  upload(req, res, async function (err) {
-    if (req.files.documentFileDoc) {
-      if (pDetails.documentFileDoc === req.files.documentFileDoc.path) {
-        const documentFileDoc = documentFileDocPath;
-        req.body.documentFileDoc = documentFileDoc;
-        PeriodicReqSchema.update(req.body, {
-          where: {
-            userId: userId,
-          },
-        })
-          .then(() => {
-            res.status(200).send({
-              message: "PeriodicRequest was updated successfully!",
-              status: "success",
-            });
-          })
-          .catch((err) => {
-            res.status(500).send({
-              message:
-                err.message ||
-                "Some error occurred while updating the Bankdetail schema.",
-            });
-          });
-      } else {
-        const documentFileDoc = documentFileDocPath;
-        req.body.documentFileDoc = documentFileDoc;
-        PeriodicReqSchema.update(req.body, {
-          where: {
-            userId: userId,
-          },
-        })
-          .then(() => {
-            res.status(200).send({
-              message: "Bankdetail was updated successfully!",
-              status: "success",
-            });
-          })
-          .catch((err) => {
-            res.status(500).send({
-              message:
-                err.message ||
-                "Some error occurred while updating the Bankdetail schema.",
-            });
-          });
-        directoryDelete = pDetails.documentFileDoc;
-        if (directoryDelete) {
-          fs.unlink(directoryDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
-        }
-      }
-    } else {
-      const documentFileDoc = documentFileDocPath;
-      req.body.documentFileDoc = documentFileDoc;
-      PeriodicReqSchema.update(req.body, {
-        where: {
-          userId: userId,
-        },
-      })
-        .then(() => {
-          res.status(200).send({
-            message: "Bankdetail was updated successfully!",
-            status: "success",
-          });
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-              err.message ||
-              "Some error occurred while updating the Bankdetail schema.",
-          });
-        });
-
-      directoryDelete = pDetails.documentFileDoc;
-      if (directoryDelete) {
-        fs.unlink(directoryDelete, (err) => {
-          if (err) {
-            throw err;
-          }
-        });
-      } else {
-      }
-    }
-  });
+  
 };
 
 exports.periodicReqList = (req, res, next) => {
@@ -216,10 +137,9 @@ exports.periodicReqList = (req, res, next) => {
 exports.periodicReqdelete = (req, res) => {
   const id = req.params.id;
 
-  PeriodicReqSchema
-    .destroy({
-      where: { id: id },
-    })
+  PeriodicReqSchema.destroy({
+    where: { id: id },
+  })
     .then((data) => {
       return res
         .status(200)

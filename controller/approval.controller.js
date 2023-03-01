@@ -328,8 +328,11 @@ exports.emailMRTApprovalNotification = (
     html: emailContent,
   };
 
+  console.log("mailOptions", mailOptions);
+
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
+      console.log("error", error);
       return res.status(200).json({ status: "error", data: error });
     } else {
       if (returnFlag === true) {

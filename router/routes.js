@@ -13,7 +13,7 @@ const hisysContact = require("../controller/hisysContact.controller")
 const contactTeam = require("../controller/ContactTeam.controller")
 const approvalStatus = require("../controller/approval.controller")
 const periodicRequest = require("../controller/periodicReq.controller")
-
+const vendorFile = require("../controller/vendorFile.controller")
 const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
 
 const router = express.Router();
@@ -125,6 +125,9 @@ router.post("/savePeriodicReq", periodicRequest.savePeriodicRequest);
 router.put("/updatePeriodicReq/:userId", periodicRequest.updatePeriodicRequest);
 router.get("/getPeriodicReq", periodicRequest.periodicReqList);
 router.delete("/deletePeriodicReq/:id", periodicRequest.periodicReqdelete);
+
+router.post("/saveVendorFile", vendorFile.saveVendorFiles);
+router.put("/updateVendorFile/:userId", vendorFile.updateVendorFiles);
 
 router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUser);
 router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSubUserById);
