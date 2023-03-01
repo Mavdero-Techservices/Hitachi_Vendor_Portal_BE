@@ -15,6 +15,7 @@ const approvalStatus = require("../controller/approval.controller")
 const periodicRequest = require("../controller/periodicReq.controller")
 const vendorFile = require("../controller/vendorFile.controller")
 const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
+const vendorApproval = require("../controller/vendorPortalApproval.controller")
 
 const router = express.Router();
 /* GET home page. */
@@ -133,5 +134,10 @@ router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUs
 router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSubUserById);
 router.get("/getAllMasterVendorSubUser",MasterVendorSubUser.getAllMasterVendorSubUser);
 router.post("/UpdateMasterVendorSubUserById",MasterVendorSubUser.UpdateMasterVendorSubUserById);
+
+router.post("/saveVendorApproval", vendorApproval.saveVendorApprovalStatus);
+router.put("/updatevendorApprovalStatus/:id", vendorApproval.updateVendorApprovalStatus);
+router.get('/vendorApprovalList', vendorApproval.getVendorApprovalList);
+router.get('/downloadVendorApprovalList/:vendorCode', vendorApproval.downloadVendorItemExcel);
 
 module.exports = router;

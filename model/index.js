@@ -34,5 +34,6 @@ db.MasterVendorSubUser = require("./MasterVendorSubUser.model")(sequelize, Seque
 db.approvalStatus = require("./approval.model")(sequelize, Sequelize);
 db.periodicRequest = require("./periodicReq.model")(sequelize, Sequelize);
 db.vendorFile = require("./vendorFile.model")(sequelize, Sequelize);
+db.vendorApproval = require("./vendorPortalApproval.model")(sequelize, Sequelize);
 
 module.exports = db;
