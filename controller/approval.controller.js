@@ -328,7 +328,6 @@ exports.emailMRTApprovalNotification = (
     html: emailContent,
   };
 
-  console.log("mailOptions", mailOptions);
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
@@ -561,7 +560,6 @@ exports.updateApprovalStatus = async (req, res) => {
             let paths = mVendoremailId.split("@");
             let name = paths[0]
             const contactPerson = name;
-            console.log("contactPerson-------------->",contactPerson);
             const userId =
               `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
             const userName =

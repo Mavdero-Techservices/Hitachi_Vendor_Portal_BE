@@ -28,11 +28,9 @@ const fs = require("fs");
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    console.log("file", file);
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-    console.log("filename", file);
     var filetype = "";
 
     if (file.fieldname === "bankdetailDoc") {
@@ -684,8 +682,7 @@ exports.updateAllCollection = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
-    console.log("req", req.body);
-    console.log("req", req.files);
+
 
     const basicDetails = {
       userId: req.body.userId,

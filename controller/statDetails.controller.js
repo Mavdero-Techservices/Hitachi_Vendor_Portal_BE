@@ -504,7 +504,9 @@ exports.updateStatutoryDetail = async (req, res) => {
   PE_Declaration_DocPath = "";
   MSME_DocPath = "";
   Tax_residency_DocPath = "";
+
   var userId = req.params.userId;
+
   var upload = multer({ storage: storage }).fields([
     {
       name: "GST_Doc",
@@ -553,190 +555,128 @@ exports.updateStatutoryDetail = async (req, res) => {
         req.files.MSME_Doc?.length > 0 ||
         req.files.Tax_residency_Doc?.length > 0
       ) {
-        if (
-          statDetails.GST_Doc === req.files.GST_Doc
-            ? req.files.GST_Doc[0].path
-            : "" || statDetails.PAN_Doc === req.files.PAN_Doc
-            ? req.files.PAN_Doc[0].path
-            : "" || statDetails.form_10f_Doc === req.files.form_10f_Doc
-            ? req.files.form_10f_Doc[0].path
-            : "" || statDetails.TAN_Doc === req.files.TAN_Doc
-            ? req.files.TAN_Doc[0].path
-            : "" ||
-              statDetails.PE_Declaration_Doc === req.files.PE_Declaration_Doc
-            ? req.files.PE_Declaration_Doc[0].path
-            : "" || statDetails.MSME_Doc === req.files.MSME_Doc
-            ? req.files.MSME_Doc[0].path
-            : "" ||
-              statDetails.Tax_residency_Doc === req.files.Tax_residency_Doc
-            ? req.files.Tax_residency_Doc[0].path
-            : ""
-        ) {
-          const GST_Doc = GST_DocPath;
-          const PAN_Doc = PAN_DocPath;
-          const TAN_Doc = TAN_DocPath;
-          const form_10f_Doc = form_10f_DocPath;
-          const PE_Declaration_Doc = PE_Declaration_DocPath;
-          const MSME_Doc = MSME_DocPath;
-          const Tax_residency_Doc = Tax_residency_DocPath;
-          req.body.GST_Doc = GST_Doc;
-          req.body.PAN_Doc = PAN_Doc;
-          req.body.TAN_Doc = TAN_Doc;
-          req.body.form_10f_Doc = form_10f_Doc;
-          req.body.PE_Declaration_Doc = PE_Declaration_Doc;
-          req.body.MSME_Doc = MSME_Doc;
-          req.body.Tax_residency_Doc = Tax_residency_Doc;
+        let GST_Doc = GST_DocPath;
+        let PAN_Doc = PAN_DocPath;
+        let form_10f_Doc = form_10f_DocPath;
+        let TAN_Doc = TAN_DocPath;
+        let PE_Declaration_Doc = PE_Declaration_DocPath;
+        let MSME_Doc = MSME_DocPath;
+        let Tax_residency_Doc = Tax_residency_DocPath;
 
-          StatDetailSchema.update(req.body, {
-            where: { userId },
-          })
-            .then(() => {
-              res.status(200).send({
-                message: "StatutoryDetail was updated successfully!",
-                status: "success",
-              });
-            })
-            .catch((err) => {
-              res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while updating the StatutoryDetail schema.",
-              });
-            });
+        if (statDetails.GST_Doc === req.body.GST_Doc) {
+          GST_Doc = req.body.GST_Doc;
         } else {
-          const GST_Doc = GST_DocPath;
-          const PAN_Doc = PAN_DocPath;
-          const TAN_Doc = TAN_DocPath;
-          const form_10f_Doc = form_10f_DocPath;
-          const PE_Declaration_Doc = PE_Declaration_DocPath;
-          const MSME_Doc = MSME_DocPath;
-          const Tax_residency_Doc = Tax_residency_DocPath;
-          req.body.GST_Doc = GST_Doc;
-          req.body.PAN_Doc = PAN_Doc;
-          req.body.TAN_Doc = TAN_Doc;
-          req.body.form_10f_Doc = form_10f_Doc;
-          req.body.PE_Declaration_Doc = PE_Declaration_Doc;
-          req.body.MSME_Doc = MSME_Doc;
-          req.body.Tax_residency_Doc = Tax_residency_Doc;
-
-          StatDetailSchema.update(req.body, {
-            where: { userId },
-          })
-            .then(() => {
-              res.status(200).send({
-                message: "StatutoryDetail was updated successfully!",
-                status: "success",
-              });
-            })
-            .catch((err) => {
-              res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while updating the StatutoryDetail schema.",
-              });
-            });
-
+          GST_Doc = GST_DocPath;
           StatOneDelete = statDetails.GST_Doc;
-          StatTwoDelete = statDetails.PAN_Doc;
-          StatThreeDelete = statDetails.TAN_Doc;
-          StatFourDelete = statDetails.form_10f_Doc;
-          StatFIveDelete = statDetails.PE_Declaration_Doc;
-          StatSixDelete = statDetails.MSME_Doc;
-          StatSevenDelete = statDetails.Tax_residency_Doc;
-
-          if (StatOneDelete) {
+          if (StatOneDelete && !req.body.GST_Doc) {
             fs.unlink(StatOneDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
-          if (StatTwoDelete) {
+        }
+
+        if (statDetails.PAN_Doc === req.body.PAN_Doc) {
+          PAN_Doc = req.body.PAN_Doc;
+        } else {
+          PAN_Doc = PAN_DocPath;
+          StatTwoDelete = statDetails.PAN_Doc;
+          if (StatTwoDelete && !req.body.PAN_Doc) {
             fs.unlink(StatTwoDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
-          if (StatThreeDelete) {
+        }
+
+        if (statDetails.form_10f_Doc === req.body.form_10f_Doc) {
+          form_10f_Doc = req.body.form_10f_Doc;
+        } else {
+          form_10f_Doc = form_10f_DocPath;
+          StatThreeDelete = statDetails.form_10f_Doc;
+          if (StatThreeDelete && !req.body.form_10f_Doc) {
             fs.unlink(StatThreeDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
-          if (StatFourDelete) {
+        }
+
+        if (statDetails.TAN_Doc === req.body.TAN_Doc) {
+          TAN_Doc = req.body.TAN_Doc;
+        } else {
+          TAN_Doc = TAN_DocPath;
+          StatFourDelete = statDetails.TAN_Doc;
+          if (StatFourDelete && !req.body.TAN_Doc) {
             fs.unlink(StatFourDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
-          if (StatFIveDelete) {
-            fs.unlink(StatFIveDelete, (err) => {
+        }
+
+        if (statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc) {
+          PE_Declaration_Doc = req.body.PE_Declaration_Doc;
+        } else {
+          PE_Declaration_Doc = PE_Declaration_DocPath;
+          StatFiveDelete = statDetails.PE_Declaration_Doc;
+          if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+            fs.unlink(StatFiveDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
-          if (StatSixDelete) {
+        }
+
+        if (statDetails.MSME_Doc === req.body.MSME_Doc) {
+          MSME_Doc = req.body.MSME_Doc;
+        } else {
+          MSME_Doc = MSME_DocPath;
+          StatSixDelete = statDetails.MSME_Doc;
+          if (StatSixDelete && !req.body.MSME_Doc) {
             fs.unlink(StatSixDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
-          if (StatSevenDelete) {
-            fs.unlink(StatSevenDelete, (err) => {
+        }
+
+        if (statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc) {
+          Tax_residency_Doc = req.body.Tax_residency_Doc;
+        } else {
+          Tax_residency_Doc = Tax_residency_DocPath;
+          StatsevenDelete = statDetails.Tax_residency_Doc;
+          if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+            fs.unlink(StatsevenDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
         }
-      } else {
 
-        
-        let GST_Doc = GST_DocPath;
-        let PAN_Doc = PAN_DocPath;
-        let TAN_Doc = TAN_DocPath;
-        let form_10f_Doc = form_10f_DocPath;
-        let PE_Declaration_Doc = PE_Declaration_DocPath;
-        let MSME_Doc = MSME_DocPath;
-        let Tax_residency_Doc = Tax_residency_DocPath;
-
-        if (
-          GST_Doc ||
-          PAN_Doc ||
-          TAN_Doc ||
-          form_10f_Doc ||
-          PE_Declaration_Doc ||
-          MSME_Doc ||
-          Tax_residency_Doc
-        ) {
-          req.body.GST_Doc = GST_Doc;
-          req.body.PAN_Doc = PAN_Doc;
-          req.body.TAN_Doc = TAN_Doc;
-          req.body.form_10f_Doc = form_10f_Doc;
-          req.body.PE_Declaration_Doc = PE_Declaration_Doc;
-          req.body.MSME_Doc = MSME_Doc;
-          req.body.Tax_residency_Doc = Tax_residency_Doc;
-        } else {
-          GST_Doc = req.body.GST_Doc;
-          PAN_Doc = req.body.PAN_Doc;
-          TAN_Doc = req.body.TAN_Doc;
-          form_10f_Doc = req.body.form_10f_Doc;
-          PE_Declaration_Doc = req.body.PE_Declaration_Doc;
-          MSME_Doc = req.body.MSME_Doc;
-          Tax_residency_Doc = req.body.Tax_residency_Doc;
-        }
+        req.body.GST_Doc = GST_Doc;
+        req.body.PAN_Doc = PAN_Doc;
+        req.body.form_10f_Doc = form_10f_Doc;
+        req.body.TAN_Doc = TAN_Doc;
+        req.body.PE_Declaration_Doc = PE_Declaration_Doc;
+        req.body.MSME_Doc = MSME_Doc;
+        req.body.Tax_residency_Doc = Tax_residency_Doc;
 
         StatDetailSchema.update(req.body, {
-          where: { userId },
+          where: {
+            userId: userId,
+          },
         })
           .then(() => {
             res.status(200).send({
-              message: "StatutoryDetail was updated successfully!",
+              message: "Statuory Detail was updated successfully!",
               status: "success",
             });
           })
@@ -744,67 +684,142 @@ exports.updateStatutoryDetail = async (req, res) => {
             res.status(500).send({
               message:
                 err.message ||
-                "Some error occurred while updating the StatutoryDetail schema.",
+                "Some error occurred while updating the Statuory Detail schema.",
             });
           });
+      } else {
+        let GST_Doc = GST_DocPath;
+        let PAN_Doc = PAN_DocPath;
+        let form_10f_Doc = form_10f_DocPath;
+        let TAN_Doc = TAN_DocPath;
+        let PE_Declaration_Doc = PE_Declaration_DocPath;
+        let MSME_Doc = MSME_DocPath;
+        let Tax_residency_Doc = Tax_residency_DocPath;
 
-        StatOneDelete = statDetails.GST_Doc;
-        StatTwoDelete = statDetails.PAN_Doc;
-        StatThreeDelete = statDetails.TAN_Doc;
-        StatFourDelete = statDetails.form_10f_Doc;
-        StatFIveDelete = statDetails.PE_Declaration_Doc;
-        StatSixDelete = statDetails.MSME_Doc;
-        StatSevenDelete = statDetails.Tax_residency_Doc;
+        if (statDetails.GST_Doc === req.body.GST_Doc) {
+          GST_Doc = req.body.GST_Doc;
+        } else {
+          GST_Doc = GST_DocPath;
+          StatOneDelete = statDetails.GST_Doc;
+          if (StatOneDelete && !req.body.GST_Doc) {
+            fs.unlink(StatOneDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+        }
 
-        if (StatOneDelete && !req.body.GST_Doc) {
-          fs.unlink(StatOneDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+        if (statDetails.PAN_Doc === req.body.PAN_Doc) {
+          PAN_Doc = req.body.PAN_Doc;
+        } else {
+          PAN_Doc = PAN_DocPath;
+          StatTwoDelete = statDetails.PAN_Doc;
+          if (StatTwoDelete && !req.body.PAN_Doc) {
+            fs.unlink(StatTwoDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-        if (StatTwoDelete && !req.body.PAN_Doc) {
-          fs.unlink(StatTwoDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+
+        if (statDetails.form_10f_Doc === req.body.form_10f_Doc) {
+          form_10f_Doc = req.body.form_10f_Doc;
+        } else {
+          form_10f_Doc = form_10f_DocPath;
+          StatThreeDelete = statDetails.form_10f_Doc;
+          if (StatThreeDelete && !req.body.form_10f_Doc) {
+            fs.unlink(StatThreeDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-        if (StatThreeDelete && !req.body.TAN_Doc) {
-          fs.unlink(StatThreeDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+
+        if (statDetails.TAN_Doc === req.body.TAN_Doc) {
+          TAN_Doc = req.body.TAN_Doc;
+        } else {
+          TAN_Doc = TAN_DocPath;
+          StatFourDelete = statDetails.TAN_Doc;
+          if (StatFourDelete && !req.body.TAN_Doc) {
+            fs.unlink(StatFourDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-        if (StatFourDelete && !req.body.form_10f_Doc) {
-          fs.unlink(StatFourDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+
+        if (statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc) {
+          PE_Declaration_Doc = req.body.PE_Declaration_Doc;
+        } else {
+          PE_Declaration_Doc = PE_Declaration_DocPath;
+          StatFiveDelete = statDetails.PE_Declaration_Doc;
+          if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+            fs.unlink(StatFiveDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-        if (StatFIveDelete && !req.body.PE_Declaration_Doc) {
-          fs.unlink(StatFIveDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+
+        if (statDetails.MSME_Doc === req.body.MSME_Doc) {
+          MSME_Doc = req.body.MSME_Doc;
+        } else {
+          MSME_Doc = MSME_DocPath;
+          StatSixDelete = statDetails.MSME_Doc;
+          if (StatSixDelete && !req.body.MSME_Doc) {
+            fs.unlink(StatSixDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-        if (StatSixDelete && !req.body.MSME_Doc) {
-          fs.unlink(StatSixDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+
+        if (statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc) {
+          Tax_residency_Doc = req.body.Tax_residency_Doc;
+        } else {
+          Tax_residency_Doc = Tax_residency_DocPath;
+          StatsevenDelete = statDetails.Tax_residency_Doc;
+          if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+            fs.unlink(StatsevenDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-        if (StatSevenDelete && !req.body.Tax_residency_Doc) {
-          fs.unlink(StatSevenDelete, (err) => {
-            if (err) {
-              throw err;
-            }
+
+        req.body.GST_Doc = GST_Doc;
+        req.body.PAN_Doc = PAN_Doc;
+        req.body.form_10f_Doc = form_10f_Doc;
+        req.body.TAN_Doc = TAN_Doc;
+        req.body.PE_Declaration_Doc = PE_Declaration_Doc;
+        req.body.MSME_Doc = MSME_Doc;
+        req.body.Tax_residency_Doc = Tax_residency_Doc;
+
+        StatDetailSchema.update(req.body, {
+          where: {
+            userId: userId
+          },
+        })
+          .then(() => {
+            res.status(200).send({
+              message: "Statuory Detail was updated successfully!",
+              status: "success",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while updating the Statuory Detail schema.",
+            });
           });
-        }
       }
     }
   });

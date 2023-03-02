@@ -194,9 +194,10 @@ exports.saveComplianceDetail = (req, res) => {
 };
 
 exports.updateComplianceDetail = async (req, res) => {
-  NDA_DocPath = "";
-  COC_DocPath = "";
   RPD_DocPath = "";
+  COC_DocPath = "";
+  NDA_DocPath = "";
+
   var userId = req.params.userId;
 
   var upload = multer({ storage: storage }).fields([
@@ -226,82 +227,44 @@ exports.updateComplianceDetail = async (req, res) => {
         req.files.COC_Doc?.length > 0 ||
         req.files.NDA_Doc?.length > 0
       ) {
-        if (
-          (cDetails.RPD_Doc === req.files.RPD_Doc
-            ? req.files.RPD_Doc[0].path
-            : "") ||
-          (cDetails.COC_Doc === req.files.COC_Doc
-            ? req.files.COC_Doc[0].path
-            : "") ||
-          (cDetails.NDA_Doc === req.files.NDA_Doc
-            ? req.files.NDA_Doc[0].path
-            : "")
-        ) {
-          const NDA_Doc = NDA_DocPath;
-          const COC_Doc = COC_DocPath;
-          const RPD_Doc = RPD_DocPath;
-          req.body.NDA_Doc = NDA_Doc;
-          req.body.COC_Doc = COC_Doc;
-          req.body.RPD_Doc = RPD_Doc;
-          CompliancedetailSchema.update(req.body, {
-            where: { userId },
-          })
-            .then(() => {
-              res.status(200).send({
-                message: "Compliancedetail was updated successfully!",
-                status: "success",
-              });
-            })
-            .catch((err) => {
-              res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while updating the Compliancedetail schema.",
-              });
-            });
+        let RPD_Doc = RPD_DocPath;
+        let COC_Doc = COC_DocPath;
+        let NDA_Doc = NDA_DocPath;
+
+        if (cDetails.RPD_Doc === req.body.RPD_Doc) {
+          RPD_Doc = req.body.RPD_Doc;
         } else {
-          const NDA_Doc = NDA_DocPath;
-          const COC_Doc = COC_DocPath;
-          const RPD_Doc = RPD_DocPath;
-          req.body.NDA_Doc = NDA_Doc;
-          req.body.COC_Doc = COC_Doc;
-          req.body.RPD_Doc = RPD_Doc;
-          CompliancedetailSchema.update(req.body, {
-            where: { userId },
-          })
-            .then(() => {
-              res.status(200).send({
-                message: "Compliancedetail was updated successfully!",
-                status: "success",
-              });
-            })
-            .catch((err) => {
-              res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while updating the Compliancedetail schema.",
-              });
-            });
-
-          ComplianceOneDelete = cDetails.NDA_Doc;
-          ComplianceTwoDelete = cDetails.COC_Doc;
-          ComplianceThreeDelete = cDetails.RPD_Doc;
-
-          if (ComplianceOneDelete) {
+          RPD_Doc = RPD_DocPath;
+          ComplianceOneDelete = cDetails.RPD_Doc;
+          if (ComplianceOneDelete && !req.body.RPD_Doc) {
             fs.unlink(ComplianceOneDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
-          if (ComplianceTwoDelete) {
+        }
+
+        if (cDetails.COC_Doc === req.body.COC_Doc) {
+          COC_Doc = req.body.COC_Doc;
+        } else {
+          COC_Doc = COC_DocPath;
+          ComplianceTwoDelete = cDetails.COC_Doc;
+          if (ComplianceTwoDelete && !req.body.COC_Doc) {
             fs.unlink(ComplianceTwoDelete, (err) => {
               if (err) {
                 throw err;
               }
             });
           }
-          if (ComplianceThreeDelete) {
+        }
+
+        if (cDetails.NDA_Doc === req.body.NDA_Doc) {
+          NDA_Doc = req.body.NDA_Doc;
+        } else {
+          NDA_Doc = NDA_DocPath;
+          ComplianceThreeDelete = cDetails.NDA_Doc;
+          if (ComplianceThreeDelete && !req.body.NDA_Doc) {
             fs.unlink(ComplianceThreeDelete, (err) => {
               if (err) {
                 throw err;
@@ -309,24 +272,14 @@ exports.updateComplianceDetail = async (req, res) => {
             });
           }
         }
-      } else {
 
-        let NDA_Doc = NDA_DocPath;
-        let COC_Doc = COC_DocPath;
-        let RPD_Doc = RPD_DocPath;
-
-        if (RPD_Doc || COC_Doc || NDA_Doc) {
-          req.body.NDA_Doc = NDA_Doc;
-          req.body.COC_Doc = COC_Doc;
-          req.body.RPD_Doc = RPD_Doc;
-        } else {
-          NDA_Doc = req.body.NDA_Doc;
-          COC_Doc = req.body.COC_Doc;
-          RPD_Doc = req.body.RPD_Doc;
-        }
-
+        req.body.NDA_Doc = NDA_Doc;
+        req.body.COC_Doc = COC_Doc;
+        req.body.RPD_Doc = RPD_Doc;
         CompliancedetailSchema.update(req.body, {
-          where: { userId },
+          where: {
+            userId: userId,
+          },
         })
           .then(() => {
             res.status(200).send({
@@ -341,32 +294,74 @@ exports.updateComplianceDetail = async (req, res) => {
                 "Some error occurred while updating the Compliancedetail schema.",
             });
           });
+      } else {
+        let RPD_Doc = RPD_DocPath;
+        let COC_Doc = COC_DocPath;
+        let NDA_Doc = NDA_DocPath;
 
-        ComplianceOneDelete = cDetails.NDA_Doc;
-        ComplianceTwoDelete = cDetails.COC_Doc;
-        ComplianceThreeDelete = cDetails.RPD_Doc;
+        if (cDetails.RPD_Doc === req.body.RPD_Doc) {
+          RPD_Doc = req.body.RPD_Doc;
+        } else {
+          RPD_Doc = RPD_DocPath;
+          ComplianceOneDelete = cDetails.RPD_Doc;
+          if (ComplianceOneDelete && !req.body.RPD_Doc) {
+            fs.unlink(ComplianceOneDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+        }
 
-        if (ComplianceOneDelete && !req.body.NDA_Doc) {
-          fs.unlink(ComplianceOneDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+        if (cDetails.COC_Doc === req.body.COC_Doc) {
+          COC_Doc = req.body.COC_Doc;
+        } else {
+          COC_Doc = COC_DocPath;
+          ComplianceTwoDelete = cDetails.COC_Doc;
+          if (ComplianceTwoDelete && !req.body.COC_Doc) {
+            fs.unlink(ComplianceTwoDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-        if (ComplianceTwoDelete && !req.body.COC_Doc) {
-          fs.unlink(ComplianceTwoDelete, (err) => {
-            if (err) {
-              throw err;
-            }
-          });
+
+        if (cDetails.NDA_Doc === req.body.NDA_Doc) {
+          NDA_Doc = req.body.NDA_Doc;
+        } else {
+          NDA_Doc = NDA_DocPath;
+          ComplianceThreeDelete = cDetails.NDA_Doc;
+          if (ComplianceThreeDelete && !req.body.NDA_Doc) {
+            fs.unlink(ComplianceThreeDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
         }
-        if (ComplianceThreeDelete && !req.body.RPD_Doc) {
-          fs.unlink(ComplianceThreeDelete, (err) => {
-            if (err) {
-              throw err;
-            }
+
+        req.body.NDA_Doc = NDA_Doc;
+        req.body.COC_Doc = COC_Doc;
+        req.body.RPD_Doc = RPD_Doc;
+        CompliancedetailSchema.update(req.body, {
+          where: {
+            userId: userId,
+          },
+        })
+          .then(() => {
+            res.status(200).send({
+              message: "Compliancedetail was updated successfully!",
+              status: "success",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while updating the Compliancedetail schema.",
+            });
           });
-        }
       }
     }
   });

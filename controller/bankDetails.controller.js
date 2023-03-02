@@ -104,7 +104,6 @@ exports.updateBankDetail = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
-
     var bDetails = await BankdetailSchema.findOne({
       where: { userId: req.params.userId },
     });
@@ -114,50 +113,13 @@ exports.updateBankDetail = async (req, res) => {
       return "err";
     } else {
       if (req.files.bankdetailDoc) {
-        if (bDetails.bankdetailDoc === req.files.bankdetailDoc.path) {
-          const bankdetailDoc = bankdetailDocPath;
-          req.body.bankdetailDoc = bankdetailDoc;
-          BankdetailSchema.update(req.body, {
-            where: {
-              userId: userId,
-            },
-          })
-            .then(() => {
-              res.status(200).send({
-                message: "Bankdetail was updated successfully!",
-                status: "success",
-              });
-            })
-            .catch((err) => {
-              res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while updating the Bankdetail schema.",
-              });
-            });
-        } else {
-          const bankdetailDoc = bankdetailDocPath;
-          req.body.bankdetailDoc = bankdetailDoc;
-          BankdetailSchema.update(req.body, {
-            where: {
-              userId: userId,
-            },
-          })
-            .then(() => {
-              res.status(200).send({
-                message: "Bankdetail was updated successfully!",
-                status: "success",
-              });
-            })
-            .catch((err) => {
-              res.status(500).send({
-                message:
-                  err.message ||
-                  "Some error occurred while updating the Bankdetail schema.",
-              });
-            });
-          directoryDelete = bDetails.bankdetailDoc;
+        let bankdetailDoc = bankdetailDocPath;
 
+        if (bDetails.bankdetailDoc === req.body.bankdetailDoc) {
+          bankdetailDoc = req.body.bankdetailDoc;
+        } else {
+          bankdetailDoc = bankdetailDocPath;
+          directoryDelete = bDetails.bankdetailDoc;
           if (directoryDelete) {
             fs.unlink(directoryDelete, (err) => {
               if (err) {
@@ -166,15 +128,8 @@ exports.updateBankDetail = async (req, res) => {
             });
           }
         }
-      } else {
 
-        let bankdetailDoc = bankdetailDocPath;
-        if (bankdetailDoc) {
-          req.body.bankdetailDoc = bankdetailDoc;
-        } else {
-          bankdetailDoc = req.body.bankdetailDoc;
-        }
-
+        req.body.bankdetailDoc = bankdetailDoc;
         BankdetailSchema.update(req.body, {
           where: {
             userId: userId,
@@ -193,8 +148,14 @@ exports.updateBankDetail = async (req, res) => {
                 "Some error occurred while updating the Bankdetail schema.",
             });
           });
+      } else {
 
-        if (!req.body.bankdetailDoc) {
+        let bankdetailDoc = bankdetailDocPath;
+
+        if (bDetails.bankdetailDoc === req.body.bankdetailDoc) {
+          bankdetailDoc = req.body.bankdetailDoc;
+        } else {
+          bankdetailDoc = bankdetailDocPath;
           directoryDelete = bDetails.bankdetailDoc;
           if (directoryDelete) {
             fs.unlink(directoryDelete, (err) => {
@@ -202,15 +163,35 @@ exports.updateBankDetail = async (req, res) => {
                 throw err;
               }
             });
-          } else {
           }
         }
+
+        req.body.bankdetailDoc = bankdetailDoc;
+        BankdetailSchema.update(req.body, {
+          where: {
+            userId: userId,
+          },
+        })
+          .then(() => {
+            res.status(200).send({
+              message: "Bankdetail was updated successfully!",
+              status: "success",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while updating the Bankdetail schema.",
+            });
+          });
       }
+
+      
     }
   });
 };
 
-// delete-FileId
 
 exports.deleteBankDetailFile = (req, res) => {
   console.log("req", req);
