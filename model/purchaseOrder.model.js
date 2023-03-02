@@ -13,7 +13,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.DOUBLE,
         },
         edDate: {
-            type: Sequelize.DATE,
+            type: Sequelize.DATEONLY,
         }
     })
     return purchaseOrderSchema;

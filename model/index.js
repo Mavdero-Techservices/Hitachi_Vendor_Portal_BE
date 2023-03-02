@@ -36,5 +36,6 @@ db.periodicRequest = require("./periodicReq.model")(sequelize, Sequelize);
 db.vendorFile = require("./vendorFile.model")(sequelize, Sequelize);
 db.accountStatementApproval = require("./accountStatementApproval.model")(sequelize, Sequelize);
 db.purchaseOrder = require("./purchaseOrder.model")(sequelize, Sequelize);
+db.vendorCodeDetail = require("./vendorCodeDetails.model")(sequelize, Sequelize);
 
 module.exports = db;

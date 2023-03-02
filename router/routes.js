@@ -17,6 +17,7 @@ const vendorFile = require("../controller/vendorFile.controller")
 const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
 const accountStatementApproval = require("../controller/accountStatementApproval.controller")
 const purchaseOrder = require("../controller/purchaseOrder.controller")
+const vendorCodeDetail = require("../controller/vendorCodeDetails.controller")
 
 const router = express.Router();
 /* GET home page. */
@@ -142,5 +143,9 @@ router.get('/accountStatementApproval/findAll', accountStatementApproval.getAcco
 router.get('/accountStatementApproval/exportExcel/:vendorCode', accountStatementApproval.downloadAccountItemExcel);
 
 router.post("/purchaseOrderEstimate/save", purchaseOrder.savePurchaseOrderEstimateDate);
+router.get('/purchaseOrderEstimate/findAll', purchaseOrder.getPurchaseOrderEstimateDateList);
+
+router.post("/vendorCodeDetail/save", vendorCodeDetail.saveVendorCodeDetail);
+router.get('/vendorCodeDetail/findAll', vendorCodeDetail.getVendorCodeDetail);
 
 module.exports = router;
