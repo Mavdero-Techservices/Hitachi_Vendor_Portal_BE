@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const vendorApprovalSchema = sequelize.define("vendorApproval", {
+    const accountStatementApprovalSchema = sequelize.define("accountStatementApproval", {
         userId: {
             type: Sequelize.STRING,
         },
@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         vendorId: {
-            type: Sequelize.STRING,
+            type: Sequelize.INTEGER,
         },
         poNo: {
             type: Sequelize.STRING,
@@ -25,5 +25,5 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
     })
-    return vendorApprovalSchema;
+    return accountStatementApprovalSchema;
 }

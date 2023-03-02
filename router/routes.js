@@ -15,7 +15,8 @@ const approvalStatus = require("../controller/approval.controller")
 const periodicRequest = require("../controller/periodicReq.controller")
 const vendorFile = require("../controller/vendorFile.controller")
 const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
-const vendorApproval = require("../controller/vendorPortalApproval.controller")
+const accountStatementApproval = require("../controller/accountStatementApproval.controller")
+const purchaseOrder = require("../controller/purchaseOrder.controller")
 
 const router = express.Router();
 /* GET home page. */
@@ -135,9 +136,11 @@ router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSub
 router.get("/getAllMasterVendorSubUser",MasterVendorSubUser.getAllMasterVendorSubUser);
 router.post("/UpdateMasterVendorSubUserById",MasterVendorSubUser.UpdateMasterVendorSubUserById);
 
-router.post("/saveVendorApproval", vendorApproval.saveVendorApprovalStatus);
-router.put("/updatevendorApprovalStatus/:id", vendorApproval.updateVendorApprovalStatus);
-router.get('/vendorApprovalList', vendorApproval.getVendorApprovalList);
-router.get('/downloadVendorApprovalList/:vendorCode', vendorApproval.downloadVendorItemExcel);
+router.post("/accountStatementApproval/save", accountStatementApproval.saveAccountApprovalStatus);
+router.put("/accountStatementApproval/update/:id", accountStatementApproval.updateAccountApprovalStatus);
+router.get('/accountStatementApproval/findAll', accountStatementApproval.getAccountApprovalList);
+router.get('/accountStatementApproval/exportExcel/:vendorCode', accountStatementApproval.downloadAccountItemExcel);
+
+router.post("/purchaseOrderEstimate/save", purchaseOrder.savePurchaseOrderEstimateDate);
 
 module.exports = router;

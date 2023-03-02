@@ -1,5 +1,5 @@
 const db = require("../model");
-const vendorApprovalSchema = db.vendorApproval;
+const accountStatementApprovalSchema = db.accountStatementApproval;
 const SignUpSchema = db.singUp;
 let directory_name = "uploads";
 const path = require("path");
@@ -148,7 +148,7 @@ var storage = multer.diskStorage({
     });
   };
 
-    exports.saveVendorApprovalStatus = (req, res) => {
+    exports.saveAccountApprovalStatus = (req, res) => {
         rejectFile1DocPath = "";
 
         var upload = multer({ storage: storage }).fields([
@@ -165,7 +165,7 @@ var storage = multer.diskStorage({
             const rejectFileDoc = rejectFile1DocPath;
             // const userId = req.body.userId;
             const emailId = userEmailId.emailId;
-            const vendorApproval = new vendorApprovalSchema({
+            const accountApproval = new accountStatementApprovalSchema({
                 userId: req.body.userId,
                 vendorId: req.body.vendorId,
                 vendorCode: req.body.vendorCode,
@@ -175,7 +175,7 @@ var storage = multer.diskStorage({
                 rejectFileDoc: rejectFileDoc,
                 vendorStatus: req.body.vendorStatus
             });
-            vendorApproval.save()
+            accountApproval.save()
                                 .then((data) => {
                                     if (data.vendorStatus === "approved") {
                                         var subject = `Hitachi Vendor Approval`;
@@ -228,9 +228,9 @@ var storage = multer.diskStorage({
     });
   }
   
-  exports.updateVendorApprovalStatus = async (req, res) => {
+  exports.updateAccountApprovalStatus = async (req, res) => {
    
-    var vendorApprovalId = req.params.id;
+    var accountApprovalId = req.params.id;
       rejectFile1DocPath = "";
 
       var upload = multer({ storage: storage }).fields([
@@ -246,8 +246,8 @@ var storage = multer.diskStorage({
        
         const rejectFileDoc = rejectFile1DocPath;
         const emailId = userEmailId.emailId;
-                          vendorApprovalSchema.update(req.body, {
-                            where: { id: vendorApprovalId,vendorId: req.body.vendorId},
+        accountStatementApprovalSchema.update(req.body, {
+                            where: { id: accountApprovalId,vendorId: req.body.vendorId},
                           })
                             .then((data) => {
                                 if (data.vendorStatus === "approved") {
@@ -302,8 +302,8 @@ var storage = multer.diskStorage({
 
   }
 
-  exports.getVendorApprovalList = (req, res, next) => {
-    vendorApprovalSchema.findAll()
+  exports.getAccountApprovalList = (req, res, next) => {
+    accountStatementApprovalSchema.findAll()
       .then((data) => {
         return res.status(200).json({ msg: "success", result: data });
       })
@@ -314,11 +314,11 @@ var storage = multer.diskStorage({
       });
   };
 
-  exports.downloadVendorItemExcel = async (req, res, next) => {
+  exports.downloadAccountItemExcel = async (req, res, next) => {
     let vendorCode = req.params.vendorCode;
     const path = "./files";
-    let vendorItemlist = await vendorApprovalSchema.findAll({where:{vendorCode:vendorCode}});
-    if (vendorItemlist.length < 0) {
+    let accountApprovalList = await accountStatementApprovalSchema.findAll({where:{vendorCode:vendorCode}});
+    if (accountApprovalList.length < 0) {
       return;
     }else{
       let workbook = new excel.Workbook();
