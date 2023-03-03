@@ -55,82 +55,46 @@ var NDA_DocPath = "";
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
+
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-    var filetype = "";
 
-    if (file.fieldname === "RPD_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        RPD_DocPath =
-          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        RPD_DocPath =
-          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        RPD_DocPath =
-          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        RPD_DocPath =
-          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "RPD_Doc-" + Date.now() + "." + filetype);
+    if (file.fieldname === "RPD_Doc") { 
+
+    let filedirect = file.originalname.split(".")
+    
+    RPD_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+
+    cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+
     }
-    if (file.fieldname === "COC_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        COC_DocPath =
-          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        COC_DocPath =
-          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        COC_DocPath =
-          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        COC_DocPath =
-          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "COC_Doc-" + Date.now() + "." + filetype);
+
+    if (file.fieldname === "COC_Doc") { 
+
+      let filedirect = file.originalname.split(".")
+      
+      COC_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+  
     }
-    if (file.fieldname === "NDA_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        NDA_DocPath =
-          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        NDA_DocPath =
-          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        NDA_DocPath =
-          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        NDA_DocPath =
-          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "NDA_Doc-" + Date.now() + "." + filetype);
+
+    if (file.fieldname === "NDA_Doc") { 
+
+      let filedirect = file.originalname.split(".")
+      
+      NDA_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+  
     }
+    
+
+    
   },
 });
+
 exports.saveComplianceDetail = (req, res) => {
   var upload = multer({ storage: storage }).fields([
     {
@@ -215,9 +179,17 @@ exports.updateComplianceDetail = async (req, res) => {
     },
   ]);
   upload(req, res, async function (err) {
+
+    
+
+    console.log("req", req.files);
+
+
     var cDetails = await CompliancedetailSchema.findOne({
       where: { userId: req.params.userId },
     });
+
+    console.log("cDetails", cDetails);
 
     if (err) {
       return "err";

@@ -34,409 +34,135 @@ var storage = multer.diskStorage({
     var filetype = "";
 
     if (file.fieldname === "bankdetailDoc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        bankdetailDocPath =
-          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        bankdetailDocPath =
-          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        bankdetailDocPath =
-          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        bankdetailDocPath =
-          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "bankdetailDoc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+    
+      bankdetailDocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+     
     }
+
     if (file.fieldname === "GST_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        GST_DocPath =
-          directory_name + "/" + "GST_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        GST_DocPath =
-          directory_name + "/" + "GST_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        GST_DocPath =
-          directory_name + "/" + "GST_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        GST_DocPath =
-          directory_name + "/" + "GST_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "GST_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      GST_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
+
     if (file.fieldname === "PAN_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        PAN_DocPath =
-          directory_name + "/" + "PAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        PAN_DocPath =
-          directory_name + "/" + "PAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        PAN_DocPath =
-          directory_name + "/" + "PAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        PAN_DocPath =
-          directory_name + "/" + "PAN_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "PAN_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      PAN_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
+
     if (file.fieldname === "form_10f_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        form_10f_DocPath =
-          directory_name + "/" + "form_10f_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        form_10f_DocPath =
-          directory_name + "/" + "form_10f_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        form_10f_DocPath =
-          directory_name + "/" + "form_10f_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        form_10f_DocPath =
-          directory_name + "/" + "form_10f_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "form_10f_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      form_10f_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
+
     if (file.fieldname === "PE_Declaration_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        PE_Declaration_DocPath =
-          directory_name +
-          "/" +
-          "PE_Declaration_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        PE_Declaration_DocPath =
-          directory_name +
-          "/" +
-          "PE_Declaration_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        PE_Declaration_DocPath =
-          directory_name +
-          "/" +
-          "PE_Declaration_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        PE_Declaration_DocPath =
-          directory_name +
-          "/" +
-          "PE_Declaration_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "PE_Declaration_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      PE_Declaration_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
+
     if (file.fieldname === "TAN_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        TAN_DocPath =
-          directory_name + "/" + "TAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        TAN_DocPath =
-          directory_name + "/" + "TAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        TAN_DocPath =
-          directory_name + "/" + "TAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        TAN_DocPath =
-          directory_name + "/" + "TAN_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "TAN_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      TAN_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
 
     if (file.fieldname === "MSME_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        MSME_DocPath =
-          directory_name + "/" + "MSME_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        MSME_DocPath =
-          directory_name + "/" + "MSME_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        MSME_DocPath =
-          directory_name + "/" + "MSME_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        MSME_DocPath =
-          directory_name + "/" + "MSME_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "MSME_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      MSME_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
 
-    // if (file.fieldname === "Tax_residency_Doc") {
-    //   if (file.mimetype === "image/gif") {
-    //     filetype = "gif";
-    //     fileDisclosurePath =
-    //       directory_name + "/" + "Tax_residency_Doc-" + Date.now() + "." + filetype;
-    //   }
-    //   if (file.mimetype === "image/png") {
-    //     filetype = "png";
-    //     fileDisclosurePath =
-    //       directory_name + "/" + "Tax_residency_Doc-" + Date.now() + "." + filetype;
-    //   }
-    //   if (file.mimetype === "image/jpeg") {
-    //     filetype = "jpg";
-    //     fileDisclosurePath =
-    //       directory_name + "/" + "Tax_residency_Doc-" + Date.now() + "." + filetype;
-    //   }
-    //   if (file.mimetype === "application/pdf") {
-    //     filetype = "pdf";
-    //     fileDisclosurePath =
-    //       directory_name + "/" + "Tax_residency_Doc-" + Date.now() + "." + filetype;
-    //   }
-    //   cb(null, "Tax_residency_Doc-" + Date.now() + "." + filetype);
-    // }
     if (file.fieldname === "Tax_residency_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        Tax_residency_DocPath =
-          directory_name +
-          "/" +
-          "Tax_residency_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        Tax_residency_DocPath =
-          directory_name +
-          "/" +
-          "Tax_residency_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        Tax_residency_DocPath =
-          directory_name +
-          "/" +
-          "Tax_residency_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        Tax_residency_DocPath =
-          directory_name +
-          "/" +
-          "Tax_residency_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "Tax_residency_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      Tax_residency_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
+
     if (file.fieldname === "financial_data") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        financial_data_DocPath =
-          directory_name +
-          "/" +
-          "financial_data-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        financial_data_DocPath =
-          directory_name +
-          "/" +
-          "financial_data-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        financial_data_DocPath =
-          directory_name +
-          "/" +
-          "financial_data-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        financial_data_DocPath =
-          directory_name +
-          "/" +
-          "financial_data-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "financial_data-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      financial_data_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
+
     if (file.fieldname === "financial_data2") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        financial_data2_DocPath =
-          directory_name +
-          "/" +
-          "financial_data2-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        financial_data2_DocPath =
-          directory_name +
-          "/" +
-          "financial_data2-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        financial_data2_DocPath =
-          directory_name +
-          "/" +
-          "financial_data2-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        financial_data2_DocPath =
-          directory_name +
-          "/" +
-          "financial_data2-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "financial_data2-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      financial_data2_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
+
     if (file.fieldname === "RPD_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        RPD_DocPath =
-          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        RPD_DocPath =
-          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        RPD_DocPath =
-          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        RPD_DocPath =
-          directory_name + "/" + "RPD_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "RPD_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+    
+      RPD_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
+
     if (file.fieldname === "COC_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        COC_DocPath =
-          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        COC_DocPath =
-          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        COC_DocPath =
-          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        COC_DocPath =
-          directory_name + "/" + "COC_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "COC_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      COC_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
-    if (file.fieldname === "NDA_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        NDA_DocPath =
-          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        NDA_DocPath =
-          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        NDA_DocPath =
-          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        NDA_DocPath =
-          directory_name + "/" + "NDA_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "NDA_Doc-" + Date.now() + "." + filetype);
+
+    if (file.fieldname === "NDA_Doc") { 
+
+      let filedirect = file.originalname.split(".")
+      
+      NDA_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+  
     }
+
   },
 });
 

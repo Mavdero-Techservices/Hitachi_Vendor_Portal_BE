@@ -124,248 +124,77 @@ var storage = multer.diskStorage({
     var filetype = "";
 
     if (file.fieldname === "GST_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        GST_DocPath =
-          directory_name + "/" + "GST_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        GST_DocPath =
-          directory_name + "/" + "GST_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        GST_DocPath =
-          directory_name + "/" + "GST_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        GST_DocPath =
-          directory_name + "/" + "GST_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "GST_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      GST_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
     if (file.fieldname === "fileDisclosure") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        fileDisclosure_DocPath =
-          directory_name +
-          "/" +
-          "fileDisclosure-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        fileDisclosure =
-          directory_name +
-          "/" +
-          "fileDisclosure-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        fileDisclosure =
-          directory_name +
-          "/" +
-          "fileDisclosure-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        fileDisclosure =
-          directory_name +
-          "/" +
-          "fileDisclosure-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "fileDisclosure-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      fileDisclosure_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
     if (file.fieldname === "PAN_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        PAN_DocPath =
-          directory_name + "/" + "PAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        PAN_DocPath =
-          directory_name + "/" + "PAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        PAN_DocPath =
-          directory_name + "/" + "PAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        PAN_DocPath =
-          directory_name + "/" + "PAN_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "PAN_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      PAN_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+     
     }
     if (file.fieldname === "form_10f_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        form_10f_DocPath =
-          directory_name + "/" + "form_10f_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        form_10f_DocPath =
-          directory_name + "/" + "form_10f_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        form_10f_DocPath =
-          directory_name + "/" + "form_10f_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        form_10f_DocPath =
-          directory_name + "/" + "form_10f_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "form_10f_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      form_10f_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
     if (file.fieldname === "TAN_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        TAN_DocPath =
-          directory_name + "/" + "TAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        TAN_DocPath =
-          directory_name + "/" + "TAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        TAN_DocPath =
-          directory_name + "/" + "TAN_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        TAN_DocPath =
-          directory_name + "/" + "TAN_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "TAN_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      TAN_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
+     
     }
     if (file.fieldname === "PE_Declaration_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        PE_Declaration_DocPath =
-          directory_name +
-          "/" +
-          "PE_Declaration_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        PE_Declaration_DocPath =
-          directory_name +
-          "/" +
-          "PE_Declaration_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        PE_Declaration_DocPath =
-          directory_name +
-          "/" +
-          "PE_Declaration_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        PE_Declaration_DocPath =
-          directory_name +
-          "/" +
-          "PE_Declaration_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "PE_Declaration_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      PE_Declaration_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
     if (file.fieldname === "MSME_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        MSME_DocPath =
-          directory_name + "/" + "MSME_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        MSME_DocPath =
-          directory_name + "/" + "MSME_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        MSME_DocPath =
-          directory_name + "/" + "MSME_Doc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        MSME_DocPath =
-          directory_name + "/" + "MSME_Doc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "MSME_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      MSME_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
     if (file.fieldname === "Tax_residency_Doc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        Tax_residency_DocPath =
-          directory_name +
-          "/" +
-          "Tax_residency_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        Tax_residency_DocPath =
-          directory_name +
-          "/" +
-          "Tax_residency_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        Tax_residency_DocPath =
-          directory_name +
-          "/" +
-          "Tax_residency_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        Tax_residency_DocPath =
-          directory_name +
-          "/" +
-          "Tax_residency_Doc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "Tax_residency_Doc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      Tax_residency_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
   },
 });
@@ -538,6 +367,7 @@ exports.updateStatutoryDetail = async (req, res) => {
     },
   ]);
   upload(req, res, async function (err) {
+
     var statDetails = await StatDetailSchema.findOne({
       where: { userId: req.params.userId },
     });

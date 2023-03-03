@@ -15,47 +15,13 @@ var storage = multer.diskStorage({
     var filetype = "";
 
     if (file.fieldname === "documentFileDoc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        documentFileDocPath =
-          directory_name +
-          "/" +
-          "documentFileDoc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        documentFileDocPath =
-          directory_name +
-          "/" +
-          "documentFileDoc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        documentFileDocPath =
-          directory_name +
-          "/" +
-          "documentFileDoc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        documentFileDocPath =
-          directory_name +
-          "/" +
-          "documentFileDoc-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "documentFileDoc-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+    
+      documentFileDocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
   },
 });

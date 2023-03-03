@@ -76,93 +76,26 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-    var filetype = "";
+
+    console.log("file---------->", file);
 
     if (file.fieldname === "financial_data") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        financial_data_DocPath =
-          directory_name +
-          "/" +
-          "financial_data-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        financial_data_DocPath =
-          directory_name +
-          "/" +
-          "financial_data-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        financial_data_DocPath =
-          directory_name +
-          "/" +
-          "financial_data-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        financial_data_DocPath =
-          directory_name +
-          "/" +
-          "financial_data-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "financial_data-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      financial_data_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
     if (file.fieldname === "financial_data2") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        financial_data2_DocPath =
-          directory_name +
-          "/" +
-          "financial_data2-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        financial_data2_DocPath =
-          directory_name +
-          "/" +
-          "financial_data2-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        financial_data2_DocPath =
-          directory_name +
-          "/" +
-          "financial_data2-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        financial_data2_DocPath =
-          directory_name +
-          "/" +
-          "financial_data2-" +
-          Date.now() +
-          "." +
-          filetype;
-      }
-      cb(null, "financial_data2-" + Date.now() + "." + filetype);
+
+      let filedirect = file.originalname.split(".")
+      
+      financial_data2_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+  
+      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+      
     }
   },
 });
@@ -246,6 +179,10 @@ exports.updateFinacialDetail = async (req, res) => {
     var fDetails = await FdetailSchema.findOne({
       where: { userId: req.params.userId },
     });
+
+    console.log("fDetails---------->", fDetails);
+
+    console.log("file---------->", req.files);
 
     if (err) {
       console.log("InsideErr", err);

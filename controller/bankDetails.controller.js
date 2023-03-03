@@ -13,31 +13,12 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-    var filetype = "";
 
-    if (file.fieldname === "bankdetailDoc") {
-      if (file.mimetype === "image/gif") {
-        filetype = "gif";
-        bankdetailDocPath =
-          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/png") {
-        filetype = "png";
-        bankdetailDocPath =
-          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "image/jpeg") {
-        filetype = "jpg";
-        bankdetailDocPath =
-          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-      }
-      if (file.mimetype === "application/pdf") {
-        filetype = "pdf";
-        bankdetailDocPath =
-          directory_name + "/" + "bankdetailDoc-" + Date.now() + "." + filetype;
-      }
-      cb(null, "bankdetailDoc-" + Date.now() + "." + filetype);
-    }
+    let filedirect = file.originalname.split(".")
+    
+    bankdetailDocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+
+    cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
   },
 });
 
@@ -108,6 +89,8 @@ exports.updateBankDetail = async (req, res) => {
       where: { userId: req.params.userId },
     });
 
+    console.log("bDetails", bDetails);
+
     if (err) {
       console.log("InsideErr", err);
       return "err";
@@ -120,6 +103,9 @@ exports.updateBankDetail = async (req, res) => {
         } else {
           bankdetailDoc = bankdetailDocPath;
           directoryDelete = bDetails.bankdetailDoc;
+
+          console.log("directoryDelete", directoryDelete);
+
           if (directoryDelete) {
             fs.unlink(directoryDelete, (err) => {
               if (err) {
@@ -149,7 +135,6 @@ exports.updateBankDetail = async (req, res) => {
             });
           });
       } else {
-
         let bankdetailDoc = bankdetailDocPath;
 
         if (bDetails.bankdetailDoc === req.body.bankdetailDoc) {
@@ -186,12 +171,9 @@ exports.updateBankDetail = async (req, res) => {
             });
           });
       }
-
-      
     }
   });
 };
-
 
 exports.deleteBankDetailFile = (req, res) => {
   console.log("req", req);
