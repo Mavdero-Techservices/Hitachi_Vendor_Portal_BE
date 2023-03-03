@@ -35,6 +35,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         mkDenialCheque: {
             type: Sequelize.STRING
+        },
+        submitStatus: {
+            type: Sequelize.STRING
+        },
+        submitDate: {
+            type: Sequelize.DATEONLY
         }
     })
     return VdetailSchema;

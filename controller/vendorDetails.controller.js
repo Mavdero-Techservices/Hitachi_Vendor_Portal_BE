@@ -19,6 +19,8 @@ exports.postVdetail = (req, res, next) => {
       const vendorType = req.body.vendorType;
       const vendorManager = req.body.vendorManager;
       const mkDenialCheque = req.body.mkDenialCheque;
+      const submitStatus = req.body.submitStatus;
+      const submitDate = req.body.submitDate;
       const user = new VdetailSchema({
         address1: address1,
         address2: address2,
@@ -33,20 +35,24 @@ exports.postVdetail = (req, res, next) => {
         vendorManager: vendorManager,
         mkDenialCheque: mkDenialCheque,
         userId:userId,
+        submitStatus: submitStatus,
+        submitDate: submitDate
       });
-      try {
-        const result = user.save();
-        return res.status(200).json({
-          status: "success",
-          result,
-          message: "Vendor details inserted Successfully",
-        });
-      } catch (err) {
-        return res
+         user.save()
+        .then((data) => {
+          return res.status(200).json({
+            status: "success",
+            data,
+            message: "Vendor details inserted Successfully",
+          });
+        })
+        .catch((err) => {
+          return res
           .status(404)
           .json({ status: "error", err, message: "Error Response" });
-      }
-  }
+        });
+}
+
 //SaveVendorCommunication
 exports.SaveVendorCommunication = (req, res) => {
   const VendorCommunication = {
