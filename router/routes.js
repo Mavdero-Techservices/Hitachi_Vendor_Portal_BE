@@ -14,10 +14,12 @@ const contactTeam = require("../controller/ContactTeam.controller")
 const approvalStatus = require("../controller/approval.controller")
 const periodicRequest = require("../controller/periodicReq.controller")
 const vendorFile = require("../controller/vendorFile.controller")
-const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
 const accountStatementApproval = require("../controller/accountStatementApproval.controller")
 const purchaseOrder = require("../controller/purchaseOrder.controller")
 const vendorCodeDetail = require("../controller/vendorCodeDetails.controller")
+const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
+const MasterVendorUserAccess=require("../controller/MasterVendorUserAccess")
+
 
 const router = express.Router();
 /* GET home page. */
@@ -135,7 +137,16 @@ router.put("/updateVendorFile/:userId", vendorFile.updateVendorFiles);
 router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUser);
 router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSubUserById);
 router.get("/getAllMasterVendorSubUser",MasterVendorSubUser.getAllMasterVendorSubUser);
-router.post("/UpdateMasterVendorSubUserById",MasterVendorSubUser.UpdateMasterVendorSubUserById);
+router.put("/UpdateMasterVendorSubUserById",MasterVendorSubUser.UpdateMasterVendorSubUserById);
+router.delete("/deleteMasterVendorSubUserById/:id",MasterVendorSubUser.deleteMasterVendorSubUserById);
+
+router.post('/saveMasterVendorUserAccess',MasterVendorUserAccess.saveMasterVendorUserAccess);
+router.post("/getMasterVendorUserAccessById",MasterVendorUserAccess.getMasterVendorUserAccessById);
+router.get("/getAllMasterVendorUserAccess",MasterVendorUserAccess.getAllMasterVendorUserAccess);
+router.put("/UpdateMasterVendorUserAccessById",MasterVendorUserAccess.UpdateMasterVendorUserAccessById);
+router.delete("/deleteMasterVendorUserAccessById/:id",MasterVendorUserAccess.deleteMasterVendorUserAccessById);
+
+
 
 router.post("/accountStatementApproval/save", accountStatementApproval.saveAccountApprovalStatus);
 router.put("/accountStatementApproval/update/:id", accountStatementApproval.updateAccountApprovalStatus);

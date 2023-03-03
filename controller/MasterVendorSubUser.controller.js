@@ -81,3 +81,22 @@ MasterVendorSubUserSchema.update(
     return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
 });
 }
+
+exports.deleteMasterVendorSubUserById= (req, res) => {
+        const id = req.params.id;    
+        MasterVendorSubUserSchema
+          .destroy({
+            where: { id: id },
+          })
+          .then((data) => {
+            return res
+              .status(200)
+              .json({ msg: "success", result: "deleted successfully" });
+          })
+          .catch((err) => {
+            return res
+              .status(200)
+              .json({ status: "error", data: { message: "Error Response", err } });
+          });
+      
+  }
