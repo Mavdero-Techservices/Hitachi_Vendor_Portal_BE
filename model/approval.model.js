@@ -22,7 +22,7 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
             type: Sequelize.STRING,
         },
         level2Date: {
-            type: Sequelize.DATE,
+            type: Sequelize.DATEONLY,
         },
         level3Status: {
             type: Sequelize.STRING,
@@ -35,9 +35,7 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
         },
         level3Date: {
             type: Sequelize.DATE,
-        },
-    }, {
-        timestamps: false
+        }
     })
     return ApprovalSchema;
 }
