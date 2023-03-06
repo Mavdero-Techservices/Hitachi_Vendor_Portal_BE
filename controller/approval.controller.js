@@ -331,7 +331,6 @@ exports.emailMRTApprovalNotification = (
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
-      console.log("error", error);
       return res.status(200).json({ status: "error", data: error });
     } else {
       if (returnFlag === true) {
@@ -403,9 +402,7 @@ exports.saveApprovalStatus = (req, res) => {
     var userEmailId = await SignUpSchema.findOne({
       where: { userId: req.body.userId },
     });
-
     if (err) {
-      console.log("InsideErr", err);
       return "err";
     } else {
       var file = req.files;
@@ -433,9 +430,11 @@ exports.saveApprovalStatus = (req, res) => {
         level2Status: req.body.level2Status,
         level2RejectComment: req.body.level2RejectComment,
         level2rejectFileDoc: level2rejectFileDoc,
+        level2Date: null,
         level3Status: req.body.level3Status,
         level3RejectComment: req.body.level3RejectComment,
         level3rejectFileDoc: level3rejectFileDoc,
+        level3Date: null,
       });
       user
         .save()
@@ -523,7 +522,6 @@ exports.updateApprovalStatus = async (req, res) => {
 
 
     if (err) {
-      console.log("InsideErr", err);
       return "err";
     } else {
       const level1rejectFileDoc = rejectFile1DocPath;

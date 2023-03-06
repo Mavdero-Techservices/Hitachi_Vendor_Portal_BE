@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize,DataTypes) => {
     const ApprovalSchema = sequelize.define("approval", {
         userId: {
             type: Sequelize.STRING,
@@ -21,6 +21,9 @@ module.exports = (sequelize, Sequelize) => {
         level2rejectFileDoc: {
             type: Sequelize.STRING,
         },
+        level2Date: {
+            type: Sequelize.DATE,
+        },
         level3Status: {
             type: Sequelize.STRING,
         },
@@ -30,6 +33,11 @@ module.exports = (sequelize, Sequelize) => {
         level3rejectFileDoc: {
             type: Sequelize.STRING,
         },
+        level3Date: {
+            type: Sequelize.DATE,
+        },
+    }, {
+        timestamps: false
     })
     return ApprovalSchema;
 }
