@@ -131,6 +131,8 @@ router.put("/updatePeriodicReq/:userId", periodicRequest.updatePeriodicRequest);
 router.get("/getPeriodicReq", periodicRequest.periodicReqList);
 router.delete("/deletePeriodicReq/:id", periodicRequest.periodicReqdelete);
 
+router.get("/vendorIdList/:vendorId", periodicRequest.vendorIdList);
+
 router.post("/saveVendorFile", vendorFile.saveVendorFiles);
 router.put("/updateVendorFile/:userId", vendorFile.updateVendorFiles);
 

@@ -15,9 +15,6 @@ module.exports = (sequelize, Sequelize, DataTypes) => {
     yearly: {
       type: Sequelize.STRING,
     },
-    vendorCode: {
-      type: Sequelize.STRING,
-    },
   });
   return PeriodicReqSchema;
 };

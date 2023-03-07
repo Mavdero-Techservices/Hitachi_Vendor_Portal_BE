@@ -38,5 +38,18 @@ db.vendorFile = require("./vendorFile.model")(sequelize, Sequelize);
 db.accountStatementApproval = require("./accountStatementApproval.model")(sequelize, Sequelize);
 db.purchaseOrder = require("./purchaseOrder.model")(sequelize, Sequelize);
 db.vendorCodeDetail = require("./vendorCodeDetails.model")(sequelize, Sequelize);
+db.vendorId = require("./vendorId.model")(sequelize, Sequelize);
+
+
+db.periodicRequest.hasMany(db.vendorId, {
+    foreignKey: 'periodic_id',
+    as: 'vendorId',
+})
+
+db.vendorId.belongsTo(db.periodicRequest, {
+    foreignKey: 'periodic_id',
+    as: 'periodicRequest'
+})
+
 
 module.exports = db;
