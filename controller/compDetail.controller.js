@@ -114,23 +114,7 @@ exports.saveComplianceDetail = (req, res) => {
     if (err) {
       return "err";
     } else {
-      var Rpd = "";
-      var COC = "";
-      var NDA = "";
-      var file = req.files;
-      var path = Object.entries(file).map(([key, value]) => {
-        Object.entries(value).map(([key2, value2]) => {
-          if (value2.fieldname === "RPD_Doc") {
-            Rpd = value2.path;
-          }
-          if (value2.fieldname === "NDA_Doc") {
-            NDA = value2.path;
-          }
-          if (value2.fieldname === "COC_Doc") {
-            COC = value2.path;
-          }
-        });
-      });
+      
 
       const NDA_Doc = NDA;
       const COC_Doc = COC;

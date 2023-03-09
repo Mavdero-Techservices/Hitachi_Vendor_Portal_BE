@@ -242,33 +242,7 @@ exports.saveStatutoryDetail = (req, res) => {
       var PE_Declaration_Doc_Path = "";
       var MSME_Doc_Path = "";
       var Tax_residency_Doc_Path = "";
-
-      var file = req.files;
-      var path = Object.entries(file).map(([key, value]) => {
-        Object.entries(value).map(([key2, value2]) => {
-          if (value2.fieldname === "GST_Doc") {
-            GST_Path = value2.path;
-          }
-          if (value2.fieldname === "PAN_Doc") {
-            Pan_path = value2.path;
-          }
-          if (value2.fieldname === "form_10f_Doc") {
-            form_10f_Path = value2.path;
-          }
-          if (value2.fieldname === "TAN_Doc") {
-            TAN_Doc_Path = value2.path;
-          }
-          if (value2.fieldname === "PE_Declaration_Doc") {
-            PE_Declaration_Doc_Path = value2.path;
-          }
-          if (value2.fieldname === "MSME_Doc") {
-            MSME_Doc_Path = value2.path;
-          }
-          if (value2.fieldname === "Tax_residency_Doc") {
-            Tax_residency_Doc_Path = value2.path;
-          }
-        });
-      });
+      
       const GST_type = req.body.GST_type;
       const GST_No = req.body.GST_No;
       const GST_Doc = GST_Path;

@@ -33,14 +33,6 @@ exports.saveBankDetail = (req, res) => {
       console.log("InsideErr", err);
       return "err";
     } else {
-      var file = req.files;
-      var path = Object.entries(file).map(([key, value]) => {
-        Object.entries(value).map(([key2, value2]) => {
-          if (value2.fieldname === "bankdetailDoc") {
-            bankdetailDocPath = value2.path;
-          }
-        });
-      });
       const bankdetailDoc = bankdetailDocPath;
       const bankId = "bank" + Math.floor(100000 + Math.random() * 900000);
       const userId = req.body.userId;

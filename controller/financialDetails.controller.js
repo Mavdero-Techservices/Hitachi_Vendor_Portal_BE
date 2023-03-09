@@ -117,17 +117,7 @@ exports.saveFinacialDetail = (req, res) => {
     } else {
       var financial_data_DocPath1 = "";
       var financial_data_DocPath2 = "";
-      var file = req.files;
-      var path = Object.entries(file).map(([key, value]) => {
-        Object.entries(value).map(([key2, value2]) => {
-          if (value2.fieldname === "financial_data") {
-            financial_data_DocPath1 = value2.path;
-          }
-          if (value2.fieldname === "financial_data2") {
-            financial_data_DocPath2 = value2.path;
-          }
-        });
-      });
+     
       const financial_data = financial_data_DocPath1;
       const financial_data2 = financial_data_DocPath2;
       const yearOfAuditedFinancial = req.body.yearOfAuditedFinancial;
@@ -180,9 +170,7 @@ exports.updateFinacialDetail = async (req, res) => {
       where: { userId: req.params.userId },
     });
 
-    console.log("fDetails---------->", fDetails);
-
-    console.log("file---------->", req.files);
+   
 
     if (err) {
       console.log("InsideErr", err);
