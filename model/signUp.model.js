@@ -38,6 +38,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         role:{
             type: Sequelize.STRING 
+        },
+        finalStatus:{
+            type: Sequelize.STRING 
         }
     });
     return SignUpSchema;

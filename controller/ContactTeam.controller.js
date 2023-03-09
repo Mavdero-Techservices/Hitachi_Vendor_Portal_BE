@@ -26,6 +26,53 @@ var financial_data_DocPath = "";
 var financial_data2_DocPath = "";
 const fs = require("fs");
 
+const SignUpSchema = db.singUp;
+var nodemailer = require("nodemailer");
+const config = require("../config/auth.config");
+const user = config.user;
+const pass = config.pass;
+
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  // service: 'Outlook365',
+  auth: {
+    user: user,
+    pass: pass,
+  },
+});
+
+exports.emailUpdateTabNotification = (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId
+) => {
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: "error", data: error });
+    } else {
+      if (returnFlag === true) {
+        return res
+          .status(200)
+          .json({ status: "error", data: "Error Response" });
+      } else {
+        return res
+          .status(200)
+          .json({ status: "success", data: "mail sent Successfully" });
+      }
+    }
+  });
+};
+
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(directory_name, "/"));
@@ -968,3 +1015,36 @@ exports.updateContactTeam = async (req, res) => {
     });
   }
 };
+
+exports.vendorEditTabList = async (req, res) => {
+  let vendorcode = req.params.vendorCode;
+  var masterVendoremail = await vendorCommunicationDetails.findOne({
+    where: { userId: req.body.userId },
+  });
+  const mVendoremailId = masterVendoremail.mastervendor_email;
+  if(vendorcode){
+    var subject = `Hitachi Update Vendor Details`;
+    var emailContent = `
+                          <h4>Hi ${vendorcode}</h4>
+                          <p>Your Update Vendor Tab Details are:</p>
+                          <ul style="list-style-type:none !important">
+                          <li>${req.body.tab1}</li>
+                          <li>${req.body.tab2}</li>
+                          </ul>
+                          <p>Thanks & regards,</p>
+                          </div>`;
+              var returnFlag = false;
+              exports.emailUpdateTabNotification(
+                req,
+                res,
+                subject,
+                emailContent,
+                returnFlag,
+                mVendoremailId
+              );
+              res.status(200).send({
+                message: "VendorCode email Sent successfully!",
+                status: "success",
+              });
+  }
+}

@@ -1,6 +1,7 @@
 const db = require("../model");
 const ApprovalSchema = db.approvalStatus;
 const vendorCommunicationDetailsSchema = db.vendorCommunicationDetails;
+const VdetailSchema = db.vdetail;
 const SignUpSchema = db.singUp;
 const { check, validationResult } = require("express-validator");
 let directory_name = "uploads";
@@ -533,7 +534,13 @@ exports.updateApprovalStatus = async (req, res) => {
       const emailId = userEmailId.emailId;
       const mVendoremailId = masterVendoremail.mastervendor_email;
       const name = masterVendoremail.financeSpoccontactName;
-      
+      if ((req.body.level2Status === "approved")|| req.body.level3Status === "approved") {
+        // let vendorCode = 'VDIS-' + Math.floor(1000 + Math.random() * 9000);
+        req.body.finalStatus = "Approved";
+        SignUpSchema.update(req.body, {
+          where: { userId: userId },
+        })
+      }
 
 
       ApprovalSchema.update(req.body, {

@@ -116,6 +116,8 @@ router.get("/getAllCollection/:userId", contactTeam.getAllCollection);
 //update all collection
 router.put("/updateAllCollection/:userId", contactTeam.updateAllCollection);
 
+router.put("/getVendorEditTabs/:vendorCode", contactTeam.vendorEditTabList);
+
 router.get("/getvendorDetail/:userId", contactTeam.getvendorDetail);
 router.get("/getAllUserDetail", contactTeam.getAllUserDetail);
 
