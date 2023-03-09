@@ -34,135 +34,290 @@ var storage = multer.diskStorage({
     var filetype = "";
 
     if (file.fieldname === "bankdetailDoc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-    
-      bankdetailDocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+      bankdetailDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
 
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-     
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "GST_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      GST_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      GST_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "PAN_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      PAN_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      PAN_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "form_10f_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      form_10f_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      form_10f_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "PE_Declaration_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      PE_Declaration_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      PE_Declaration_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "TAN_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      TAN_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      TAN_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "MSME_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      MSME_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      MSME_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "Tax_residency_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      Tax_residency_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      Tax_residency_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "financial_data") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      financial_data_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      financial_data_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "financial_data2") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      financial_data2_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      financial_data2_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "RPD_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-    
-      RPD_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+      RPD_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
 
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
     if (file.fieldname === "COC_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      COC_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      COC_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
-    if (file.fieldname === "NDA_Doc") { 
+    if (file.fieldname === "NDA_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      NDA_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-  
+      NDA_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
-
   },
 });
 
@@ -408,7 +563,21 @@ exports.updateAllCollection = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
+    var bDetails = await BankdetailSchema.findOne({
+      where: { userId: req.params.userId },
+    });
 
+    var cDetails = await CompliancedetailSchema.findOne({
+      where: { userId: req.params.userId },
+    });
+
+    var statDetails = await StatDetailSchema.findOne({
+      where: { userId: req.params.userId },
+    });
+
+    var fDetails = await FdetailSchema.findOne({
+      where: { userId: req.params.userId },
+    });
 
     const basicDetails = {
       userId: req.body.userId,
@@ -452,37 +621,109 @@ exports.updateAllCollection = async (req, res) => {
 
     let GST_Doc = GST_DocPath;
     let PAN_Doc = PAN_DocPath;
-    let TAN_Doc = TAN_DocPath;
     let form_10f_Doc = form_10f_DocPath;
+    let TAN_Doc = TAN_DocPath;
     let PE_Declaration_Doc = PE_Declaration_DocPath;
     let MSME_Doc = MSME_DocPath;
     let Tax_residency_Doc = Tax_residency_DocPath;
 
-    if (GST_Doc || PAN_Doc || TAN_Doc || form_10f_Doc || PE_Declaration_Doc || MSME_Doc || Tax_residency_Doc) {
-      req.body.GST_Doc = GST_Doc;
-      req.body.PAN_Doc = PAN_Doc;
-      req.body.TAN_Doc = TAN_Doc;
-      req.body.form_10f_Doc = form_10f_Doc;
-      req.body.PE_Declaration_Doc = PE_Declaration_Doc;
-      req.body.MSME_Doc = MSME_Doc;
-      req.body.Tax_residency_Doc = Tax_residency_Doc;
-    } else {
+    if (statDetails.GST_Doc === req.body.GST_Doc) {
       GST_Doc = req.body.GST_Doc;
-      PAN_Doc = req.body.PAN_Doc;
-      TAN_Doc = req.body.TAN_Doc;
-      form_10f_Doc = req.body.form_10f_Doc;
-      PE_Declaration_Doc = req.body.PE_Declaration_Doc;
-      MSME_Doc = req.body.MSME_Doc;
-      Tax_residency_Doc = req.body.Tax_residency_Doc;
+    } else {
+      GST_Doc = GST_DocPath;
+      StatOneDelete = statDetails.GST_Doc;
+      if (StatOneDelete && !req.body.GST_Doc) {
+        fs.unlink(StatOneDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
     }
 
-    req.body.GST_Doc = GST_Doc;
-    req.body.PAN_Doc = PAN_Doc;
-    req.body.TAN_Doc = TAN_Doc;
-    req.body.form_10f_Doc = form_10f_Doc;
-    req.body.PE_Declaration_Doc = PE_Declaration_Doc;
-    req.body.MSME_Doc = MSME_Doc;
-    req.body.Tax_residency_Doc = Tax_residency_Doc;
+    if (statDetails.PAN_Doc === req.body.PAN_Doc) {
+      PAN_Doc = req.body.PAN_Doc;
+    } else {
+      PAN_Doc = PAN_DocPath;
+      StatTwoDelete = statDetails.PAN_Doc;
+      if (StatTwoDelete && !req.body.PAN_Doc) {
+        fs.unlink(StatTwoDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
+    if (statDetails.form_10f_Doc === req.body.form_10f_Doc) {
+      form_10f_Doc = req.body.form_10f_Doc;
+    } else {
+      form_10f_Doc = form_10f_DocPath;
+      StatThreeDelete = statDetails.form_10f_Doc;
+      if (StatThreeDelete && !req.body.form_10f_Doc) {
+        fs.unlink(StatThreeDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
+    if (statDetails.TAN_Doc === req.body.TAN_Doc) {
+      TAN_Doc = req.body.TAN_Doc;
+    } else {
+      TAN_Doc = TAN_DocPath;
+      StatFourDelete = statDetails.TAN_Doc;
+      if (StatFourDelete && !req.body.TAN_Doc) {
+        fs.unlink(StatFourDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
+    if (statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc) {
+      PE_Declaration_Doc = req.body.PE_Declaration_Doc;
+    } else {
+      PE_Declaration_Doc = PE_Declaration_DocPath;
+      StatFiveDelete = statDetails.PE_Declaration_Doc;
+      if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+        fs.unlink(StatFiveDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
+    if (statDetails.MSME_Doc === req.body.MSME_Doc) {
+      MSME_Doc = req.body.MSME_Doc;
+    } else {
+      MSME_Doc = MSME_DocPath;
+      StatSixDelete = statDetails.MSME_Doc;
+      if (StatSixDelete && !req.body.MSME_Doc) {
+        fs.unlink(StatSixDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
+    if (statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc) {
+      Tax_residency_Doc = req.body.Tax_residency_Doc;
+    } else {
+      Tax_residency_Doc = Tax_residency_DocPath;
+      StatsevenDelete = statDetails.Tax_residency_Doc;
+      if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+        fs.unlink(StatsevenDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
 
     const statutoryDetails = {
       userId: req.body.userId,
@@ -503,18 +744,50 @@ exports.updateAllCollection = async (req, res) => {
       Tax_residency_Doc: Tax_residency_Doc,
     };
 
-    let NDA_Doc = NDA_DocPath;
-    let COC_Doc = COC_DocPath;
     let RPD_Doc = RPD_DocPath;
+    let COC_Doc = COC_DocPath;
+    let NDA_Doc = NDA_DocPath;
 
-    if (RPD_Doc || COC_Doc || NDA_Doc) {
-      req.body.NDA_Doc = NDA_Doc;
-      req.body.COC_Doc = COC_Doc;
-      req.body.RPD_Doc = RPD_Doc;
-    } else {
-      NDA_Doc = req.body.NDA_Doc;
-      COC_Doc = req.body.COC_Doc;
+    if (cDetails.RPD_Doc === req.body.RPD_Doc) {
       RPD_Doc = req.body.RPD_Doc;
+    } else {
+      RPD_Doc = RPD_DocPath;
+      ComplianceOneDelete = cDetails.RPD_Doc;
+      if (ComplianceOneDelete && !req.body.RPD_Doc) {
+        fs.unlink(ComplianceOneDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
+    if (cDetails.COC_Doc === req.body.COC_Doc) {
+      COC_Doc = req.body.COC_Doc;
+    } else {
+      COC_Doc = COC_DocPath;
+      ComplianceTwoDelete = cDetails.COC_Doc;
+      if (ComplianceTwoDelete && !req.body.COC_Doc) {
+        fs.unlink(ComplianceTwoDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
+    if (cDetails.NDA_Doc === req.body.NDA_Doc) {
+      NDA_Doc = req.body.NDA_Doc;
+    } else {
+      NDA_Doc = NDA_DocPath;
+      ComplianceThreeDelete = cDetails.NDA_Doc;
+      if (ComplianceThreeDelete && !req.body.NDA_Doc) {
+        fs.unlink(ComplianceThreeDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
     }
 
     const complianceDetails = {
@@ -527,12 +800,32 @@ exports.updateAllCollection = async (req, res) => {
     let financial_data = financial_data_DocPath;
     let financial_data2 = financial_data2_DocPath;
 
-    if (financial_data || financial_data2) {
-      req.body.financial_data = financial_data;
-      req.body.financial_data2 = financial_data2;
+    if (fDetails.financial_data === req.body.financial_data) {
+      financial_data = req.body.financial_data;
     } else {
-      financial_data = req.body.financial_data;
-      financial_data = req.body.financial_data;
+      financial_data = financial_data_DocPath;
+      directoryFiananceOneDelete = fDetails.financial_data;
+      if (directoryFiananceOneDelete && !req.body.financial_data) {
+        fs.unlink(directoryFiananceOneDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
+    if (fDetails.financial_data2 === req.body.financial_data2) {
+      financial_data2 = req.body.financial_data2;
+    } else {
+      financial_data2 = financial_data2_DocPath;
+      directoryFiananceTwoDelete = fDetails.financial_data2;
+      if (directoryFiananceTwoDelete && !req.body.financial_data2) {
+        fs.unlink(directoryFiananceTwoDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
     }
 
     const financeDetails = {
@@ -548,10 +841,20 @@ exports.updateAllCollection = async (req, res) => {
     };
 
     let bankdetailDoc = bankdetailDocPath;
-    if (bankdetailDoc) {
-      req.body.bankdetailDoc = bankdetailDoc;
-    } else {
+
+    if (bDetails.bankdetailDoc === req.body.bankdetailDoc) {
       bankdetailDoc = req.body.bankdetailDoc;
+    } else {
+      bankdetailDoc = bankdetailDocPath;
+      directoryDelete = bDetails.bankdetailDoc;
+
+      if (directoryDelete) {
+        fs.unlink(directoryDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
     }
 
     const bankDetails = {
