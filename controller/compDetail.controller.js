@@ -55,43 +55,74 @@ var NDA_DocPath = "";
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
+    if (file.fieldname === "RPD_Doc") {
+      let filedirect = file.originalname.split(".");
 
-    if (file.fieldname === "RPD_Doc") { 
+      RPD_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
 
-    let filedirect = file.originalname.split(".")
-    
-    RPD_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-
-    cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
-    if (file.fieldname === "COC_Doc") { 
+    if (file.fieldname === "COC_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      COC_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-  
+      COC_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
 
-    if (file.fieldname === "NDA_Doc") { 
+    if (file.fieldname === "NDA_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      NDA_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-  
+      NDA_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
-    
-
-    
   },
 });
 
@@ -114,8 +145,6 @@ exports.saveComplianceDetail = (req, res) => {
     if (err) {
       return "err";
     } else {
-      
-
       const NDA_Doc = NDA;
       const COC_Doc = COC;
       const RPD_Doc = Rpd;
@@ -163,11 +192,7 @@ exports.updateComplianceDetail = async (req, res) => {
     },
   ]);
   upload(req, res, async function (err) {
-
-    
-
     console.log("req", req.files);
-
 
     var cDetails = await CompliancedetailSchema.findOne({
       where: { userId: req.params.userId },
@@ -556,12 +581,10 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
   });
 
   doc.end();
-  stream.on("finish", function () {
-    const blob = stream.toBlob("application/pdf");
-    const url = stream.toBlobURL("application/pdf");
-    return res
-      .status(200)
-      .json({ status: "success", message: "Registered Successfully", url });
+  
+  doc.pipe(res);
+  res.writeHead(200, {
+    'Content-Type': 'application/pdf',
   });
 };
 
@@ -733,12 +756,9 @@ exports.createCompliancePdf = (req, res, next) => {
     align: "justify",
   });
   doc.end();
-  stream.on("finish", function () {
-    const blob = stream.toBlob("application/pdf");
-    const url = stream.toBlobURL("application/pdf");
-    return res
-      .status(200)
-      .json({ status: "success", message: "Registered Successfully", url });
+  doc.pipe(res);
+  res.writeHead(200, {
+    'Content-Type': 'application/pdf',
   });
 };
 exports.createnonDisclosure = async (req, res, next) => {
@@ -990,14 +1010,11 @@ h) This agreement may be executed in two counterparts, each of which shall be de
       underline: true,
     })
     .text(`Title:`, col2LeftPos, col4Top, { width: colWidth, underline: true });
-
   doc.end();
-  stream.on("finish", function () {
-    const blob = stream.toBlob("application/pdf");
-    const url = stream.toBlobURL("application/pdf");
-    return res
-      .status(200)
-      .json({ status: "success", message: "Registered Successfully", url });
+
+  doc.pipe(res);
+  res.writeHead(200, {
+    'Content-Type': 'application/pdf',
   });
 };
 
