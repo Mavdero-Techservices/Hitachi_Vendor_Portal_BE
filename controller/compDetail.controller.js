@@ -145,9 +145,9 @@ exports.saveComplianceDetail = (req, res) => {
     if (err) {
       return "err";
     } else {
-      const NDA_Doc = NDA;
-      const COC_Doc = COC;
-      const RPD_Doc = Rpd;
+      const NDA_Doc = NDA_DocPath;
+      const COC_Doc = COC_DocPath;
+      const RPD_Doc = RPD_DocPath;
       const complianceId =
         "compliance" + Math.floor(100000 + Math.random() * 900000);
       const userId = req.body.userId;

@@ -102,6 +102,20 @@ exports.postSingUp = [
     }
   }
 ];
+
+exports.getUserId = (req, res) => {
+  const userId = req.params.userId;
+  SignUpSchema.findOne({
+    where: { userId: userId },
+  })
+      .then(data => {
+          return res.status(200).json({ msg: "success", result: data });
+      })
+      .catch(err => {
+          return res.status(200).json({ status: 'error', data: { message: 'Error Response', err } });
+      });
+};
+
 //login
 exports.postLogin = (req, res) => {
   const userName = req.body.userName;

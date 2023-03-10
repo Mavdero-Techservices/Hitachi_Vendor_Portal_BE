@@ -31,6 +31,7 @@ router.get('/', function (req, res, next) {
 });
 // signUp
 router.post("/signUp", signUp.postSingUp);
+router.get("/signUp/getByUserId/:userId", signUp.getUserId);
 //login
 router.post("/login", signUp.postLogin);
 
