@@ -54,6 +54,8 @@ router.get("/getImage", imageUploadcontroller.getImage);
 //tutorialApi's Crud
 // Create
 router.post("/save", tutorialApi.save);
+//ErpDetail
+router.get("/getErp", tutorialApi.getErp);
 //Retrieve all data
 router.get("/getAll", tutorialApi.getAll);
 // Retrieve data with id
@@ -91,6 +93,7 @@ router.put("/updateBankDetail/:userId", bankdetail.updateBankDetail);
 //statdetails schema - create
 // router.post("/saveStatdetail", statdetail.postStatdetail);
 router.post("/saveStatutoryDetail", statdetail.saveStatutoryDetail);
+
 
 router.put("/updateStatutoryDetail/:userId", statdetail.updateStatutoryDetail)
 //compdetails schema - create

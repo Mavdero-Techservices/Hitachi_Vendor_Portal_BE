@@ -299,69 +299,29 @@ var storage = multer.diskStorage({
     }
     
   });
-//savestatutory
-exports.saveStatutoryDetail = (req, res) => {
-    console.log("wrk");
-    var upload = multer({ storage: storage }).fields(
-        [
-          {
-            name: 'GST_Doc',
-            maxCount: 1
-          },
-          {
-            name: 'PAN_Doc',
-            maxCount: 1
-          },
-          {
-            name: 'form_10f_Doc',
-            maxCount: 1
-          },
-          {
-            name: 'TAN_Doc',
-            maxCount: 1
-          },
-          {
-            name: 'PE_Declaration_Doc',
-            maxCount: 1
-          },
-          {
-            name: 'MSME_Doc',
-            maxCount: 1
-          },
-          {
-            name: 'Tax_residency_Doc',
-            maxCount: 1
-          },
-        ]);
-    upload(req, res, function (err) {
-        if (err) {
-            console.log("InsideErr", err);
-            return "err";
-          }
-          else
-          {
 
-            const GST_Doc = GST_DocPath;
-            const PAN_Doc = PAN_DocPath;
-            const form_10f_Doc = form_10f_DocPath;
-            const TAN_Doc = TAN_DocPath;
-            const PE_Declaration_Doc = PE_Declaration_DocPath;
-            const MSME_Doc = MSME_DocPath;
-            const Tax_residency_Doc = Tax_residency_DocPath;
-            const user = new StatDetailSchema({
-                GST_Doc: GST_Doc,
-                PAN_Doc: PAN_Doc,
-                form_10f_Doc:form_10f_Doc,
-                TAN_Doc:TAN_Doc,
-                PE_Declaration_Doc:PE_Declaration_Doc,
-                MSME_Doc:MSME_Doc,
-                Tax_residency_Doc:Tax_residency_Doc,
-            });
-            console.log("GST_Doc",GST_Doc);
-            user.save()
-              .then(result => {
-                return res.status(200).json({ status: "success", message: "Registered Successfully", result });
-              })
-          }
-        })
+var axios = require('axios');
+exports.getErp= (req, res) => {
+    const username = 'ERP-API';
+    const password = 'HSI@#543DCVB';
+    const domain = 'MCIPL'
+    const encodedBase64Token = Buffer.from(`${domain}:${username}:${password}`).toString('base64');
+    
+    var config = {
+    username: 'ERP-API',
+    password: 'HSI@#543DCVB',
+      method: 'get',
+      url: 'http://10.83.152.111:9048/DynamicsNav90April22/OData/Company(\'Hitachi%20Systems%20India%20Pvt%20Ltd\')/Salespeople_PurchasersAllRecords?$format=json',
+      headers: {
+               "Content-Type": "application/json",
+               Authorization: `NTLM ${encodedBase64Token}`,
+           },
+    };
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }  
