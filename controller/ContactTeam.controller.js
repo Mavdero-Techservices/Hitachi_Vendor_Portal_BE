@@ -399,7 +399,7 @@ exports.saveContactTeam = (req, res) => {
       .json({ status: "success", message: "Registered Successfully", result });
   });
 };
-exports.getAllCollection = async (req, res) => {
+exports.getAllCollection = (req, res) => {
   var userId = req.params.userId;
   const basicInfoArray = [];
   const CommunicationDetailsArray = [];
@@ -408,86 +408,84 @@ exports.getAllCollection = async (req, res) => {
   const FdetailArray = [];
   const bankdetailArray = [];
   const contactTeamArray = [];
-  await VdetailSchema.findOne({
+  var p1 = VdetailSchema.findOne({
     where: { userId: userId },
-  }).then(async (basicInfo) => {
+  }).then((basicInfo) => {
     if (basicInfo === null) {
       basicInfoArray.length = 0;
     } else {
       basicInfoArray.push(basicInfo);
     }
-    await vendorCommunicationDetails
-      .findOne({
-        where: { userId: userId },
-      })
-      .then(async (CommunicationDetails) => {
-        if (CommunicationDetails === null) {
-          CommunicationDetailsArray.length = 0;
-        } else {
-          CommunicationDetailsArray.push(CommunicationDetails);
-        }
-        await StatDetailSchema.findOne({
-          where: { userId: userId },
-        }).then(async (StatDetail) => {
-          if (StatDetail === null) {
-            StatDetailArray.length = 0;
-          } else {
-            StatDetailArray.push(StatDetail);
-          }
-
-          await CompliancedetailSchema.findOne({
-            where: { userId: userId },
-          }).then(async (Compliancedetail) => {
-            if (Compliancedetail === null) {
-              CompliancedetailArray.length = 0;
-            } else {
-              CompliancedetailArray.push(Compliancedetail);
-            }
-
-            await FdetailSchema.findOne({
-              where: { userId: userId },
-            }).then(async (Fdetail) => {
-              if (Fdetail === null) {
-                FdetailArray.length = 0;
-              } else {
-                FdetailArray.push(Fdetail);
-              }
-
-              await BankdetailSchema.findOne({
-                where: { userId: userId },
-              }).then(async (Bankdetail) => {
-                if (Bankdetail === null) {
-                  bankdetailArray.length = 0;
-                } else {
-                  bankdetailArray.push(Bankdetail);
-                }
-                await contactTeamSchema
-                  .findOne({
-                    where: { userId: userId },
-                  })
-                  .then(async (contactTeam) => {
-                    if (contactTeam === null) {
-                      contactTeamArray.length = 0;
-                    } else {
-                      contactTeamArray.push(contactTeam);
-                    }
-                  });
-              });
-            });
-          });
-        });
-      });
   });
-
-  res.status(200).json({
-    status: "success",
-    basicInfo: basicInfoArray,
-    CommunicationDetails: CommunicationDetailsArray,
-    Statutory: StatDetailArray,
-    ComplianceDetail: CompliancedetailArray,
-    FinancialDetail: FdetailArray,
-    Bankdetail: bankdetailArray,
-    contactDetail: contactTeamArray,
+  var p2 = vendorCommunicationDetails
+    .findOne({
+      where: { userId: userId },
+    })
+    .then((CommunicationDetails) => {
+      if (CommunicationDetails === null) {
+        CommunicationDetailsArray.length = 0;
+      } else {
+        CommunicationDetailsArray.push(CommunicationDetails);
+      }
+    });
+  var p3 = StatDetailSchema.findOne({
+    where: { userId: userId },
+  }).then((StatDetail) => {
+    if (StatDetail === null) {
+      StatDetailArray.length = 0;
+    } else {
+      StatDetailArray.push(StatDetail);
+    }
+  });
+  var p4 = CompliancedetailSchema.findOne({
+    where: { userId: userId },
+  }).then((Compliancedetail) => {
+    if (Compliancedetail === null) {
+      CompliancedetailArray.length = 0;
+    } else {
+      CompliancedetailArray.push(Compliancedetail);
+    }
+  });
+  var p5 = FdetailSchema.findOne({
+    where: { userId: userId },
+  }).then(async (Fdetail) => {
+    if (Fdetail === null) {
+      FdetailArray.length = 0;
+    } else {
+      FdetailArray.push(Fdetail);
+    }
+  });
+  var p6 = BankdetailSchema.findOne({
+    where: { userId: userId },
+  }).then(async (Bankdetail) => {
+    if (Bankdetail === null) {
+      bankdetailArray.length = 0;
+    } else {
+      bankdetailArray.push(Bankdetail);
+    }
+  });
+  var p7 = contactTeamSchema
+    .findOne({
+      where: { userId: userId },
+    })
+    .then(async (contactTeam) => {
+      if (contactTeam === null) {
+        contactTeamArray.length = 0;
+      } else {
+        contactTeamArray.push(contactTeam);
+      }
+    });
+  Promise.all([p1, p2, p3, p4, p5, p6, p7]).then((values) => {
+    res.status(200).json({
+      status: "success",
+      basicInfo: basicInfoArray,
+      CommunicationDetails: CommunicationDetailsArray,
+      Statutory: StatDetailArray,
+      ComplianceDetail: CompliancedetailArray,
+      FinancialDetail: FdetailArray,
+      Bankdetail: bankdetailArray,
+      contactDetail: contactTeamArray,
+    });
   });
 };
 exports.getAllUserDetail = async (req, res) => {
@@ -529,10 +527,8 @@ exports.getAllUserDetail = async (req, res) => {
     Bankdetail: bankdetailArray,
   });
 };
-
 exports.updateAllCollection = async (req, res) => {
   var userId = req.params.userId;
-
   bankdetailDocPath = "";
   GST_DocPath = "";
   PAN_DocPath = "";
@@ -1022,7 +1018,7 @@ exports.vendorEditTabList = async (req, res) => {
     where: { userId: req.body.userId },
   });
   const mVendoremailId = masterVendoremail.mastervendor_email;
-  if(vendorcode){
+  if (vendorcode) {
     var subject = `Hitachi Update Vendor Details`;
     var emailContent = `
                           <h4>Hi ${vendorcode}</h4>
@@ -1033,18 +1029,18 @@ exports.vendorEditTabList = async (req, res) => {
                           </ul>
                           <p>Thanks & regards,</p>
                           </div>`;
-              var returnFlag = false;
-              exports.emailUpdateTabNotification(
-                req,
-                res,
-                subject,
-                emailContent,
-                returnFlag,
-                mVendoremailId
-              );
-              res.status(200).send({
-                message: "VendorCode email Sent successfully!",
-                status: "success",
-              });
+    var returnFlag = false;
+    exports.emailUpdateTabNotification(
+      req,
+      res,
+      subject,
+      emailContent,
+      returnFlag,
+      mVendoremailId
+    );
+    res.status(200).send({
+      message: "VendorCode email Sent successfully!",
+      status: "success",
+    });
   }
-}
+};
