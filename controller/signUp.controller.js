@@ -124,7 +124,7 @@ exports.postLogin = (req, res) => {
     where: { userName: userName },
   })
     .then(user => {
-      if (!user) {
+      if (!user || user.finalStatus==='Approved') {
         return res.status(200).json({ status: 'error', data: { message: 'invalid user' } });
       }
       else {

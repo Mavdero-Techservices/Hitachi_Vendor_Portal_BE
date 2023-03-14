@@ -631,7 +631,7 @@ exports.updateAllCollection = async (req, res) => {
       state: req.body.state,
       city: req.body.city,
       pinCode: req.body.pinCode,
-      image: req.body.image,
+      image: new Buffer(req.body.image, 'base64').toString('binary'),
       vendorType: req.body.vendorType,
       vendorManager: req.body.vendorManager,
       mkDenialCheque: req.body.mkDenialCheque,
