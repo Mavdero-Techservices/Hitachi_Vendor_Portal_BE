@@ -299,29 +299,18 @@ var storage = multer.diskStorage({
     }
     
   });
-
-var axios = require('axios');
-exports.getErp= (req, res) => {
-    const username = 'ERP-API';
-    const password = 'HSI@#543DCVB';
-    const domain = 'MCIPL'
-    const encodedBase64Token = Buffer.from(`${domain}:${username}:${password}`).toString('base64');
-    
-    var config = {
-    username: 'ERP-API',
-    password: 'HSI@#543DCVB',
-      method: 'get',
-      url: 'http://10.83.152.111:9048/DynamicsNav90April22/OData/Company(\'Hitachi%20Systems%20India%20Pvt%20Ltd\')/Salespeople_PurchasersAllRecords?$format=json',
-      headers: {
-               "Content-Type": "application/json",
-               Authorization: `NTLM ${encodedBase64Token}`,
-           },
-    };
-    axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}  
+  const httpntlm = require('httpntlm');
+  exports.getErp= (req, res) => {
+    httpntlm.get({
+      url: "http://10.83.152.111:9048/DynamicsNav90April22/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/Salespeople_PurchasersAllRecords?$format=json",
+      username: 'ERP-API',
+      password: 'HSI@#543DCVB',
+      workstation: '',
+      domain: ''
+  }, function (err, result){
+      if(err) return err;
+               res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(result.body);
+  })
+  
+  }; 
