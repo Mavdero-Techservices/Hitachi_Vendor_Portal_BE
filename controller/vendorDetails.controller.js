@@ -1,5 +1,6 @@
 const db = require("../model");
 const VdetailSchema = db.vdetail;
+const ApprovalSchema = db.approvalStatus;
 const vendorCommunicationDetails = db.vendorCommunicationDetails;
 const { check, validationResult } = require("express-validator");
 var geoCountryZipCode = require('geonames-country-zipcode-lookup');
@@ -186,6 +187,16 @@ exports.getStateAndcityByzipcode = (req, res, next) => {
 exports.updateVendor = async (req, res) => {
   const userId = req.params.userId;
   const updates = req.body;
+  if (req.body.submitStatus = "Submitted") {
+    await ApprovalSchema.findOne({
+      where: {
+        userId: userId
+      }
+    })
+      .then((data) => {
+        data.destroy();
+      })
+  }
 
   // check if there are any empty fields
   for (const key in updates) {

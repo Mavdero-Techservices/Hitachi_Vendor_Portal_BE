@@ -422,7 +422,12 @@ exports.saveApprovalStatus = (req, res) => {
       const level3rejectFileDoc = rejectFile3DocPath;
       const userId = req.body.userId;
       const emailId = userEmailId.emailId;
-
+      if (req.body.level1Status==='rejected'){
+        req.body.submitStatus ="rejected"
+        const vdetail = await VdetailSchema.update(req.body,{
+          where: { userId: userId }
+        }) 
+      }
       const user = new ApprovalSchema({
         userId: userId,
         level1Status: req.body.level1Status,
@@ -541,8 +546,12 @@ exports.updateApprovalStatus = async (req, res) => {
           where: { userId: userId },
         })
       }
-
-
+      if (req.body.level3Status === 'rejected') {
+        req.body.submitStatus = "rejected"
+        const vdetail = await VdetailSchema.update(req.body, {
+          where: { userId: userId }
+        })
+      }
       ApprovalSchema.update(req.body, {
         where: { userId: userId },
       })
