@@ -188,14 +188,16 @@ exports.updateVendor = async (req, res) => {
   const userId = req.params.userId;
   const updates = req.body;
   if (req.body.submitStatus = "Submitted") {
-    await ApprovalSchema.findOne({
+   const del = await ApprovalSchema.findOne({
       where: {
         userId: userId
       }
     })
-      .then((data) => {
-        data.destroy();
+    if(del){
+      ApprovalSchema.destroy({
+        where: { id: id },
       })
+    }
   }
 
   // check if there are any empty fields
