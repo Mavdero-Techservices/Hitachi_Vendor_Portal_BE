@@ -26,6 +26,7 @@ exports.postVdetail = (req, res, next) => {
   VdetailSchema.findOne({
     where: {
       userId: req.body.userId,
+      // id: req.body.id,
     },
   }).then(async (user) => {
     if (!user) {
@@ -97,6 +98,7 @@ exports.SaveVendorCommunication = (req, res) => {
     .findOne({
       where: {
         userId: req.body.userId,
+        // id: req.body.id,
       },
     })
     .then(async (user) => {
@@ -131,12 +133,10 @@ exports.SaveVendorCommunication = (req, res) => {
             return res.status(200).json({ msg: "success", result: data });
           })
           .catch((err) => {
-            return res
-              .status(200)
-              .json({
-                status: "error",
-                data: { message: "Error Response", err },
-              });
+            return res.status(200).json({
+              status: "error",
+              data: { message: "Error Response", err },
+            });
           });
       } else {
         const userId = req.body.userId;
@@ -153,12 +153,10 @@ exports.SaveVendorCommunication = (req, res) => {
         });
 
         if (updateResult[0]) {
-          return res
-            .status(200)
-            .json({
-              msg: "success",
-              result: "Communication details updated successfully",
-            });
+          return res.status(200).json({
+            msg: "success",
+            result: "Communication details updated successfully",
+          });
         } else {
           res.status(404).json({
             msg: "error",
@@ -193,7 +191,7 @@ exports.getStateAndcityByzipcode = (req, res, next) => {
 exports.updateVendor = async (req, res) => {
   const userId = req.params.userId;
   const updates = req.body;
-  if ((req.body.submitStatus === "Submitted")) {
+  if (req.body.submitStatus === "Submitted") {
     const del = await ApprovalSchema.findOne({
       where: {
         userId: userId,
@@ -201,7 +199,7 @@ exports.updateVendor = async (req, res) => {
     });
     if (del) {
       ApprovalSchema.destroy({
-        where: { id: id },
+        where: { userId: userId },
       });
     }
   }
@@ -214,7 +212,7 @@ exports.updateVendor = async (req, res) => {
   }
 
   const updateResult = await VdetailSchema.update(updates, {
-    where: { userId },
+    where: { userId: userId },
   });
 
   if (updateResult[0]) {
