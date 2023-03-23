@@ -124,82 +124,185 @@ var storage = multer.diskStorage({
     var filetype = "";
 
     if (file.fieldname === "GST_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      GST_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      GST_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "fileDisclosure") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      fileDisclosure_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      fileDisclosure_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "PAN_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      PAN_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-     
+      PAN_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "form_10f_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      form_10f_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      form_10f_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "TAN_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      TAN_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
-     
+      TAN_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "PE_Declaration_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      PE_Declaration_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      PE_Declaration_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "MSME_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      MSME_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      MSME_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "Tax_residency_Doc") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      Tax_residency_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      Tax_residency_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
   },
 });
 //savestatutory
 exports.saveStatutoryDetail = (req, res) => {
+  GST_DocPath = "";
+  PAN_DocPath = "";
+  form_10f_DocPath = "";
+  TAN_DocPath = "";
+  PE_Declaration_DocPath = "";
+  MSME_DocPath = "";
+  Tax_residency_DocPath = "";
+
   var upload = multer({ storage: storage }).fields([
     {
       name: "GST_Doc",
@@ -231,30 +334,26 @@ exports.saveStatutoryDetail = (req, res) => {
     },
   ]);
   upload(req, res, function (err) {
+    console.log("body", req.body);
+    console.log("files", req.files);
+
+
     if (err) {
       console.log("InsideErr", err);
       return "err";
     } else {
-      var GST_Path = "";
-      var Pan_path = "";
-      var form_10f_Path = "";
-      var TAN_Doc_Path = "";
-      var PE_Declaration_Doc_Path = "";
-      var MSME_Doc_Path = "";
-      var Tax_residency_Doc_Path = "";
-      
       const GST_type = req.body.GST_type;
       const GST_No = req.body.GST_No;
-      const GST_Doc = GST_Path;
+      const GST_Doc = GST_DocPath;
       const fileDisclosure = fileDisclosure_DocPath;
       const PAN_No = req.body.PAN_No;
-      const PAN_Doc = Pan_path;
-      const form_10f_Doc = form_10f_Path;
-      const TAN_Doc = TAN_Doc_Path;
+      const PAN_Doc = PAN_DocPath;
+      const form_10f_Doc = form_10f_DocPath;
+      const TAN_Doc = TAN_DocPath;
       const PE_DeclarationNo = req.body.PE_DeclarationNo;
       const PE_Declaration_Doc = PE_Declaration_DocPath;
-      const MSME_Doc = MSME_Doc_Path;
-      const Tax_residency_Doc = Tax_residency_Doc_Path;
+      const MSME_Doc = MSME_DocPath;
+      const Tax_residency_Doc = Tax_residency_DocPath;
       const CIN_No = req.body.CIN_No;
       const form_10f = req.body.form_10f;
       const MSME_status = req.body.MSME_status;
@@ -341,7 +440,6 @@ exports.updateStatutoryDetail = async (req, res) => {
     },
   ]);
   upload(req, res, async function (err) {
-
     var statDetails = await StatDetailSchema.findOne({
       where: { userId: req.params.userId },
     });
@@ -608,7 +706,7 @@ exports.updateStatutoryDetail = async (req, res) => {
 
         StatDetailSchema.update(req.body, {
           where: {
-            userId: userId
+            userId: userId,
           },
         })
           .then(() => {
