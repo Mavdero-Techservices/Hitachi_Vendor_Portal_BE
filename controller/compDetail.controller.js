@@ -127,6 +127,10 @@ var storage = multer.diskStorage({
 });
 
 exports.saveComplianceDetail = (req, res) => {
+  RPD_DocPath = "";
+  COC_DocPath = "";
+  NDA_DocPath = "";
+
   var upload = multer({ storage: storage }).fields([
     {
       name: "RPD_Doc",
@@ -145,26 +149,38 @@ exports.saveComplianceDetail = (req, res) => {
     if (err) {
       return "err";
     } else {
-      const NDA_Doc = NDA_DocPath;
-      const COC_Doc = COC_DocPath;
-      const RPD_Doc = RPD_DocPath;
-      const complianceId =
-        "compliance" + Math.floor(100000 + Math.random() * 900000);
-      const userId = req.body.userId;
-
-      const user = new CompliancedetailSchema({
-        complianceId: complianceId,
-        userId: userId,
-        NDA_Doc: NDA_Doc,
-        COC_Doc: COC_Doc,
-        RPD_Doc: RPD_Doc,
-      });
-      user.save().then((result) => {
-        return res.status(200).json({
-          status: "success",
-          message: "Registered Successfully",
-          result,
-        });
+      CompliancedetailSchema.findOne({
+        where: {
+          userId: req.body.userId,
+          // id: req.body.id,
+        },
+      }).then(async (user) => {
+        if (!user) {
+          console.log("111111111");
+          console.log("save api call");
+          const NDA_Doc = NDA_DocPath;
+          const COC_Doc = COC_DocPath;
+          const RPD_Doc = RPD_DocPath;
+          const complianceId =
+            "compliance" + Math.floor(100000 + Math.random() * 900000);
+          const userId = req.body.userId;
+          const user = new CompliancedetailSchema({
+            complianceId: complianceId,
+            userId: userId,
+            NDA_Doc: NDA_Doc,
+            COC_Doc: COC_Doc,
+            RPD_Doc: RPD_Doc,
+          });
+          user.save().then((result) => {
+            return res.status(200).json({
+              status: "success",
+              message: "Compliance Details Saved Successfully",
+              result,
+            });
+          });
+        } else {
+          console.log("Update Api");
+        }
       });
     }
   });
@@ -192,13 +208,9 @@ exports.updateComplianceDetail = async (req, res) => {
     },
   ]);
   upload(req, res, async function (err) {
-    console.log("req", req.files);
-
     var cDetails = await CompliancedetailSchema.findOne({
       where: { userId: req.params.userId },
     });
-
-    console.log("cDetails", cDetails);
 
     if (err) {
       return "err";
@@ -581,10 +593,10 @@ exports.createRelatedDisclosurePdf = (req, res, next) => {
   });
 
   doc.end();
-  
+
   doc.pipe(res);
   res.writeHead(200, {
-    'Content-Type': 'application/pdf',
+    "Content-Type": "application/pdf",
   });
 };
 
@@ -758,7 +770,7 @@ exports.createCompliancePdf = (req, res, next) => {
   doc.end();
   doc.pipe(res);
   res.writeHead(200, {
-    'Content-Type': 'application/pdf',
+    "Content-Type": "application/pdf",
   });
 };
 exports.createnonDisclosure = async (req, res, next) => {
@@ -1014,7 +1026,7 @@ h) This agreement may be executed in two counterparts, each of which shall be de
 
   doc.pipe(res);
   res.writeHead(200, {
-    'Content-Type': 'application/pdf',
+    "Content-Type": "application/pdf",
   });
 };
 

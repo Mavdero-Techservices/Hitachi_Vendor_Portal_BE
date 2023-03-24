@@ -334,65 +334,72 @@ exports.saveStatutoryDetail = (req, res) => {
     },
   ]);
   upload(req, res, function (err) {
-    console.log("body", req.body);
-    console.log("files", req.files);
-
 
     if (err) {
       console.log("InsideErr", err);
       return "err";
     } else {
-      const GST_type = req.body.GST_type;
-      const GST_No = req.body.GST_No;
-      const GST_Doc = GST_DocPath;
-      const fileDisclosure = fileDisclosure_DocPath;
-      const PAN_No = req.body.PAN_No;
-      const PAN_Doc = PAN_DocPath;
-      const form_10f_Doc = form_10f_DocPath;
-      const TAN_Doc = TAN_DocPath;
-      const PE_DeclarationNo = req.body.PE_DeclarationNo;
-      const PE_Declaration_Doc = PE_Declaration_DocPath;
-      const MSME_Doc = MSME_DocPath;
-      const Tax_residency_Doc = Tax_residency_DocPath;
-      const CIN_No = req.body.CIN_No;
-      const form_10f = req.body.form_10f;
-      const MSME_status = req.body.MSME_status;
-      const MSME_No = req.body.MSME_No;
-      const MSME_Type = req.body.MSME_Type;
-      const TAN_No = req.body.TAN_No;
-      const Tax_residency_No = req.body.Tax_residency_No;
-      const StatutoryId =
-        "Statutory" + Math.floor(100000 + Math.random() * 900000);
-      const userId = req.body.userId;
-      const user = new StatDetailSchema({
-        StatutoryId: StatutoryId,
-        userId: userId,
-        GST_type: GST_type,
-        GST_No: GST_No,
-        GST_Doc: GST_Doc,
-        PAN_No: PAN_No,
-        PAN_Doc: PAN_Doc,
-        form_10f_Doc: form_10f_Doc,
-        TAN_Doc: TAN_Doc,
-        PE_DeclarationNo: PE_DeclarationNo,
-        PE_Declaration_Doc: PE_Declaration_Doc,
-        MSME_Doc: MSME_Doc,
-        Tax_residency_Doc: Tax_residency_Doc,
-        CIN_No: CIN_No,
-        form_10f: form_10f,
-        MSME_status: MSME_status,
-        MSME_No: MSME_No,
-        MSME_Type: MSME_Type,
-        TAN_No: TAN_No,
-        Tax_residency_No: Tax_residency_No,
-        fileDisclosure: fileDisclosure,
-      });
-      user.save().then((result) => {
-        return res.status(200).json({
-          status: "success",
-          message: "Registered Successfully",
-          result,
-        });
+      StatDetailSchema.findOne({
+        where: {
+          userId: req.body.userId,
+        },
+      }).then(async (user) => {
+        if (!user) {
+          const GST_type = req.body.GST_type;
+          const GST_No = req.body.GST_No;
+          const GST_Doc = GST_DocPath;
+          const fileDisclosure = fileDisclosure_DocPath;
+          const PAN_No = req.body.PAN_No;
+          const PAN_Doc = PAN_DocPath;
+          const form_10f_Doc = form_10f_DocPath;
+          const TAN_Doc = TAN_DocPath;
+          const PE_DeclarationNo = req.body.PE_DeclarationNo;
+          const PE_Declaration_Doc = PE_Declaration_DocPath;
+          const MSME_Doc = MSME_DocPath;
+          const Tax_residency_Doc = Tax_residency_DocPath;
+          const CIN_No = req.body.CIN_No;
+          const form_10f = req.body.form_10f;
+          const MSME_status = req.body.MSME_status;
+          const MSME_No = req.body.MSME_No;
+          const MSME_Type = req.body.MSME_Type;
+          const TAN_No = req.body.TAN_No;
+          const Tax_residency_No = req.body.Tax_residency_No;
+          const StatutoryId =
+            "Statutory" + Math.floor(100000 + Math.random() * 900000);
+          const userId = req.body.userId;
+          const user = new StatDetailSchema({
+            StatutoryId: StatutoryId,
+            userId: userId,
+            GST_type: GST_type,
+            GST_No: GST_No,
+            GST_Doc: GST_Doc,
+            PAN_No: PAN_No,
+            PAN_Doc: PAN_Doc,
+            form_10f_Doc: form_10f_Doc,
+            TAN_Doc: TAN_Doc,
+            PE_DeclarationNo: PE_DeclarationNo,
+            PE_Declaration_Doc: PE_Declaration_Doc,
+            MSME_Doc: MSME_Doc,
+            Tax_residency_Doc: Tax_residency_Doc,
+            CIN_No: CIN_No,
+            form_10f: form_10f,
+            MSME_status: MSME_status,
+            MSME_No: MSME_No,
+            MSME_Type: MSME_Type,
+            TAN_No: TAN_No,
+            Tax_residency_No: Tax_residency_No,
+            fileDisclosure: fileDisclosure,
+          });
+          user.save().then((result) => {
+            return res.status(200).json({
+              status: "success",
+              message: "Statuory Details Saved Successfully",
+              result,
+            });
+          });
+        } else {
+          console.log("Update Api");
+        }
       });
     }
   });

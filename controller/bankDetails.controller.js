@@ -13,12 +13,25 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
+    let filedirect = file.originalname.split(".");
 
-    let filedirect = file.originalname.split(".")
-    
-    bankdetailDocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
+    bankdetailDocPath =
+      directory_name +
+      "/" +
+      filedirect[0] +
+      "_" +
+      new Date().toISOString().replace(/:/g, "-") +
+      "." +
+      filedirect[1];
 
-    cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
+    cb(
+      null,
+      filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1]
+    );
   },
 });
 
@@ -33,36 +46,46 @@ exports.saveBankDetail = (req, res) => {
       console.log("InsideErr", err);
       return "err";
     } else {
-      const bankdetailDoc = bankdetailDocPath;
-      const bankId = "bank" + Math.floor(100000 + Math.random() * 900000);
-      const userId = req.body.userId;
-      const user = new BankdetailSchema({
-        bankId: bankId,
-        userId: userId,
-        bankAccountName: req.body.bankAccountName,
-        bankName: req.body.bankName,
-        bankAccountNumber: req.body.bankAccountNumber,
-        ifscCode: req.body.ifscCode,
-        MICRcode: req.body.MICRcode,
-        branchAddress: req.body.branchAddress,
-        bankdetailDoc: bankdetailDoc,
+      BankdetailSchema.findOne({
+        where: {
+          userId: req.body.userId,
+        },
+      }).then(async (user) => {
+        if (!user) {
+          const bankdetailDoc = bankdetailDocPath;
+          const bankId = "bank" + Math.floor(100000 + Math.random() * 900000);
+          const userId = req.body.userId;
+          const user = new BankdetailSchema({
+            bankId: bankId,
+            userId: userId,
+            bankAccountName: req.body.bankAccountName,
+            bankName: req.body.bankName,
+            bankAccountNumber: req.body.bankAccountNumber,
+            ifscCode: req.body.ifscCode,
+            MICRcode: req.body.MICRcode,
+            branchAddress: req.body.branchAddress,
+            bankdetailDoc: bankdetailDoc,
+          });
+          user
+            .save()
+            .then((data) => {
+              return res.status(200).json({
+                message: "Bankdetail was created successfully!",
+                status: "success",
+                data: data,
+              });
+            })
+            .catch((err) => {
+              return res.status(500).json({
+                message:
+                  err.message ||
+                  "Some error occurred while creating the Bankdetail schema.",
+              });
+            });
+        } else {
+          console.log("Update Api");
+        }
       });
-      user
-        .save()
-        .then((data) => {
-          return res.status(200).json({
-            message: "Bankdetail was created successfully!",
-            status: "success",
-            data: data,
-          });
-        })
-        .catch((err) => {
-          return res.status(500).json({
-            message:
-              err.message ||
-              "Some error occurred while creating the Bankdetail schema.",
-          });
-        });
     }
   });
 };

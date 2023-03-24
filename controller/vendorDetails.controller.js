@@ -25,8 +25,7 @@ exports.postVdetail = (req, res, next) => {
 
   VdetailSchema.findOne({
     where: {
-      userId: req.body.userId,
-      // id: req.body.id,
+      userId: userId,
     },
   }).then(async (user) => {
     if (!user) {
@@ -63,37 +62,14 @@ exports.postVdetail = (req, res, next) => {
         });
     } else {
       console.log("call update Api:::");
-      const userId = req.body.userId;
-      const updates = req.body;
-
-      // check if there are any empty fields
-      for (const key in updates) {
-        if (!updates[key]) {
-          updates[key] = null;
-        }
-      }
-
-      const updateResult = await VdetailSchema.update(updates, {
-        where: { userId },
-      });
-
-      if (updateResult[0]) {
-        res.status(200).json({
-          status: "success",
-          message: "Vendor updated successfully",
-        });
-      } else {
-        res.status(404).json({
-          status: "error",
-          message: "Vendor not found",
-        });
-      }
+      
     }
   });
 };
 
 //SaveVendorCommunication
 exports.SaveVendorCommunication = (req, res) => {
+  console.log("req", req.body);
   vendorCommunicationDetails
     .findOne({
       where: {

@@ -76,30 +76,56 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-
     console.log("file---------->", file);
 
     if (file.fieldname === "financial_data") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      financial_data_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      financial_data_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "financial_data2") {
+      let filedirect = file.originalname.split(".");
 
-      let filedirect = file.originalname.split(".")
-      
-      financial_data2_DocPath =  directory_name + "/" + filedirect[0] + "_" + new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1];
-  
-      cb(null, filedirect[0] + "_" +  new Date().toISOString().replace(/:/g, '-') + "." + filedirect[1]);
-      
+      financial_data2_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          new Date().toISOString().replace(/:/g, "-") +
+          "." +
+          filedirect[1]
+      );
     }
   },
 });
 exports.saveFinacialDetail = (req, res) => {
+  var financial_data_DocPath1 = "";
+  var financial_data_DocPath2 = "";
+
   var upload = multer({ storage: storage }).fields([
     {
       name: "financial_data",
@@ -115,36 +141,44 @@ exports.saveFinacialDetail = (req, res) => {
       console.log("InsideErr", err);
       return "err";
     } else {
-      var financial_data_DocPath1 = "";
-      var financial_data_DocPath2 = "";
-     
-      const financial_data = financial_data_DocPath1;
-      const financial_data2 = financial_data_DocPath2;
-      const yearOfAuditedFinancial = req.body.yearOfAuditedFinancial;
-      const Revenue = req.body.Revenue;
-      const Profit = req.body.Profit;
-      const netWorth = req.body.netWorth;
-      const currentAssets = req.body.currentAssets;
-      const directorDetails = req.body.directorDetails;
-      const userId = req.body.userId;
-      const user = new FdetailSchema({
-        financial_id: "financial" + Math.floor(100000 + Math.random() * 900000),
-        financial_data: financial_data,
-        financial_data2: financial_data2,
-        yearOfAuditedFinancial: yearOfAuditedFinancial,
-        Revenue: Revenue,
-        Profit: Profit,
-        netWorth: netWorth,
-        currentAssets: currentAssets,
-        directorDetails: directorDetails,
-        userId: userId,
-      });
-      user.save().then((result) => {
-        return res.status(200).json({
-          status: "success",
-          message: "Registered Successfully",
-          result,
-        });
+      FdetailSchema.findOne({
+        where: {
+          userId: req.body.userId,
+        },
+      }).then(async (user) => {
+        if (!user) {
+          const financial_data = financial_data_DocPath1;
+          const financial_data2 = financial_data_DocPath2;
+          const yearOfAuditedFinancial = req.body.yearOfAuditedFinancial;
+          const Revenue = req.body.Revenue;
+          const Profit = req.body.Profit;
+          const netWorth = req.body.netWorth;
+          const currentAssets = req.body.currentAssets;
+          const directorDetails = req.body.directorDetails;
+          const userId = req.body.userId;
+          const user = new FdetailSchema({
+            financial_id:
+              "financial" + Math.floor(100000 + Math.random() * 900000),
+            financial_data: financial_data,
+            financial_data2: financial_data2,
+            yearOfAuditedFinancial: yearOfAuditedFinancial,
+            Revenue: Revenue,
+            Profit: Profit,
+            netWorth: netWorth,
+            currentAssets: currentAssets,
+            directorDetails: directorDetails,
+            userId: userId,
+          });
+          user.save().then((result) => {
+            return res.status(200).json({
+              status: "success",
+              message: "Financial Details Saved Successfully",
+              result,
+            });
+          });
+        } else {
+          console.log("Update Api");
+        }
       });
     }
   });
@@ -169,8 +203,6 @@ exports.updateFinacialDetail = async (req, res) => {
     var fDetails = await FdetailSchema.findOne({
       where: { userId: req.params.userId },
     });
-
-   
 
     if (err) {
       console.log("InsideErr", err);
@@ -267,7 +299,7 @@ exports.updateFinacialDetail = async (req, res) => {
         req.body.financial_data2 = financial_data2;
         FdetailSchema.update(req.body, {
           where: {
-            userId: userId
+            userId: userId,
           },
         })
           .then(() => {

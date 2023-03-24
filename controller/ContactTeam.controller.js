@@ -369,36 +369,53 @@ var storage = multer.diskStorage({
 });
 
 exports.saveContactTeam = (req, res) => {
-  const contactId = "contactId" + Math.floor(100000 + Math.random() * 900000);
-  const userId = req.body.userId;
-  const contactName1 = req.body.contactName1;
-  const emailId1 = req.body.emailId1;
-  const contactNumber1 = req.body.contactNumber1;
-  const contactName2 = req.body.contactName2;
-  const emailId2 = req.body.emailId2;
-  const contactNumber2 = req.body.contactNumber2;
-  const contactName3 = req.body.contactName3;
-  const emailId3 = req.body.emailId3;
-  const contactNumber3 = req.body.contactNumber3;
-  const user = new contactTeamSchema({
-    contactId: contactId,
-    userId: userId,
-    contactName1: contactName1,
-    emailId1: emailId1,
-    contactNumber1: contactNumber1,
-    contactName2: contactName2,
-    emailId2: emailId2,
-    contactNumber2: contactNumber2,
-    contactName3: contactName3,
-    emailId3: emailId3,
-    contactNumber3: contactNumber3,
-  });
-  user.save().then((result) => {
-    return res
-      .status(200)
-      .json({ status: "success", message: "Registered Successfully", result });
+  contactTeamSchema.findOne({
+    where: {
+      userId: req.body.userId,
+      // id: req.body.id,
+    },
+  }).then(async (user) => {
+    if (!user) {
+      const contactId =
+        "contactId" + Math.floor(100000 + Math.random() * 900000);
+      const userId = req.body.userId;
+      const contactName1 = req.body.contactName1;
+      const emailId1 = req.body.emailId1;
+      const contactNumber1 = req.body.contactNumber1;
+      const contactName2 = req.body.contactName2;
+      const emailId2 = req.body.emailId2;
+      const contactNumber2 = req.body.contactNumber2;
+      const contactName3 = req.body.contactName3;
+      const emailId3 = req.body.emailId3;
+      const contactNumber3 = req.body.contactNumber3;
+      const user = new contactTeamSchema({
+        contactId: contactId,
+        userId: userId,
+        contactName1: contactName1,
+        emailId1: emailId1,
+        contactNumber1: contactNumber1,
+        contactName2: contactName2,
+        emailId2: emailId2,
+        contactNumber2: contactNumber2,
+        contactName3: contactName3,
+        emailId3: emailId3,
+        contactNumber3: contactNumber3,
+      });
+      user.save().then((result) => {
+        return res
+          .status(200)
+          .json({
+            status: "success",
+            message: "Registered Successfully",
+            result,
+          });
+      });
+    } else {
+      console.log("Update Api");
+    }
   });
 };
+
 exports.getAllCollection = (req, res) => {
   var userId = req.params.userId;
   const basicInfoArray = [];
@@ -631,7 +648,7 @@ exports.updateAllCollection = async (req, res) => {
       state: req.body.state,
       city: req.body.city,
       pinCode: req.body.pinCode,
-      image: new Buffer(req.body.image, 'base64').toString('binary'),
+      image: new Buffer(req.body.image, "base64").toString("binary"),
       vendorType: req.body.vendorType,
       vendorManager: req.body.vendorManager,
       mkDenialCheque: req.body.mkDenialCheque,
