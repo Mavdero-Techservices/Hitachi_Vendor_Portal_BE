@@ -56,6 +56,18 @@ router.get("/getImage", imageUploadcontroller.getImage);
 router.post("/save", tutorialApi.save);
 //ErpDetail
 router.get("/getErp", tutorialApi.getErp);
+//getErpTestingOData
+router.get("/getErpTestingOData", tutorialApi.getErpTestingOData);
+//getErpVendorMasterIntegration
+router.get("/getErpVendorMasterIntegration", tutorialApi.getErpVendorMasterIntegration);
+//postErpTestingOData
+router.post("/postErpTestingOData", tutorialApi.postErpTestingOData);
+//postErpVendorMasterIntegration
+router.post("/postErpVendorMasterIntegration", tutorialApi.postErpVendorMasterIntegration);
+//getErpById
+router.get("/getErpById", tutorialApi.getErpById);
+//updateErpVendorMasterIntegration
+router.put("/updateErpVendorMasterIntegration", tutorialApi.updateErpVendorMasterIntegration);
 //Retrieve all data
 router.get("/getAll", tutorialApi.getAll);
 // Retrieve data with id
