@@ -398,7 +398,291 @@ exports.saveStatutoryDetail = (req, res) => {
             });
           });
         } else {
-          console.log("Update Api");
+          var statDetails = await StatDetailSchema.findOne({
+            where: { userId: req.body.userId },
+          });
+
+      
+          if (err) {
+            console.log("InsideErr", err);
+            return "err";
+          } else {
+            if (
+              req.files.GST_Doc?.length > 0 ||
+              req.files.PAN_Doc?.length > 0 ||
+              req.files.form_10f_Doc?.length > 0 ||
+              req.files.TAN_Doc?.length > 0 ||
+              req.files.PE_Declaration_Doc?.length > 0 ||
+              req.files.MSME_Doc?.length > 0 ||
+              req.files.Tax_residency_Doc?.length > 0
+            ) {
+              let GST_Doc = GST_DocPath;
+              let PAN_Doc = PAN_DocPath;
+              let form_10f_Doc = form_10f_DocPath;
+              let TAN_Doc = TAN_DocPath;
+              let PE_Declaration_Doc = PE_Declaration_DocPath;
+              let MSME_Doc = MSME_DocPath;
+              let Tax_residency_Doc = Tax_residency_DocPath;
+      
+              if (statDetails.GST_Doc === req.body.GST_Doc) {
+                GST_Doc = req.body.GST_Doc;
+              } else {
+                GST_Doc = GST_DocPath;
+                StatOneDelete = statDetails.GST_Doc;
+                if (StatOneDelete && !req.body.GST_Doc) {
+                  fs.unlink(StatOneDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.PAN_Doc === req.body.PAN_Doc) {
+                PAN_Doc = req.body.PAN_Doc;
+              } else {
+                PAN_Doc = PAN_DocPath;
+                StatTwoDelete = statDetails.PAN_Doc;
+                if (StatTwoDelete && !req.body.PAN_Doc) {
+                  fs.unlink(StatTwoDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.form_10f_Doc === req.body.form_10f_Doc) {
+                form_10f_Doc = req.body.form_10f_Doc;
+              } else {
+                form_10f_Doc = form_10f_DocPath;
+                StatThreeDelete = statDetails.form_10f_Doc;
+                if (StatThreeDelete && !req.body.form_10f_Doc) {
+                  fs.unlink(StatThreeDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.TAN_Doc === req.body.TAN_Doc) {
+                TAN_Doc = req.body.TAN_Doc;
+              } else {
+                TAN_Doc = TAN_DocPath;
+                StatFourDelete = statDetails.TAN_Doc;
+                if (StatFourDelete && !req.body.TAN_Doc) {
+                  fs.unlink(StatFourDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc) {
+                PE_Declaration_Doc = req.body.PE_Declaration_Doc;
+              } else {
+                PE_Declaration_Doc = PE_Declaration_DocPath;
+                StatFiveDelete = statDetails.PE_Declaration_Doc;
+                if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+                  fs.unlink(StatFiveDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.MSME_Doc === req.body.MSME_Doc) {
+                MSME_Doc = req.body.MSME_Doc;
+              } else {
+                MSME_Doc = MSME_DocPath;
+                StatSixDelete = statDetails.MSME_Doc;
+                if (StatSixDelete && !req.body.MSME_Doc) {
+                  fs.unlink(StatSixDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc) {
+                Tax_residency_Doc = req.body.Tax_residency_Doc;
+              } else {
+                Tax_residency_Doc = Tax_residency_DocPath;
+                StatsevenDelete = statDetails.Tax_residency_Doc;
+                if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+                  fs.unlink(StatsevenDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              req.body.GST_Doc = GST_Doc;
+              req.body.PAN_Doc = PAN_Doc;
+              req.body.form_10f_Doc = form_10f_Doc;
+              req.body.TAN_Doc = TAN_Doc;
+              req.body.PE_Declaration_Doc = PE_Declaration_Doc;
+              req.body.MSME_Doc = MSME_Doc;
+              req.body.Tax_residency_Doc = Tax_residency_Doc;
+      
+              StatDetailSchema.update(req.body, {
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+                .then(() => {
+                  res.status(200).send({
+                    message: "Statuory Detail was updated successfully!",
+                    status: "success",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating the Statuory Detail schema.",
+                  });
+                });
+            } else {
+              let GST_Doc = GST_DocPath;
+              let PAN_Doc = PAN_DocPath;
+              let form_10f_Doc = form_10f_DocPath;
+              let TAN_Doc = TAN_DocPath;
+              let PE_Declaration_Doc = PE_Declaration_DocPath;
+              let MSME_Doc = MSME_DocPath;
+              let Tax_residency_Doc = Tax_residency_DocPath;
+      
+              if (statDetails.GST_Doc === req.body.GST_Doc) {
+                GST_Doc = req.body.GST_Doc;
+              } else {
+                GST_Doc = GST_DocPath;
+                StatOneDelete = statDetails.GST_Doc;
+                if (StatOneDelete && !req.body.GST_Doc) {
+                  fs.unlink(StatOneDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.PAN_Doc === req.body.PAN_Doc) {
+                PAN_Doc = req.body.PAN_Doc;
+              } else {
+                PAN_Doc = PAN_DocPath;
+                StatTwoDelete = statDetails.PAN_Doc;
+                if (StatTwoDelete && !req.body.PAN_Doc) {
+                  fs.unlink(StatTwoDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.form_10f_Doc === req.body.form_10f_Doc) {
+                form_10f_Doc = req.body.form_10f_Doc;
+              } else {
+                form_10f_Doc = form_10f_DocPath;
+                StatThreeDelete = statDetails.form_10f_Doc;
+                if (StatThreeDelete && !req.body.form_10f_Doc) {
+                  fs.unlink(StatThreeDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.TAN_Doc === req.body.TAN_Doc) {
+                TAN_Doc = req.body.TAN_Doc;
+              } else {
+                TAN_Doc = TAN_DocPath;
+                StatFourDelete = statDetails.TAN_Doc;
+                if (StatFourDelete && !req.body.TAN_Doc) {
+                  fs.unlink(StatFourDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc) {
+                PE_Declaration_Doc = req.body.PE_Declaration_Doc;
+              } else {
+                PE_Declaration_Doc = PE_Declaration_DocPath;
+                StatFiveDelete = statDetails.PE_Declaration_Doc;
+                if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+                  fs.unlink(StatFiveDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.MSME_Doc === req.body.MSME_Doc) {
+                MSME_Doc = req.body.MSME_Doc;
+              } else {
+                MSME_Doc = MSME_DocPath;
+                StatSixDelete = statDetails.MSME_Doc;
+                if (StatSixDelete && !req.body.MSME_Doc) {
+                  fs.unlink(StatSixDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc) {
+                Tax_residency_Doc = req.body.Tax_residency_Doc;
+              } else {
+                Tax_residency_Doc = Tax_residency_DocPath;
+                StatsevenDelete = statDetails.Tax_residency_Doc;
+                if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+                  fs.unlink(StatsevenDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              req.body.GST_Doc = GST_Doc;
+              req.body.PAN_Doc = PAN_Doc;
+              req.body.form_10f_Doc = form_10f_Doc;
+              req.body.TAN_Doc = TAN_Doc;
+              req.body.PE_Declaration_Doc = PE_Declaration_Doc;
+              req.body.MSME_Doc = MSME_Doc;
+              req.body.Tax_residency_Doc = Tax_residency_Doc;
+      
+              StatDetailSchema.update(req.body, {
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+                .then(() => {
+                  res.status(200).send({
+                    message: "Statuory Detail was updated successfully!",
+                    status: "success",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating the Statuory Detail schema.",
+                  });
+                });
+            }
+          }
         }
       });
     }

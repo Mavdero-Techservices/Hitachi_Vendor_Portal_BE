@@ -76,7 +76,6 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-    console.log("file---------->", file);
 
     if (file.fieldname === "financial_data") {
       let filedirect = file.originalname.split(".");
@@ -178,6 +177,123 @@ exports.saveFinacialDetail = (req, res) => {
           });
         } else {
           console.log("Update Api");
+          var fDetails = await FdetailSchema.findOne({
+            where: { userId: req.body.userId },
+          });
+      
+          if (err) {
+            console.log("InsideErr", err);
+            return "err";
+          } else {
+            if (
+              req.files.financial_data?.length > 0 ||
+              req.files.financial_data2?.length > 0
+            ) {
+              let financial_data = financial_data_DocPath;
+              let financial_data2 = financial_data2_DocPath;
+      
+              if (fDetails.financial_data === req.body.financial_data) {
+                financial_data = req.body.financial_data;
+              } else {
+                financial_data = financial_data_DocPath;
+                directoryFiananceOneDelete = fDetails.financial_data;
+                if (directoryFiananceOneDelete && !req.body.financial_data) {
+                  fs.unlink(directoryFiananceOneDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (fDetails.financial_data2 === req.body.financial_data2) {
+                financial_data2 = req.body.financial_data2;
+              } else {
+                financial_data2 = financial_data2_DocPath;
+                directoryFiananceTwoDelete = fDetails.financial_data2;
+                if (directoryFiananceTwoDelete && !req.body.financial_data2) {
+                  fs.unlink(directoryFiananceTwoDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              req.body.financial_data = financial_data;
+              req.body.financial_data2 = financial_data2;
+              FdetailSchema.update(req.body, {
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+                .then(() => {
+                  res.status(200).send({
+                    message: "Financial Detail was updated successfully!",
+                    status: "success",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating the Financial Detail schema.",
+                  });
+                });
+            } else {
+              let financial_data = financial_data_DocPath;
+              let financial_data2 = financial_data2_DocPath;
+      
+              if (fDetails.financial_data === req.body.financial_data) {
+                financial_data = req.body.financial_data;
+              } else {
+                financial_data = financial_data_DocPath;
+                directoryFiananceOneDelete = fDetails.financial_data;
+                if (directoryFiananceOneDelete && !req.body.financial_data) {
+                  fs.unlink(directoryFiananceOneDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (fDetails.financial_data2 === req.body.financial_data2) {
+                financial_data2 = req.body.financial_data2;
+              } else {
+                financial_data2 = financial_data2_DocPath;
+                directoryFiananceTwoDelete = fDetails.financial_data2;
+                if (directoryFiananceTwoDelete && !req.body.financial_data2) {
+                  fs.unlink(directoryFiananceTwoDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              req.body.financial_data = financial_data;
+              req.body.financial_data2 = financial_data2;
+              FdetailSchema.update(req.body, {
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+                .then(() => {
+                  res.status(200).send({
+                    message: "Financial Detail was updated successfully!",
+                    status: "success",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating the Financial Detail schema.",
+                  });
+                });
+            }
+          }
         }
       });
     }

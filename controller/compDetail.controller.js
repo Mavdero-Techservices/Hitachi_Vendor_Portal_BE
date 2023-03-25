@@ -156,7 +156,6 @@ exports.saveComplianceDetail = (req, res) => {
         },
       }).then(async (user) => {
         if (!user) {
-          console.log("111111111");
           console.log("save api call");
           const NDA_Doc = NDA_DocPath;
           const COC_Doc = COC_DocPath;
@@ -179,7 +178,155 @@ exports.saveComplianceDetail = (req, res) => {
             });
           });
         } else {
-          console.log("Update Api");
+          var cDetails = await CompliancedetailSchema.findOne({
+            where: { userId: req.body.userId },
+          });
+      
+          if (err) {
+            return "err";
+          } else {
+            if (
+              req.files.RPD_Doc?.length > 0 ||
+              req.files.COC_Doc?.length > 0 ||
+              req.files.NDA_Doc?.length > 0
+            ) {
+              let RPD_Doc = RPD_DocPath;
+              let COC_Doc = COC_DocPath;
+              let NDA_Doc = NDA_DocPath;
+      
+              if (cDetails.RPD_Doc === req.body.RPD_Doc) {
+                RPD_Doc = req.body.RPD_Doc;
+              } else {
+                RPD_Doc = RPD_DocPath;
+                ComplianceOneDelete = cDetails.RPD_Doc;
+                if (ComplianceOneDelete && !req.body.RPD_Doc) {
+                  fs.unlink(ComplianceOneDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (cDetails.COC_Doc === req.body.COC_Doc) {
+                COC_Doc = req.body.COC_Doc;
+              } else {
+                COC_Doc = COC_DocPath;
+                ComplianceTwoDelete = cDetails.COC_Doc;
+                if (ComplianceTwoDelete && !req.body.COC_Doc) {
+                  fs.unlink(ComplianceTwoDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (cDetails.NDA_Doc === req.body.NDA_Doc) {
+                NDA_Doc = req.body.NDA_Doc;
+              } else {
+                NDA_Doc = NDA_DocPath;
+                ComplianceThreeDelete = cDetails.NDA_Doc;
+                if (ComplianceThreeDelete && !req.body.NDA_Doc) {
+                  fs.unlink(ComplianceThreeDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              req.body.NDA_Doc = NDA_Doc;
+              req.body.COC_Doc = COC_Doc;
+              req.body.RPD_Doc = RPD_Doc;
+              CompliancedetailSchema.update(req.body, {
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+                .then(() => {
+                  res.status(200).send({
+                    message: "Compliancedetail was updated successfully!",
+                    status: "success",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating the Compliancedetail schema.",
+                  });
+                });
+            } else {
+              let RPD_Doc = RPD_DocPath;
+              let COC_Doc = COC_DocPath;
+              let NDA_Doc = NDA_DocPath;
+      
+              if (cDetails.RPD_Doc === req.body.RPD_Doc) {
+                RPD_Doc = req.body.RPD_Doc;
+              } else {
+                RPD_Doc = RPD_DocPath;
+                ComplianceOneDelete = cDetails.RPD_Doc;
+                if (ComplianceOneDelete && !req.body.RPD_Doc) {
+                  fs.unlink(ComplianceOneDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (cDetails.COC_Doc === req.body.COC_Doc) {
+                COC_Doc = req.body.COC_Doc;
+              } else {
+                COC_Doc = COC_DocPath;
+                ComplianceTwoDelete = cDetails.COC_Doc;
+                if (ComplianceTwoDelete && !req.body.COC_Doc) {
+                  fs.unlink(ComplianceTwoDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              if (cDetails.NDA_Doc === req.body.NDA_Doc) {
+                NDA_Doc = req.body.NDA_Doc;
+              } else {
+                NDA_Doc = NDA_DocPath;
+                ComplianceThreeDelete = cDetails.NDA_Doc;
+                if (ComplianceThreeDelete && !req.body.NDA_Doc) {
+                  fs.unlink(ComplianceThreeDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              req.body.NDA_Doc = NDA_Doc;
+              req.body.COC_Doc = COC_Doc;
+              req.body.RPD_Doc = RPD_Doc;
+              CompliancedetailSchema.update(req.body, {
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+                .then(() => {
+                  res.status(200).send({
+                    message: "Compliancedetail was updated successfully!",
+                    status: "success",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating the Compliancedetail schema.",
+                  });
+                });
+            }
+          }
         }
       });
     }

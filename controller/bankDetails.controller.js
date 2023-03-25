@@ -83,7 +83,92 @@ exports.saveBankDetail = (req, res) => {
               });
             });
         } else {
-          console.log("Update Api");
+          var bDetails = await BankdetailSchema.findOne({
+            where: { userId: req.body.userId },
+          });
+      
+      
+          if (err) {
+            console.log("InsideErr", err);
+            return "err";
+          } else {
+            if (req.files.bankdetailDoc) {
+              let bankdetailDoc = bankdetailDocPath;
+      
+              if (bDetails.bankdetailDoc === req.body.bankdetailDoc) {
+                bankdetailDoc = req.body.bankdetailDoc;
+              } else {
+                bankdetailDoc = bankdetailDocPath;
+                directoryDelete = bDetails.bankdetailDoc;
+      
+                console.log("directoryDelete", directoryDelete);
+      
+                if (directoryDelete) {
+                  fs.unlink(directoryDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              req.body.bankdetailDoc = bankdetailDoc;
+              BankdetailSchema.update(req.body, {
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+                .then(() => {
+                  res.status(200).send({
+                    message: "Bankdetail was updated successfully!",
+                    status: "success",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating the Bankdetail schema.",
+                  });
+                });
+            } else {
+              let bankdetailDoc = bankdetailDocPath;
+      
+              if (bDetails.bankdetailDoc === req.body.bankdetailDoc) {
+                bankdetailDoc = req.body.bankdetailDoc;
+              } else {
+                bankdetailDoc = bankdetailDocPath;
+                directoryDelete = bDetails.bankdetailDoc;
+                if (directoryDelete) {
+                  fs.unlink(directoryDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+      
+              req.body.bankdetailDoc = bankdetailDoc;
+              BankdetailSchema.update(req.body, {
+                where: {
+                  userId: req.body.userId,
+                },
+              })
+                .then(() => {
+                  res.status(200).send({
+                    message: "Bankdetail was updated successfully!",
+                    status: "success",
+                  });
+                })
+                .catch((err) => {
+                  res.status(500).send({
+                    message:
+                      err.message ||
+                      "Some error occurred while updating the Bankdetail schema.",
+                  });
+                });
+            }
+          }
         }
       });
     }
@@ -104,7 +189,6 @@ exports.updateBankDetail = async (req, res) => {
       where: { userId: req.params.userId },
     });
 
-    console.log("bDetails", bDetails);
 
     if (err) {
       console.log("InsideErr", err);
