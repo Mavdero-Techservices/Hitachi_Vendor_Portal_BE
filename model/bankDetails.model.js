@@ -6,22 +6,22 @@ module.exports = (sequelize, Sequelize) => {
         userId: {
             type: Sequelize.STRING,
         },
-        bankAccountName: {
+        Account_Holder_Name: {
             type: Sequelize.STRING,
         },
-        bankName: {
+        Bank_Name: {
             type: Sequelize.STRING,
         },
-        bankAccountNumber: {
+        Account_No: {
             type: Sequelize.STRING,
         },
-        ifscCode: {
+        IFSC_Code: {
             type: Sequelize.STRING,
         },
         MICRcode: {
             type: Sequelize.STRING,
         },
-        branchAddress: {
+        Bank_Address: {
             type: Sequelize.STRING,
         },
         bankdetailDoc: {

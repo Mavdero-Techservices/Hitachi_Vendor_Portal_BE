@@ -942,12 +942,12 @@ exports.updateAllCollection = async (req, res) => {
 
     const bankDetails = {
       userId: req.body.userId,
-      bankAccountName: req.body.bankAccountName,
-      bankName: req.body.bankName,
-      bankAccountNumber: req.body.bankAccountNumber,
-      ifscCode: req.body.ifscCode,
+      Account_Holder_Name: req.body.Account_Holder_Name,
+      Bank_Name: req.body.Bank_Name,
+      Account_No: req.body.Account_No,
+      IFSC_Code: req.body.IFSC_Code,
       MICRcode: req.body.MICRcode,
-      branchAddress: req.body.branchAddress,
+      Bank_Address: req.body.Bank_Address,
       bankdetailDoc: bankdetailDoc,
     };
 
