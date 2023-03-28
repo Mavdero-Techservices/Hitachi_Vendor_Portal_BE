@@ -41,6 +41,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         finalStatus:{
             type: Sequelize.STRING 
+        },
+        userType: {
+            type: Sequelize.STRING
+        },
+        subUserId: {
+            type: Sequelize.STRING
         }
     });
     return SignUpSchema;

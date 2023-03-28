@@ -142,6 +142,20 @@ exports.getUserId = (req, res) => {
     });
 };
 
+exports.signupFindSubUserList = (req, res) => {
+  const userId = req.params.userId;
+  SignUpSchema.findAll({
+    where: { subUserId: userId },
+  })
+    .then((data) => {
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
+};
 //login
 exports.postLogin = (req, res) => {
   const userName = req.body.userName;

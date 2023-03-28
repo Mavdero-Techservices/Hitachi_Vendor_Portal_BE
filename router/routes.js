@@ -32,6 +32,7 @@ router.get('/', function (req, res, next) {
 // signUp
 router.post("/signUp", signUp.postSingUp);
 router.get("/signUp/getByUserId/:userId", signUp.getUserId);
+router.get("/signUp/signupFindSubUserList/:userId", signUp.signupFindSubUserList);
 //login
 router.post("/login", signUp.postLogin);
 
@@ -179,4 +180,5 @@ router.get('/purchaseOrderEstimate/findAll', purchaseOrder.getPurchaseOrderEstim
 router.post("/vendorCodeDetail/save", vendorCodeDetail.saveVendorCodeDetail);
 router.get('/vendorCodeDetail/findAll', vendorCodeDetail.getVendorCodeDetail);
 
+router.post("/saveNewRegVendordetail", vdetail.postNewRegVdetail);
 module.exports = router;

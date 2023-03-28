@@ -1,10 +1,81 @@
 const db = require("../model");
 const VdetailSchema = db.vdetail;
 const ApprovalSchema = db.approvalStatus;
+const SignUpSchema = db.singUp;
 const vendorCommunicationDetails = db.vendorCommunicationDetails;
 const { check, validationResult } = require("express-validator");
 var geoCountryZipCode = require("geonames-country-zipcode-lookup");
 const { getData } = require("country-list");
+
+exports.postNewRegVdetail = (req, res, next) => {
+  const masterId = req.body.userId;
+  const contactPerson = "user";
+  // const userId =
+  //   `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
+  const subUserid =
+    `${masterId}` + Math.floor(100000 + Math.random() * 900000);
+  const userName =
+    contactPerson + Math.floor(100000 + Math.random() * 900000);
+  // const role = "master";
+  // const password = 'pass';
+  // bcrypt.hash(password, 12).then((hashedPassword) => {
+  const user = new SignUpSchema({
+    // emailId: emailId,
+    // userId: userId,
+    userType: "subUser",
+    subUserId: masterId,
+    userId: subUserid
+    // userName: userName,
+    // password: hashedPassword,
+    // confirmPassword: hashedPassword,
+    // role: role,
+  });
+  user.save()
+
+    .then((data) => {
+      // return res.status(200).json({ msg: "success", result: data });
+      if (data.dataValues.userId) {
+        const VendorDetails = new VdetailSchema({
+          address1: req.body.address1,
+          address2: req.body.address2,
+          city: req.body.city,
+          state: req.body.state,
+          country: req.body.country,
+          pinCode: req.body.pinCode,
+          contactName: req.body.contactName,
+          companyName: req.body.companyName,
+          image: req.body.image,
+          vendorType: req.body.vendorType,
+          vendorManager: req.body.vendorManager,
+          mkDenialCheque: req.body.mkDenialCheque,
+          userId: data.dataValues.userId,
+          submitStatus: req.body.submitStatus,
+          submitDate: req.body.submitDate,
+        });
+        VendorDetails.save()
+          .then((data) => {
+            return res.status(200).json({
+              status: "success",
+              result: data,
+              message: "Vendor details saved Successfully",
+            });
+          })
+          .catch((err) => {
+            return res
+              .status(404)
+              .json({ status: "error", err, message: "Error Response" });
+          });
+      }
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({
+          status: "error",
+          data: { message: "Error Response", err },
+        });
+    });
+}
 
 exports.postVdetail = (req, res, next) => {
   const userId = req.body.userId;
