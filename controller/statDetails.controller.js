@@ -345,11 +345,11 @@ exports.saveStatutoryDetail = (req, res) => {
         },
       }).then(async (user) => {
         if (!user) {
-          const GST_type = req.body.GST_type;
-          const GST_No = req.body.GST_No;
+          const GST_Vendor_Type = req.body.GST_Vendor_Type;
+          const GST_Registration_No = req.body.GST_Registration_No;
           const GST_Doc = GST_DocPath;
           const fileDisclosure = fileDisclosure_DocPath;
-          const PAN_No = req.body.PAN_No;
+          const P_A_N_No = req.body.P_A_N_No;
           const PAN_Doc = PAN_DocPath;
           const form_10f_Doc = form_10f_DocPath;
           const TAN_Doc = TAN_DocPath;
@@ -359,9 +359,9 @@ exports.saveStatutoryDetail = (req, res) => {
           const Tax_residency_Doc = Tax_residency_DocPath;
           const CIN_No = req.body.CIN_No;
           const form_10f = req.body.form_10f;
-          const MSME_status = req.body.MSME_status;
-          const MSME_No = req.body.MSME_No;
-          const MSME_Type = req.body.MSME_Type;
+          const MSMED = req.body.MSMED;
+          const MSMED_Number = req.body.MSMED_Number;
+          const MSMED_Vendor_Type = req.body.MSMED_Vendor_Type;
           const TAN_No = req.body.TAN_No;
           const Tax_residency_No = req.body.Tax_residency_No;
           const StatutoryId =
@@ -370,10 +370,10 @@ exports.saveStatutoryDetail = (req, res) => {
           const user = new StatDetailSchema({
             StatutoryId: StatutoryId,
             userId: userId,
-            GST_type: GST_type,
-            GST_No: GST_No,
+            GST_Vendor_Type: GST_Vendor_Type,
+            GST_Registration_No: GST_Registration_No,
             GST_Doc: GST_Doc,
-            PAN_No: PAN_No,
+            P_A_N_No: P_A_N_No,
             PAN_Doc: PAN_Doc,
             form_10f_Doc: form_10f_Doc,
             TAN_Doc: TAN_Doc,
@@ -383,9 +383,9 @@ exports.saveStatutoryDetail = (req, res) => {
             Tax_residency_Doc: Tax_residency_Doc,
             CIN_No: CIN_No,
             form_10f: form_10f,
-            MSME_status: MSME_status,
-            MSME_No: MSME_No,
-            MSME_Type: MSME_Type,
+            MSMED: MSMED,
+            MSMED_Number: MSMED_Number,
+            MSMED_Vendor_Type: MSMED_Vendor_Type,
             TAN_No: TAN_No,
             Tax_residency_No: Tax_residency_No,
             fileDisclosure: fileDisclosure,

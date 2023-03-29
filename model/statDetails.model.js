@@ -6,16 +6,16 @@ module.exports = (sequelize, Sequelize) => {
     userId: {
       type: Sequelize.STRING,
     },
-    GST_type: {
+    GST_Vendor_Type: {
       type: Sequelize.STRING,
     },
-    GST_No: {
+    GST_Registration_No: {
       type: Sequelize.STRING,
     },
     GST_Doc: {
       type: Sequelize.STRING,
     },
-    PAN_No: {
+    P_A_N_No: {
       type: Sequelize.STRING,
     },
     PAN_Doc: {
@@ -38,16 +38,16 @@ module.exports = (sequelize, Sequelize) => {
     PE_Declaration_Doc: {
       type: Sequelize.STRING,
     },
-    MSME_status: {
+    MSMED: {
       type: Sequelize.STRING,
     },
-    MSME_No: {
+    MSMED_Number: {
       type: Sequelize.STRING,
     },
     MSME_Doc: {
       type: Sequelize.STRING,
     },
-    MSME_Type: {
+    MSMED_Vendor_Type: {
       type: Sequelize.STRING,
     },
     TAN_No: {
