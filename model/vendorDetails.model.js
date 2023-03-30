@@ -1,12 +1,12 @@
 module.exports = (sequelize, Sequelize) => {
     const VdetailSchema = sequelize.define("vendorDetail", {
-        address1: {
+        Address: {
             type: Sequelize.TEXT,
         },
         userId: {
             type: Sequelize.STRING,
           },
-        address2: {
+        Address_2: {
             type: Sequelize.TEXT,
         },
         country: {
@@ -15,7 +15,7 @@ module.exports = (sequelize, Sequelize) => {
         state: {
             type: Sequelize.STRING,
         },
-        city: {
+        City: {
             type: Sequelize.STRING,
         },
         pinCode: {
@@ -27,10 +27,10 @@ module.exports = (sequelize, Sequelize) => {
         image: {
             type: Sequelize.TEXT('long'),
         },
-        vendorType: {
+        Vendor_Type: {
             type: Sequelize.STRING,
         },
-        vendorManager: {
+        Vendor_Account_Manager: {
             type: Sequelize.STRING        
         },
         mkDenialCheque: {

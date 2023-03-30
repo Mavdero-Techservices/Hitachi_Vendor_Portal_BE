@@ -664,16 +664,16 @@ exports.updateAllCollection = async (req, res) => {
 
     const basicDetails = {
       userId: req.body.userId,
-      address1: req.body.address1,
-      address2: req.body.address2,
+      Address: req.body.Address,
+      Address_2: req.body.Address_2,
       companyName: req.body.companyName,
       country: req.body.country,
       state: req.body.state,
-      city: req.body.city,
+      City: req.body.City,
       pinCode: req.body.pinCode,
       image: new Buffer(req.body.image, "base64").toString("binary"),
-      vendorType: req.body.vendorType,
-      vendorManager: req.body.vendorManager,
+      Vendor_Type: req.body.Vendor_Type,
+      Vendor_Account_Manager: req.body.Vendor_Account_Manager,
       mkDenialCheque: req.body.mkDenialCheque,
     };
 

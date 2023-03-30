@@ -10,7 +10,7 @@ var jwt = require("jsonwebtoken");
 exports.saveVendorCodeDetail = async (req, res) => {
         const vendorCodeDetail = new vendorCodeDetailSchema({
             vendorCode: req.body.vendorCode,
-            city: req.body.city
+            City: req.body.City
         });
         vendorCodeDetail.save()
         .then((data)=>{

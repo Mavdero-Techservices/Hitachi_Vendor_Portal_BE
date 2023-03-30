@@ -3,7 +3,7 @@ module.exports = (sequelize, Sequelize) => {
         vendorCode: {
             type: Sequelize.STRING,
         },
-        city: {
+        City: {
             type: Sequelize.STRING,
         },
     })

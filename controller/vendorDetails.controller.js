@@ -36,17 +36,17 @@ exports.postNewRegVdetail = (req, res, next) => {
       // return res.status(200).json({ msg: "success", result: data });
       if (data.dataValues.userId) {
         const VendorDetails = new VdetailSchema({
-          address1: req.body.address1,
-          address2: req.body.address2,
-          city: req.body.city,
+          Address: req.body.Address,
+          Address_2: req.body.Address_2,
+          City: req.body.City,
           state: req.body.state,
           country: req.body.country,
           pinCode: req.body.pinCode,
           contactName: req.body.contactName,
           companyName: req.body.companyName,
           image: req.body.image,
-          vendorType: req.body.vendorType,
-          vendorManager: req.body.vendorManager,
+          Vendor_Type: req.body.Vendor_Type,
+          Vendor_Account_Manager: req.body.Vendor_Account_Manager,
           mkDenialCheque: req.body.mkDenialCheque,
           userId: data.dataValues.userId,
           submitStatus: req.body.submitStatus,
@@ -79,17 +79,17 @@ exports.postNewRegVdetail = (req, res, next) => {
 
 exports.postVdetail = (req, res, next) => {
   const userId = req.body.userId;
-  const address1 = req.body.address1;
-  const address2 = req.body.address2;
+  const Address = req.body.Address;
+  const Address_2 = req.body.Address_2;
   const country = req.body.country;
   const state = req.body.state;
-  const city = req.body.city;
+  const City = req.body.City;
   const pinCode = req.body.pinCode;
   const contactName = req.body.contactName;
   const companyName = req.body.companyName;
   const image = req.body.image;
-  const vendorType = req.body.vendorType;
-  const vendorManager = req.body.vendorManager;
+  const Vendor_Type = req.body.Vendor_Type;
+  const Vendor_Account_Manager = req.body.Vendor_Account_Manager;
   const mkDenialCheque = req.body.mkDenialCheque;
   const submitStatus = req.body.submitStatus;
   const submitDate = req.body.submitDate;
@@ -102,17 +102,17 @@ exports.postVdetail = (req, res, next) => {
     if (!user) {
       console.log("save api call");
       const VendorDetails = new VdetailSchema({
-        address1: address1,
-        address2: address2,
-        city: city,
+        Address: Address,
+        Address_2: Address_2,
+        City: City,
         state: state,
         country: country,
         pinCode: pinCode,
         contactName: contactName,
         companyName: companyName,
         image: image,
-        vendorType: vendorType,
-        vendorManager: vendorManager,
+        Vendor_Type: Vendor_Type,
+        Vendor_Account_Manager: Vendor_Account_Manager,
         mkDenialCheque: mkDenialCheque,
         userId: userId,
         submitStatus: submitStatus,
