@@ -19,6 +19,7 @@ const purchaseOrder = require("../controller/purchaseOrder.controller")
 const vendorCodeDetail = require("../controller/vendorCodeDetails.controller")
 const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
 const MasterVendorUserAccess=require("../controller/MasterVendorUserAccess")
+const ErpAccess=require("../controller/Erp.controller")
 
 
 const router = express.Router();
@@ -181,4 +182,12 @@ router.post("/vendorCodeDetail/save", vendorCodeDetail.saveVendorCodeDetail);
 router.get('/vendorCodeDetail/findAll', vendorCodeDetail.getVendorCodeDetail);
 
 router.post("/saveNewRegVendordetail", vdetail.postNewRegVdetail);
+//ErpAccess
+router.get('/getErpVendor_API', ErpAccess.getErpVendor_API);
+router.get('/getErpVendor_APIById/:No', ErpAccess.getErpVendor_APIById);
+router.get('/getErpResourcePortalVendorlist', ErpAccess.getErpResourcePortalVendorlist);
+router.get('/getErpResourcePortalVendorlistById/:Vendor_No', ErpAccess.getErpResourcePortalVendorlistById);
+router.post('/postErpResourcePortalVendorlist', ErpAccess.postErpResourcePortalVendorlist);
+router.put('/updateErpResourcePortalVendorlist/:Refrence_Entry_No', ErpAccess.updateErpResourcePortalVendorlist);
+
 module.exports = router;
