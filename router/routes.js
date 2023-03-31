@@ -100,7 +100,7 @@ router.put("/updateFinacialDetail/:userId", fdetail.updateFinacialDetail);
 router.post("/saveBankDetail", bankdetail.saveBankDetail);
 //bankdetail - Update
 router.put("/updateBankDetail/:userId", bankdetail.updateBankDetail);
-
+router.get('/AllRejectVendorList', vdetail.AllRejectVendorList);
 
 
 // router.delete("/deleteFile/:filename",bankdetail.deleteFile);

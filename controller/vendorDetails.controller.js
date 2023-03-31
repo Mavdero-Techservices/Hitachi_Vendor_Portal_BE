@@ -7,8 +7,15 @@ const { check, validationResult } = require("express-validator");
 var geoCountryZipCode = require("geonames-country-zipcode-lookup");
 const { getData } = require("country-list");
 
-exports.postNewRegVdetail = (req, res, next) => {
+exports.postNewRegVdetail =async (req, res, next) => {
   const masterId = req.body.userId;
+  let masterEmail ="";
+ let master = await SignUpSchema.findOne({
+    where: {
+     userId: req.body.userId,
+    },
+  })
+
   const contactPerson = "user";
   // const userId =
   //   `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
@@ -20,7 +27,7 @@ exports.postNewRegVdetail = (req, res, next) => {
   // const password = 'pass';
   // bcrypt.hash(password, 12).then((hashedPassword) => {
   const user = new SignUpSchema({
-    // emailId: emailId,
+    emailId: master ? master.emailId:null,
     // userId: userId,
     userType: "subUser",
     subUserId: masterId,
@@ -301,3 +308,15 @@ exports.updateCommunication = async (req, res) => {
     });
   }
 };
+
+exports.AllRejectVendorList = (req, res, next) => {
+  VdetailSchema.findAll({ where: { submitStatus: "rejected" } })
+    .then((data) => {
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
+}
