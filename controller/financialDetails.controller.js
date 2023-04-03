@@ -122,8 +122,8 @@ var storage = multer.diskStorage({
   },
 });
 exports.saveFinacialDetail = (req, res) => {
-  var financial_data_DocPath1 = "";
-  var financial_data_DocPath2 = "";
+  financial_data_DocPath = "";
+  financial_data2_DocPath = "";
 
   var upload = multer({ storage: storage }).fields([
     {
@@ -136,6 +136,7 @@ exports.saveFinacialDetail = (req, res) => {
     },
   ]);
   upload(req, res, function (err) {
+
     if (err) {
       console.log("InsideErr", err);
       return "err";
@@ -146,8 +147,8 @@ exports.saveFinacialDetail = (req, res) => {
         },
       }).then(async (user) => {
         if (!user) {
-          const financial_data = financial_data_DocPath1;
-          const financial_data2 = financial_data_DocPath2;
+          const financial_data = financial_data_DocPath;
+          const financial_data2 = financial_data2_DocPath;
           const yearOfAuditedFinancial = req.body.yearOfAuditedFinancial;
           const Revenue = req.body.Revenue;
           const Profit = req.body.Profit;

@@ -336,6 +336,7 @@ exports.emailNotification = (
     subject: subject,
     html: emailContent,
   };
+  console.log("mailOptions", mailOptions);
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       return res.status(200).json({ status: "error", data: error });
