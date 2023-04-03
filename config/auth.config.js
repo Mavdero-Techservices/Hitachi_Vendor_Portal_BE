@@ -5,7 +5,7 @@ module.exports = {
   // user: "vms@hisysmc.com",
   // pass: "May64863",
   service: 'gmail',
-  user: "karthigapalani4@gmail.com", 
+  user: "apitestmail4@gmail.com", 
   host: 'smtp.gmail.com',
-  pass: "lrgzcunyeqkszxiq", 
+  pass: "eqmrseqzfurbydtr",
 };
