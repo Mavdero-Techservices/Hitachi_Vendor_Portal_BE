@@ -19,7 +19,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         mobileNo: {
-            type: Sequelize.INTEGER, 
+            type: Sequelize.STRING, 
         },
         loginId: {
             type: Sequelize.STRING,
@@ -30,6 +30,9 @@ module.exports = (sequelize, Sequelize) => {
         roles: {
             type: Sequelize.STRING,
         },
+        city_vendorCode_Pincode: {
+            type: Sequelize.STRING,
+        }
 
     })
     return MasterVendorSubUserSchema;
