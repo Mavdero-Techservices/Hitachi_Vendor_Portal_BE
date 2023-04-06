@@ -667,10 +667,10 @@ exports.updateAllCollection = async (req, res) => {
       Address: req.body.Address,
       Address_2: req.body.Address_2,
       companyName: req.body.companyName,
-      country: req.body.country,
+      Country_Region_Code: req.body.Country_Region_Code,
       state: req.body.state,
       City: req.body.City,
-      pinCode: req.body.pinCode,
+      Post_Code: req.body.Post_Code,
       image: new Buffer(req.body.image, "base64").toString("binary"),
       Vendor_Type: req.body.Vendor_Type,
       Vendor_Account_Manager: req.body.Vendor_Account_Manager,
@@ -1016,7 +1016,7 @@ exports.getvendorDetail = async (req, res) => {
         res.status(200).json({
           status: "success",
           message: "basicInfo",
-          country: basicInfo.country,
+          Country_Region_Code: basicInfo.Country_Region_Code,
         });
       }
     })

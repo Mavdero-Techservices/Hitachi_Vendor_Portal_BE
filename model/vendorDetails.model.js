@@ -9,7 +9,7 @@ module.exports = (sequelize, Sequelize) => {
         Address_2: {
             type: Sequelize.TEXT,
         },
-        country: {
+        Country_Region_Code: {
             type: Sequelize.STRING,
         },
         state: {
@@ -18,7 +18,7 @@ module.exports = (sequelize, Sequelize) => {
         City: {
             type: Sequelize.STRING,
         },
-        pinCode: {
+        Post_Code: {
             type: Sequelize.STRING,
         },
         companyName: {
@@ -41,6 +41,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         submitDate: {
             type: Sequelize.DATEONLY
+        },
+        Ticket_ID:{
+            type: Sequelize.STRING  
         }
     })
     return VdetailSchema;

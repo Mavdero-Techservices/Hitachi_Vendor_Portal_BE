@@ -47,8 +47,8 @@ exports.postNewRegVdetail =async (req, res, next) => {
           Address_2: req.body.Address_2,
           City: req.body.City,
           state: req.body.state,
-          country: req.body.country,
-          pinCode: req.body.pinCode,
+          Country_Region_Code: req.body.Country_Region_Code,
+          Post_Code: req.body.Post_Code,
           contactName: req.body.contactName,
           companyName: req.body.companyName,
           image: req.body.image,
@@ -88,10 +88,10 @@ exports.postVdetail = (req, res, next) => {
   const userId = req.body.userId;
   const Address = req.body.Address;
   const Address_2 = req.body.Address_2;
-  const country = req.body.country;
+  const Country_Region_Code = req.body.Country_Region_Code;
   const state = req.body.state;
   const City = req.body.City;
-  const pinCode = req.body.pinCode;
+  const Post_Code = req.body.Post_Code;
   const contactName = req.body.contactName;
   const companyName = req.body.companyName;
   const image = req.body.image;
@@ -113,8 +113,8 @@ exports.postVdetail = (req, res, next) => {
         Address_2: Address_2,
         City: City,
         state: state,
-        country: country,
-        pinCode: pinCode,
+        Country_Region_Code: Country_Region_Code,
+        Post_Code: Post_Code,
         contactName: contactName,
         companyName: companyName,
         image: image,
@@ -229,8 +229,8 @@ exports.getCountry = (req, res, next) => {
 //getState&cityByzipcode
 exports.getStateAndcityByzipcode = (req, res, next) => {
   var code = req.params.code;
-  var pinCode = req.params.pinCode;
-  const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${pinCode}&country=${code}&username=karthiga`;
+  var Post_Code = req.params.Post_Code;
+  const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${Post_Code}&country=${code}&username=karthiga&style=full`;
   const axios = require("axios");
   axios
     .get(url)

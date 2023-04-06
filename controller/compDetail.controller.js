@@ -940,7 +940,7 @@ exports.createnonDisclosure = async (req, res, next) => {
   const content3 = `And`;
   const content4 = `${companyName} `;
   const content04 = `The company incorporated under the provisions of Companies Act,2013 and having its principal place of business at `;
-  const content004 = `${vDetails?.Address}, ${vDetails?.City}, ${vDetails?.state}, ${vDetails?.pinCode} `;
+  const content004 = `${vDetails?.Address}, ${vDetails?.City}, ${vDetails?.state}, ${vDetails?.Post_Code} `;
   const content0004 = `(hereinafter referred to as `;
   const content00004 = `“Party” `;
   const content000004 = `which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries, and assigns)`;
