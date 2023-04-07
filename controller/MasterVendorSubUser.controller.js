@@ -94,16 +94,39 @@ exports.getMasterVendorSubUserById = (req, res) => {
 };
 
 exports.UpdateMasterVendorSubUserById = async (req, res) => {
+  const SubUserId = req.body.SubUserId;
+
+
+  var subRegId = await VendorCodeSchema.findAll({
+    where: { SubUserId: SubUserId },
+  });
+
 
   for (let i = 0; i < req.body.vendorCode.length; i++) {
-    const user = await new VendorCodeSchema({
-      SubUserId: req.body.SubUserId,
-      vendorCode: req.body.vendorCode[i].vendorCode,
-      city: req.body.vendorCode[i].city,
-      Pincode: req.body.vendorCode[i].Pincode,
-    });
-    user.save();
+    if (subRegId.length > 0) {
+      subRegId.map((item) => {
+        item.destroy();
+      });
+
+      const user = await new VendorCodeSchema({
+        SubUserId: SubUserId,
+        vendorCode: req.body.vendorCode[i].vendorCode,
+        city: req.body.vendorCode[i].city,
+        Pincode: req.body.vendorCode[i].Pincode,
+      });
+      user.save();
+      
+    } else {
+      const user = await new VendorCodeSchema({
+        SubUserId: SubUserId,
+        vendorCode: req.body.vendorCode[i].vendorCode,
+        city: req.body.vendorCode[i].city,
+        Pincode: req.body.vendorCode[i].Pincode,
+      });
+      user.save();
+    }
   }
+
   // user
   //   .save()
   //   .then((result) => {
