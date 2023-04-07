@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-    const MasterVendorUserAccessSchema = sequelize.define("MasterVendorUserAccess", {
-        userId: {
+    const VendorCodeSchema = sequelize.define("vendorCode", {
+        SubUserId: {
             type: Sequelize.STRING,
         },
         vendorCode: {
@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         Pincode: {
             type: Sequelize.STRING,
-        }
+        },
     })
-    return MasterVendorUserAccessSchema;
+    return VendorCodeSchema;
 }
