@@ -93,14 +93,24 @@ exports.getMasterVendorSubUserById = (req, res) => {
     });
 };
 
+exports.getAllVendorSubUser = (req, res) => {
+  VendorCodeSchema.findAll()
+    .then((data) => {
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
+};
+
 exports.UpdateMasterVendorSubUserById = async (req, res) => {
   const SubUserId = req.body.SubUserId;
-
 
   var subRegId = await VendorCodeSchema.findAll({
     where: { SubUserId: SubUserId },
   });
-
 
   for (let i = 0; i < req.body.vendorCode.length; i++) {
     if (subRegId.length > 0) {
@@ -115,7 +125,6 @@ exports.UpdateMasterVendorSubUserById = async (req, res) => {
         Pincode: req.body.vendorCode[i].Pincode,
       });
       user.save();
-      
     } else {
       const user = await new VendorCodeSchema({
         SubUserId: SubUserId,
@@ -126,6 +135,9 @@ exports.UpdateMasterVendorSubUserById = async (req, res) => {
       user.save();
     }
   }
+  return res
+    .status(200)
+    .json({ status: "success", message: "saved Successfully" });
 
   // user
   //   .save()
