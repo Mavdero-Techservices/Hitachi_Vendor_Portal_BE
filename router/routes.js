@@ -90,7 +90,7 @@ router.put("/updateCommunication/:userId", vdetail.updateCommunication);
 //getCountry
 router.get('/getCountry', vdetail.getCountry);
 //getStateAndcityByzipcode
-router.get('/getStateAndcityByzipcode/:code/:pinCode', vdetail.getStateAndcityByzipcode);
+router.get('/getStateAndcityByzipcode/:code/:Post_Code', vdetail.getStateAndcityByzipcode);
 //fdetail schema - Create
 // router.post("/saveFdetail", fdetail.postFdetail);
 router.post("/saveFinacialDetail", fdetail.saveFinacialDetail);
@@ -187,9 +187,13 @@ router.post("/saveNewRegVendordetail", vdetail.postNewRegVdetail);
 //ErpAccess
 router.get('/getErpVendor_API', ErpAccess.getErpVendor_API);
 router.get('/getErpVendor_APIById/:No', ErpAccess.getErpVendor_APIById);
+router.post('/postErpVendor_API', ErpAccess.postErpVendor_API);
+router.put('/updateErpVendor_API', ErpAccess.updateErpVendor_API);
+
 router.get('/getErpResourcePortalVendorlist', ErpAccess.getErpResourcePortalVendorlist);
 router.get('/getErpResourcePortalVendorlistById/:Vendor_No', ErpAccess.getErpResourcePortalVendorlistById);
 router.post('/postErpResourcePortalVendorlist', ErpAccess.postErpResourcePortalVendorlist);
 router.put('/updateErpResourcePortalVendorlist/:Refrence_Entry_No', ErpAccess.updateErpResourcePortalVendorlist);
+router.get('/getErpVendor_APIByParent_Vendor_Code/:Parent_Vendor_Code', ErpAccess.getErpVendor_APIByParent_Vendor_Code);
 
 module.exports = router;
