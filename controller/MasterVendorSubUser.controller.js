@@ -50,6 +50,7 @@ exports.saveMasterVendorSubUser = (req, res) => {
           confirmPassword: hashedPassword,
           role: roles,
           phoneNumber: mobileNo,
+          subUserId: SubUserId,
         });
         user.save();
         return res
