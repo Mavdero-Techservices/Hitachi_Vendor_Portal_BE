@@ -1,13 +1,19 @@
 const db = require("../model");
 const MasterVendorUserAccessSchema = db.MasterVendorUserAccess;
 
+
 exports.saveMasterVendorUserAccess = (req, res) => {
-  const city_vendorCode_Pincode = req.body.city_vendorCode_Pincode;
-  const Name = req.body.Name;
+  console.log("req------->", req.body);
+  const userId = req.body.userId;
+  const vendorCode = req.body.vendorCode;
+  const city = req.body.city;
+  const Pincode = req.body.Pincode;
 
   const user = new MasterVendorUserAccessSchema({
-    city_vendorCode_Pincode: city_vendorCode_Pincode,
-    Name: Name,
+    userId: userId,
+    vendorCode: vendorCode,
+    city: city,
+    Pincode: Pincode,
   });
   user
     .save()

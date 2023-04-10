@@ -161,12 +161,14 @@ router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSub
 router.get("/getAllMasterVendorSubUser",MasterVendorSubUser.getAllMasterVendorSubUser);
 router.put("/UpdateMasterVendorSubUserById",MasterVendorSubUser.UpdateMasterVendorSubUserById);
 router.delete("/deleteMasterVendorSubUserById/:id",MasterVendorSubUser.deleteMasterVendorSubUserById);
+router.get("/getAllVendorSubUser",MasterVendorSubUser.getAllVendorSubUser);
 
 router.post('/saveMasterVendorUserAccess',MasterVendorUserAccess.saveMasterVendorUserAccess);
 router.post("/getMasterVendorUserAccessById",MasterVendorUserAccess.getMasterVendorUserAccessById);
 router.get("/getAllMasterVendorUserAccess",MasterVendorUserAccess.getAllMasterVendorUserAccess);
 router.put("/UpdateMasterVendorUserAccessById",MasterVendorUserAccess.UpdateMasterVendorUserAccessById);
 router.delete("/deleteMasterVendorUserAccessById/:id",MasterVendorUserAccess.deleteMasterVendorUserAccessById);
+
 
 
 
