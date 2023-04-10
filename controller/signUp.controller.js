@@ -99,24 +99,20 @@ exports.postSingUp = [
                     mailConfirmationCode,
                     contactPerson
                   );
-                  return res
-                    .status(200)
-                    .json({
-                      status: "success",
-                      message: "Registered Successfully",
-                      result,
-                    });
+                  return res.status(200).json({
+                    status: "success",
+                    message: "Registered Successfully",
+                    result,
+                  });
                 });
               });
             }
           })
           .catch((err) => {
-            return res
-              .status(200)
-              .json({
-                status: "error",
-                data: { message: "Error Response", err },
-              });
+            return res.status(200).json({
+              status: "error",
+              data: { message: "Error Response", err },
+            });
           });
       } catch (err) {
         return res
@@ -201,12 +197,10 @@ exports.postLogin = (req, res) => {
               },
             });
           } else {
-            return res
-              .status(200)
-              .json({
-                status: "error",
-                data: { message: "Incorrect password" },
-              });
+            return res.status(200).json({
+              status: "error",
+              data: { message: "Incorrect password" },
+            });
           }
         });
       }
@@ -322,7 +316,7 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-exports.emailNotification = (
+exports.emailNotification = async (
   req,
   res,
   subject,
@@ -336,23 +330,20 @@ exports.emailNotification = (
     subject: subject,
     html: emailContent,
   };
-  console.log("mailOptions", mailOptions);
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    if (returnFlag === true) {
+      return res.status(200).json({ status: "error", data: "Error Response" });
     } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
+      return res
+        .status(200)
+        .json({ status: "success", data: "mail sent Successfully" });
     }
-  });
+  } catch (error) {
+    return res.status(200).json({ status: "error", data: error });
+  }
 };
+
 function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
   const accountSid = "AC7dd6eea117c28296a64945c0d5e69d22";
   const authToken = "4a6876e0cd44abce7d4e7a17cdf5abc6";
@@ -368,6 +359,108 @@ function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
 }
 
 //signUpApi
+// exports.saveUser = (req, res) => {
+//   var pass = "";
+//   var str =
+//     "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
+
+//   for (let i = 1; i <= 8; i++) {
+//     var char = Math.floor(Math.random() * str.length + 1);
+
+//     pass += str.charAt(char);
+//   }
+
+//   SignUpSchema.findOne({
+//     where: { emailId: req.body.emailId, phoneNumber: req.body.phoneNumber },
+//   })
+//     .then((user) => {
+//       if (user) {
+//         return res
+//           .status(200)
+//           .json({ status: "success", message: "User already exist" });
+//       } else {
+//         const companyName = req.body.companyName;
+//         const phoneNumber = req.body.phoneNumber;
+//         const contactPerson = req.body.contactPerson;
+//         const emailId = req.body.emailId;
+//         const verifiedUser = "Pending";
+//         const userId =
+//           `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
+//         const vendorId = "vendor" + Math.floor(100000 + Math.random() * 900000);
+//         const mailConfirmationCode = Math.floor(
+//           100000 + Math.random() * 900000
+//         );
+//         const phoneNoConfirmationCode = Math.floor(
+//           100000 + Math.random() * 900000
+//         );
+//         const userName =
+//           contactPerson + Math.floor(100000 + Math.random() * 900000);
+//         const role = "user";
+//         const password = pass;
+//         bcrypt.hash(password, 12).then((hashedPassword) => {
+//           const user = new SignUpSchema({
+//             companyName: companyName,
+//             phoneNumber: phoneNumber,
+//             contactPerson: contactPerson,
+//             emailId: emailId,
+//             mailConfirmationCode: mailConfirmationCode,
+//             phoneNoConfirmationCode: phoneNoConfirmationCode,
+//             verifiedUser: verifiedUser,
+//             vendorId: vendorId,
+//             userId: userId,
+//             userName: userName,
+//             password: hashedPassword,
+//             confirmPassword: hashedPassword,
+//             role: role,
+//           });
+//           user
+//             .save()
+//             .then(async(result) => {
+//               var subject = `confirmation mail for userName and password`;
+//               var emailContent = `<h1>Email Confirmation</h1>
+//                       <h2>Hello ${contactPerson}</h2>
+//                       <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
+//                       <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
+//                       </div>`;
+//               var returnFlag = false;
+//               try {
+//                 await exports.emailNotification(req,
+//                   res,
+//                   subject,
+//                   emailContent,
+//                   returnFlag,
+//                   result.emailId);
+//                   return res
+//                   .status(200)
+//                   .json({
+//                     status: "success",
+//                     message: "Registered Successfully",
+//                     result,
+//                   });
+//               } catch (error) {
+//                 console.error(error);
+//                 return res.status(500).json({ error: 'Server error' });
+//               }
+
+//             })
+//             .catch((err) => {
+//               return res
+//                 .status(200)
+//                 .json({
+//                   status: "error",
+//                   data: { message: "Error Response", err },
+//                 });
+//             });
+//         });
+//       }
+//     })
+//     .catch((err) => {
+//       return res
+//         .status(200)
+//         .json({ status: "error", data: { message: "Error Response", err } });
+//     });
+// };
+
 exports.saveUser = (req, res) => {
   var pass = "";
   var str =
@@ -381,87 +474,75 @@ exports.saveUser = (req, res) => {
 
   SignUpSchema.findOne({
     where: { emailId: req.body.emailId, phoneNumber: req.body.phoneNumber },
-  })
-    .then((user) => {
-      if (user) {
-        return res
-          .status(200)
-          .json({ status: "success", message: "User already exist" });
-      } else {
-        const companyName = req.body.companyName;
-        const phoneNumber = req.body.phoneNumber;
-        const contactPerson = req.body.contactPerson;
-        const emailId = req.body.emailId;
-        const verifiedUser = "Pending";
-        const userId =
-          `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
-        const vendorId = "vendor" + Math.floor(100000 + Math.random() * 900000);
-        const mailConfirmationCode = Math.floor(
-          100000 + Math.random() * 900000
-        );
-        const phoneNoConfirmationCode = Math.floor(
-          100000 + Math.random() * 900000
-        );
-        const userName =
-          contactPerson + Math.floor(100000 + Math.random() * 900000);
-        const role = "user";
-        const password = pass;
-        bcrypt.hash(password, 12).then((hashedPassword) => {
-          const user = new SignUpSchema({
-            companyName: companyName,
-            phoneNumber: phoneNumber,
-            contactPerson: contactPerson,
-            emailId: emailId,
-            mailConfirmationCode: mailConfirmationCode,
-            phoneNoConfirmationCode: phoneNoConfirmationCode,
-            verifiedUser: verifiedUser,
-            vendorId: vendorId,
-            userId: userId,
-            userName: userName,
-            password: hashedPassword,
-            confirmPassword: hashedPassword,
-            role: role,
-          });
-          user
-            .save()
-            .then((result) => {
-              var subject = `confirmation mail for userName and password`;
-              var emailContent = `<h1>Email Confirmation</h1>
+  }).then((user) => {
+    if (user) {
+      return res
+        .status(200)
+        .json({ status: "success", message: "User already exist" });
+    } else {
+      const companyName = req.body.companyName;
+      const phoneNumber = req.body.phoneNumber;
+      const contactPerson = req.body.contactPerson;
+      const emailId = req.body.emailId;
+      const verifiedUser = "Pending";
+      const userId =
+        `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
+      const vendorId = "vendor" + Math.floor(100000 + Math.random() * 900000);
+      const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
+      const phoneNoConfirmationCode = Math.floor(
+        100000 + Math.random() * 900000
+      );
+      const userName =
+        contactPerson + Math.floor(100000 + Math.random() * 900000);
+      const role = "user";
+      const password = pass;
+      bcrypt.hash(password, 12).then((hashedPassword) => {
+        const user = new SignUpSchema({
+          companyName: companyName,
+          phoneNumber: phoneNumber,
+          contactPerson: contactPerson,
+          emailId: emailId,
+          mailConfirmationCode: mailConfirmationCode,
+          phoneNoConfirmationCode: phoneNoConfirmationCode,
+          verifiedUser: verifiedUser,
+          vendorId: vendorId,
+          userId: userId,
+          userName: userName,
+          password: hashedPassword,
+          confirmPassword: hashedPassword,
+          role: role,
+        });
+        user
+          .save()
+          .then(async (result) => {
+            var subject = `confirmation mail for userName and password`;
+            var emailContent = `<h1>Email Confirmation</h1>
                       <h2>Hello ${contactPerson}</h2>
                       <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
                       <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
                       </div>`;
-              var returnFlag = false;
-              exports.emailNotification(
-                req,
-                res,
-                subject,
-                emailContent,
-                returnFlag,
-                result.emailId
-              );
-              return res
-                .status(200)
-                .json({
-                  status: "success",
-                  message: "Registered Successfully",
-                  result,
-                });
-            })
-            .catch((err) => {
-              return res
-                .status(200)
-                .json({
-                  status: "error",
-                  data: { message: "Error Response", err },
-                });
-            });
-        });
-      }
-    })
-    .catch((err) => {
-      return res
-        .status(200)
-        .json({ status: "error", data: { message: "Error Response", err } });
-    });
+            var returnFlag = false;
+            try {
+              const info = await transporter.sendMail({
+                from: process.env.GMAIL_USER,
+                to: result.emailId,
+                subject: subject,
+                html: emailContent,
+              });
+              return res.status(200).json({
+                status: "success",
+                message: "Registered Successfully",
+                result,
+              });
+            } catch (error) {
+              console.error(error);
+              return res.status(500).json({ error: "Server error" });
+            }
+          })
+          .catch((err) => {
+            return res.status(500).json({ error: "Server error" });
+          });
+      });
+    }
+  });
 };
