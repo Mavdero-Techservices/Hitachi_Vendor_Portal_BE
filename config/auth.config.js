@@ -4,8 +4,7 @@ module.exports = {
   // port: '587',
   // user: "vms@hisysmc.com",
   // pass: "May64863",
-  service: 'gmail',
-  user: "apitestmail4@gmail.com", 
-  host: 'smtp.gmail.com',
-  pass: "eqmrseqzfurbydtr",
+  user: 'vendorportal_test@outlook.com',
+  pass: 'rszzccggapnmuiqv'
+  //Test@123456
 };

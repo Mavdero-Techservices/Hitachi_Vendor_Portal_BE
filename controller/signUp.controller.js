@@ -308,8 +308,9 @@ const user = config.user;
 const pass = config.pass;
 
 var transporter = nodemailer.createTransport({
-  service: "gmail",
-  // service: 'Outlook365',
+  // service: "gmail",
+  host: "smtp.office365.com",
+  service: "Outlook365",
   auth: {
     user: user,
     pass: pass,
@@ -515,6 +516,7 @@ exports.saveUser = (req, res) => {
         user
           .save()
           .then(async (result) => {
+            console.log("result", result);
             var subject = `confirmation mail for userName and password`;
             var emailContent = `<h1>Email Confirmation</h1>
                       <h2>Hello ${contactPerson}</h2>
@@ -529,12 +531,14 @@ exports.saveUser = (req, res) => {
                 subject: subject,
                 html: emailContent,
               });
+              console.log("info", info);
               return res.status(200).json({
                 status: "success",
                 message: "Registered Successfully",
                 result,
               });
             } catch (error) {
+              console.log("error::", error);
               return res.status(500).json({ error: "Server error" });
             }
           })
