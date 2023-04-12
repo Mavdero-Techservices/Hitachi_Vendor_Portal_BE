@@ -7,37 +7,36 @@ const { check, validationResult } = require("express-validator");
 var geoCountryZipCode = require("geonames-country-zipcode-lookup");
 const { getData } = require("country-list");
 
-exports.postNewRegVdetail =async (req, res, next) => {
+exports.postNewRegVdetail = async (req, res, next) => {
   const masterId = req.body.userId;
-  let masterEmail ="";
- let master = await SignUpSchema.findOne({
+  let masterEmail = "";
+  let master = await SignUpSchema.findOne({
     where: {
-     userId: req.body.userId,
+      userId: req.body.userId,
     },
-  })
+  });
 
   const contactPerson = "user";
   // const userId =
   //   `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
-  const subUserid =
-    `${masterId}` + Math.floor(100000 + Math.random() * 900000);
-  const userName =
-    contactPerson + Math.floor(100000 + Math.random() * 900000);
+  const subUserid = `${masterId}` + Math.floor(100000 + Math.random() * 900000);
+  const userName = contactPerson + Math.floor(100000 + Math.random() * 900000);
   // const role = "master";
   // const password = 'pass';
   // bcrypt.hash(password, 12).then((hashedPassword) => {
   const user = new SignUpSchema({
-    emailId: master ? master.emailId:null,
+    emailId: master ? master.emailId : null,
     // userId: userId,
     userType: "subUser",
     subUserId: masterId,
-    userId: subUserid
+    userId: subUserid,
     // userName: userName,
     // password: hashedPassword,
     // confirmPassword: hashedPassword,
     // role: role,
   });
-  user.save()
+  user
+    .save()
 
     .then((data) => {
       // return res.status(200).json({ msg: "success", result: data });
@@ -75,14 +74,12 @@ exports.postNewRegVdetail =async (req, res, next) => {
       }
     })
     .catch((err) => {
-      return res
-        .status(200)
-        .json({
-          status: "error",
-          data: { message: "Error Response", err },
-        });
+      return res.status(200).json({
+        status: "error",
+        data: { message: "Error Response", err },
+      });
     });
-}
+};
 
 exports.postVdetail = (req, res, next) => {
   const userId = req.body.userId;
@@ -140,7 +137,6 @@ exports.postVdetail = (req, res, next) => {
         });
     } else {
       console.log("call update Api:::");
-      
     }
   });
 };
@@ -242,10 +238,75 @@ exports.getStateAndcityByzipcode = (req, res, next) => {
   // return res.status(200).json({ status: "success", data: result });
 };
 
+var nodemailer = require("nodemailer");
+const config = require("../config/auth.config");
+const user = config.user;
+const pass = config.pass;
+
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  // host: "smtp.office365.com",
+  // service: "Outlook365",
+  auth: {
+    user: user,
+    pass: pass,
+  },
+});
+
+exports.emailSubmitNotification = async (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId
+) => {
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+  };
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    if (returnFlag === true) {
+      return res.status(200).json({ status: "error", data: "Error Response" });
+    } else {
+      return res
+        .status(200)
+        .json({ status: "success", data: "mail sent Successfully" });
+    }
+  } catch (error) {
+    return res.status(200).json({ status: "error", data: error });
+  }
+};
+
 exports.updateVendor = async (req, res) => {
+  console.log("req--->", req.body);
   const userId = req.params.userId;
   const updates = req.body;
   if (req.body.submitStatus === "Submitted") {
+
+    var submitEmailId = await SignUpSchema.findOne({
+      where: { userId: req.params.userId },
+    });
+
+    const emailId = submitEmailId.emailId; 
+    var subject = `Hitachi Vendor Creation Submit Status`;
+    var emailContent = `
+                        <h4>Hi ${userId}</h4>
+                        <p>Your vendor creation request is submitted successful to Hitachi and your Ticket ID is “”.</p>
+                        <p>Thanks & regards,</p>
+                        </div>`;
+    var returnFlag = false;
+    exports.emailSubmitNotification(
+      req,
+      res,
+      subject,
+      emailContent,
+      returnFlag,
+      emailId
+    );
     const del = await ApprovalSchema.findOne({
       where: {
         userId: userId,
@@ -270,10 +331,10 @@ exports.updateVendor = async (req, res) => {
   });
 
   if (updateResult[0]) {
-    res.status(200).json({
-      status: "success",
-      message: "Vendor updated successfully",
-    });
+    // res.status(200).json({
+    //   status: "success",
+    //   message: "Vendor updated successfully",
+    // });
   } else {
     res.status(404).json({
       status: "error",
@@ -319,4 +380,4 @@ exports.AllRejectVendorList = (req, res, next) => {
         .status(200)
         .json({ status: "error", data: { message: "Error Response", err } });
     });
-}
+};
