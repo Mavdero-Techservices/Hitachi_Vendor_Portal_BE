@@ -3,6 +3,54 @@ const SignUpSchema = db.singUp;
 const MasterVendorSubUserSchema = db.MasterVendorSubUser;
 const VendorCodeSchema = db.vendorCode;
 const bcrypt = require("bcrypt");
+
+var nodemailer = require("nodemailer");
+const config = require("../config/auth.config");
+const user = config.user;
+const pass = config.pass;
+
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  // service: 'Outlook365',
+  auth: {
+    user: user,
+    pass: pass,
+  },
+});
+
+exports.emailUserCreationReg = (
+  req,
+  res,
+  subject,
+  emailContent,
+  returnFlag,
+  emailId
+) => {
+  var mailOptions = {
+    from: user,
+    to: `${emailId}`,
+    subject: subject,
+    html: emailContent,
+  };
+
+  transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+      return res.status(200).json({ status: "error", data: error });
+    } else {
+      if (returnFlag === true) {
+        return res
+          .status(200)
+          .json({ status: "error", data: "Error Response" });
+      } else {
+        return res
+          .status(200)
+          .json({ status: "success", data: "mail sent Successfully" });
+      }
+    }
+  });
+};
+
+
 exports.saveMasterVendorSubUser = (req, res) => {
   var pass = "";
   var str =
@@ -39,29 +87,44 @@ exports.saveMasterVendorSubUser = (req, res) => {
       city_vendorCode_Pincode: city_vendorCode_Pincode,
     });
 
-    user
-      .save()
-      .then((result) => {
-        const user = new SignUpSchema({
-          emailId: emailId,
-          userId: userId,
-          userName: Name,
-          password: hashedPassword,
-          confirmPassword: hashedPassword,
-          role: roles,
-          phoneNumber: mobileNo,
-          subUserId: SubUserId,
-        });
-        user.save();
-        return res
-          .status(200)
-          .json({ status: "success", message: "saved Successfully", result });
-      })
-      .catch((err) => {
-        return res
-          .status(200)
-          .json({ status: "error", data: { message: "Error Response", err } });
+    user.save().then((result) => {
+      const user = new SignUpSchema({
+        emailId: emailId,
+        userId: userId,
+        userName: loginId,
+        password: hashedPassword,
+        confirmPassword: hashedPassword,
+        role: roles,
+        phoneNumber: mobileNo,
+        subUserId: SubUserId,
       });
+      user
+        .save()
+        .then((result) => {
+          var subject = `Hitachi Multiple Sub User Creation`;
+          var emailContent = `
+                <h4>Hi ${loginId}</h4>
+                <p>Your LoginId is ${loginId} and password is ${password}.</p>
+                <p>Your Sub User Registration is SuccessFully Created.</p>
+                <p>Thanks & regards,</p>
+                </div>`;
+          var returnFlag = false;
+          exports.emailUserCreationReg(
+            req,
+            res,
+            subject,
+            emailContent,
+            returnFlag,
+            emailId
+          );
+        })
+        .catch((err) => {
+          return res.status(200).json({
+            status: "error",
+            data: { message: "Error Response", err },
+          });
+        });
+    });
   });
 };
 
