@@ -23,6 +23,7 @@ var RPD_DocPath = "";
 var COC_DocPath = "";
 var NDA_DocPath = "";
 var financial_data_DocPath = "";
+var approverFile_DocPath = "";
 var financial_data2_DocPath = "";
 const fs = require('fs');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
@@ -294,6 +295,27 @@ var storage = multer.diskStorage({
       );
     }
 
+    if (file.fieldname === "approverFile") {
+      let filedirect = file.originalname.split(".");
+
+      approverFile_DocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1];
+
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        new Date().toISOString().replace(/:/g, "-") +
+        "." +
+        filedirect[1]
+      );
+    }
     if (file.fieldname === "RPD_Doc") {
       let filedirect = file.originalname.split(".");
 
@@ -577,7 +599,7 @@ exports.updateAllCollection = async (req, res) => {
   NDA_DocPath = "";
   financial_data_DocPath = "";
   financial_data2_DocPath = "";
-
+  approverFile_DocPath="";
   var userId = req.params.userId;
 
   var upload = multer({ storage: storage }).fields([
@@ -637,6 +659,10 @@ exports.updateAllCollection = async (req, res) => {
       name: "financial_data2",
       maxCount: 1,
     },
+ {
+      name: "approverFile",
+      maxCount: 1,
+    },
   ]);
 
   upload(req, res, async function (err) {
@@ -656,6 +682,27 @@ exports.updateAllCollection = async (req, res) => {
       where: { userId: req.params.userId },
     });
 
+ var basicData = await VdetailSchema.findOne({
+      where: { userId: req.params.userId },
+    });
+
+
+    let approverFileDoc = approverFile_DocPath;
+
+    if (basicData.approverFile === req.body.approverFile) {
+      approverFileDoc = req.body.approverFile;
+    } else {
+      approverFileDoc = approverFile_DocPath;
+      directoryDelete = basicData.approverFile;
+
+      if (directoryDelete) {
+        fs.unlink(directoryDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
     const basicDetails = {
       userId: req.body.userId,
       Address: req.body.Address,
@@ -669,6 +716,7 @@ exports.updateAllCollection = async (req, res) => {
       Vendor_Type: req.body.Vendor_Type,
       Vendor_Account_Manager: req.body.Vendor_Account_Manager,
       mkDenialCheque: req.body.mkDenialCheque,
+approverFile: approverFileDoc
     };
 
     const communicationDetails = {

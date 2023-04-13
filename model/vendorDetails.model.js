@@ -36,6 +36,9 @@ module.exports = (sequelize, Sequelize) => {
         mkDenialCheque: {
             type: Sequelize.STRING
         },
+        approverFile: {
+            type: Sequelize.STRING,
+        },
         submitStatus: {
             type: Sequelize.STRING
         },
