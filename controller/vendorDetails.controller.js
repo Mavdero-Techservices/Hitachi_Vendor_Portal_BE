@@ -6,7 +6,12 @@ const vendorCommunicationDetails = db.vendorCommunicationDetails;
 const { check, validationResult } = require("express-validator");
 var geoCountryZipCode = require("geonames-country-zipcode-lookup");
 const { getData } = require("country-list");
-
+const SibApiV3Sdk = require('sib-api-v3-sdk');
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = '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';
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 exports.postNewRegVdetail = async (req, res, next) => {
   const masterId = req.body.userId;
   let masterEmail = "";
@@ -261,21 +266,22 @@ exports.emailSubmitNotification = async (
   returnFlag,
   emailId
 ) => {
-  var mailOptions = {
-    from: user,
-    to: `${emailId}`,
-    subject: subject,
-    html: emailContent,
-  };
+  // var mailOptions = {
+  //   from: user,
+  //   to: `${emailId}`,
+  //   subject: subject,
+  //   html: emailContent,
+  // };
   try {
-    const info = await transporter.sendMail(mailOptions);
-    if (returnFlag === true) {
-      return res.status(200).json({ status: "error", data: "Error Response" });
-    } else {
-      return res
-        .status(200)
-        .json({ status: "success", data: "mail sent Successfully" });
-    }
+    sendSmtpEmail.subject = `${subject}`;
+    sendSmtpEmail.htmlContent = `${emailContent}`;
+    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.to = [{ email: `${emailId}` }];
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+      console.log('mail sent successfully: ' + JSON.stringify(data));
+    }, function(error) {
+      console.error(error);
+    });
   } catch (error) {
     return res.status(200).json({ status: "error", data: error });
   }

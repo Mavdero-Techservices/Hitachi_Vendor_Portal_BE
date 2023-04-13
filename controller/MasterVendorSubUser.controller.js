@@ -3,7 +3,13 @@ const SignUpSchema = db.singUp;
 const MasterVendorSubUserSchema = db.MasterVendorSubUser;
 const VendorCodeSchema = db.vendorCode;
 const bcrypt = require("bcrypt");
-
+const fs = require('fs');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = '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';
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 var nodemailer = require("nodemailer");
 const config = require("../config/auth.config");
 const user = config.user;
@@ -26,27 +32,14 @@ exports.emailUserCreationReg = (
   returnFlag,
   emailId
 ) => {
-  var mailOptions = {
-    from: user,
-    to: `${emailId}`,
-    subject: subject,
-    html: emailContent,
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
-    } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
-    }
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
   });
 };
 
@@ -184,17 +177,17 @@ exports.UpdateMasterVendorSubUserById = async (req, res) => {
 
       const user = await new VendorCodeSchema({
         SubUserId: SubUserId,
-        vendorCode: req.body.vendorCode[i].vendorCode,
-        city: req.body.vendorCode[i].city,
-        Pincode: req.body.vendorCode[i].Pincode,
+        vendorCode: req.body.vendorCode[i].No,
+        city: req.body.vendorCode[i].City,
+        Pincode: req.body.vendorCode[i].State_Code,
       });
       user.save();
     } else {
       const user = await new VendorCodeSchema({
         SubUserId: SubUserId,
-        vendorCode: req.body.vendorCode[i].vendorCode,
-        city: req.body.vendorCode[i].city,
-        Pincode: req.body.vendorCode[i].Pincode,
+        vendorCode: req.body.vendorCode[i].No,
+        city: req.body.vendorCode[i].City,
+        Pincode: req.body.vendorCode[i].State_Code,
       });
       user.save();
     }

@@ -12,6 +12,13 @@ var rejectFile2DocPath = "";
 var rejectFile3DocPath = "";
 const bcrypt = require('bcrypt');
 var jwt = require("jsonwebtoken");
+const SibApiV3Sdk = require('sib-api-v3-sdk');
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = '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';
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -174,27 +181,14 @@ exports.emailApprovalNotification = (
   returnFlag,
   emailId
 ) => {
-  var mailOptions = {
-    from: user,
-    to: `${emailId}`,
-    subject: subject,
-    html: emailContent,
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
-    } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
-    }
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
   });
 };
 
@@ -209,33 +203,31 @@ exports.emailRejectNotification = (
 ) => {
   const format = level1rejectFileDoc.split(".");
 
-  var mailOptions = {
-    from: user,
-    to: `${emailId}`,
-    subject: subject,
-    html: emailContent,
-    attachments: [
-      {
-        // utf-8 string as an attachment
-        filename: "attachment." + format[1],
-        path: level1rejectFileDoc,
-      },
-    ],
-  };
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
-    } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
-    }
+  // var mailOptions = {
+  //   from: user,
+  //   to: `${emailId}`,
+  //   subject: subject,
+  //   html: emailContent,
+  //   attachments: [
+  //     {
+  //       // utf-8 string as an attachment
+  //       filename: "attachment." + format[1],
+  //       path: level1rejectFileDoc,
+  //     },
+  //   ],
+  // };
+  const attachment = new sendinblue.SendSmtpEmailAttachment();
+  attachment.name = "attachment." + format[1];
+  attachment.content = fs.readFileSync(level1rejectFileDoc).toString('base64');
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  sendSmtpEmail.attachment = [attachment];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
   });
 };
 
@@ -253,22 +245,14 @@ exports.emailJapanApprovalNotification = (
     subject: subject,
     html: emailContent,
   };
-
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
-    } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
-    }
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
   });
 };
 
@@ -283,34 +267,32 @@ exports.emailJapanRejectNotification = (
 ) => {
   const format = level2rejectFileDoc.split(".");
 
-  var mailOptions = {
-    from: user,
-    to: `${mVendoremailId}`,
-    subject: subject,
-    html: emailContent,
-    attachments: [
-      {
-        // utf-8 string as an attachment
-        filename: "attachment." + format[1],
-        path: level2rejectFileDoc,
-      },
-    ],
-  };
+  // var mailOptions = {
+  //   from: user,
+  //   to: `${mVendoremailId}`,
+  //   subject: subject,
+  //   html: emailContent,
+  //   attachments: [
+  //     {
+  //       // utf-8 string as an attachment
+  //       filename: "attachment." + format[1],
+  //       path: level2rejectFileDoc,
+  //     },
+  //   ],
+  // };
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
-    } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
-    }
+  const attachment = new sendinblue.SendSmtpEmailAttachment();
+  attachment.name = "attachment." + format[1];
+  attachment.content = fs.readFileSync(level2rejectFileDoc).toString('base64');
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  sendSmtpEmail.attachment = [attachment];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
   });
 };
 
@@ -322,28 +304,14 @@ exports.emailMRTApprovalNotification = (
   returnFlag,
   mVendoremailId
 ) => {
-  var mailOptions = {
-    from: user,
-    to: `${mVendoremailId}`,
-    subject: subject,
-    html: emailContent,
-  };
-
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
-    } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
-    }
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
   });
 };
 
@@ -358,34 +326,31 @@ exports.emailMRTRejectNotification = (
 ) => {
   const format = level3rejectFileDoc.split(".");
 
-  var mailOptions = {
-    from: user,
-    to: `${emailId}`,
-    subject: subject,
-    html: emailContent,
-    attachments: [
-      {
-        // utf-8 string as an attachment
-        filename: "attachment." + format[1],
-        path: level3rejectFileDoc,
-      },
-    ],
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
-    } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
-    }
+  // var mailOptions = {
+  //   from: user,
+  //   to: `${emailId}`,
+  //   subject: subject,
+  //   html: emailContent,
+  //   attachments: [
+  //     {
+  //       // utf-8 string as an attachment
+  //       filename: "attachment." + format[1],
+  //       path: level3rejectFileDoc,
+  //     },
+  //   ],
+  // };
+  const attachment = new sendinblue.SendSmtpEmailAttachment();
+  attachment.name = "attachment." + format[1];
+  attachment.content = fs.readFileSync(level3rejectFileDoc).toString('base64');
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  sendSmtpEmail.attachment = [attachment];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
   });
 };
 

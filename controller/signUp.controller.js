@@ -3,7 +3,12 @@ const SignUpSchema = db.singUp;
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
-
+const SibApiV3Sdk = require('sib-api-v3-sdk');
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = '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';
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 //SignUp
 exports.postSingUp = [
   //validate form
@@ -222,8 +227,9 @@ exports.resetPasswordByCode = (req, res, next) => {
     .then(async (user) => {
       const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
       if (!user) {
-        return res.status(200).json("invalid user");
+        return res.status(200).json({ status: "error", data: "invalid user"});
       } else {
+        console.log("user.emailId",user.emailId)
         var subject = `confirmation mail for Reset Password`;
         var emailContent = `<h1>Reset password</h1>
     <h2>Hello ${user.contactPerson}</h2>
@@ -231,19 +237,27 @@ exports.resetPasswordByCode = (req, res, next) => {
     <a href=http://localhost:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}> Click here</a>
     </div>`;
         var returnFlag = false;
-        exports.emailNotification(
-          req,
-          res,
-          subject,
-          emailContent,
-          returnFlag,
-          user.emailId
-        );
+        const defaultClient = SibApiV3Sdk.ApiClient.instance;
+        const apiKey = defaultClient.authentications['api-key'];
+        apiKey.apiKey = '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';
+        const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+        
+        const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+        sendSmtpEmail.subject = `${subject}`;
+        sendSmtpEmail.htmlContent = `${emailContent}`;
+        sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+        sendSmtpEmail.to = [{ email: `${user.emailId}` }];
+        apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+          console.log('mail sent successfully: ' + JSON.stringify(data));
+        }, function(error) {
+          console.error(error);
+        });
         await SignUpSchema.update(
           { mailConfirmationCode: mailConfirmationCode },
           { where: { id: user.id } }
         ).then((code) => {
           console.log("send password Code", code);
+          return res.status(200).json({ status: "success", data: "check your email,to reset your password" });
         });
       }
     })
@@ -264,20 +278,37 @@ exports.resetPassword = (req, res, next) => {
   })
     .then(async (user) => {
       if (!user) {
-        return res.status(200).json("invalid user");
+        return res.status(200).json({ status: "error", data: "invalid user"});
       } else {
-        bcrypt.hash(password, 12).then(async (hashedPassword) => {
-          await SignUpSchema.update(
-            {
-              password: hashedPassword,
-              confirmPassword: hashedPassword,
-              userName: userName,
-            },
-            { where: { id: user.id } }
-          ).then((code) => {
-            return res.status(200).json("password reset successfully");
-          });
+        await SignUpSchema.findAll({
+          where: {
+            username: userName
+          }
+        })
+        .then(data => {
+          if (data.length > 0) {
+            return res.status(200).json({ status: "error", data: "Username already exists. Please choose a different username." });
+          } else {
+            bcrypt.hash(password, 12).then(async (hashedPassword) => {
+              await SignUpSchema.update(
+                {
+                  password: hashedPassword,
+                  confirmPassword: hashedPassword,
+                  userName: userName,
+                },
+                { where: { id: user.id } }
+              ).then((code) => {
+                return res.status(200).json({ status: "success", data: "password reset successfully" });
+              });
+            });
+          }
+        })
+        .catch(err => {
+          return res.status(500).json({ status: 'error', data: { message: 'Error Response', err } });
         });
+        
+   
+      
       }
     })
     .catch((err) => console.log(err));
@@ -325,24 +356,15 @@ exports.emailNotification = async (
   returnFlag,
   emailId
 ) => {
-  var mailOptions = {
-    from: user,
-    to: `${emailId}`,
-    subject: subject,
-    html: emailContent,
-  };
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    if (returnFlag === true) {
-      return res.status(200).json({ status: "error", data: "Error Response" });
-    } else {
-      return res
-        .status(200)
-        .json({ status: "success", data: "mail sent Successfully" });
-    }
-  } catch (error) {
-    return res.status(200).json({ status: "error", data: error });
-  }
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
+  });
 };
 
 function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
@@ -462,6 +484,7 @@ function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
 //     });
 // };
 
+
 exports.saveUser = (req, res) => {
   var pass = "";
   var str =
@@ -523,15 +546,16 @@ exports.saveUser = (req, res) => {
                       <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
                       <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
                       </div>`;
-            var returnFlag = false;
             try {
-              const info = await transporter.sendMail({
-                from: process.env.GMAIL_USER,
-                to: result.emailId,
-                subject: subject,
-                html: emailContent,
+              sendSmtpEmail.subject = `${subject}`;
+              sendSmtpEmail.htmlContent = `${emailContent}`;
+              sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+              sendSmtpEmail.to = [{ email: `${result.emailId}` }];
+              apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+                console.log('mail sent successfully: ' + JSON.stringify(data));
+              }, function(error) {
+                console.error(error);
               });
-              console.log("info", info);
               return res.status(200).json({
                 status: "success",
                 message: "Registered Successfully",

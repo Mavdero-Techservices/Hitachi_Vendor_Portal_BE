@@ -24,7 +24,14 @@ var COC_DocPath = "";
 var NDA_DocPath = "";
 var financial_data_DocPath = "";
 var financial_data2_DocPath = "";
-const fs = require("fs");
+const fs = require('fs');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = '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';
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
 const SignUpSchema = db.singUp;
 var nodemailer = require("nodemailer");
@@ -49,27 +56,14 @@ exports.emailUpdateTabNotification = (
   returnFlag,
   emailId
 ) => {
-  var mailOptions = {
-    from: user,
-    to: `${emailId}`,
-    subject: subject,
-    html: emailContent,
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      return res.status(200).json({ status: "error", data: error });
-    } else {
-      if (returnFlag === true) {
-        return res
-          .status(200)
-          .json({ status: "error", data: "Error Response" });
-      } else {
-        return res
-          .status(200)
-          .json({ status: "success", data: "mail sent Successfully" });
-      }
-    }
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
   });
 };
 
