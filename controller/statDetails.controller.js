@@ -302,6 +302,7 @@ exports.saveStatutoryDetail = (req, res) => {
   PE_Declaration_DocPath = "";
   MSME_DocPath = "";
   Tax_residency_DocPath = "";
+  fileDisclosure_DocPath = "";
 
   var upload = multer({ storage: storage }).fields([
     {
@@ -332,8 +333,14 @@ exports.saveStatutoryDetail = (req, res) => {
       name: "Tax_residency_Doc",
       maxCount: 1,
     },
+    {
+      name: "fileDisclosure",
+      maxCount: 1,
+    },
   ]);
   upload(req, res, function (err) {
+    console.log("req", req.body);
+    console.log("req", req.files);
 
     if (err) {
       console.log("InsideErr", err);
@@ -402,7 +409,6 @@ exports.saveStatutoryDetail = (req, res) => {
             where: { userId: req.body.userId },
           });
 
-      
           if (err) {
             console.log("InsideErr", err);
             return "err";
@@ -423,7 +429,8 @@ exports.saveStatutoryDetail = (req, res) => {
               let PE_Declaration_Doc = PE_Declaration_DocPath;
               let MSME_Doc = MSME_DocPath;
               let Tax_residency_Doc = Tax_residency_DocPath;
-      
+              let fileDisclosure = fileDisclosure_DocPath;
+
               if (statDetails.GST_Doc === req.body.GST_Doc) {
                 GST_Doc = req.body.GST_Doc;
               } else {
@@ -437,7 +444,7 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (statDetails.PAN_Doc === req.body.PAN_Doc) {
                 PAN_Doc = req.body.PAN_Doc;
               } else {
@@ -451,7 +458,7 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (statDetails.form_10f_Doc === req.body.form_10f_Doc) {
                 form_10f_Doc = req.body.form_10f_Doc;
               } else {
@@ -465,7 +472,7 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (statDetails.TAN_Doc === req.body.TAN_Doc) {
                 TAN_Doc = req.body.TAN_Doc;
               } else {
@@ -479,8 +486,10 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
-              if (statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc) {
+
+              if (
+                statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc
+              ) {
                 PE_Declaration_Doc = req.body.PE_Declaration_Doc;
               } else {
                 PE_Declaration_Doc = PE_Declaration_DocPath;
@@ -493,7 +502,7 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (statDetails.MSME_Doc === req.body.MSME_Doc) {
                 MSME_Doc = req.body.MSME_Doc;
               } else {
@@ -507,8 +516,10 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
-              if (statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc) {
+
+              if (
+                statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc
+              ) {
                 Tax_residency_Doc = req.body.Tax_residency_Doc;
               } else {
                 Tax_residency_Doc = Tax_residency_DocPath;
@@ -521,7 +532,21 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
+              if (statDetails.fileDisclosure === req.body.fileDisclosure) {
+                fileDisclosure = req.body.fileDisclosure;
+              } else {
+                fileDisclosure = fileDisclosure_DocPath;
+                StatEightDelete = statDetails.fileDisclosure;
+                if (StatEightDelete && !req.body.fileDisclosure) {
+                  fs.unlink(StatEightDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+
               req.body.GST_Doc = GST_Doc;
               req.body.PAN_Doc = PAN_Doc;
               req.body.form_10f_Doc = form_10f_Doc;
@@ -529,7 +554,8 @@ exports.saveStatutoryDetail = (req, res) => {
               req.body.PE_Declaration_Doc = PE_Declaration_Doc;
               req.body.MSME_Doc = MSME_Doc;
               req.body.Tax_residency_Doc = Tax_residency_Doc;
-      
+              req.body.fileDisclosure = fileDisclosure;
+
               StatDetailSchema.update(req.body, {
                 where: {
                   userId: req.body.userId,
@@ -556,7 +582,8 @@ exports.saveStatutoryDetail = (req, res) => {
               let PE_Declaration_Doc = PE_Declaration_DocPath;
               let MSME_Doc = MSME_DocPath;
               let Tax_residency_Doc = Tax_residency_DocPath;
-      
+              let fileDisclosure = fileDisclosure_DocPath;
+
               if (statDetails.GST_Doc === req.body.GST_Doc) {
                 GST_Doc = req.body.GST_Doc;
               } else {
@@ -570,7 +597,7 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (statDetails.PAN_Doc === req.body.PAN_Doc) {
                 PAN_Doc = req.body.PAN_Doc;
               } else {
@@ -584,7 +611,7 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (statDetails.form_10f_Doc === req.body.form_10f_Doc) {
                 form_10f_Doc = req.body.form_10f_Doc;
               } else {
@@ -598,7 +625,7 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (statDetails.TAN_Doc === req.body.TAN_Doc) {
                 TAN_Doc = req.body.TAN_Doc;
               } else {
@@ -612,8 +639,10 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
-              if (statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc) {
+
+              if (
+                statDetails.PE_Declaration_Doc === req.body.PE_Declaration_Doc
+              ) {
                 PE_Declaration_Doc = req.body.PE_Declaration_Doc;
               } else {
                 PE_Declaration_Doc = PE_Declaration_DocPath;
@@ -626,7 +655,7 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (statDetails.MSME_Doc === req.body.MSME_Doc) {
                 MSME_Doc = req.body.MSME_Doc;
               } else {
@@ -640,8 +669,10 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
-              if (statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc) {
+
+              if (
+                statDetails.Tax_residency_Doc === req.body.Tax_residency_Doc
+              ) {
                 Tax_residency_Doc = req.body.Tax_residency_Doc;
               } else {
                 Tax_residency_Doc = Tax_residency_DocPath;
@@ -654,7 +685,21 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 }
               }
-      
+
+              if (statDetails.fileDisclosure === req.body.fileDisclosure) {
+                fileDisclosure = req.body.fileDisclosure;
+              } else {
+                fileDisclosure = fileDisclosure_DocPath;
+                StatEightDelete = statDetails.fileDisclosure;
+                if (StatEightDelete && !req.body.fileDisclosure) {
+                  fs.unlink(StatEightDelete, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+              }
+
               req.body.GST_Doc = GST_Doc;
               req.body.PAN_Doc = PAN_Doc;
               req.body.form_10f_Doc = form_10f_Doc;
@@ -662,7 +707,8 @@ exports.saveStatutoryDetail = (req, res) => {
               req.body.PE_Declaration_Doc = PE_Declaration_Doc;
               req.body.MSME_Doc = MSME_Doc;
               req.body.Tax_residency_Doc = Tax_residency_Doc;
-      
+              req.body.fileDisclosure = fileDisclosure;
+
               StatDetailSchema.update(req.body, {
                 where: {
                   userId: req.body.userId,
@@ -697,6 +743,7 @@ exports.updateStatutoryDetail = async (req, res) => {
   PE_Declaration_DocPath = "";
   MSME_DocPath = "";
   Tax_residency_DocPath = "";
+  fileDisclosure_DocPath = "";
 
   var userId = req.params.userId;
 
@@ -729,6 +776,10 @@ exports.updateStatutoryDetail = async (req, res) => {
       name: "Tax_residency_Doc",
       maxCount: 1,
     },
+    {
+      name: "fileDisclosure",
+      maxCount: 1,
+    },
   ]);
   upload(req, res, async function (err) {
     var statDetails = await StatDetailSchema.findOne({
@@ -755,6 +806,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         let PE_Declaration_Doc = PE_Declaration_DocPath;
         let MSME_Doc = MSME_DocPath;
         let Tax_residency_Doc = Tax_residency_DocPath;
+        let fileDisclosure = fileDisclosure_DocPath;
 
         if (statDetails.GST_Doc === req.body.GST_Doc) {
           GST_Doc = req.body.GST_Doc;
@@ -854,6 +906,20 @@ exports.updateStatutoryDetail = async (req, res) => {
           }
         }
 
+        if (statDetails.fileDisclosure === req.body.fileDisclosure) {
+          fileDisclosure = req.body.fileDisclosure;
+        } else {
+          fileDisclosure = fileDisclosure_DocPath;
+          StatEightDelete = statDetails.fileDisclosure;
+          if (StatEightDelete && !req.body.fileDisclosure) {
+            fs.unlink(StatEightDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+        }
+
         req.body.GST_Doc = GST_Doc;
         req.body.PAN_Doc = PAN_Doc;
         req.body.form_10f_Doc = form_10f_Doc;
@@ -861,6 +927,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         req.body.PE_Declaration_Doc = PE_Declaration_Doc;
         req.body.MSME_Doc = MSME_Doc;
         req.body.Tax_residency_Doc = Tax_residency_Doc;
+        req.body.fileDisclosure = fileDisclosure_DocPath;
 
         StatDetailSchema.update(req.body, {
           where: {
@@ -888,6 +955,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         let PE_Declaration_Doc = PE_Declaration_DocPath;
         let MSME_Doc = MSME_DocPath;
         let Tax_residency_Doc = Tax_residency_DocPath;
+        let fileDisclosure = fileDisclosure_DocPath;
 
         if (statDetails.GST_Doc === req.body.GST_Doc) {
           GST_Doc = req.body.GST_Doc;
@@ -987,6 +1055,20 @@ exports.updateStatutoryDetail = async (req, res) => {
           }
         }
 
+        if (statDetails.fileDisclosure === req.body.fileDisclosure) {
+          fileDisclosure = req.body.fileDisclosure;
+        } else {
+          fileDisclosure = fileDisclosure_DocPath;
+          StatEightDelete = statDetails.fileDisclosure;
+          if (StatEightDelete && !req.body.fileDisclosure) {
+            fs.unlink(StatEightDelete, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+        }
+
         req.body.GST_Doc = GST_Doc;
         req.body.PAN_Doc = PAN_Doc;
         req.body.form_10f_Doc = form_10f_Doc;
@@ -994,6 +1076,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         req.body.PE_Declaration_Doc = PE_Declaration_Doc;
         req.body.MSME_Doc = MSME_Doc;
         req.body.Tax_residency_Doc = Tax_residency_Doc;
+        req.body.fileDisclosure = fileDisclosure_DocPath;
 
         StatDetailSchema.update(req.body, {
           where: {
