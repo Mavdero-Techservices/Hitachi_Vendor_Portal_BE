@@ -695,13 +695,13 @@ exports.updateAllCollection = async (req, res) => {
       approverFileDoc = approverFile_DocPath;
       directoryDelete = basicData.approverFile;
 
-      if (directoryDelete) {
-        fs.unlink(directoryDelete, (err) => {
-          if (err) {
-            throw err;
-          }
-        });
-      }
+      // if (directoryDelete) {
+      //   fs.unlink(directoryDelete, (err) => {
+      //     if (err) {
+      //       throw err;
+      //     }
+      //   });
+      // }
     }
     const basicDetails = {
       userId: req.body.userId,
@@ -712,7 +712,7 @@ exports.updateAllCollection = async (req, res) => {
       state: req.body.state,
       City: req.body.City,
       Post_Code: req.body.Post_Code,
-      image: new Buffer(req.body.image, "base64").toString("binary"),
+      image:req.body.image,
       Vendor_Type: req.body.Vendor_Type,
       Vendor_Account_Manager: req.body.Vendor_Account_Manager,
       mkDenialCheque: req.body.mkDenialCheque,
