@@ -23,13 +23,13 @@ var RPD_DocPath = "";
 var COC_DocPath = "";
 var NDA_DocPath = "";
 var financial_data_DocPath = "";
-var approverFile_DocPath = "";
 var financial_data2_DocPath = "";
+var approverFile_DocPath = "";
 const fs = require('fs');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = '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';
+apiKey.apiKey = 'Replace-apikey';
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -316,6 +316,7 @@ var storage = multer.diskStorage({
         filedirect[1]
       );
     }
+
     if (file.fieldname === "RPD_Doc") {
       let filedirect = file.originalname.split(".");
 
@@ -600,6 +601,7 @@ exports.updateAllCollection = async (req, res) => {
   financial_data_DocPath = "";
   financial_data2_DocPath = "";
   approverFile_DocPath="";
+
   var userId = req.params.userId;
 
   var upload = multer({ storage: storage }).fields([
@@ -659,7 +661,7 @@ exports.updateAllCollection = async (req, res) => {
       name: "financial_data2",
       maxCount: 1,
     },
- {
+    {
       name: "approverFile",
       maxCount: 1,
     },
@@ -682,7 +684,7 @@ exports.updateAllCollection = async (req, res) => {
       where: { userId: req.params.userId },
     });
 
- var basicData = await VdetailSchema.findOne({
+    var basicData = await VdetailSchema.findOne({
       where: { userId: req.params.userId },
     });
 
@@ -703,6 +705,7 @@ exports.updateAllCollection = async (req, res) => {
       //   });
       // }
     }
+
     const basicDetails = {
       userId: req.body.userId,
       Address: req.body.Address,
@@ -712,11 +715,11 @@ exports.updateAllCollection = async (req, res) => {
       state: req.body.state,
       City: req.body.City,
       Post_Code: req.body.Post_Code,
-      image:req.body.image,
+      image: req.body.image,
       Vendor_Type: req.body.Vendor_Type,
       Vendor_Account_Manager: req.body.Vendor_Account_Manager,
       mkDenialCheque: req.body.mkDenialCheque,
-approverFile: approverFileDoc
+      approverFile: approverFileDoc
     };
 
     const communicationDetails = {
@@ -963,6 +966,8 @@ approverFile: approverFileDoc
       netWorth: req.body.netWorth,
       currentAssets: req.body.currentAssets,
       directorDetails: req.body.directorDetails,
+      organisationType:req.body.organisationType,
+      shareholderName:req.body.shareholderName,
     };
 
     let bankdetailDoc = bankdetailDocPath;

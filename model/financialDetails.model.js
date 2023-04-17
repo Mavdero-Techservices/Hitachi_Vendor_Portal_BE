@@ -29,7 +29,13 @@ module.exports = (sequelize, Sequelize) => {
         },
         financial_data2: {
             type: Sequelize.STRING,
-        }
+        },
+        organisationType:{
+            type: Sequelize.STRING,
+        },
+        shareholderName:{
+            type: Sequelize.STRING,
+        },
     })
     return FdetailSchema;
 }

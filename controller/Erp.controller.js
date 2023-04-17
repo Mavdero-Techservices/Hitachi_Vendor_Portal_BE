@@ -268,11 +268,21 @@ const replacedStr = str.replace(/;/g, "%3b");
   
 };
 
+
+// Function to buffer data with Ticket ID
+function bufferDataWithTicketId(data, Ticket_ID) {
+  const sqlQuery = `INSERT INTO buffer_table (Ticket_ID, column1, column2, ...) VALUES (${Ticket_ID}, '${data.column1}', '${data.column2}', ...)`;
+}
+
 exports.postErpResourcePortalVendorlist= (req, res) => {
-  console.log("req.body---->",req.body)
+  // OData endpoint URL
   const odataUrl = 'http://10.83.152.111:4049/NAVTestDB2/OData/ResourcePortalVendorlist1?$format=json&company=Hitachi%20Systems%20India%20Pvt%20Ltd';
+
   const data = req.body;
-  const Ticket_ID = req.body.Ticket_ID;
+
+  const Ticket_ID = 12345;
+
+
   httpntlm.post({
     url: odataUrl,
     username: 'ERP-API',
@@ -286,13 +296,17 @@ exports.postErpResourcePortalVendorlist= (req, res) => {
       'User-Agent': 'nodejs/httpntlm'
     },
     body: JSON.stringify({
-      ...data, 
-      Entry_No: Ticket_ID 
+      ...data, // Include the data in the body of the POST request
+      Ticket_ID: Ticket_ID // Include the Ticket ID in the body of the POST request
     })
   }, function (err, result) {
     if (err) {
       console.error(err);
     } else {
+      // Call the function to insert the data into the buffer table with the Ticket ID
+      bufferDataWithTicketId(data, Ticket_ID);
+      console.log('Data buffered successfully.');
+      // Return the response from the OData endpoint
       res.setHeader("Content-Type", "application/json");
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(result.body);
@@ -328,6 +342,7 @@ exports.getErpVendor_APIByParent_Vendor_Code= (req, res) => {
     }
   });
 };
+
 //P_A_N_No
 exports.getErpVendor_APIByP_A_N_No= (req, res) => {
   const P_A_N_No = req.params.P_A_N_No;
@@ -357,20 +372,4 @@ exports.getErpVendor_APIByP_A_N_No= (req, res) => {
       res.status(200).json(response);
     }
   });
-};
-
-//getAllPanNofromvendorCardApi
-exports.getAllPanNofromvendorCardApi= (req, res) => {
-  httpntlm.get({      
-    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/Vendor_API?$format=json",
-    username: 'ERP-API',
-    password: 'HSI@#543DCVB',
-    workstation: '',
-    domain: ''
-}, function (err, result){
-  const data = JSON.parse(result.body).value;
-const panNumbers = data.map(obj => ({ P_A_N_No: obj.P_A_N_No }));
-    if(err) return err;
-    res.status(200).json(panNumbers);
-})
 };

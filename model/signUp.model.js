@@ -47,6 +47,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         subUserId: {
             type: Sequelize.STRING
+        },
+        Ticket_ID:{
+            type: Sequelize.STRING  
         }
     });
     return SignUpSchema;

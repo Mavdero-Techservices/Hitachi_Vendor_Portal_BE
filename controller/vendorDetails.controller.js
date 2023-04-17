@@ -9,9 +9,10 @@ const { getData } = require("country-list");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = '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';
+apiKey.apiKey = 'Replace-apikey';
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+
 exports.postNewRegVdetail = async (req, res, next) => {
   const masterId = req.body.userId;
   let masterEmail = "";
@@ -248,14 +249,24 @@ const config = require("../config/auth.config");
 const user = config.user;
 const pass = config.pass;
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  // host: "smtp.office365.com",
-  // service: "Outlook365",
+// var transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   // host: "smtp.office365.com",
+//   // service: "Outlook365",
+//   auth: {
+//     user: user,
+//     pass: pass,
+//   },
+// });
+let transporter = nodemailer.createTransport({
+  host: 'smtp.office365.com',
+  port: 587,
+  secure: false,
+  requireTLS: true,
   auth: {
-    user: user,
-    pass: pass,
-  },
+      user: 'apitestmail4@gmail.com',
+      pass: 'gmlubwghcqtqkldm'
+  }
 });
 
 exports.emailSubmitNotification = async (
@@ -266,12 +277,6 @@ exports.emailSubmitNotification = async (
   returnFlag,
   emailId
 ) => {
-  // var mailOptions = {
-  //   from: user,
-  //   to: `${emailId}`,
-  //   subject: subject,
-  //   html: emailContent,
-  // };
   try {
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
@@ -301,7 +306,7 @@ exports.updateVendor = async (req, res) => {
     var subject = `Hitachi Vendor Creation Submit Status`;
     var emailContent = `
                         <h4>Hi ${userId}</h4>
-                        <p>Your vendor creation request is submitted successful to Hitachi and your Ticket ID is “”.</p>
+                        <p>Your vendor creation request is submitted successful to Hitachi and your Ticket ID is ${submitEmailId.Ticket_ID}.</p>
                         <p>Thanks & regards,</p>
                         </div>`;
     var returnFlag = false;
@@ -337,10 +342,10 @@ exports.updateVendor = async (req, res) => {
   });
 
   if (updateResult[0]) {
-    // res.status(200).json({
-    //   status: "success",
-    //   message: "Vendor updated successfully",
-    // });
+    res.status(200).json({
+      status: "success",
+      message: "Vendor updated successfully",
+    });
   } else {
     res.status(404).json({
       status: "error",

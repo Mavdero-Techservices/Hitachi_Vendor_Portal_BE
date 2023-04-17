@@ -12,7 +12,7 @@ const fs = require('fs');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = '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';
+apiKey.apiKey = 'Replace-apikey';
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -131,7 +131,7 @@ var storage = multer.diskStorage({
     //     },
     //   ],
     // };
-    const attachment = new sendinblue.SendSmtpEmailAttachment();
+    const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
     attachment.name = "attachment." + format[1];
     attachment.content = fs.readFileSync(rejectFileDoc).toString('base64');
     sendSmtpEmail.subject = `${subject}`;

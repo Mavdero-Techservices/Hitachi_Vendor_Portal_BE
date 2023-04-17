@@ -6,7 +6,7 @@ var jwt = require("jsonwebtoken");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = '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';
+apiKey.apiKey = 'Replace-apikey';
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 //SignUp
@@ -234,12 +234,12 @@ exports.resetPasswordByCode = (req, res, next) => {
         var emailContent = `<h1>Reset password</h1>
     <h2>Hello ${user.contactPerson}</h2>
     <p>please click the below link to Reset your password.</p>
-    <a href=http://localhost:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}> Click here</a>
+    <a href=http://43.204.173.152:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}> Click here</a>
     </div>`;
         var returnFlag = false;
         const defaultClient = SibApiV3Sdk.ApiClient.instance;
         const apiKey = defaultClient.authentications['api-key'];
-        apiKey.apiKey = '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';
+        apiKey.apiKey = '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';
         const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
         
         const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -520,6 +520,7 @@ exports.saveUser = (req, res) => {
         contactPerson + Math.floor(100000 + Math.random() * 900000);
       const role = "user";
       const password = pass;
+      const Ticket_ID = "VCR" + Math.floor(100000 + Math.random() * 900000);
       bcrypt.hash(password, 12).then((hashedPassword) => {
         const user = new SignUpSchema({
           companyName: companyName,
@@ -535,6 +536,7 @@ exports.saveUser = (req, res) => {
           password: hashedPassword,
           confirmPassword: hashedPassword,
           role: role,
+          Ticket_ID:Ticket_ID,
         });
         user
           .save()
@@ -544,7 +546,7 @@ exports.saveUser = (req, res) => {
             var emailContent = `<h1>Email Confirmation</h1>
                       <h2>Hello ${contactPerson}</h2>
                       <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
-                      <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
+                      <a href=http://43.204.173.152:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
                       </div>`;
             try {
               sendSmtpEmail.subject = `${subject}`;
@@ -573,3 +575,25 @@ exports.saveUser = (req, res) => {
     }
   });
 };
+exports.updateTicketIdbyUserId = (req, res) => {
+  const userId=req.params.userId;
+ const Ticket_ID = "VCR" + Math.floor(100000 + Math.random() * 900000);
+ SignUpSchema.update(Ticket_ID, {
+  where: {
+    userId:userId,
+  },
+})
+  .then(() => {
+    res.status(200).send({
+      message: "TicketId updated successfully!",
+      status: "success",
+    });
+  })
+  .catch((err) => {
+    res.status(500).send({
+      message:
+        err.message ||
+        "Some error occurred while updating the signUp schema.",
+    });
+  });
+}
