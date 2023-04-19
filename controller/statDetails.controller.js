@@ -124,6 +124,8 @@ var storage = multer.diskStorage({
     var filetype = "";
 
     if (file.fieldname === "GST_Doc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       GST_DocPath =
@@ -131,20 +133,15 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          new Date().toISOString().replace(/:/g, "-") +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
     if (file.fieldname === "fileDisclosure") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       fileDisclosure_DocPath =
@@ -152,20 +149,15 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          new Date().toISOString().replace(/:/g, "-") +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
     if (file.fieldname === "PAN_Doc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       PAN_DocPath =
@@ -173,20 +165,15 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          new Date().toISOString().replace(/:/g, "-") +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
     if (file.fieldname === "form_10f_Doc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       form_10f_DocPath =
@@ -194,20 +181,15 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          new Date().toISOString().replace(/:/g, "-") +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
     if (file.fieldname === "TAN_Doc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       TAN_DocPath =
@@ -215,20 +197,15 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          new Date().toISOString().replace(/:/g, "-") +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
     if (file.fieldname === "PE_Declaration_Doc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       PE_Declaration_DocPath =
@@ -236,20 +213,15 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          new Date().toISOString().replace(/:/g, "-") +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
     if (file.fieldname === "MSME_Doc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       MSME_DocPath =
@@ -257,20 +229,15 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          new Date().toISOString().replace(/:/g, "-") +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
     if (file.fieldname === "Tax_residency_Doc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       Tax_residency_DocPath =
@@ -278,18 +245,11 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          new Date().toISOString().replace(/:/g, "-") +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
   },
 });
@@ -547,6 +507,18 @@ exports.saveStatutoryDetail = (req, res) => {
                 }
               }
 
+              if (req.body.MSMED === "UnRegistered") {
+                req.body.MSMED_Number = "N/A";
+                if (req.body.MSME_Doc) {
+                  fs.unlink(req.body.MSME_Doc, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+                MSME_Doc = "";
+              }
+
               req.body.GST_Doc = GST_Doc;
               req.body.PAN_Doc = PAN_Doc;
               req.body.form_10f_Doc = form_10f_Doc;
@@ -575,6 +547,8 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 });
             } else {
+              
+
               let GST_Doc = GST_DocPath;
               let PAN_Doc = PAN_DocPath;
               let form_10f_Doc = form_10f_DocPath;
@@ -698,6 +672,18 @@ exports.saveStatutoryDetail = (req, res) => {
                     }
                   });
                 }
+              }
+
+              if (req.body.MSMED === "UnRegistered") {
+                req.body.MSMED_Number = "N/A";
+                if (req.body.MSME_Doc) {
+                  fs.unlink(req.body.MSME_Doc, (err) => {
+                    if (err) {
+                      throw err;
+                    }
+                  });
+                }
+                MSME_Doc = "";
               }
 
               req.body.GST_Doc = GST_Doc;
@@ -920,6 +906,18 @@ exports.updateStatutoryDetail = async (req, res) => {
           }
         }
 
+        if (req.body.MSMED === "UnRegistered") {
+          req.body.MSMED_Number = "N/A";
+          if (req.body.MSME_Doc) {
+            fs.unlink(req.body.MSME_Doc, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+          MSME_Doc = "";
+        }
+
         req.body.GST_Doc = GST_Doc;
         req.body.PAN_Doc = PAN_Doc;
         req.body.form_10f_Doc = form_10f_Doc;
@@ -948,6 +946,8 @@ exports.updateStatutoryDetail = async (req, res) => {
             });
           });
       } else {
+        console.log("req--->", req.body);
+
         let GST_Doc = GST_DocPath;
         let PAN_Doc = PAN_DocPath;
         let form_10f_Doc = form_10f_DocPath;
@@ -1067,6 +1067,18 @@ exports.updateStatutoryDetail = async (req, res) => {
               }
             });
           }
+        }
+
+        if (req.body.MSMED === "UnRegistered") {
+          req.body.MSMED_Number = "N/A";
+          if (req.body.MSME_Doc) {
+            fs.unlink(req.body.MSME_Doc, (err) => {
+              if (err) {
+                throw err;
+              }
+            });
+          }
+          MSME_Doc = "";
         }
 
         req.body.GST_Doc = GST_Doc;

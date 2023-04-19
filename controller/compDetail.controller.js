@@ -59,6 +59,9 @@ var storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     if (file.fieldname === "RPD_Doc") {
+
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       RPD_DocPath =
@@ -66,7 +69,7 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
@@ -74,13 +77,16 @@ var storage = multer.diskStorage({
         null,
         filedirect[0] +
           "_" +
-          new Date().toISOString().replace(/:/g, "-") +
+          randomNumber +
           "." +
           filedirect[1]
       );
     }
 
     if (file.fieldname === "COC_Doc") {
+
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       COC_DocPath =
@@ -88,7 +94,7 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
@@ -96,13 +102,16 @@ var storage = multer.diskStorage({
         null,
         filedirect[0] +
           "_" +
-          new Date().toISOString().replace(/:/g, "-") +
+          randomNumber +
           "." +
           filedirect[1]
       );
     }
 
     if (file.fieldname === "NDA_Doc") {
+
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       NDA_DocPath =
@@ -110,7 +119,7 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
@@ -118,7 +127,7 @@ var storage = multer.diskStorage({
         null,
         filedirect[0] +
           "_" +
-          new Date().toISOString().replace(/:/g, "-") +
+          randomNumber +
           "." +
           filedirect[1]
       );

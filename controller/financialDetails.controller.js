@@ -78,6 +78,9 @@ var storage = multer.diskStorage({
   filename: (req, file, cb) => {
 
     if (file.fieldname === "financial_data") {
+
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
       let filedirect = file.originalname.split(".");
 
       financial_data_DocPath =
@@ -85,7 +88,7 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
@@ -93,12 +96,15 @@ var storage = multer.diskStorage({
         null,
         filedirect[0] +
           "_" +
-          new Date().toISOString().replace(/:/g, "-") +
+          randomNumber +
           "." +
           filedirect[1]
       );
     }
     if (file.fieldname === "financial_data2") {
+
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+      
       let filedirect = file.originalname.split(".");
 
       financial_data2_DocPath =
@@ -106,7 +112,7 @@ var storage = multer.diskStorage({
         "/" +
         filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1];
 
@@ -114,7 +120,7 @@ var storage = multer.diskStorage({
         null,
         filedirect[0] +
           "_" +
-          new Date().toISOString().replace(/:/g, "-") +
+          randomNumber +
           "." +
           filedirect[1]
       );

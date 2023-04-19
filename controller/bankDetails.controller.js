@@ -13,6 +13,9 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
+
+    let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
     let filedirect = file.originalname.split(".");
 
     bankdetailDocPath =
@@ -20,7 +23,7 @@ var storage = multer.diskStorage({
       "/" +
       filedirect[0] +
       "_" +
-      new Date().toISOString().replace(/:/g, "-") +
+      randomNumber +
       "." +
       filedirect[1];
 
@@ -28,7 +31,7 @@ var storage = multer.diskStorage({
       null,
       filedirect[0] +
         "_" +
-        new Date().toISOString().replace(/:/g, "-") +
+        randomNumber +
         "." +
         filedirect[1]
     );
