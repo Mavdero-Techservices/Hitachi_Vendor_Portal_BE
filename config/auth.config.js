@@ -5,8 +5,7 @@ module.exports = {
     // user: "vms@hisysmc.com",
     // pass: "May64863", 
     // service: 'gmail',
-    // user: 'Vendorportaltest@mavdero.in',
-    // pass: 'Welcome@12'
-  user: 'apitestmail4@gmail.com',
-  pass: 'gmlubwghcqtqkldm'
+  // user: 'apitestmail4@gmail.com',
+  // pass: 'gmlubwghcqtqkldm'
+  apiKey:'Replace-apikey'
   };

@@ -3,12 +3,15 @@ const SignUpSchema = db.singUp;
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
+const config = require("../config/auth.config");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = 'Replace-apikey';
+apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+
+
 //SignUp
 exports.postSingUp = [
   //validate form
@@ -199,6 +202,7 @@ exports.postLogin = (req, res) => {
                 userId: user.userId,
                 userName: user.userName,
                 role: user.role,
+                Ticket_ID:user.Ticket_ID
               },
             });
           } else {
@@ -237,12 +241,6 @@ exports.resetPasswordByCode = (req, res, next) => {
     <a href=http://43.204.173.152:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}> Click here</a>
     </div>`;
         var returnFlag = false;
-        const defaultClient = SibApiV3Sdk.ApiClient.instance;
-        const apiKey = defaultClient.authentications['api-key'];
-        apiKey.apiKey = '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';
-        const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-        
-        const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
         sendSmtpEmail.subject = `${subject}`;
         sendSmtpEmail.htmlContent = `${emailContent}`;
         sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
@@ -333,20 +331,20 @@ exports.getStateAndcityByzipcode = (req, res, next) => {
 };
 
 //send email
-var nodemailer = require("nodemailer");
-const config = require("../config/auth.config");
-const user = config.user;
-const pass = config.pass;
+// var nodemailer = require("nodemailer");
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  // host: "smtp.office365.com",
-  // service: "Outlook365",
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
+// const user = config.user;
+// const pass = config.pass;
+
+// var transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   // host: "smtp.office365.com",
+//   // service: "Outlook365",
+//   auth: {
+//     user: user,
+//     pass: pass,
+//   },
+// });
 
 exports.emailNotification = async (
   req,

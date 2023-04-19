@@ -25,29 +25,30 @@ var NDA_DocPath = "";
 var financial_data_DocPath = "";
 var financial_data2_DocPath = "";
 var approverFile_DocPath = "";
+const config = require("../config/auth.config");
 const fs = require('fs');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = 'Replace-apikey';
+apiKey.apiKey =config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
 const SignUpSchema = db.singUp;
-var nodemailer = require("nodemailer");
-const config = require("../config/auth.config");
-const user = config.user;
-const pass = config.pass;
+// var nodemailer = require("nodemailer");
+// const config = require("../config/auth.config");
+// const user = config.user;
+// const pass = config.pass;
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  // service: 'Outlook365',
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
+// var transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   // service: 'Outlook365',
+//   auth: {
+//     user: user,
+//     pass: pass,
+//   },
+// });
 
 exports.emailUpdateTabNotification = (
   req,
@@ -407,6 +408,7 @@ exports.saveContactTeam = (req, res) => {
         const contactName3 = req.body.contactName3;
         const emailId3 = req.body.emailId3;
         const contactNumber3 = req.body.contactNumber3;
+        const Ticket_ID=req.body.Ticket_ID;
         const user = new contactTeamSchema({
           contactId: contactId,
           userId: userId,
@@ -419,6 +421,7 @@ exports.saveContactTeam = (req, res) => {
           contactName3: contactName3,
           emailId3: emailId3,
           contactNumber3: contactNumber3,
+          Ticket_ID:Ticket_ID,
         });
         user.save().then((result) => {
           return res.status(200).json({
@@ -1009,6 +1012,7 @@ exports.updateAllCollection = async (req, res) => {
       contactName3: req.body.name3,
       emailId3: req.body.email3,
       contactNumber3: req.body.contactNumber3,
+      Ticket_ID:req.body.Ticket_ID,
     };
 
     const promises = [

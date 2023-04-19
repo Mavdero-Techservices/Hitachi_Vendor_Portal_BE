@@ -13,10 +13,11 @@ var rejectFile3DocPath = "";
 const bcrypt = require('bcrypt');
 var jwt = require("jsonwebtoken");
 const fs = require('fs');
+const config = require("../config/auth.config");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = 'Replace-apikey';
+apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -160,19 +161,18 @@ var storage = multer.diskStorage({
   },
 });
 
-var nodemailer = require("nodemailer");
-const config = require("../config/auth.config");
-const user = config.user;
-const pass = config.pass;
+// var nodemailer = require("nodemailer");
+// const user = config.user;
+// const pass = config.pass;
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  // service: 'Outlook365',
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
+// var transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   // service: 'Outlook365',
+//   auth: {
+//     user: user,
+//     pass: pass,
+//   },
+// });
 
 exports.emailApprovalNotification = (
   req,
@@ -288,7 +288,7 @@ exports.emailJapanRejectNotification = (
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
   sendSmtpEmail.attachment = [attachment];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
