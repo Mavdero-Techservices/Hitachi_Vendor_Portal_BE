@@ -366,6 +366,30 @@ exports.saveApprovalStatus = (req, res) => {
     { name: "level3rejectFileDoc", maxCount: 1 },
   ]);
   upload(req, res, async function (err) {
+    var approvalValidate =await ApprovalSchema.findOne({
+      where: { userId: req.body.userId },
+    });
+    if (approvalValidate ){
+      
+      // if (rejectFile1DocPath){
+      //   fs.unlink(rejectFile1DocPath, (err) => {
+      //     if (err) {
+      //       throw err;
+      //     }
+      //   });
+      // }
+      if (approvalValidate.level1Status ==="approved"){
+        return res
+          .status(200)
+          .json({ status: "error",  message: "Already Approved"  });
+      }
+      if (approvalValidate.level1Status === "rejected") {
+        return res
+          .status(200)
+          .json({ status: "error",  message: " Already rejected"  });
+      }
+    }else{
+     
     var userEmailId = await SignUpSchema.findOne({
       where: { userId: req.body.userId },
     });
@@ -459,10 +483,16 @@ exports.saveApprovalStatus = (req, res) => {
           });
         });
     }
+    }
   });
 };
 
 exports.updateApprovalStatus = async (req, res) => {
+  
+  var approvalValidate = await ApprovalSchema.findOne({
+    where: { userId: req.params.userId },
+  });
+
   rejectFile1DocPath = "";
   rejectFile2DocPath = "";
   rejectFile3DocPath = "";
@@ -484,6 +514,69 @@ exports.updateApprovalStatus = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
+    if (req.body.level2Status){
+      if (approvalValidate.level2Status === "approved") {
+
+        // if (rejectFile2DocPath) {
+        //   fs.unlink(rejectFile2DocPath, (err) => {
+        //     if (err) {
+        //       throw err;
+        //     }
+        //   });
+        // }
+        return res
+          .status(200)
+          .json({ status: "error", message: "Already Approved Japan" });
+      }
+      else if (approvalValidate.level2Status === "rejected") {
+
+        // if (rejectFile2DocPath) {
+        //   fs.unlink(rejectFile2DocPath, (err) => {
+        //     if (err) {
+        //       throw err;
+        //     }
+        //   });
+        // }
+        return res
+          .status(200)
+          .json({ status: "error", message: " Already rejected by Japan" });
+      }else{
+        NewData()
+      }
+    }
+
+    if (req.body.level3Status) {
+
+      if (approvalValidate.level3Status === "approved") {
+        // if (rejectFile3DocPath) {
+        //   fs.unlink(rejectFile3DocPath, (err) => {
+        //     if (err) {
+        //       throw err;
+        //     }
+        //   });
+        // }
+        return res
+          .status(200)
+          .json({ status: "error", message: "Already Approved by MRT" });
+      }
+      else if (approvalValidate.level3Status === "rejected") {
+
+        // if (rejectFile3DocPath) {
+        //   fs.unlink(rejectFile3DocPath, (err) => {
+        //     if (err) {
+        //       throw err;
+        //     }
+        //   });
+        // }
+        return res
+          .status(200)
+          .json({ status: "error", message: " Already rejected by MRT" });
+      }else{
+        NewData()
+      }
+    }
+
+  async  function NewData (){
     var userEmailId = await SignUpSchema.findOne({
       where: { userId: req.body.userId },
     });
@@ -697,6 +790,7 @@ exports.updateApprovalStatus = async (req, res) => {
               "Some error occurred while updating the ApprovalStatus schema.",
           });
         });
+    }
     }
   });
 };
