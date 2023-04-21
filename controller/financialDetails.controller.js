@@ -161,6 +161,8 @@ exports.saveFinacialDetail = (req, res) => {
           const netWorth = req.body.netWorth;
           const currentAssets = req.body.currentAssets;
           const directorDetails = req.body.directorDetails;
+          const organisationType = req.body.organisationType;
+          const shareholderName = req.body.shareholderName;
           const userId = req.body.userId;
           const user = new FdetailSchema({
             financial_id:
@@ -173,6 +175,8 @@ exports.saveFinacialDetail = (req, res) => {
             netWorth: netWorth,
             currentAssets: currentAssets,
             directorDetails: directorDetails,
+            organisationType: organisationType,
+            shareholderName: shareholderName,
             userId: userId,
           });
           user.save().then((result) => {
