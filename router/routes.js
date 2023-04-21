@@ -196,5 +196,5 @@ router.post('/postErpResourcePortalVendorlist', ErpAccess.postErpResourcePortalV
 router.put('/updateErpResourcePortalVendorlist/:Refrence_Entry_No', ErpAccess.updateErpResourcePortalVendorlist);
 router.get('/getErpVendor_APIByParent_Vendor_Code/:Parent_Vendor_Code', ErpAccess.getErpVendor_APIByParent_Vendor_Code);
 router.get('/getErpVendor_APIByP_A_N_No/:P_A_N_No', ErpAccess.getErpVendor_APIByP_A_N_No);
-router.put("/updateTicketIdbyUserId/:userId", signUp.updateTicketIdbyUserId);
+router.post("/saveMasterLogin", signUp.saveMasterLogin);
 module.exports = router;
