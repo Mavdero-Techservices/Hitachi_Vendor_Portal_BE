@@ -44,9 +44,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         submitDate: {
             type: Sequelize.DATEONLY
-        },
-        Ticket_ID:{
-            type: Sequelize.STRING  
         }
     })
     return VdetailSchema;
