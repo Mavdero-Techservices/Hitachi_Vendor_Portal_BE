@@ -544,7 +544,7 @@ exports.saveUser = (req, res) => {
             var emailContent = `<h1>Email Confirmation</h1>
                       <h2>Hello ${contactPerson}</h2>
                       <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
-                      <a href=http://43.204.173.152:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
+                      <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
                       </div>`;
             try {
               sendSmtpEmail.subject = `${subject}`;
@@ -573,25 +573,87 @@ exports.saveUser = (req, res) => {
     }
   });
 };
-exports.updateTicketIdbyUserId = (req, res) => {
-  const userId=req.params.userId;
- const Ticket_ID = "VCR" + Math.floor(100000 + Math.random() * 900000);
- SignUpSchema.update(Ticket_ID, {
-  where: {
-    userId:userId,
-  },
-})
-  .then(() => {
-    res.status(200).send({
-      message: "TicketId updated successfully!",
+exports.saveMasterLogin = async (req, res) => {
+  console.log("saveMasterLogin:::");
+  var pass = "";
+  var str =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
+
+  for (let i = 1; i <= 8; i++) {
+    var char = Math.floor(Math.random() * str.length + 1);
+
+    pass += str.charAt(char);
+  }
+  const companyName = req.body.companyName;
+  const mastervendor_email=req.body.mastervendor_email;
+  const verifiedUser = "Pending";
+  const userId =
+   "Master" + Math.floor(100000 + Math.random() * 900000);
+  const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
+  const userName =
+    "Master" + Math.floor(100000 + Math.random() * 900000);
+  const role = "Admin";
+  
+  const password = pass;
+  const Ticket_ID =req.body.Ticket_ID;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const [user, created] = await SignUpSchema.upsert({
+      companyName:companyName,
+      emailId:mastervendor_email,
+      mailConfirmationCode: mailConfirmationCode,
+      verifiedUser: verifiedUser,
+      userId: userId,
+      userName: userName,
+      password: hashedPassword,
+      confirmPassword: hashedPassword,
+      role: role,
+      Ticket_ID:Ticket_ID,
+    }, { returning: true });
+
+    if (!created) {
+      return res
+        .status(200)
+        .json({ status: "success", message: "User already exist" });
+    }
+
+    var subject = `confirmation email for master login userName and password`;
+    var emailContent = `<h1>Email Confirmation</h1>
+    <h2>Hello ${companyName}</h2>
+    <p>Your Username is ${userName} and password is ${password},please click the link below to verify your email address.</p>
+    <a href=http://localhost:3000/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
+     <p>To change your username and password, visit the link below.</p>
+    <a href=http://localhost:3000/passwordGeneration/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
+    </div>`;
+
+    sendSmtpEmail.subject = `${subject}`;
+    sendSmtpEmail.htmlContent = `${emailContent}`;
+    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.to = [{ email: `${user.emailId}` }];
+
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+      console.log('mail sent successfully: ' + JSON.stringify(data));
+    }, function(error) {
+      console.error(error);
+    });
+
+    return res.status(200).json({
       status: "success",
+      message: "Master Registered Successfully",
+      result: user,
     });
-  })
-  .catch((err) => {
-    res.status(500).send({
-      message:
-        err.message ||
-        "Some error occurred while updating the signUp schema.",
-    });
+  } catch (error) {
+    console.log("error::", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
+exports.verifyUSerByMail = (req, res) => {
+  SignUpSchema.update(
+    { verifiedUser: "approved" },
+    { where: { userName: user.userName } }
+  ).then((result) => {
+    console.log("updated verified user");
   });
 }

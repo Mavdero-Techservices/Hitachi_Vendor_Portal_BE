@@ -272,7 +272,7 @@ exports.postErpResourcePortalVendorlist= (req, res) => {
   console.log("req.body---->",req.body)
   const odataUrl = 'http://10.83.152.111:4049/NAVTestDB2/OData/ResourcePortalVendorlist1?$format=json&company=Hitachi%20Systems%20India%20Pvt%20Ltd';
   const data = req.body;
-  const Ticket_ID = "VCR" + Math.floor(100000 + Math.random() * 900000);
+  const Ticket_ID = req.body.Ticket_ID;
   httpntlm.post({
     url: odataUrl,
     username: 'ERP-API',
@@ -286,8 +286,7 @@ exports.postErpResourcePortalVendorlist= (req, res) => {
       'User-Agent': 'nodejs/httpntlm'
     },
     body: JSON.stringify({
-      ...data, 
-      Entry_No: Ticket_ID 
+      ...data
     })
   }, function (err, result) {
     if (err) {
