@@ -14,6 +14,24 @@ exports.getErpVendor_API= (req, res) => {
             res.end(result.body);
   })
   };
+
+  exports.getVendorLedgerEntries = (req, res) => {
+    httpntlm.get(
+      {
+        url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company(%27Hitachi%20Systems%20India%20Pvt%20Ltd%27)/VendorLedgerEntries?$format=json",
+        username: "ERP-API",
+        password: "HSI@#543DCVB",
+        workstation: "",
+        domain: "",
+      },
+      function (err, result) {
+        if (err) return err;
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(result.body);
+      }
+    );
+  };
+  
 //
 exports.getErpVendor_APIById= (req, res) => {
   const No = req.params.No;
