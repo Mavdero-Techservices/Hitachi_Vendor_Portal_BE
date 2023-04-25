@@ -201,6 +201,7 @@ router.get('/getErpResourcePortalVendorlistById/:Vendor_No', ErpAccess.getErpRes
 router.post('/postErpResourcePortalVendorlist', ErpAccess.postErpResourcePortalVendorlist);
 router.put('/updateErpResourcePortalVendorlist/:Refrence_Entry_No', ErpAccess.updateErpResourcePortalVendorlist);
 router.get('/getErpVendor_APIByParent_Vendor_Code/:Parent_Vendor_Code', ErpAccess.getErpVendor_APIByParent_Vendor_Code);
-router.get('/getErpVendor_APIByP_A_N_No/:P_A_N_No', ErpAccess.getErpVendor_APIByP_A_N_No);
+router.get('/getErpVendor_APIByP_A_N_No/:Ticket_ID', ErpAccess.getErpVendor_APIByP_A_N_No);
 router.post("/saveMasterLogin", signUp.saveMasterLogin);
+router.get('/verifyUSerByMail/:mastervendor_email/:mailConfirmationCode',signUp.verifyUserByMail);
 module.exports = router;

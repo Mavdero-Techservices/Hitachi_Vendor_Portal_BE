@@ -404,7 +404,7 @@ var storage = multer.diskStorage({
     if (file.fieldname === "NDA_Doc") {
 
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
-      
+
       let filedirect = file.originalname.split(".");
 
       NDA_DocPath =

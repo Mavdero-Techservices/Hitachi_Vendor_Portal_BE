@@ -13,7 +13,7 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-
+    
     let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
     let filedirect = file.originalname.split(".");

@@ -31,7 +31,6 @@ exports.getErpVendor_API= (req, res) => {
       }
     );
   };
-  
 //
 exports.getErpVendor_APIById= (req, res) => {
   const No = req.params.No;
@@ -287,10 +286,8 @@ const replacedStr = str.replace(/;/g, "%3b");
 };
 
 exports.postErpResourcePortalVendorlist= (req, res) => {
-  console.log("req.body---->",req.body)
   const odataUrl = 'http://10.83.152.111:4049/NAVTestDB2/OData/ResourcePortalVendorlist1?$format=json&company=Hitachi%20Systems%20India%20Pvt%20Ltd';
   const data = req.body;
-  const Ticket_ID = req.body.Ticket_ID;
   httpntlm.post({
     url: odataUrl,
     username: 'ERP-API',
@@ -309,7 +306,11 @@ exports.postErpResourcePortalVendorlist= (req, res) => {
   }, function (err, result) {
     if (err) {
       console.error(err);
-      return res.status(500).json({ msg: "error", error: err });
+      const errorObj = {
+        msg: 'error',
+        error: err.message 
+      };
+      res.status(500).json(errorObj);
     } else {
       const resultObj = JSON.parse(result.body);
       const responseObj = {
@@ -350,11 +351,12 @@ exports.getErpVendor_APIByParent_Vendor_Code= (req, res) => {
     }
   });
 };
+
 //P_A_N_No
-exports.getErpVendor_APIByP_A_N_No= (req, res) => {
-  const P_A_N_No = req.params.P_A_N_No;
- httpntlm.get({
-    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/Vendor_API?$format=json&$filter=P_A_N_No eq '" + P_A_N_No + "'",
+exports.getErpVendor_APIByP_A_N_No = (req, res) => {
+  const Ticket_ID = req.params.Ticket_ID;
+  httpntlm.get({
+    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json&$filter=Entry_No eq '" + Ticket_ID + "'",
     username: 'ERP-API',
     password: 'HSI@#543DCVB',
     workstation: '',
@@ -369,17 +371,42 @@ exports.getErpVendor_APIByP_A_N_No= (req, res) => {
       console.error(err);
     } else {
       const data = JSON.parse(result.body).value;
-      const response = data.map((item) => {
-        return { No: item.No,
-          City: item.City,
-          State_Code: item.State_Code,
-          Country_Region_Code: item.Country_Region_Code,
-          Post_Code:item.Post_Code };
-      });
-      res.status(200).json(response);
+      if (data.length > 0) {
+        console.log("panNo::",data[0].P_A_N_No);
+        const P_A_N_No = data[0].P_A_N_No;
+        httpntlm.get({
+          url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/Vendor_API?$format=json&$filter=P_A_N_No eq '" + P_A_N_No + "'",
+          username: 'ERP-API',
+          password: 'HSI@#543DCVB',
+          workstation: '',
+          domain: '',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json;odata.metadata=minimal',
+            'User-Agent': 'nodejs/httpntlm',
+          }
+        }, function(err, result) {
+          if (err) {
+            console.error(err);
+          } else {
+            const data = JSON.parse(result.body).value;
+            const response = data.map((item) => {
+              return { City: item.City,
+                State_Code: item.State_Code,
+                Country_Region_Code: item.Country_Region_Code,
+                Post_Code:item.Post_Code,
+              No:item.No };
+            });
+            res.status(200).json(response);
+          }
+        });
+      } else {
+        res.status(200).json({ message: 'No record found for the given Ticket_ID' });
+      }
     }
   });
 };
+
 
 //getAllPanNofromvendorCardApi
 exports.getAllPanNofromvendorCardApi= (req, res) => {

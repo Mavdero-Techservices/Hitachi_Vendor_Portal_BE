@@ -7,11 +7,9 @@ const config = require("../config/auth.config");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = config.apiKey;
+apiKey.apiKey =config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-
-
 //SignUp
 exports.postSingUp = [
   //validate form
@@ -239,8 +237,8 @@ exports.resetPasswordByCode = (req, res, next) => {
     <h2>Hello ${user.contactPerson}</h2>
     <p>please click the below link to Reset your password.</p>
     <a href=http://43.204.173.152:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}> Click here</a>
-    </div>`;
-        var returnFlag = false;
+    </div>`;      
+        const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
         sendSmtpEmail.subject = `${subject}`;
         sendSmtpEmail.htmlContent = `${emailContent}`;
         sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
@@ -332,7 +330,7 @@ exports.getStateAndcityByzipcode = (req, res, next) => {
 
 //send email
 // var nodemailer = require("nodemailer");
-
+// const config = require("../config/auth.config");
 // const user = config.user;
 // const pass = config.pass;
 
@@ -544,7 +542,7 @@ exports.saveUser = (req, res) => {
             var emailContent = `<h1>Email Confirmation</h1>
                       <h2>Hello ${contactPerson}</h2>
                       <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
-                      <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
+                      <a href=http://43.204.173.152:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
                       </div>`;
             try {
               sendSmtpEmail.subject = `${subject}`;
@@ -574,7 +572,6 @@ exports.saveUser = (req, res) => {
   });
 };
 exports.saveMasterLogin = async (req, res) => {
-  console.log("saveMasterLogin:::");
   var pass = "";
   var str =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
@@ -622,9 +619,7 @@ exports.saveMasterLogin = async (req, res) => {
     var emailContent = `<h1>Email Confirmation</h1>
     <h2>Hello ${companyName}</h2>
     <p>Your Username is ${userName} and password is ${password},please click the link below to verify your email address.</p>
-    <a href=http://localhost:3000/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
-     <p>To change your username and password, visit the link below.</p>
-    <a href=http://localhost:3000/passwordGeneration/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
+    <a href=http://localhost:12707/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
     </div>`;
 
     sendSmtpEmail.subject = `${subject}`;
@@ -649,11 +644,31 @@ exports.saveMasterLogin = async (req, res) => {
   }
 };
 
-exports.verifyUSerByMail = (req, res) => {
-  SignUpSchema.update(
-    { verifiedUser: "approved" },
-    { where: { userName: user.userName } }
-  ).then((result) => {
-    console.log("updated verified user");
+exports.verifyUserByMail = (req, res) => {
+  const { mastervendor_email, mailConfirmationCode } = req.params;
+  SignUpSchema.findOne({ 
+    where: { 
+     emailId: mastervendor_email, 
+      mailConfirmationCode: mailConfirmationCode 
+    } 
+  }).then((user) => {
+    if (!user) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid email or confirmation code",
+      });
+    }
+    SignUpSchema.update(
+      { verifiedUser: "approved" },
+      { where: { emailId: mastervendor_email } }
+    ).then((result) => {
+      console.log("updated verified user");
+      return res.status(200).send("Your email has been successfully verified. Thank you for confirming your email address.");
+    }).catch((error) => {
+      return res.status(500).json({
+        status: "error",
+        message: "Unable to update verified user",
+      });
+    });
   });
 }

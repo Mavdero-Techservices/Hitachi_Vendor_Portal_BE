@@ -10,7 +10,7 @@ const config = require("../config/auth.config");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = config.apiKey;
+apiKey.apiKey =config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
@@ -245,7 +245,7 @@ exports.getStateAndcityByzipcode = (req, res, next) => {
   // return res.status(200).json({ status: "success", data: result });
 };
 
-// var nodemailer = require("nodemailer");
+var nodemailer = require("nodemailer");
 // const config = require("../config/auth.config");
 // const user = config.user;
 // const pass = config.pass;
@@ -259,16 +259,17 @@ exports.getStateAndcityByzipcode = (req, res, next) => {
 //     pass: pass,
 //   },
 // });
-// let transporter = nodemailer.createTransport({
-//   host: 'smtp.office365.com',
-//   port: 587,
-//   secure: false,
-//   requireTLS: true,
-//   auth: {
-//       user: 'apitestmail4@gmail.com',
-//       pass: 'gmlubwghcqtqkldm'
-//   }
-// });
+
+let transporter = nodemailer.createTransport({
+  host: 'smtp.office365.com',
+  port: 587,
+  secure: false,
+  requireTLS: true,
+  auth: {
+      user: 'apitestmail4@gmail.com',
+      pass: 'gmlubwghcqtqkldm'
+  }
+});
 
 exports.emailSubmitNotification = async (
   req,

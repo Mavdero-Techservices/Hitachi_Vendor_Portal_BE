@@ -11,13 +11,13 @@ var rejectFile1DocPath = "";
 var rejectFile2DocPath = "";
 var rejectFile3DocPath = "";
 const bcrypt = require('bcrypt');
+const config = require("../config/auth.config");
 var jwt = require("jsonwebtoken");
 const fs = require('fs');
-const config = require("../config/auth.config");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = config.apiKey;
+apiKey.apiKey =config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -162,6 +162,7 @@ var storage = multer.diskStorage({
 });
 
 // var nodemailer = require("nodemailer");
+// const config = require("../config/auth.config");
 // const user = config.user;
 // const pass = config.pass;
 
@@ -370,7 +371,7 @@ exports.saveApprovalStatus = (req, res) => {
       where: { userId: req.body.userId },
     });
     if (approvalValidate ){
-      
+
       // if (rejectFile1DocPath){
       //   fs.unlink(rejectFile1DocPath, (err) => {
       //     if (err) {
@@ -389,7 +390,7 @@ exports.saveApprovalStatus = (req, res) => {
           .json({ status: "error",  message: " Already rejected"  });
       }
     }else{
-     
+
     var userEmailId = await SignUpSchema.findOne({
       where: { userId: req.body.userId },
     });
@@ -483,16 +484,14 @@ exports.saveApprovalStatus = (req, res) => {
           });
         });
     }
-    }
+  }
   });
 };
 
 exports.updateApprovalStatus = async (req, res) => {
-  
   var approvalValidate = await ApprovalSchema.findOne({
     where: { userId: req.params.userId },
   });
-
   rejectFile1DocPath = "";
   rejectFile2DocPath = "";
   rejectFile3DocPath = "";
@@ -595,7 +594,7 @@ exports.updateApprovalStatus = async (req, res) => {
       req.body.level1rejectFileDoc = level1rejectFileDoc;
       req.body.level2rejectFileDoc = level2rejectFileDoc;
       req.body.level3rejectFileDoc = level3rejectFileDoc;
-      const emailId = userEmailId.emailId;
+      const emailId = masterVendoremail.emailId;
       const mVendoremailId = masterVendoremail.mastervendor_email;
       const name = masterVendoremail.financeSpoccontactName;
       if ((req.body.level2Status === "approved")|| req.body.level3Status === "approved") {
@@ -616,69 +615,21 @@ exports.updateApprovalStatus = async (req, res) => {
       })
         .then(() => {
           if (req.body.level2Status === "approved") {
-
-            var pass = "";
-            var str =
-              "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-              "abcdefghijklmnopqrstuvwxyz0123456789@#$";
-
-            for (let i = 1; i <= 8; i++) {
-              var char = Math.floor(Math.random() * str.length + 1);
-
-              pass += str.charAt(char);
-            }
-
-            
-            const emailId = mVendoremailId;
-            let paths = mVendoremailId.split("@");
-            let name = paths[0]
-            const contactPerson = name;
-            const userId =
-              `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
-            const userName =
-              contactPerson + Math.floor(100000 + Math.random() * 900000);
-            const role = "master";
-            const password = pass;
-            bcrypt.hash(password, 12).then((hashedPassword) => {
-              const user = new SignUpSchema({
-                emailId: emailId,
-                userId: userId,
-                userName: userName,
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: role,
-              });
-              user
-                .save()
-                .then((result) => {
-                 
-                  var subject = `Hitachi Japan Team Approval`;
-                  var emailContent = `
-                        <h4>Hi ${userId}</h4>
-                        <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
-                        <p>Your Vendor Registration request is approved by Japan Team and proceeded for next stage of Approval.</p>
-                        <p>Thanks & regards,</p>
-                        </div>`;
-                  var returnFlag = false;
-                  exports.emailJapanApprovalNotification(
-                    req,
-                    res,
-                    subject,
-                    emailContent,
-                    returnFlag,
-                    mVendoremailId
-                  );
-                  
-                })
-                .catch((err) => {
-                  return res
-                    .status(200)
-                    .json({
-                      status: "error",
-                      data: { message: "Error Response", err },
-                    });
-                });
-            });
+            var subject = `Hitachi Japan Team Approval`;
+            var emailContent = `
+                  <h4>Hi ${userId}</h4>
+                  <p>Your Vendor Registration request is approved by Japan Team and proceeded for next stage of Approval.</p>
+                  <p>Thanks & regards,</p>
+                  </div>`;
+            var returnFlag = false;
+            exports.emailJapanApprovalNotification(
+              req,
+              res,
+              subject,
+              emailContent,
+              returnFlag,
+              mVendoremailId
+            );
           }
           if (req.body.level2rejectFileDoc) {
             var subject = `Hitachi Japan Team Request Rejected`;
@@ -698,68 +649,21 @@ exports.updateApprovalStatus = async (req, res) => {
             );
           }
           if (req.body.level3Status === "approved") {
-
-            var pass = "";
-            var str =
-              "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-              "abcdefghijklmnopqrstuvwxyz0123456789@#$";
-
-            for (let i = 1; i <= 8; i++) {
-              var char = Math.floor(Math.random() * str.length + 1);
-
-              pass += str.charAt(char);
-            }
-
-           
-            const emailId = mVendoremailId;
-            let paths = mVendoremailId.split("@");
-            let name = paths[0]
-            const contactPerson = name;
-            const userId =
-              `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
-            const userName =
-              contactPerson + Math.floor(100000 + Math.random() * 900000);
-            const role = "master";
-            const password = pass;
-            bcrypt.hash(password, 12).then((hashedPassword) => {
-              const user = new SignUpSchema({
-                emailId: emailId,
-                userId: userId,
-                userName: userName,
-                password: hashedPassword,
-                confirmPassword: hashedPassword,
-                role: role,
-              });
-              user
-                .save()
-                .then((result) => {
-                  var subject = `Hitachi MRT Team Approval`;
-                  var emailContent = `
-                        <h4>Hi ${userId}</h4>
-                        <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
-                        <p>Your Vendor Registration request is approved by MRT Team and proceeded for next stage of Approval.</p>
-                        <p>Thanks & regards,</p>
-                        </div>`;
-                  var returnFlag = false;
-                  exports.emailMRTApprovalNotification(
-                    req,
-                    res,
-                    subject,
-                    emailContent,
-                    returnFlag,
-                    mVendoremailId
-                  );
-                  
-                })
-                .catch((err) => {
-                  return res
-                    .status(200)
-                    .json({
-                      status: "error",
-                      data: { message: "Error Response", err },
-                    });
-                });
-            });
+            var subject = `Hitachi MRT Team Approval`;
+            var emailContent = `
+                  <h4>Hi ${userId}</h4>
+                  <p>Your Vendor Registration request is approved by MRT Team and proceeded for next stage of Approval.</p>
+                  <p>Thanks & regards,</p>
+                  </div>`;
+            var returnFlag = false;
+            exports.emailMRTApprovalNotification(
+              req,
+              res,
+              subject,
+              emailContent,
+              returnFlag,
+              mVendoremailId
+            );
           }
           if (req.body.level3rejectFileDoc) {
             var subject = `Hitachi MRT Request Rejected`;
@@ -791,7 +695,7 @@ exports.updateApprovalStatus = async (req, res) => {
           });
         });
     }
-    }
+  }
   });
 };
 

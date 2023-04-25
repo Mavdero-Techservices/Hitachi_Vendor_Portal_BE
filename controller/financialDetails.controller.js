@@ -104,7 +104,7 @@ var storage = multer.diskStorage({
     if (file.fieldname === "financial_data2") {
 
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
-      
+
       let filedirect = file.originalname.split(".");
 
       financial_data2_DocPath =

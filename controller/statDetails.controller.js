@@ -124,6 +124,7 @@ var storage = multer.diskStorage({
     var filetype = "";
 
     if (file.fieldname === "GST_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -137,9 +138,17 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          randomNumber +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "fileDisclosure") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -153,9 +162,17 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          randomNumber +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "PAN_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -169,9 +186,17 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          randomNumber +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "form_10f_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -185,9 +210,17 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          randomNumber +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "TAN_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -201,9 +234,17 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          randomNumber +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "PE_Declaration_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -217,9 +258,17 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          randomNumber +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "MSME_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -233,11 +282,19 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          randomNumber +
+          "." +
+          filedirect[1]
+      );
     }
     if (file.fieldname === "Tax_residency_Doc") {
-      let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+      
       let filedirect = file.originalname.split(".");
 
       Tax_residency_DocPath =
@@ -249,7 +306,14 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+          "_" +
+          randomNumber +
+          "." +
+          filedirect[1]
+      );
     }
   },
 });
@@ -519,6 +583,7 @@ exports.saveStatutoryDetail = (req, res) => {
                 MSME_Doc = "";
               }
 
+
               req.body.GST_Doc = GST_Doc;
               req.body.PAN_Doc = PAN_Doc;
               req.body.form_10f_Doc = form_10f_Doc;
@@ -547,8 +612,6 @@ exports.saveStatutoryDetail = (req, res) => {
                   });
                 });
             } else {
-              
-
               let GST_Doc = GST_DocPath;
               let PAN_Doc = PAN_DocPath;
               let form_10f_Doc = form_10f_DocPath;
@@ -557,6 +620,7 @@ exports.saveStatutoryDetail = (req, res) => {
               let MSME_Doc = MSME_DocPath;
               let Tax_residency_Doc = Tax_residency_DocPath;
               let fileDisclosure = fileDisclosure_DocPath;
+              
 
               if (statDetails.GST_Doc === req.body.GST_Doc) {
                 GST_Doc = req.body.GST_Doc;
@@ -946,8 +1010,6 @@ exports.updateStatutoryDetail = async (req, res) => {
             });
           });
       } else {
-        console.log("req--->", req.body);
-
         let GST_Doc = GST_DocPath;
         let PAN_Doc = PAN_DocPath;
         let form_10f_Doc = form_10f_DocPath;
