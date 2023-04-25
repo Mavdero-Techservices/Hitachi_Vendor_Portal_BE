@@ -519,3 +519,36 @@ const replacedStr = str.replace(/;/g, "%3b");
     
     
   };
+//statecodes
+// const stateCodes = {
+//   'Andhra Pradesh': 'AND',
+//   'Arunachal Pradesh': 'ARN',
+//   'Assam': 'ASM',
+//   'Bihar': 'BHR',
+//   'Chhattisgarh': 'CHG',
+//   'Goa': 'GOA',
+//   'Gujarat': 'GUJ',
+//   'Haryana': 'HAR',
+//   'Himachal Pradesh': 'HIM',
+//   'Jharkhand': 'JHK',
+//   'Karnataka': 'KAR',
+//   'Kerala': 'KER',
+//   'Madhya Pradesh': 'MAD',
+//   'Maharashtra': 'MAH',
+//   'Manipur': 'MAN',
+//   'Meghalaya': 'MEG',
+//   'Mizoram': 'MIZ',
+//   'Nagaland': 'NAG',
+//   'Odisha': 'ODI',
+//   'Punjab': 'PUN',
+//   'Rajasthan': 'RAJ',
+//   'Sikkim': 'SIK',
+//   'Tamil Nadu': 'TAM',
+//   'Telangana': 'TEL',
+//   'Tripura': 'TRI',
+//   'Uttar Pradesh': 'UTT',
+//   'Uttarakhand': 'UTK',
+//   'West Bengal': 'WES'
+// };
+
+// console.log(stateCodes['Kerala']); // Output: KER
