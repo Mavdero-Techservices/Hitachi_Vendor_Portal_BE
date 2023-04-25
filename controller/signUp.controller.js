@@ -574,7 +574,6 @@ exports.saveUser = (req, res) => {
   });
 };
 exports.saveMasterLogin = async (req, res) => {
-  console.log("saveMasterLogin:::");
   var pass = "";
   var str =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
@@ -622,9 +621,7 @@ exports.saveMasterLogin = async (req, res) => {
     var emailContent = `<h1>Email Confirmation</h1>
     <h2>Hello ${companyName}</h2>
     <p>Your Username is ${userName} and password is ${password},please click the link below to verify your email address.</p>
-    <a href=http://localhost:3000/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
-     <p>To change your username and password, visit the link below.</p>
-    <a href=http://localhost:3000/passwordGeneration/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
+    <a href=http://localhost:12707/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
     </div>`;
 
     sendSmtpEmail.subject = `${subject}`;
@@ -649,11 +646,31 @@ exports.saveMasterLogin = async (req, res) => {
   }
 };
 
-exports.verifyUSerByMail = (req, res) => {
-  SignUpSchema.update(
-    { verifiedUser: "approved" },
-    { where: { userName: user.userName } }
-  ).then((result) => {
-    console.log("updated verified user");
+exports.verifyUserByMail = (req, res) => {
+  const { mastervendor_email, mailConfirmationCode } = req.params;
+  SignUpSchema.findOne({ 
+    where: { 
+     emailId: mastervendor_email, 
+      mailConfirmationCode: mailConfirmationCode 
+    } 
+  }).then((user) => {
+    if (!user) {
+      return res.status(400).json({
+        status: "error",
+        message: "Invalid email or confirmation code",
+      });
+    }
+    SignUpSchema.update(
+      { verifiedUser: "approved" },
+      { where: { emailId: mastervendor_email } }
+    ).then((result) => {
+      console.log("updated verified user");
+      return res.status(200).send("Your email has been successfully verified. Thank you for confirming your email address.");
+    }).catch((error) => {
+      return res.status(500).json({
+        status: "error",
+        message: "Unable to update verified user",
+      });
+    });
   });
 }

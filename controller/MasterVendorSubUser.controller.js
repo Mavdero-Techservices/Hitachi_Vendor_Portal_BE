@@ -108,7 +108,12 @@ exports.saveMasterVendorSubUser = (req, res) => {
             returnFlag,
             emailId
           );
+          return res.status(200).json({
+            status: "success",
+            data: { message: "Sub User saved successfully"},
+          });
         })
+
         .catch((err) => {
           return res.status(200).json({
             status: "error",
