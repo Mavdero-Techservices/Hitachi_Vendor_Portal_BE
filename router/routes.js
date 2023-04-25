@@ -177,6 +177,11 @@ router.put("/accountStatementApproval/update/:id", accountStatementApproval.upda
 router.get('/accountStatementApproval/findAll', accountStatementApproval.getAccountApprovalList);
 router.get('/accountStatementApproval/exportExcel/:vendorCode', accountStatementApproval.downloadAccountItemExcel);
 
+router.get('/downloadCurrentAccountStatement/exportExcel', accountStatementApproval.downloadAccountItemExcel);
+router.post('/approveAccStatementDetail', accountStatementApproval.approveAccStatementDetail);
+router.post('/rejectAccStatementDetail/:No', accountStatementApproval.rejectAccStatementDetail);
+router.get('/downloadAccStatementConfirmation/exportExcel', accountStatementApproval.downloadAccStateExcel);
+
 router.post("/purchaseOrderEstimate/save", purchaseOrder.savePurchaseOrderEstimateDate);
 router.get('/purchaseOrderEstimate/findAll', purchaseOrder.getPurchaseOrderEstimateDateList);
 
@@ -186,6 +191,7 @@ router.get('/vendorCodeDetail/findAll', vendorCodeDetail.getVendorCodeDetail);
 router.post("/saveNewRegVendordetail", vdetail.postNewRegVdetail);
 //ErpAccess
 router.get('/getErpVendor_API', ErpAccess.getErpVendor_API);
+router.get('/getVendorLedgerEntries', ErpAccess.getVendorLedgerEntries);
 router.get('/getErpVendor_APIById/:No', ErpAccess.getErpVendor_APIById);
 router.post('/postErpVendor_API', ErpAccess.postErpVendor_API);
 router.put('/updateErpVendor_API', ErpAccess.updateErpVendor_API);
