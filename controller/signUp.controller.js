@@ -173,14 +173,8 @@ exports.postLogin = (req, res) => {
           .status(200)
           .json({ status: "error", data: { message: "invalid user" } });
       } else {
-        bcrypt.compare(password, user.password).then(async (doMatch) => {
+        bcrypt.compare(password, user.password).then((doMatch) => {
           if (doMatch) {
-            await SignUpSchema.update(
-              { verifiedUser: "approved" },
-              { where: { userName: user.userName } }
-            ).then((result) => {
-              console.log("updated verified user");
-            });
             // Create token
             const token = jwt.sign(
               { user_id: user._id },
@@ -238,7 +232,7 @@ exports.resetPasswordByCode = (req, res, next) => {
         var emailContent = `<h1>Reset password</h1>
     <h2>Hello ${user.contactPerson}</h2>
     <p>please click the below link to Reset your password.</p>
-    <a href=http://43.204.173.152:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}> Click here</a>
+    <a href=http://localhost:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}> Click here</a>
     </div>`;
         var returnFlag = false;
         sendSmtpEmail.subject = `${subject}`;
@@ -507,15 +501,13 @@ exports.saveUser = (req, res) => {
       const contactPerson = req.body.contactPerson;
       const emailId = req.body.emailId;
       const verifiedUser = "Pending";
-      const userId =
-        `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
+      const userId = contactPerson.replace(/\s/g, '') + Math.floor(100000 + Math.random() * 900000);
       const vendorId = "vendor" + Math.floor(100000 + Math.random() * 900000);
       const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
       const phoneNoConfirmationCode = Math.floor(
         100000 + Math.random() * 900000
       );
-      const userName =
-        contactPerson + Math.floor(100000 + Math.random() * 900000);
+      const userName =contactPerson.replace(/\s/g, '') + Math.floor(100000 + Math.random() * 900000);
       const role = "user";
       const password = pass;
       const Ticket_ID = "VCR" + Math.floor(100000 + Math.random() * 900000);
@@ -543,7 +535,10 @@ exports.saveUser = (req, res) => {
             var subject = `confirmation mail for userName and password`;
             var emailContent = `<h1>Email Confirmation</h1>
                       <h2>Hello ${contactPerson}</h2>
-                      <p>Your Username is ${userName} and password is ${password} , To change your username and password, visit the link below.</p>
+                      <p>Your Username is ${userName} and password is ${password}</p>
+                      <p>please click the link below to verify your email address.</p>
+                      <a href=http://localhost:12707/verifyUSerByMail/${result.emailId}/${mailConfirmationCode}> Click here</a>
+                      <p>To change your username and password,visit the link below.</p>
                       <a href=http://localhost:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
                       </div>`;
             try {
@@ -620,7 +615,7 @@ exports.saveMasterLogin = async (req, res) => {
     var subject = `confirmation email for master login userName and password`;
     var emailContent = `<h1>Email Confirmation</h1>
     <h2>Hello ${companyName}</h2>
-    <p>Your Username is ${userName} and password is ${password},please click the link below to verify your email address.</p>
+    <p>Your Username is ${userName} and Password is ${password},please click the link below to verify your email address.</p>
     <a href=http://localhost:12707/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
     </div>`;
 
@@ -647,6 +642,7 @@ exports.saveMasterLogin = async (req, res) => {
 };
 
 exports.verifyUserByMail = (req, res) => {
+  const link = "http://localhost:3000/login";
   const { mastervendor_email, mailConfirmationCode } = req.params;
   SignUpSchema.findOne({ 
     where: { 
@@ -665,7 +661,46 @@ exports.verifyUserByMail = (req, res) => {
       { where: { emailId: mastervendor_email } }
     ).then((result) => {
       console.log("updated verified user");
-      return res.status(200).send("Your email has been successfully verified. Thank you for confirming your email address.");
+      return res.status(200).header('Content-Type', 'text/html').send(`
+      <html>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              font-size:20px;
+            }
+    
+            .message {
+              max-width: 80%;
+              text-align: center;
+              margin: 20px;
+            }
+    
+            .success {
+              font-weight: bold;            
+            }
+    
+            a {
+              color: blue;
+              text-decoration: underline;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="message">
+            <p>Your email has been <span class="success">successfully verified.</span></p>
+            <p>Thank you for confirming your email address.</p>
+            <p>Please <a href="${link}">click here</a> to continue.</p>
+          </div>
+        </body>
+      </html>
+    `);
+      
+    
     }).catch((error) => {
       return res.status(500).json({
         status: "error",

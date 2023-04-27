@@ -229,21 +229,21 @@ exports.getCountry = (req, res, next) => {
   var country = getData();
   return res.status(200).json({ status: "success", data: country });
 };
+const axios = require("axios");
 //getState&cityByzipcode
-exports.getStateAndcityByzipcode = (req, res, next) => {
-  var code = req.params.code;
-  var Post_Code = req.params.Post_Code;
-  const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${Post_Code}&country=${code}&username=karthiga&style=full`;
-  const axios = require("axios");
-  axios
-    .get(url)
-    .then((result) => {
-      return res.json({ status: "success", data: result.data });
-    })
-    .catch((err) => console.log(err));
-  // const result = geoCountryZipCode.lookup(code,pinCode);
-  // return res.status(200).json({ status: "success", data: result });
+exports.getStateAndcityByzipcode = async (req, res, next) => {
+  try {
+    const code = req.params.code;
+    const Post_Code = req.params.Post_Code;
+    const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${Post_Code}&country=${code}&username=karthiga&style=full`;
+    const result = await axios.get(url);
+    return res.json({ status: "success", data: result.data });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
 };
+
 
 // var nodemailer = require("nodemailer");
 // const config = require("../config/auth.config");
