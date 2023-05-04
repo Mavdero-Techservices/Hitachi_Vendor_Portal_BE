@@ -48,6 +48,8 @@ router.post("/fileUpload", fileUploadcontroller.fileUpload);
 router.post("/resetPassword", signUp.resetPassword);
 //resetPasswordByCode
 router.post("/resetPasswordByCode", signUp.resetPasswordByCode);
+//resetPasswordByCurrentPassword
+router.put("/resetPasswordByCurrentPassword", signUp.resetPasswordByCurrentPassword);
 //imageUpload
 router.post("/imageUpload", imageUploadcontroller.imageUpload);
 //getImage

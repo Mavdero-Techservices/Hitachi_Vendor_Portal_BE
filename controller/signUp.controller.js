@@ -709,3 +709,35 @@ exports.verifyUserByMail = (req, res) => {
     });
   });
 }
+
+exports.resetPasswordByCurrentPassword = async (req, res, next) => {
+  try {
+    const emailId = req.body.emailId;
+    const Newpassword = req.body.Newpassword;
+    const currentpassword = req.body.currentpassword;
+    const user = await SignUpSchema.findOne({
+      where: {
+        emailId: emailId,
+      },
+    });
+    if (!user) {
+      return res.status(200).json({ status: "error", data: "User not found" });
+    }
+    const isPasswordMatch = await bcrypt.compare(currentpassword, user.password);
+    if (!isPasswordMatch) {
+      return res.status(200).json({ status: "error", data: "Current password doesn't match" });
+    }
+    const hashedPassword = await bcrypt.hash(Newpassword, 12);
+    await SignUpSchema.update(
+      {
+        password: hashedPassword,
+        confirmPassword: hashedPassword,
+      },
+      { where: { emailId: user.emailId } }
+    );
+    return res.status(200).json({ status: "success", data: "Password reset successfully" });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ status: "error", data: "An error occurred while resetting the password" });
+  }
+};
