@@ -78,7 +78,8 @@ router.get("/getById/:id", tutorialApi.getById);
 router.put("/updateById/:id", tutorialApi.updateById);
 // Delete with id
 router.delete("/deleteById/:id", tutorialApi.deleteById);
-
+//SharepointfileUpload
+router.post("/SharepointfileUpload", tutorialApi.SharepointfileUpload);
 //vdetail schema - create
 router.post("/saveVdetail", vdetail.postVdetail);
 // update vdetail
@@ -159,6 +160,9 @@ router.put("/updateVendorFile/:userId", vendorFile.updateVendorFiles);
 router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUser);
 router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSubUserById);
 router.get("/getAllMasterVendorSubUser",MasterVendorSubUser.getAllMasterVendorSubUser);
+
+router.put("/UpdateMasterSubUserById",MasterVendorSubUser.UpdateMasterSubUserById);
+
 router.put("/UpdateMasterVendorSubUserById",MasterVendorSubUser.UpdateMasterVendorSubUserById);
 router.delete("/deleteMasterVendorSubUserById/:id",MasterVendorSubUser.deleteMasterVendorSubUserById);
 router.get("/getAllVendorSubUser",MasterVendorSubUser.getAllVendorSubUser);

@@ -203,6 +203,7 @@ exports.emailRejectNotification = (
   emailId,
   level1rejectFileDoc
 ) => {
+  if (level1rejectFileDoc){
   const format = level1rejectFileDoc.split(".");
 
   // var mailOptions = {
@@ -231,6 +232,17 @@ exports.emailRejectNotification = (
   }, function(error) {
     console.error(error);
   });
+}else{
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
+  });
+}
 };
 
 exports.emailJapanApprovalNotification = (
@@ -239,18 +251,18 @@ exports.emailJapanApprovalNotification = (
   subject,
   emailContent,
   returnFlag,
-  mVendoremailId
+  emailId
 ) => {
-  var mailOptions = {
-    from: user,
-    to: `${mVendoremailId}`,
-    subject: subject,
-    html: emailContent,
-  };
+  // var mailOptions = {
+  //   from: user,
+  //   to: `${emailId}`,
+  //   subject: subject,
+  //   html: emailContent,
+  // };
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
   }, function(error) {
@@ -264,10 +276,9 @@ exports.emailJapanRejectNotification = (
   subject,
   emailContent,
   returnFlag,
-  mVendoremailId,
-  level2rejectFileDoc
+  emailId,
 ) => {
-  const format = level2rejectFileDoc.split(".");
+  // const format = level2rejectFileDoc.split(".");
 
   // var mailOptions = {
   //   from: user,
@@ -283,14 +294,14 @@ exports.emailJapanRejectNotification = (
   //   ],
   // };
 
-  const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
-  attachment.name = "attachment." + format[1];
-  attachment.content = fs.readFileSync(level2rejectFileDoc).toString('base64');
+  // const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
+  // attachment.name = "attachment." + format[1];
+  // attachment.content = fs.readFileSync(level2rejectFileDoc).toString('base64');
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
-  sendSmtpEmail.attachment = [attachment];
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  // sendSmtpEmail.attachment = [attachment];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
   }, function(error) {
@@ -304,12 +315,12 @@ exports.emailMRTApprovalNotification = (
   subject,
   emailContent,
   returnFlag,
-  mVendoremailId
+  emailId
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
   }, function(error) {
@@ -326,8 +337,8 @@ exports.emailMRTRejectNotification = (
   emailId,
   level3rejectFileDoc
 ) => {
+  if (level3rejectFileDoc){
   const format = level3rejectFileDoc.split(".");
-
   // var mailOptions = {
   //   from: user,
   //   to: `${emailId}`,
@@ -354,6 +365,17 @@ exports.emailMRTRejectNotification = (
   }, function(error) {
     console.error(error);
   });
+}else{
+  sendSmtpEmail.subject = `${subject}`;
+  sendSmtpEmail.htmlContent = `${emailContent}`;
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function(error) {
+    console.error(error);
+  });
+}
 };
 
 exports.saveApprovalStatus = (req, res) => {
@@ -594,9 +616,11 @@ exports.updateApprovalStatus = async (req, res) => {
       req.body.level1rejectFileDoc = level1rejectFileDoc;
       req.body.level2rejectFileDoc = level2rejectFileDoc;
       req.body.level3rejectFileDoc = level3rejectFileDoc;
-      const emailId = masterVendoremail.emailId;
+      const emailId = userEmailId.emailId;
       const mVendoremailId = masterVendoremail.mastervendor_email;
       const name = masterVendoremail.financeSpoccontactName;
+      console.log("emailIDReject::",userEmailId.emailId);
+      console.log("masteremailApprove::",mVendoremailId);
       if ((req.body.level2Status === "approved")|| req.body.level3Status === "approved") {
         // let vendorCode = 'VDIS-' + Math.floor(1000 + Math.random() * 9000);
         req.body.finalStatus = "Approved";
@@ -628,14 +652,14 @@ exports.updateApprovalStatus = async (req, res) => {
               subject,
               emailContent,
               returnFlag,
-              mVendoremailId
+              emailId
             );
           }
-          if (req.body.level2rejectFileDoc) {
+          if (req.body.level2Status === "rejected") {
             var subject = `Hitachi Japan Team Request Rejected`;
             var emailContent = `
                         <h4>Hi ${req.body.userId}</h4>
-                        <p>Your Vendor Registration request is Rejected by Japan Team because of, ${req.body.level2RejectComment}</p>
+                        <p>Your Vendor Registration request is Rejected by Japan Team </p>
                         </div>`;
             var returnFlag = false;
             exports.emailJapanRejectNotification(
@@ -645,7 +669,6 @@ exports.updateApprovalStatus = async (req, res) => {
               emailContent,
               returnFlag,
               emailId,
-              level2rejectFileDoc
             );
           }
           if (req.body.level3Status === "approved") {
@@ -662,14 +685,14 @@ exports.updateApprovalStatus = async (req, res) => {
               subject,
               emailContent,
               returnFlag,
-              mVendoremailId
+              emailId
             );
           }
-          if (req.body.level3rejectFileDoc) {
+          if (req.body.level3Status === "rejected") {
             var subject = `Hitachi MRT Request Rejected`;
             var emailContent = `
                         <h2>Hi ${req.body.userId}</h2>
-                        <p>Your Vendor Registration request is Rejected by MRT Team because of, ${req.body.level2RejectComment}</p>
+                        <p>Your Vendor Registration request is Rejected by MRT Team because of, ${req.body.level3RejectComment}</p>
                         </div>`;
             var returnFlag = false;
             exports.emailMRTRejectNotification(

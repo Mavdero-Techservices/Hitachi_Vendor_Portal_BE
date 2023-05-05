@@ -444,7 +444,8 @@ exports.saveStatutoryDetail = (req, res) => {
               req.files.TAN_Doc?.length > 0 ||
               req.files.PE_Declaration_Doc?.length > 0 ||
               req.files.MSME_Doc?.length > 0 ||
-              req.files.Tax_residency_Doc?.length > 0
+              req.files.Tax_residency_Doc?.length > 0 ||
+              req.files.fileDisclosure?.length > 0
             ) {
               let GST_Doc = GST_DocPath;
               let PAN_Doc = PAN_DocPath;
@@ -602,6 +603,7 @@ exports.saveStatutoryDetail = (req, res) => {
                 }
                 PAN_Doc = "";
               }
+
 
               req.body.GST_Doc = GST_Doc;
               req.body.PAN_Doc = PAN_Doc;
@@ -776,7 +778,6 @@ exports.saveStatutoryDetail = (req, res) => {
               if (req.body.GST_Vendor_Type === "Import") {
                 req.body.GST_Registration_No = "N/A";
               }
-
       
               if (req.body.GST_Vendor_Type === "Import") {
                 req.body.P_A_N_No = "N/A";
@@ -887,7 +888,8 @@ exports.updateStatutoryDetail = async (req, res) => {
         req.files.TAN_Doc?.length > 0 ||
         req.files.PE_Declaration_Doc?.length > 0 ||
         req.files.MSME_Doc?.length > 0 ||
-        req.files.Tax_residency_Doc?.length > 0
+        req.files.Tax_residency_Doc?.length > 0 ||
+        req.files.fileDisclosure?.length > 0
       ) {
         let GST_Doc = GST_DocPath;
         let PAN_Doc = PAN_DocPath;
@@ -1010,14 +1012,6 @@ exports.updateStatutoryDetail = async (req, res) => {
           }
         }
 
-        if (req.body.GST_Vendor_Type === "UnRegistered") {
-          req.body.GST_Registration_No = "N/A";
-        }
-
-        if (req.body.GST_Vendor_Type === "Import") {
-          req.body.GST_Registration_No = "N/A";
-        }
-
         if (req.body.MSMED === "UnRegistered") {
           req.body.MSMED_Number = "N/A";
           if (req.body.MSME_Doc) {
@@ -1028,6 +1022,14 @@ exports.updateStatutoryDetail = async (req, res) => {
             });
           }
           MSME_Doc = "";
+        }
+
+        if (req.body.GST_Vendor_Type === "UnRegistered") {
+          req.body.GST_Registration_No = "N/A";
+        }
+
+        if (req.body.GST_Vendor_Type === "Import") {
+          req.body.GST_Registration_No = "N/A";
         }
 
         if (req.body.GST_Vendor_Type === "Import") {
@@ -1049,7 +1051,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         req.body.PE_Declaration_Doc = PE_Declaration_Doc;
         req.body.MSME_Doc = MSME_Doc;
         req.body.Tax_residency_Doc = Tax_residency_Doc;
-        req.body.fileDisclosure = fileDisclosure_DocPath;
+        req.body.fileDisclosure = fileDisclosure;
 
         StatDetailSchema.update(req.body, {
           where: {
@@ -1070,8 +1072,6 @@ exports.updateStatutoryDetail = async (req, res) => {
             });
           });
       } else {
-
-
         let GST_Doc = GST_DocPath;
         let PAN_Doc = PAN_DocPath;
         let form_10f_Doc = form_10f_DocPath;
@@ -1232,7 +1232,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         req.body.PE_Declaration_Doc = PE_Declaration_Doc;
         req.body.MSME_Doc = MSME_Doc;
         req.body.Tax_residency_Doc = Tax_residency_Doc;
-        req.body.fileDisclosure = fileDisclosure_DocPath;
+        req.body.fileDisclosure = fileDisclosure;
 
         StatDetailSchema.update(req.body, {
           where: {

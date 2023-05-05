@@ -18,7 +18,7 @@ var PE_Declaration_DocPath = "";
 var TAN_DocPath = "";
 var MSME_DocPath = "";
 var Tax_residency_DocPath = "";
-// var fileDisclosurePath = "";
+var fileDisclosurePath = "";
 var RPD_DocPath = "";
 var COC_DocPath = "";
 var NDA_DocPath = "";
@@ -425,6 +425,23 @@ var storage = multer.diskStorage({
           filedirect[1]
       );
     }
+
+    if (file.fieldname === "fileDisclosure") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      fileDisclosurePath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
   },
 });
 
@@ -639,7 +656,7 @@ exports.updateAllCollection = async (req, res) => {
   MSME_DocPath = "";
   TAN_DocPath = "";
   Tax_residency_DocPath = "";
-  // fileDisclosurePath = "";
+  fileDisclosurePath = "";
   RPD_DocPath = "";
   COC_DocPath = "";
   NDA_DocPath = "";
@@ -682,10 +699,10 @@ exports.updateAllCollection = async (req, res) => {
       name: "Tax_residency_Doc",
       maxCount: 1,
     },
-    // {
-    //   name: "fileDisclosure",
-    //   maxCount: 1,
-    // },
+    {
+      name: "fileDisclosure",
+      maxCount: 1,
+    },
     {
       name: "RPD_Doc",
       maxCount: 1,
@@ -799,6 +816,7 @@ exports.updateAllCollection = async (req, res) => {
     let PE_Declaration_Doc = PE_Declaration_DocPath;
     let MSME_Doc = MSME_DocPath;
     let Tax_residency_Doc = Tax_residency_DocPath;
+    let fileDisclosure = fileDisclosurePath;
 
     if (statDetails.GST_Doc === req.body.GST_Doc) {
       GST_Doc = req.body.GST_Doc;
@@ -813,6 +831,21 @@ exports.updateAllCollection = async (req, res) => {
         });
       }
     }
+
+    if (statDetails.fileDisclosure === req.body.fileDisclosure) {
+      fileDisclosure = req.body.fileDisclosure;
+    } else {
+      fileDisclosure = fileDisclosurePath;
+      StatEightDelete = statDetails.fileDisclosure;
+      if (StatEightDelete && !req.body.fileDisclosure) {
+        fs.unlink(StatEightDelete, (err) => {
+          if (err) {
+            throw err;
+          }
+        });
+      }
+    }
+
 
     if (statDetails.PAN_Doc === req.body.PAN_Doc) {
       PAN_Doc = req.body.PAN_Doc;
@@ -915,6 +948,7 @@ exports.updateAllCollection = async (req, res) => {
       TAN_No: req.body.TAN_No,
       TAN_Doc: TAN_Doc,
       Tax_residency_Doc: Tax_residency_Doc,
+      fileDisclosure: fileDisclosure
     };
 
     let RPD_Doc = RPD_DocPath;

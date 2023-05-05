@@ -10,7 +10,7 @@ const config = require("../config/auth.config");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey =config.apiKey;
+apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
@@ -229,20 +229,19 @@ exports.getCountry = (req, res, next) => {
   var country = getData();
   return res.status(200).json({ status: "success", data: country });
 };
+const axios = require("axios");
 //getState&cityByzipcode
-exports.getStateAndcityByzipcode = (req, res, next) => {
-  var code = req.params.code;
-  var Post_Code = req.params.Post_Code;
-  const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${Post_Code}&country=${code}&username=karthiga&style=full`;
-  const axios = require("axios");
-  axios
-    .get(url)
-    .then((result) => {
-      return res.json({ status: "success", data: result.data });
-    })
-    .catch((err) => console.log(err));
-  // const result = geoCountryZipCode.lookup(code,pinCode);
-  // return res.status(200).json({ status: "success", data: result });
+exports.getStateAndcityByzipcode = async (req, res, next) => {
+  try {
+    const code = req.params.code;
+    const Post_Code = req.params.Post_Code;
+    const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${Post_Code}&country=${code}&username=karthiga&style=full`;
+    const result = await axios.get(url);
+    return res.json({ status: "success", data: result.data });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
 };
 
 var nodemailer = require("nodemailer");
@@ -266,8 +265,8 @@ let transporter = nodemailer.createTransport({
   secure: false,
   requireTLS: true,
   auth: {
-      user: 'apitestmail4@gmail.com',
-      pass: 'gmlubwghcqtqkldm'
+    user: 'apitestmail4@gmail.com',
+    pass: 'gmlubwghcqtqkldm'
   }
 });
 
@@ -284,9 +283,9 @@ exports.emailSubmitNotification = async (
     sendSmtpEmail.htmlContent = `${emailContent}`;
     sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
-    apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
       console.log('mail sent successfully: ' + JSON.stringify(data));
-    }, function(error) {
+    }, function (error) {
       console.error(error);
     });
   } catch (error) {
@@ -303,8 +302,9 @@ exports.updateVendor = async (req, res) => {
     var submitEmailId = await SignUpSchema.findOne({
       where: { userId: req.params.userId },
     });
+    console.log("emailID::", submitEmailId);
 
-    const emailId = submitEmailId.emailId; 
+    const emailId = submitEmailId.emailId;
     var subject = `Hitachi Vendor Creation Submit Status`;
     var emailContent = `
                         <h4>Hi ${userId}</h4>
