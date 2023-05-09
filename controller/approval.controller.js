@@ -416,6 +416,10 @@ exports.saveApprovalStatus = (req, res) => {
     var userEmailId = await SignUpSchema.findOne({
       where: { userId: req.body.userId },
     });
+
+      var basicData = await VdetailSchema.findOne({
+        where: { userId: req.body.userId },
+      });
     if (err) {
       return "err";
     } else {
@@ -443,6 +447,8 @@ exports.saveApprovalStatus = (req, res) => {
       }
       const user = new ApprovalSchema({
         userId: userId,
+        companyName: userEmailId?.companyName,
+        image: basicData?.image,
         level1Status: req.body.level1Status,
         level1RejectComment: req.body.level1RejectComment,
         level1rejectFileDoc: level1rejectFileDoc,
