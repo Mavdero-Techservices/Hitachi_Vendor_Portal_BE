@@ -325,41 +325,41 @@ exports.postErpResourcePortalVendorlist= (req, res) => {
 
 exports.postErpPurchaseOrderList= (req, res) => {
   console.log("arrr------>", req.body);
-  const odataUrl = 'http://10.83.152.111:4049/NAVTestDB2/OData/Company(Hitachi%20Systems%20India%20Pvt%20Ltd)/PurchaseOrdersList?$format=json';
-  const data = req.body;
-  httpntlm.post({
-    url: odataUrl,
-    username: 'ERP-API',
-    password: 'HSI@#543DCVB',
-    workstation: '',
-    domain: '',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json;odata.metadata=minimal',
-      'OData-Version': '1.0',
-      'User-Agent': 'nodejs/httpntlm'
-    },
-    body: JSON.stringify({
-      ...data
-    })
-  }, function (err, result) {
-    if (err) {
-      console.error(err);
-      const errorObj = {
-        msg: 'error',
-        error: err.message 
-      };
-      res.status(500).json(errorObj);
-    } else {
-      const resultObj = JSON.parse(result.body);
-      const responseObj = {
-        msg: 'success',
-        Result: resultObj
-      };
-      res.status(200).json(responseObj);
-    }
+  // const odataUrl = 'http://10.83.152.111:4049/NAVTestDB2/OData/Company(Hitachi%20Systems%20India%20Pvt%20Ltd)/PurchaseOrdersList?$format=json';
+  // const data = req.body;
+  // httpntlm.post({
+  //   url: odataUrl,
+  //   username: 'ERP-API',
+  //   password: 'HSI@#543DCVB',
+  //   workstation: '',
+  //   domain: '',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json;odata.metadata=minimal',
+  //     'OData-Version': '1.0',
+  //     'User-Agent': 'nodejs/httpntlm'
+  //   },
+  //   body: JSON.stringify({
+  //     ...data
+  //   })
+  // }, function (err, result) {
+  //   if (err) {
+  //     console.error(err);
+  //     const errorObj = {
+  //       msg: 'error',
+  //       error: err.message 
+  //     };
+  //     res.status(500).json(errorObj);
+  //   } else {
+  //     const resultObj = JSON.parse(result.body);
+  //     const responseObj = {
+  //       msg: 'success',
+  //       Result: resultObj
+  //     };
+  //     res.status(200).json(responseObj);
+  //   }
     
-  });
+  // });
 };
 
 exports.postErpPurchaseOrderLine= (req, res) => {
