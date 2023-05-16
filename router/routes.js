@@ -203,6 +203,8 @@ router.put('/updateErpVendor_API', ErpAccess.updateErpVendor_API);
 router.get('/getErpResourcePortalVendorlist', ErpAccess.getErpResourcePortalVendorlist);
 router.get('/getErpResourcePortalVendorlistById/:Vendor_No', ErpAccess.getErpResourcePortalVendorlistById);
 router.post('/postErpResourcePortalVendorlist', ErpAccess.postErpResourcePortalVendorlist);
+router.post('/postErpPurchaseOrderList', ErpAccess.postErpPurchaseOrderList);
+router.post('/postErpPurchaseOrderLine', ErpAccess.postErpPurchaseOrderLine);
 router.put('/updateErpResourcePortalVendorlist/:Refrence_Entry_No', ErpAccess.updateErpResourcePortalVendorlist);
 router.get('/getErpVendor_APIByParent_Vendor_Code/:Parent_Vendor_Code', ErpAccess.getErpVendor_APIByParent_Vendor_Code);
 router.get('/getErpVendor_APIByP_A_N_No/:Ticket_ID', ErpAccess.getErpVendor_APIByP_A_N_No);

@@ -5,39 +5,39 @@ const path = require('path');
 const spRequest = require('sp-request');
 const fs = require('fs');
 const url = 'http://sharepnt:42916/sites/Hitachi/ERP-DMS-PROTECTED';
-const username = 'ERP-API';
-const password = 'HSI@#543DCVB';
-const filePath = path.join(__dirname, '../uploads/tcsRpd (9)_2023-04-19T05-14-06.400Z.pdf');
-const fileContent = fs.readFileSync(filePath);
-// const fileContent = fs.readFileSync("../uploads/tcsRpd (9)_2023-04-19T05-14-06.400Z.pdf");
+// const username = 'ERP-API';
+// const password = 'HSI@#543DCVB';
+// const filePath = path.join(__dirname, '../uploads/tcsRpd (9)_2023-04-19T05-14-06.400Z.pdf');
+// const fileContent = fs.readFileSync(filePath);
+// // const fileContent = fs.readFileSync("../uploads/tcsRpd (9)_2023-04-19T05-14-06.400Z.pdf");
 
 const sharepointData = spRequest.create({
-  username: username,
-  password: password
+  // username: username,
+  // password: password
 });
 //SharepointfileUpload
 exports.SharepointfileUpload = (req, res) => {
-  sharepointData.get(url + "/_api/contextinfo", {
-    headers: {
-      'accept': 'application/json;odata=verbose',
-      'content-type': 'application/json;odata=verbose',
-    }
-  }).then((response) => {
-    const formDigestValue = response.body.d.GetContextWebInformation.FormDigestValue;
-    return sharepointData.post(url + "/_api/web/GetFolderByServerRelativeUrl('/sites/Hitachi/ERP-DMS-PROTECTED/Shared Documents/7120006-DAIKIN AIRCONDITIONING INDIA PVT LTD/CSheet-BGL201907SOSLS0005')/Files/add(url='tcsRpd (9)_2023-04-19T05-14-06.400Z.pdf',overwrite=true)", {
-      headers: {
-        'accept': 'application/json;odata=verbose',
-        'content-type': 'application/json;odata=verbose',
-        'X-RequestDigest': formDigestValue
-      },
-      body: fileContent
-    })
-  }).then((response) => {
-    console.log('File uploaded successfully');
-    return res.status(200).json({ msg: "success", result: "File uploaded successfully" });
-  }).catch((err) => {
-    console.log('Error uploading file: ', err);
-  });
+  // sharepointData.get(url + "/_api/contextinfo", {
+  //   headers: {
+  //     'accept': 'application/json;odata=verbose',
+  //     'content-type': 'application/json;odata=verbose',
+  //   }
+  // }).then((response) => {
+  //   const formDigestValue = response.body.d.GetContextWebInformation.FormDigestValue;
+  //   return sharepointData.post(url + "/_api/web/GetFolderByServerRelativeUrl('/sites/Hitachi/ERP-DMS-PROTECTED/Shared Documents/7120006-DAIKIN AIRCONDITIONING INDIA PVT LTD/CSheet-BGL201907SOSLS0005')/Files/add(url='tcsRpd (9)_2023-04-19T05-14-06.400Z.pdf',overwrite=true)", {
+  //     headers: {
+  //       'accept': 'application/json;odata=verbose',
+  //       'content-type': 'application/json;odata=verbose',
+  //       'X-RequestDigest': formDigestValue
+  //     },
+  //     body: fileContent
+  //   })
+  // }).then((response) => {
+  //   console.log('File uploaded successfully');
+  //   return res.status(200).json({ msg: "success", result: "File uploaded successfully" });
+  // }).catch((err) => {
+  //   console.log('Error uploading file: ', err);
+  // });
 }
 
 //Save data
