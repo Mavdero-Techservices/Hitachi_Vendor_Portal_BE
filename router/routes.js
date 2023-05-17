@@ -20,7 +20,7 @@ const vendorCodeDetail = require("../controller/vendorCodeDetails.controller")
 const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
 const MasterVendorUserAccess=require("../controller/MasterVendorUserAccess")
 const ErpAccess=require("../controller/Erp.controller")
-
+const invoice = require("../controller/invoice.controller")
 
 const router = express.Router();
 /* GET home page. */
@@ -210,4 +210,7 @@ router.get('/getErpVendor_APIByParent_Vendor_Code/:Parent_Vendor_Code', ErpAcces
 router.get('/getErpVendor_APIByP_A_N_No/:Ticket_ID', ErpAccess.getErpVendor_APIByP_A_N_No);
 router.post("/saveMasterLogin", signUp.saveMasterLogin);
 router.get('/verifyUSerByMail/:mastervendor_email/:mailConfirmationCode',signUp.verifyUserByMail);
+router.post("/saveInvoiceInfo", invoice.saveInvoiceInfo);
+router.get('/getInvoiceinfo', invoice.getInvoiceinfo);
+
 module.exports = router;
