@@ -24,6 +24,9 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
         qty: {
             type: Sequelize.STRING,
         },
+        qtyDelivered: {
+            type: Sequelize.STRING,
+        },
         rate: {
             type: Sequelize.STRING,
         },
@@ -36,27 +39,64 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
         grossAmount: {
             type: Sequelize.STRING,
         },
-        invoiceFile: {
+        eWayBill: {
             type: Sequelize.STRING,
         },
-        document1: {
+        transportDocument: {
             type: Sequelize.STRING,
         },
-        document2: {
+        miscDocs: {
             type: Sequelize.STRING,
         },
-        document3: {
+        boe: {
             type: Sequelize.STRING,
         },
-        document4: {
+        awb: {
             type: Sequelize.STRING,
         },
-        document5: {
+        serviceAgreement: {
             type: Sequelize.STRING,
         },
-        document6: {
+        lic: {
             type: Sequelize.STRING,
-        }
+        },
+        licDeliveryProof: {
+            type: Sequelize.STRING,
+        },
+        warrantyCertificate: {
+            type: Sequelize.STRING,
+        },
+        irWcc: {
+            type: Sequelize.STRING,
+        },
+        signOffFromCustomer: {
+            type: Sequelize.STRING,
+        },
+        coc: {
+            type: Sequelize.STRING,
+        },
+        esiPayementChallan: {
+            type: Sequelize.STRING,
+        },
+        pfPayementChallan: {
+            type: Sequelize.STRING,
+        },
+        employeeSummary: {
+            type: Sequelize.STRING,
+        },
+        arWorking: {
+            type: Sequelize.STRING,
+        },
+        deliveryProof: {
+            type: Sequelize.STRING,
+        },
+        calculation: {
+            type: Sequelize.STRING,
+        },
+        customExRate: {
+            type: Sequelize.STRING,
+        },
+       
     })
     return InvoiceSchema;
 }

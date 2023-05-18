@@ -4,13 +4,27 @@ let directory_name = "uploads";
 const path = require("path");
 var multer = require("multer");
 const { log, Console } = require("console");
-var InvoiceFileDocPath = "";
-var Document1DocPath = "";
-var Document2DocPath = "";
-var Document3DocPath = "";
-var Document4DocPath = "";
-var Document5DocPath = "";
-var Document6DocPath = "";
+
+var eWayBillFileDocPath = "";
+var transportDocumentDocPath = "";
+var miscDocsDocPath = "";
+var boeDocPath = "";
+var awbDocPath = "";
+var serviceAgreementDocPath = "";
+var licDocPath = "";
+var licDeliveryProofDocPath = "";
+var warrantyCertificateDocPath = "";
+var irWccDocPath = "";
+var signOffFromCustomerPath = "";
+var cocDocPath = "";
+var esiPayementChallanDocPath = "";
+var pfPayementChallannDocPath = "";
+var employeeSummaryDocPath = "";
+var arWorkingDocPath = "";
+var deliveryProofDocPath = "";
+var calculationDocPath = "";
+var customExRateDocPath = "";
+
 const fs = require("fs");
 
 var storage = multer.diskStorage({
@@ -18,12 +32,12 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-    if (file.fieldname === "invoiceFile") {
+    if (file.fieldname === "eWayBill") {
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
 
-      InvoiceFileDocPath =
+      eWayBillFileDocPath =
         directory_name +
         "/" +
         filedirect[0] +
@@ -34,12 +48,12 @@ var storage = multer.diskStorage({
 
       cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
-    if (file.fieldname === "document1") {
+    if (file.fieldname === "transportDocument") {
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
 
-      Document1DocPath =
+      transportDocumentDocPath =
         directory_name +
         "/" +
         filedirect[0] +
@@ -50,12 +64,12 @@ var storage = multer.diskStorage({
 
       cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
-    if (file.fieldname === "document2") {
+    if (file.fieldname === "miscDocs") {
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
 
-      Document2DocPath =
+      miscDocsDocPath =
         directory_name +
         "/" +
         filedirect[0] +
@@ -66,12 +80,12 @@ var storage = multer.diskStorage({
 
       cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
-    if (file.fieldname === "document3") {
+    if (file.fieldname === "boe") {
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
 
-      Document3DocPath =
+      boeDocPath =
         directory_name +
         "/" +
         filedirect[0] +
@@ -82,12 +96,12 @@ var storage = multer.diskStorage({
 
       cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
-    if (file.fieldname === "document4") {
+    if (file.fieldname === "awb") {
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
 
-      Document4DocPath =
+      awbDocPath =
         directory_name +
         "/" +
         filedirect[0] +
@@ -98,12 +112,12 @@ var storage = multer.diskStorage({
 
       cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
-    if (file.fieldname === "document5") {
+    if (file.fieldname === "serviceAgreement") {
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
 
-      Document5DocPath =
+      serviceAgreementDocPath =
         directory_name +
         "/" +
         filedirect[0] +
@@ -114,12 +128,204 @@ var storage = multer.diskStorage({
 
       cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
-    if (file.fieldname === "document6") {
+    if (file.fieldname === "lic") {
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
 
-      Document6DocPath =
+      licDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "licDeliveryProof") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      licDeliveryProofDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "warrantyCertificate") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      warrantyCertificateDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "irWcc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      irWccDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "signOffFromCustomer") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      signOffFromCustomerPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "coc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      cocDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "esiPayementChallan") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      esiPayementChallanDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "pfPayementChallan") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      pfPayementChallannDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "employeeSummary") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      employeeSummaryDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "arWorking") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      arWorkingDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "deliveryProof") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      deliveryProofDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "calculation") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      calculationDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "customExRate") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      customExRateDocPath =
         directory_name +
         "/" +
         filedirect[0] +
@@ -136,33 +342,82 @@ var storage = multer.diskStorage({
 exports.saveInvoiceInfo = async (req, res) => {
   var upload = multer({ storage: storage }).fields([
     {
-      name: "invoiceFile",
+      name: "eWayBill",
       maxCount: 1,
     },
     {
-      name: "document1",
+      name: "transportDocument",
       maxCount: 1,
     },
     {
-      name: "document2",
+      name: "miscDocs",
       maxCount: 1,
     },
     {
-      name: "document3",
+      name: "boe",
       maxCount: 1,
     },
     {
-      name: "document4",
+      name: "awb",
       maxCount: 1,
     },
     {
-      name: "document5",
+      name: "serviceAgreement",
       maxCount: 1,
     },
     {
-      name: "document6",
+      name: "lic",
       maxCount: 1,
     },
+    {
+      name: "licDeliveryProof",
+      maxCount: 1,
+    },
+    {
+      name: "warrantyCertificate",
+      maxCount: 1,
+    },
+    {
+      name: "irWcc",
+      maxCount: 1,
+    },
+    {
+      name: "signOffFromCustomer",
+      maxCount: 1,
+    },
+    {
+      name: "coc",
+      maxCount: 1,
+    },
+    {
+      name: "esiPayementChallan",
+      maxCount: 1,
+    },
+    {
+      name: "pfPayementChallan",
+      maxCount: 1,
+    },
+    {
+      name: "employeeSummary",
+      maxCount: 1,
+    },
+    {
+      name: "arWorking",
+      maxCount: 1,
+    },
+    {
+      name: "deliveryProof",
+      maxCount: 1,
+    },
+    {
+      name: "calculation",
+      maxCount: 1,
+    },
+    {
+      name: "customExRate",
+      maxCount: 1,
+    },
+    
   ]);
   await upload(req, res, function (err) {
     InvoiceSchema.findOne({
@@ -172,63 +427,160 @@ exports.saveInvoiceInfo = async (req, res) => {
     }).then(async (poDetails) => {
       if (poDetails) {
 
-        let invoiceFile = InvoiceFileDocPath;
-        let document1 = Document1DocPath;
-        let document2 = Document2DocPath;
-        let document3 = Document3DocPath;
-        let document4 = Document4DocPath;
-        let document5 = Document5DocPath;
-        let document6 = Document6DocPath;
+        let eWayBill = eWayBillFileDocPath;
+        let transportDocument = transportDocumentDocPath;
+        let miscDocs = miscDocsDocPath;
+        let boe = boeDocPath;
+        let awb = awbDocPath;
+        let serviceAgreement = serviceAgreementDocPath;
+        let lic = licDocPath;
+        let licDeliveryProof = licDeliveryProofDocPath;
+        let warrantyCertificate = warrantyCertificateDocPath;
+        let irWcc = irWccDocPath;
+        let signOffFromCustomer = signOffFromCustomerPath;
+        let coc = cocDocPath;
+        let esiPayementChallan = esiPayementChallanDocPath;
+        let pfPayementChallan = pfPayementChallannDocPath;
+        let employeeSummary = employeeSummaryDocPath;
+        let arWorking = arWorkingDocPath;
+        let deliveryProof = deliveryProofDocPath;
+        let calculation = calculationDocPath;
+        let customExRate = customExRateDocPath;
+        
 
-        if (poDetails.invoiceFile === req.body.invoiceFile) {
-          invoiceFile = req.body.invoiceFile;
+        if (poDetails.eWayBill === req.body.eWayBill) {
+          eWayBill = req.body.eWayBill;
         } else {
-          invoiceFile = InvoiceFileDocPath;
+          eWayBill = eWayBillFileDocPath;
         }
 
-        if (poDetails.document1 === req.body.document1) {
-          document1 = req.body.document1;
+        if (poDetails.transportDocument === req.body.transportDocument) {
+          transportDocument = req.body.transportDocument;
         } else {
-          document1 = Document1DocPath;
+          transportDocument = transportDocumentDocPath;
         }
 
-        if (poDetails.document2 === req.body.document2) {
-          document2 = req.body.document2;
+        if (poDetails.miscDocs === req.body.miscDocs) {
+          miscDocs = req.body.miscDocs;
         } else {
-          document2 = Document2DocPath;
+          miscDocs = miscDocsDocPath;
         }
 
-        if (poDetails.document3 === req.body.document3) {
-          document3 = req.body.document3;
+        if (poDetails.boe === req.body.boe) {
+          boe = req.body.boe;
         } else {
-          document3 = Document3DocPath;
+          boe = boeDocPath;
         }
 
-        if (poDetails.document4 === req.body.document4) {
-          document4 = req.body.document4;
+        if (poDetails.awb === req.body.awb) {
+          awb = req.body.awb;
         } else {
-          document4 = Document4DocPath;
+          awb = awbDocPath;
         }
 
-        if (poDetails.document5 === req.body.document5) {
-          document5 = req.body.document5;
+        if (poDetails.serviceAgreement === req.body.serviceAgreement) {
+          serviceAgreement = req.body.serviceAgreement;
         } else {
-          document5 = Document5DocPath;
+          serviceAgreement = serviceAgreementDocPath;
         }
 
-        if (poDetails.document6 === req.body.document6) {
-          document6 = req.body.document6;
+        if (poDetails.lic === req.body.lic) {
+          lic = req.body.lic;
         } else {
-          document6 = Document6DocPath;
+          lic = licDocPath;
         }
 
-        req.body.invoiceFile = invoiceFile;
-        req.body.document1 = document1;
-        req.body.document2 = document2;
-        req.body.document3 = document3;
-        req.body.document4 = document4;
-        req.body.document5 = document5;
-        req.body.document6 = document6;
+        if (poDetails.licDeliveryProof === req.body.licDeliveryProof) {
+          licDeliveryProof = req.body.licDeliveryProof;
+        } else {
+          licDeliveryProof = licDeliveryProofDocPath;
+        }
+
+        if (poDetails.warrantyCertificate === req.body.warrantyCertificate) {
+          warrantyCertificate = req.body.warrantyCertificate;
+        } else {
+          warrantyCertificate = warrantyCertificateDocPath;
+        }
+
+        if (poDetails.irWcc === req.body.irWcc) {
+          irWcc = req.body.irWcc;
+        } else {
+          irWcc = irWccDocPath;
+        }
+
+        if (poDetails.signOffFromCustomer === req.body.signOffFromCustomer) {
+          signOffFromCustomer = req.body.signOffFromCustomer;
+        } else {
+          signOffFromCustomer = signOffFromCustomerPath;
+        }
+
+        if (poDetails.coc === req.body.coc) {
+          coc = req.body.coc;
+        } else {
+          coc = cocDocPath;
+        }
+
+        if (poDetails.esiPayementChallan === req.body.esiPayementChallan) {
+          esiPayementChallan = req.body.esiPayementChallan;
+        } else {
+          esiPayementChallan = esiPayementChallanDocPath;
+        }
+
+        if (poDetails.pfPayementChallan === req.body.pfPayementChallan) {
+          pfPayementChallan = req.body.pfPayementChallan;
+        } else {
+          pfPayementChallan = pfPayementChallannDocPath;
+        }
+
+        if (poDetails.employeeSummary === req.body.employeeSummary) {
+          employeeSummary = req.body.employeeSummary;
+        } else {
+          employeeSummary = employeeSummaryDocPath;
+        }
+
+        if (poDetails.arWorking === req.body.arWorking) {
+          arWorking = req.body.arWorking;
+        } else {
+          arWorking = arWorkingDocPath;
+        }
+
+        if (poDetails.deliveryProof === req.body.deliveryProof) {
+          deliveryProof = req.body.deliveryProof;
+        } else {
+          deliveryProof = arWorkingDocPath;
+        }
+
+        if (poDetails.calculation === req.body.calculation) {
+          calculation = req.body.calculation;
+        } else {
+          calculation = calculationDocPath;
+        }
+
+        if (poDetails.customExRate === req.body.customExRate) {
+          customExRate = req.body.customExRate;
+        } else {
+          customExRate = customExRateDocPath;
+        }
+
+        req.body.eWayBill = eWayBill;
+        req.body.transportDocument = transportDocument;
+        req.body.miscDocs = miscDocs;
+        req.body.boe = boe;
+        req.body.awb = awb;
+        req.body.serviceAgreement = serviceAgreement;
+        req.body.lic = lic;
+        req.body.licDeliveryProof = licDeliveryProof;
+        req.body.warrantyCertificate = warrantyCertificate;
+        req.body.irWcc = irWcc;
+        req.body.signOffFromCustomer = signOffFromCustomer;
+        req.body.coc = coc;
+        req.body.esiPayementChallan = esiPayementChallan;
+        req.body.pfPayementChallan = pfPayementChallan;
+        req.body.employeeSummary = employeeSummary;
+        req.body.arWorking = arWorking;
+        req.body.deliveryProof = deliveryProof;
+        req.body.calculation = calculation;
+        req.body.customExRate = customExRate;
 
         InvoiceSchema.update(req.body, {
           where: {
@@ -249,13 +601,26 @@ exports.saveInvoiceInfo = async (req, res) => {
             });
           });
       } else {
-        const invoiceFile = InvoiceFileDocPath;
-        const document1 = Document1DocPath;
-        const document2 = Document2DocPath;
-        const document3 = Document3DocPath;
-        const document4 = Document4DocPath;
-        const document5 = Document5DocPath;
-        const document6 = Document6DocPath;
+
+        const eWayBill = eWayBillFileDocPath;
+        const transportDocument = transportDocumentDocPath;
+        const miscDocs = miscDocsDocPath;
+        const boe = boeDocPath;
+        const awb = awbDocPath;
+        const serviceAgreement = serviceAgreementDocPath;
+        const lic = licDocPath;
+        const licDeliveryProof = licDeliveryProofDocPath;
+        const warrantyCertificate = warrantyCertificateDocPath;
+        const irWcc = irWccDocPath;
+        const signOffFromCustomer = signOffFromCustomerPath;
+        const coc = cocDocPath;
+        const esiPayementChallan = esiPayementChallanDocPath;
+        const pfPayementChallan = pfPayementChallannDocPath;
+        const employeeSummary = employeeSummaryDocPath;
+        const arWorking = arWorkingDocPath;
+        const deliveryProof = deliveryProofDocPath;
+        const calculation = calculationDocPath;
+        const customExRate = customExRateDocPath;
 
         const user = new InvoiceSchema({
           poNumber: req.body.poNumber,
@@ -266,17 +631,30 @@ exports.saveInvoiceInfo = async (req, res) => {
           startDate: req.body.startDate,
           endDate: req.body.endDate,
           qty: req.body.qty,
+          qtyDelivered: req.body.qtyDelivered,
           rate: req.body.rate,
           baseAmount: req.body.baseAmount,
           taxAmount: req.body.taxAmount,
           grossAmount: req.body.grossAmount,
-          invoiceFile: invoiceFile,
-          document1: document1,
-          document2: document2,
-          document3: document3,
-          document4: document4,
-          document5: document5,
-          document6: document6,
+          eWayBill: eWayBill,
+          transportDocument: transportDocument,
+          miscDocs: miscDocs,
+          boe: boe,
+          awb: awb,
+          serviceAgreement: serviceAgreement,
+          lic: lic,
+          licDeliveryProof: licDeliveryProof,
+          warrantyCertificate: warrantyCertificate,
+          irWcc: irWcc,
+          signOffFromCustomer: signOffFromCustomer,
+          coc: coc,
+          esiPayementChallan: esiPayementChallan,
+          pfPayementChallan: pfPayementChallan,
+          employeeSummary: employeeSummary,
+          arWorking: arWorking,
+          deliveryProof: deliveryProof,
+          calculation: calculation,
+          customExRate: customExRate,
         });
         user.save().then((result) => {
           return res.status(200).json({
