@@ -19,7 +19,8 @@ const purchaseOrder = require("../controller/purchaseOrder.controller")
 const vendorCodeDetail = require("../controller/vendorCodeDetails.controller")
 const MasterVendorSubUser=require("../controller/MasterVendorSubUser.controller")
 const MasterVendorUserAccess=require("../controller/MasterVendorUserAccess")
-const ErpAccess=require("../controller/Erp.controller")
+const ErpAccess=require("../controller/Erp.controller");
+const poTeam=require("../controller/poTeam.controller");
 const invoice = require("../controller/invoice.controller")
 
 const router = express.Router();
@@ -210,6 +211,41 @@ router.get('/getErpVendor_APIByParent_Vendor_Code/:Parent_Vendor_Code', ErpAcces
 router.get('/getErpVendor_APIByP_A_N_No/:Ticket_ID', ErpAccess.getErpVendor_APIByP_A_N_No);
 router.post("/saveMasterLogin", signUp.saveMasterLogin);
 router.get('/verifyUSerByMail/:mastervendor_email/:mailConfirmationCode',signUp.verifyUserByMail);
+
+//getErpPurchaseOrdersLists
+router.get('/getErpPurchaseOrdersLists', ErpAccess.getErpPurchaseOrdersLists);
+
+
+//poTeam
+router.post("/PoApprovalMail", poTeam.PoApprovalMail);
+
+//savepoTeam
+router.post("/savePo", poTeam.savePo);
+//updatePo
+router.get("/updatePo/:level2ApprovalStatus/:No",poTeam.updatePo);
+router.get("/getUpdatePoPage/:level2ApprovalStatus/:No", poTeam.getUpdatePoPage);
+
+//getpo
+router.get("/getPo", poTeam.getPo);
+//getMailIdbyvendorNo
+router.get("/getMailIdbyvendorNo/:No", poTeam.getMailIdbyvendorNo);
+//updatePoInvoice
+router.put("/updatePoInvoice", poTeam.updatePoInvoice);
+//updateFinanceInvoiceApproval
+router.put("/updateFinanceInvoiceApproval", poTeam.updateFinanceInvoiceApproval);
+//updateFinanceInvoiceReject
+router.put("/updateFinanceInvoiceReject", poTeam.updateFinanceInvoiceReject);
+//mailApprovePo_Invoice
+router.post("/mailApprovePo_Invoice", poTeam.mailApprovePo_Invoice);
+//mailApproveFinance_order
+router.post("/mailApproveFinance_order", poTeam.mailApproveFinance_order);
+//mailApprovedInvoice
+router.get("/mailApprovedInvoice", poTeam.mailApprovedInvoice);
+router.get("/mailRejectInvoice/:No", poTeam.mailRejectInvoice);
+router.post('/updateRejectInvoice', poTeam.updateRejectInvoice);
+
+
+
 router.post("/saveInvoiceInfo", invoice.saveInvoiceInfo);
 router.get('/getInvoiceinfo', invoice.getInvoiceinfo);
 

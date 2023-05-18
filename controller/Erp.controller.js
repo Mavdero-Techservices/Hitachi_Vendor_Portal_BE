@@ -467,3 +467,40 @@ const panNumbers = data.map(obj => ({ P_A_N_No: obj.P_A_N_No }));
     res.status(200).json(panNumbers);
 })
 };
+//getPurchaseOrdersList
+exports.getErpPurchaseOrdersLists= (req, res) => {
+  httpntlm.get({      
+    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/PurchaseOrdersList?$format=json",
+    username: 'ERP-API',
+    password: 'HSI@#543DCVB',
+    workstation: '',
+    domain: ''
+}, function (err, result){
+    if(err) return err;
+    const data = JSON.parse(result.body).value;
+    res.status(200).json({ message: 'success',result:data });
+})
+};
+exports.getErpPurchaseOrdersListsById= (req, res) => {
+  const No = req.params.No;
+ httpntlm.get({
+    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/PurchaseOrdersList?$format=json&$filter=No eq '" + No + "'",
+    username: 'ERP-API',
+    password: 'HSI@#543DCVB',
+    workstation: '',
+    domain: '',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json;odata.metadata=minimal',
+      'User-Agent': 'nodejs/httpntlm',
+    }
+  }, function(err, result) {
+    if (err) {
+      console.error(err);
+    } else {
+      const record = JSON.parse(result.body).value[0];
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(record));
+    }
+  });
+};

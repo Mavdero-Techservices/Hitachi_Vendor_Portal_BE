@@ -41,6 +41,7 @@ db.purchaseOrder = require("./purchaseOrder.model")(sequelize, Sequelize);
 db.vendorCodeDetail = require("./vendorCodeDetails.model")(sequelize, Sequelize);
 db.vendorId = require("./vendorId.model")(sequelize, Sequelize);
 db.invoice = require("./invoice.model")(sequelize, Sequelize);
+db.pO = require("./poTeam.model")(sequelize, Sequelize);
 
 db.periodicRequest.hasMany(db.vendorId, {
     foreignKey: 'periodic_id',
