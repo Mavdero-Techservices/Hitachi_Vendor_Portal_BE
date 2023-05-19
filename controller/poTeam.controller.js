@@ -323,7 +323,7 @@ exports.updatePo = async (req, res) => {
 
     console.log("Updated successfully PO finance");
     const response = await axios.get(
-      `http://localhost:12707/getUpdatePoPage/${level2ApprovalStatus}/${No}`
+      `${process.env.HOST}:${process.env.PORT}/getUpdatePoPage/${level2ApprovalStatus}/${No}`
     );
     const html = response.data;
 
@@ -356,7 +356,7 @@ exports.updatePoInvoiceByMail = async (req, res) => {
     console.log("after update");
     console.log("Updated!!!");
     const response = await axios.get(
-      `http://localhost:12707/getUpdatePoInvoicePage/${level1ApprovalStatus}/${No}`
+      `${process.env.HOST}:${process.env.PORT}/getUpdatePoInvoicePage/${level1ApprovalStatus}/${No}`
     );
     const html = response.data;
     res.status(200).send(html);
@@ -513,7 +513,7 @@ exports.updatePoInvoice = async (req, res) => {
 
     console.log("Updated successfullyPO::");
     const response = await axios.get(
-      `http://localhost:12707/getUpdatePoPage/${level1ApprovalStatus}/${No}`
+      `${process.env.HOST}:${process.env.PORT}/getUpdatePoPage/${level1ApprovalStatus}/${No}`
     );
     const html = response.data;
 
@@ -828,7 +828,7 @@ exports.mailRejectInvoice = (req, res) => {
 
             setTimeout(function() {
               successPopup.classList.remove('show-popup');
-              window.location.href = 'http://localhost:3000';
+              window.location.href = '${process.env.HOST}:3000';
             }, 3000);
           }
         </script>
@@ -976,7 +976,7 @@ exports.mailRejectPOInvoice = (req, res) => {
 
             setTimeout(function() {
               successPopup.classList.remove('show-popup');
-              window.location.href = 'http://localhost:3000';
+              window.location.href = '${process.env.HOST}:3000';
             }, 3000);
           }
         </script>
@@ -1090,13 +1090,13 @@ exports.POInvoiceMailApprove = (req, res) => {
         </table>
       `;
             const approveButton = `
-          <a href="http://localhost:12707/updatePoInvoiceByMail/Approved/${req.body.No}" target="_blank" style="text-decoration: none;">
+          <a href="${process.env.HOST}:${process.env.PORT}/updatePoInvoiceByMail/Approved/${req.body.No}" target="_blank" style="text-decoration: none;">
           <button style="background-color: green;border:none;border-radius:15px; color: white; padding: 10px;">Approve</button>
           </a>
         `;
 
             const rejectButton = `
-        <a href="http://localhost:12707/mailRejectPOInvoice/${req.body.No}" target="_blank" style="text-decoration: none;">
+        <a href="${process.env.HOST}:${process.env.PORT}/mailRejectPOInvoice/${req.body.No}" target="_blank" style="text-decoration: none;">
           <button style="background-color: red;border:none;border-radius:15px; color: white; padding: 10px;">Reject</button>
           </a>
         `;
@@ -1180,13 +1180,13 @@ exports.mailApprovePo_Invoice = (req, res) => {
        </table>
      `;
   const approveButton = `
-         <a href="http://localhost:12707/updatePo/Approved/${req.body.No}" target="_blank" style="text-decoration: none;">
+         <a href="${process.env.HOST}:${process.env.PORT}/updatePo/Approved/${req.body.No}" target="_blank" style="text-decoration: none;">
          <button style="background-color: green;border:none;border-radius:15px; color: white; padding: 10px;">Approve</button>
          </a>
        `;
 
   const rejectButton = `
-       <a href="http://localhost:12707/mailRejectInvoice/${req.body.No}" target="_blank" style="text-decoration: none;">
+       <a href="${process.env.HOST}:${process.env.PORT}/mailRejectInvoice/${req.body.No}" target="_blank" style="text-decoration: none;">
          <button style="background-color: red;border:none;border-radius:15px; color: white; padding: 10px;">Reject</button>
          </a>
        `;

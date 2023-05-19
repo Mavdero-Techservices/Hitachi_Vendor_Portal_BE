@@ -205,20 +205,6 @@ exports.emailRejectNotification = (
 ) => {
   if (level1rejectFileDoc){
   const format = level1rejectFileDoc.split(".");
-
-  // var mailOptions = {
-  //   from: user,
-  //   to: `${emailId}`,
-  //   subject: subject,
-  //   html: emailContent,
-  //   attachments: [
-  //     {
-  //       // utf-8 string as an attachment
-  //       filename: "attachment." + format[1],
-  //       path: level1rejectFileDoc,
-  //     },
-  //   ],
-  // };
   const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
   attachment.name = "attachment." + format[1];
   attachment.content = fs.readFileSync(level1rejectFileDoc).toString('base64');

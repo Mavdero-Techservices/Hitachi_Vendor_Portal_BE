@@ -4,9 +4,10 @@
   "description": "Backend Hitachi Vendor Portal",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
-  },
+    "start": "node -r dotenv/config app.js",
+    "start:prod": "NODE_ENV=production node -r dotenv/config app.js",
+    "start:dev": "NODE_ENV=development node -r dotenv/config app.js"
+  },  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mavdero-Techservices/Hitachi_Vendor_Portal_BE.git"

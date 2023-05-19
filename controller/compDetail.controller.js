@@ -59,7 +59,6 @@ var storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     if (file.fieldname === "RPD_Doc") {
-
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -73,18 +72,10 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
 
     if (file.fieldname === "COC_Doc") {
-
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -98,20 +89,12 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
 
     if (file.fieldname === "NDA_Doc") {
-
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
-      
+
       let filedirect = file.originalname.split(".");
 
       NDA_DocPath =
@@ -123,14 +106,7 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(
-        null,
-        filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
-      );
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
   },
 });
@@ -190,7 +166,7 @@ exports.saveComplianceDetail = (req, res) => {
           var cDetails = await CompliancedetailSchema.findOne({
             where: { userId: req.body.userId },
           });
-      
+
           if (err) {
             return "err";
           } else {
@@ -202,7 +178,7 @@ exports.saveComplianceDetail = (req, res) => {
               let RPD_Doc = RPD_DocPath;
               let COC_Doc = COC_DocPath;
               let NDA_Doc = NDA_DocPath;
-      
+
               if (cDetails.RPD_Doc === req.body.RPD_Doc) {
                 RPD_Doc = req.body.RPD_Doc;
               } else {
@@ -216,7 +192,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (cDetails.COC_Doc === req.body.COC_Doc) {
                 COC_Doc = req.body.COC_Doc;
               } else {
@@ -230,7 +206,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (cDetails.NDA_Doc === req.body.NDA_Doc) {
                 NDA_Doc = req.body.NDA_Doc;
               } else {
@@ -244,7 +220,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               req.body.NDA_Doc = NDA_Doc;
               req.body.COC_Doc = COC_Doc;
               req.body.RPD_Doc = RPD_Doc;
@@ -270,7 +246,7 @@ exports.saveComplianceDetail = (req, res) => {
               let RPD_Doc = RPD_DocPath;
               let COC_Doc = COC_DocPath;
               let NDA_Doc = NDA_DocPath;
-      
+
               if (cDetails.RPD_Doc === req.body.RPD_Doc) {
                 RPD_Doc = req.body.RPD_Doc;
               } else {
@@ -284,7 +260,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (cDetails.COC_Doc === req.body.COC_Doc) {
                 COC_Doc = req.body.COC_Doc;
               } else {
@@ -298,7 +274,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (cDetails.NDA_Doc === req.body.NDA_Doc) {
                 NDA_Doc = req.body.NDA_Doc;
               } else {
@@ -312,7 +288,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               req.body.NDA_Doc = NDA_Doc;
               req.body.COC_Doc = COC_Doc;
               req.body.RPD_Doc = RPD_Doc;
@@ -528,7 +504,7 @@ exports.downloadPdfUploads = (req, res, next) => {
 exports.readPdf = (req, res, next) => {
   const fs = require("fs");
   var hostName = req.header("host");
-  const baseUrl = `http://localhost:12707/downloadPdf/`;
+  const baseUrl = `${process.env.HOST}:${process.env.PORT}/downloadPdf/`;
   let directory_name = "pdf";
   fs.readdir(directory_name, function (err, files) {
     if (err) {
@@ -555,7 +531,7 @@ exports.readPdf = (req, res, next) => {
 exports.readPdfUploads = (req, res, next) => {
   const fs = require("fs");
   var hostName = req.header("host");
-  const baseUrl = `http://localhost:12707/downloadPdfUploads/`;
+  const baseUrl = `${process.env.HOST}:${process.env.PORT}/downloadPdfUploads/`;
   let directory_name = "uploads";
   fs.readdir(directory_name, function (err, files) {
     if (err) {
