@@ -7,8 +7,8 @@ const fs = require('fs');
 const url = 'http://sharepnt:42916/sites/Hitachi/ERP-DMS-PROTECTED';
 const username = 'ERP-API';
 const password = 'HSI@#543DCVB';
-const filePath = path.join(__dirname, '../uploads/tcsRpd (9)_2023-04-19T05-14-06.400Z.pdf');
-const fileContent = fs.readFileSync(filePath);
+const filePath = "";
+const fileContent = "";
 // const fileContent = fs.readFileSync("../uploads/tcsRpd (9)_2023-04-19T05-14-06.400Z.pdf");
 
 const sharepointData = spRequest.create({
