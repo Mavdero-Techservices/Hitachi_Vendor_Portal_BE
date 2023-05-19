@@ -121,11 +121,10 @@ exports.postCommsdetail = [
                 data: commsdetail,
                 status: "success"
             })
-        } catch(err) {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the Commsdetail."
-        });
+        } catch (err) {
+            res.status(500).send({
+                message: err.message || "Some error occurred while creating the Commsdetail."
+            });
+        }
     }
-}
 ];
-    

@@ -30,7 +30,7 @@ const fs = require('fs');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey =config.apiKey;
+apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -62,9 +62,9 @@ exports.emailUpdateTabNotification = (
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
-  }, function(error) {
+  }, function (error) {
     console.error(error);
   });
 };
@@ -94,10 +94,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -119,10 +119,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -144,10 +144,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -169,10 +169,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -194,10 +194,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -219,10 +219,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -244,10 +244,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -269,10 +269,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -294,10 +294,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -319,10 +319,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -369,10 +369,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -394,10 +394,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -419,10 +419,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -467,7 +467,7 @@ exports.saveContactTeam = (req, res) => {
         const contactName3 = req.body.contactName3;
         const emailId3 = req.body.emailId3;
         const contactNumber3 = req.body.contactNumber3;
-        const Ticket_ID=req.body.Ticket_ID;
+        const Ticket_ID = req.body.Ticket_ID;
         const user = new contactTeamSchema({
           contactId: contactId,
           userId: userId,
@@ -480,7 +480,7 @@ exports.saveContactTeam = (req, res) => {
           contactName3: contactName3,
           emailId3: emailId3,
           contactNumber3: contactNumber3,
-          Ticket_ID:Ticket_ID,
+          Ticket_ID: Ticket_ID,
         });
         user.save().then((result) => {
           return res.status(200).json({
@@ -662,7 +662,7 @@ exports.updateAllCollection = async (req, res) => {
   NDA_DocPath = "";
   financial_data_DocPath = "";
   financial_data2_DocPath = "";
-  approverFile_DocPath="";
+  approverFile_DocPath = "";
 
   var userId = req.params.userId;
 
@@ -1045,8 +1045,8 @@ exports.updateAllCollection = async (req, res) => {
       netWorth: req.body.netWorth,
       currentAssets: req.body.currentAssets,
       directorDetails: req.body.directorDetails,
-      organisationType:req.body.organisationType,
-      shareholderName:req.body.shareholderName,
+      organisationType: req.body.organisationType,
+      shareholderName: req.body.shareholderName,
     };
 
     let bankdetailDoc = bankdetailDocPath;
@@ -1088,7 +1088,7 @@ exports.updateAllCollection = async (req, res) => {
       contactName3: req.body.name3,
       emailId3: req.body.email3,
       contactNumber3: req.body.contactNumber3,
-      Ticket_ID:req.body.Ticket_ID,
+      Ticket_ID: req.body.Ticket_ID,
     };
 
     const promises = [

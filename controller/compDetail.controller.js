@@ -59,6 +59,7 @@ var storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     if (file.fieldname === "RPD_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -72,10 +73,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "COC_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -89,10 +98,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "NDA_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -106,7 +123,14 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
   },
 });

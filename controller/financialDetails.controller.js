@@ -95,10 +95,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
     if (file.fieldname === "financial_data2") {
@@ -119,10 +119,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
   },
@@ -191,7 +191,7 @@ exports.saveFinacialDetail = (req, res) => {
           var fDetails = await FdetailSchema.findOne({
             where: { userId: req.body.userId },
           });
-      
+
           if (err) {
             console.log("InsideErr", err);
             return "err";
@@ -202,7 +202,7 @@ exports.saveFinacialDetail = (req, res) => {
             ) {
               let financial_data = financial_data_DocPath;
               let financial_data2 = financial_data2_DocPath;
-      
+
               if (fDetails.financial_data === req.body.financial_data) {
                 financial_data = req.body.financial_data;
               } else {
@@ -216,7 +216,7 @@ exports.saveFinacialDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (fDetails.financial_data2 === req.body.financial_data2) {
                 financial_data2 = req.body.financial_data2;
               } else {
@@ -230,7 +230,7 @@ exports.saveFinacialDetail = (req, res) => {
                   });
                 }
               }
-      
+
               req.body.financial_data = financial_data;
               req.body.financial_data2 = financial_data2;
               FdetailSchema.update(req.body, {
@@ -254,7 +254,7 @@ exports.saveFinacialDetail = (req, res) => {
             } else {
               let financial_data = financial_data_DocPath;
               let financial_data2 = financial_data2_DocPath;
-      
+
               if (fDetails.financial_data === req.body.financial_data) {
                 financial_data = req.body.financial_data;
               } else {
@@ -268,7 +268,7 @@ exports.saveFinacialDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (fDetails.financial_data2 === req.body.financial_data2) {
                 financial_data2 = req.body.financial_data2;
               } else {
@@ -282,7 +282,7 @@ exports.saveFinacialDetail = (req, res) => {
                   });
                 }
               }
-      
+
               req.body.financial_data = financial_data;
               req.body.financial_data2 = financial_data2;
               FdetailSchema.update(req.body, {
