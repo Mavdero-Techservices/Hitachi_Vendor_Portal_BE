@@ -23,6 +23,7 @@ const ErpAccess=require("../controller/Erp.controller")
 const poTeam=require("../controller/poTeam.controller");
 const invoice = require("../controller/invoice.controller")
 const router = express.Router();
+const edd = require("../controller/edd.controller")
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.json({
@@ -250,5 +251,6 @@ router.post('/updateRejectPOInvoice', poTeam.updateRejectPOInvoice);
 
 router.post("/saveInvoiceInfo", invoice.saveInvoiceInfo);
 router.get('/getInvoiceinfo', invoice.getInvoiceinfo);
+router.post("/postEddDetails", edd.postEddDetails);
 
 module.exports = router;
