@@ -1,6 +1,12 @@
 module.exports = (sequelize, Sequelize,DataTypes) => {
     const InvoiceSchema = sequelize.define("invoice", {
-        poNumber: {
+        No: {
+            type: Sequelize.STRING,
+        },
+        vendorName: {
+            type: Sequelize.STRING,
+        },
+        Document_Type: {
             type: Sequelize.STRING,
         },
         docDate: {
@@ -96,6 +102,28 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
         customExRate: {
             type: Sequelize.STRING,
         },
+
+        level1ApprovalStatus: {
+            type: Sequelize.STRING,
+        },
+        level2ApprovalStatus: {
+            type: Sequelize.STRING,
+        },
+        level3ApprovalStatus: {
+            type: Sequelize.STRING,
+        },
+        Posting_Date: {
+            type: Sequelize.STRING,
+        },
+        level1rejectInvoicedoc: {
+            type: Sequelize.STRING,
+        },
+        level2rejectInvoicedoc: {
+            type: Sequelize.STRING,
+        },
+        level3rejectInvoicedoc: {
+            type: Sequelize.STRING,
+        }
        
     })
     return InvoiceSchema;

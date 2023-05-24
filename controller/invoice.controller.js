@@ -25,6 +25,10 @@ var deliveryProofDocPath = "";
 var calculationDocPath = "";
 var customExRateDocPath = "";
 
+var level1rejectInvoicedocPath = "";
+var level2rejectInvoicedocPath = "";
+var level3rejectInvoicedoc = "";
+
 const fs = require("fs");
 
 var storage = multer.diskStorage({
@@ -336,6 +340,55 @@ var storage = multer.diskStorage({
 
       cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
     }
+// reject documents
+    if (file.fieldname === "level1rejectInvoicedoc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      level1rejectInvoicedocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "level2rejectInvoicedoc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      level2rejectInvoicedocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+    if (file.fieldname === "level3rejectInvoicedoc") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      level3rejectInvoicedocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
   },
 });
 
@@ -422,7 +475,7 @@ exports.saveInvoiceInfo = async (req, res) => {
   await upload(req, res, function (err) {
     InvoiceSchema.findOne({
       where: {
-        poNumber: req.body.poNumber,
+        No: req.body.No,
       },
     }).then(async (poDetails) => {
       if (poDetails) {
@@ -584,7 +637,7 @@ exports.saveInvoiceInfo = async (req, res) => {
 
         InvoiceSchema.update(req.body, {
           where: {
-            poNumber: req.body.poNumber,
+            No: req.body.No,
           },
         })
           .then(() => {
@@ -623,7 +676,9 @@ exports.saveInvoiceInfo = async (req, res) => {
         const customExRate = customExRateDocPath;
 
         const user = new InvoiceSchema({
-          poNumber: req.body.poNumber,
+          No: req.body.No,
+          Document_Type:"Invoice",
+          vendorName: req.body.vendorName ? req.body.vendorName:"",
           docDate: req.body.docDate,
           vendorInvoiceNo: req.body.vendorInvoiceNo,
           srNo: req.body.srNo,
