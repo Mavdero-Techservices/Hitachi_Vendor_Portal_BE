@@ -174,11 +174,11 @@ exports.savePo = (req, res) => {
 exports.updateFinanceInvoiceApproval = (req, res) => {
   const No = req.body.No;
   const level2ApprovalStatus = req.body.level2ApprovalStatus;
-  pOSchema
+  InvoiceSchema
     .findOne({ where: { No: No } })
     .then((polist) => {
       if (polist) {
-        pOSchema
+        InvoiceSchema
           .update(
             { level2ApprovalStatus: level2ApprovalStatus, level2Date: new Date() },
             { where: { No: No } }
@@ -239,7 +239,7 @@ exports.updateFinanceInvoiceReject = (req, res) => {
       res.status(500).json({ error: "Server error" });
     } else {
       const { level2rejectpodoc, level2ApprovalStatus, comment, No } = req.body;
-      const uploadedFile = req.file;
+      const uploadedFile = req.file.path;
 
       console.log("rejectDoc:", level2rejectpodoc);
       console.log("ApprovalStatus:", level2ApprovalStatus);
@@ -247,13 +247,13 @@ exports.updateFinanceInvoiceReject = (req, res) => {
 
       // Construct the full file path
       const filePath = path.join(directory_name, uploadedFile.filename);
-      pOSchema
+      InvoiceSchema
         .findOne({ where: { No: req.body.No } })
         .then((polist) => {
           console.log("level2ApprovalStatus", level2ApprovalStatus);
-          pOSchema
+          InvoiceSchema
             .update(
-              { level2ApprovalStatus: level2ApprovalStatus , level2Date: new Date() },
+              { level2ApprovalStatus: level2ApprovalStatus , level2Date: new Date(),level2rejectInvoicedoc: uploadedFile },
               { where: { No: No } }
             )
             .then((data) => {
