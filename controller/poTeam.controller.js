@@ -1062,12 +1062,12 @@ exports.POInvoiceMailApprove = async (req, res) => {
           </table>
         `;
         const approveButton = `
-            <a href="localhost:12707/updatePoInvoiceByMail/Approved/${req.body.No}" target="_blank" style="text-decoration: none;">
+            <a href="${process.env.HOST}:${process.env.PORT}/updatePoInvoiceByMail/Approved/${req.body.No}" target="_blank" style="text-decoration: none;">
             <button style="background-color: green;border:none;border-radius:15px; color: white; padding: 10px;">Approve</button>
             </a>
           `;
         const rejectButton = `
-          <a href="localhost:12707/mailRejectPOInvoice/${req.body.No}" target="_blank" style="text-decoration: none;">
+          <a href="${process.env.HOST}:${process.env.PORT}/mailRejectPOInvoice/${req.body.No}" target="_blank" style="text-decoration: none;">
             <button style="background-color: red;border:none;border-radius:15px; color: white; padding: 10px;">Reject</button>
             </a>
           `;
