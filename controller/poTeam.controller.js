@@ -43,6 +43,7 @@ exports.savePo = (req, res) => {
     Billed_Amount: req.body.Billed_Amount,
     Unbilled_Amount: req.body.Unbilled_Amount,
     level1ApprovalStatus: req.body.level1ApprovalStatus,
+    level1Date:new Date(),
     Posting_Date: req.body.Posting_Date,
   };
   console.log("status::", Po.level1ApprovalStatus);
@@ -122,6 +123,7 @@ exports.savePo = (req, res) => {
                   Billed_Amount: req.body.Billed_Amount,
                   Unbilled_Amount: req.body.Unbilled_Amount,
                   level1ApprovalStatus: req.body.level1ApprovalStatus,
+                  level1Date: new Date(),
                   Posting_Date: req.body.Posting_Date,
                   level1rejectpodoc: filePath,
                 })
@@ -178,7 +180,7 @@ exports.updateFinanceInvoiceApproval = (req, res) => {
       if (polist) {
         pOSchema
           .update(
-            { level2ApprovalStatus: level2ApprovalStatus },
+            { level2ApprovalStatus: level2ApprovalStatus, level2Date: new Date() },
             { where: { No: No } }
           )
           .then((updateFinanceInvoice) => {
@@ -251,7 +253,7 @@ exports.updateFinanceInvoiceReject = (req, res) => {
           console.log("level2ApprovalStatus", level2ApprovalStatus);
           pOSchema
             .update(
-              { level2ApprovalStatus: level2ApprovalStatus },
+              { level2ApprovalStatus: level2ApprovalStatus , level2Date: new Date() },
               { where: { No: No } }
             )
             .then((data) => {
@@ -304,7 +306,7 @@ exports.updatePo = async (req, res) => {
     }
 
     await pOSchema.update(
-      { level2ApprovalStatus: level2ApprovalStatus },
+      { level2ApprovalStatus: level2ApprovalStatus, level2Date: new Date() },
       { where: { No: No } }
     );
 
@@ -336,7 +338,7 @@ exports.updatePoInvoiceByMail = async (req, res) => {
         .json({ status: "error", data: { message: "Invoice not found" } });
     }
     await InvoiceSchema.update(
-      { level1ApprovalStatus: level1ApprovalStatus },
+      { level1ApprovalStatus: level1ApprovalStatus, level1Date: new Date(),  },
       { where: { No: No } }
     );
     
@@ -492,7 +494,7 @@ exports.updatePoInvoice = async (req, res) => {
     }
 
     await pOSchema.update(
-      { level1ApprovalStatus: level1ApprovalStatus },
+      { level1ApprovalStatus: level1ApprovalStatus, level1Date: new Date(), },
       { where: { No: No } }
     );
 
@@ -1180,7 +1182,7 @@ exports.updateRejectInvoice = (req, res) => {
       .then((data) => {
         console.log("vendorNo::", data.Buy_from_Vendor_No);
         pOSchema
-          .update({ level2ApprovalStatus: "Rejected", }, { where: { No: No } })
+          .update({ level2ApprovalStatus: "Rejected", level2Date: new Date(), }, { where: { No: No } })
           .then((data) => {
             return res.status(200).json({
               status: "Success",
@@ -1226,7 +1228,7 @@ exports.updateRejectPOInvoice = (req, res) => {
       .then((data) => {
         console.log("No--------->", No);
         InvoiceSchema
-          .update({ level1ApprovalStatus: "Rejected",level1rejectInvoicedoc: document  }, { where: { No: No } })
+          .update({ level1ApprovalStatus: "Rejected", level1Date: new Date(), level1rejectInvoicedoc: document  }, { where: { No: No } })
           .then((data) => {
             return res.status(200).json({
               status: "Success",

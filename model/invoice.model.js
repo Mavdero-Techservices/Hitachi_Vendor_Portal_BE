@@ -106,11 +106,20 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
         level1ApprovalStatus: {
             type: Sequelize.STRING,
         },
+        level1Date: {
+            type: Sequelize.DATE,
+        },
         level2ApprovalStatus: {
             type: Sequelize.STRING,
         },
+        level2Date: {
+            type: Sequelize.DATE,
+        },
         level3ApprovalStatus: {
             type: Sequelize.STRING,
+        },
+        level3Date: {
+            type: Sequelize.DATE,
         },
         Posting_Date: {
             type: Sequelize.STRING,
