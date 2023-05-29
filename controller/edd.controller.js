@@ -1,5 +1,6 @@
 const db = require("../model");
 const EddSchema = db.edd;
+const InvoiceSchema = db.invoice;
 
 exports.postEddDetails = async (req, res) => {
   console.log("req--------->", req.body);
@@ -13,7 +14,7 @@ exports.postEddDetails = async (req, res) => {
 
       console.log("Update Api------->");
 
-      EddSchema.update(req.body, {
+      InvoiceSchema.update(req.body, {
         where: {
           Line_No: req.body.Line_No,
         },
@@ -36,7 +37,7 @@ exports.postEddDetails = async (req, res) => {
 
       console.log("Save Api------->");
 
-      const user = new EddSchema({
+      const user = new InvoiceSchema({
         Document_Type: req.body.Document_Type,
         Document_No: req.body.Document_No,
         Line_No: req.body.Line_No,
