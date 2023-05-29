@@ -23,7 +23,6 @@ const storage = multer.diskStorage({
     cb(null, "rejectinvoicedoc-" + Date.now() + ext);
     console.log("ext", ext);
   },
-  
 });
 
 const upload = multer({ storage: storage });
@@ -43,7 +42,7 @@ exports.savePo = (req, res) => {
     Billed_Amount: req.body.Billed_Amount,
     Unbilled_Amount: req.body.Unbilled_Amount,
     level1ApprovalStatus: req.body.level1ApprovalStatus,
-    level1Date:new Date(),
+    level1Date: new Date(),
     Posting_Date: req.body.Posting_Date,
   };
   console.log("status::", Po.level1ApprovalStatus);
@@ -174,15 +173,16 @@ exports.savePo = (req, res) => {
 exports.updateFinanceInvoiceApproval = (req, res) => {
   const No = req.body.No;
   const level2ApprovalStatus = req.body.level2ApprovalStatus;
-  InvoiceSchema
-    .findOne({ where: { No: No } })
+  InvoiceSchema.findOne({ where: { No: No } })
     .then((polist) => {
       if (polist) {
-        InvoiceSchema
-          .update(
-            { level2ApprovalStatus: level2ApprovalStatus, level2Date: new Date() },
-            { where: { No: No } }
-          )
+        InvoiceSchema.update(
+          {
+            level2ApprovalStatus: level2ApprovalStatus,
+            level2Date: new Date(),
+          },
+          { where: { No: No } }
+        )
           .then((updateFinanceInvoice) => {
             console.log("update::", updateFinanceInvoice);
             const email = req.body.email;
@@ -239,23 +239,24 @@ exports.updateFinanceInvoiceReject = (req, res) => {
       res.status(500).json({ error: "Server error" });
     } else {
       const { level2rejectpodoc, level2ApprovalStatus, comment, No } = req.body;
-      const uploadedFile = req.file.path;
+      const uploadedFile = req.file;
 
       console.log("rejectDoc:", level2rejectpodoc);
       console.log("ApprovalStatus:", level2ApprovalStatus);
-      console.log("uploadedFile:", uploadedFile);
+      console.log("uploadedFile:", uploadedFile.path);
 
-      // Construct the full file path
       const filePath = path.join(directory_name, uploadedFile.filename);
-      InvoiceSchema
-        .findOne({ where: { No: req.body.No } })
+      InvoiceSchema.findOne({ where: { No: req.body.No } })
         .then((polist) => {
           console.log("level2ApprovalStatus", level2ApprovalStatus);
-          InvoiceSchema
-            .update(
-              { level2ApprovalStatus: level2ApprovalStatus , level2Date: new Date(),level2rejectInvoicedoc: uploadedFile },
-              { where: { No: No } }
-            )
+          InvoiceSchema.update(
+            {
+              level2ApprovalStatus: level2ApprovalStatus,
+              level2Date: new Date(),
+              level2rejectInvoicedoc: uploadedFile.path,
+            },
+            { where: { No: No } }
+          )
             .then((data) => {
               console.log("data::", data);
               var email = "apitestmail4@gmail.com";
@@ -310,24 +311,27 @@ exports.updatePo = async (req, res) => {
       { where: { No: No } }
     );
 
-    console.log("Updated successfully PO finance");
-    const response = await axios.get(
-      `${process.env.HOST}:${process.env.PORT}/getUpdatePoPage/${level2ApprovalStatus}/${No}`
+    console.log(
+      "Updated successfully PO finance",
+      `${process.env.HOST}:${process.env.PORT}`
     );
+    var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoPage/${level2ApprovalStatus}/${No}`;
+    console.log("URL::", url);
+    const response = await axios.get(url);
     const html = response.data;
 
     // Send the HTML page or response
     res.status(200).send(html);
   } catch (error) {
+    console.log("err::", `${process.env.HOST}:${process.env.PORT}`);
     console.error("Error updating PO:", error);
     return res
       .status(500)
-      .json({ status: "error", data: { message: "Error updating PO" } });
+      .json({ status: "error", data: { message: "Error updating PO2" } });
   }
 };
 
 exports.updatePoInvoiceByMail = async (req, res) => {
-
   const level1ApprovalStatus = req.params.level1ApprovalStatus;
   const No = req.params.No;
   try {
@@ -338,20 +342,21 @@ exports.updatePoInvoiceByMail = async (req, res) => {
         .json({ status: "error", data: { message: "Invoice not found" } });
     }
     await InvoiceSchema.update(
-      { level1ApprovalStatus: level1ApprovalStatus, level1Date: new Date(),  },
+      { level1ApprovalStatus: level1ApprovalStatus, level1Date: new Date() },
       { where: { No: No } }
     );
-    
-    const response = await axios.get(
-      `${process.env.HOST}:${process.env.PORT}/getUpdatePoInvoicePage/${level1ApprovalStatus}/${No}`
-    );
+    var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoInvoicePage/${level1ApprovalStatus}/${No}`;
+    console.log("URL::", url);
+    const response = await axios.get(url);
     const html = response.data;
     res.status(200).send(html);
   } catch (error) {
+    var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoInvoicePage/${level1ApprovalStatus}/${No}`;
+    console.log("URL::", url);
     console.error("Error updating PO:", error);
     return res
       .status(500)
-      .json({ status: "error", data: { message: "Error updating PO" } });
+      .json({ status: "error", data: { message: "Error updating PO3" } });
   }
 };
 
@@ -494,23 +499,24 @@ exports.updatePoInvoice = async (req, res) => {
     }
 
     await pOSchema.update(
-      { level1ApprovalStatus: level1ApprovalStatus, level1Date: new Date(), },
+      { level1ApprovalStatus: level1ApprovalStatus, level1Date: new Date() },
       { where: { No: No } }
     );
 
     console.log("Updated successfullyPO::");
-    const response = await axios.get(
-      `${process.env.HOST}:${process.env.PORT}/getUpdatePoPage/${level1ApprovalStatus}/${No}`
-    );
+    var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoPage/${level1ApprovalStatus}/${No}`;
+    console.log("URL::", url);
+    const response = await axios.get(url);
     const html = response.data;
 
     // Send the HTML page or response
     res.status(200).send(html);
   } catch (error) {
-    console.error("Error updating PO:", error);
+    console.log("err::", `${process.env.HOST}:${process.env.PORT}`);
+    console.error("Error updating PO1:", error);
     return res
       .status(500)
-      .json({ status: "error", data: { message: "Error updating PO" } });
+      .json({ status: "error", data: { message: "Error updating PO1" } });
   }
 };
 
@@ -1018,14 +1024,13 @@ exports.mailRejectPo_Order = (
 };
 
 exports.POInvoiceMailApprove = async (req, res) => {
-
   InvoiceSchema.findOne({ where: { No: req.body.No } })
     .then(async (poList) => {
       if (poList) {
         // poList.level1ApprovalStatus = req.body.level1ApprovalStatus;
 
         // const updatedProduct = await poList.save();
-        // 
+        //
 
         const email = req.body.email;
         const username = req.body.username;
@@ -1086,7 +1091,7 @@ exports.POInvoiceMailApprove = async (req, res) => {
             console.error(error);
           }
         );
-        res.send({ status: "success", message: 'Approved' });
+        res.send({ status: "success", message: "Approved" });
       } else {
         return res.status(200).json({
           msg: "success",
@@ -1182,7 +1187,10 @@ exports.updateRejectInvoice = (req, res) => {
       .then((data) => {
         console.log("vendorNo::", data.Buy_from_Vendor_No);
         pOSchema
-          .update({ level2ApprovalStatus: "Rejected", level2Date: new Date(), }, { where: { No: No } })
+          .update(
+            { level2ApprovalStatus: "Rejected", level2Date: new Date() },
+            { where: { No: No } }
+          )
           .then((data) => {
             return res.status(200).json({
               status: "Success",
@@ -1217,18 +1225,23 @@ exports.updateRejectPOInvoice = (req, res) => {
     }
     const comment = req.body.comment;
     const No = req.body.No;
-    const document = req.file.path;
+    const document = req.file;
     console.log("document---->", document);
-    InvoiceSchema
-      .findOne({
-        where: {
-          No: No,
-        },
-      })
+    InvoiceSchema.findOne({
+      where: {
+        No: No,
+      },
+    })
       .then((data) => {
         console.log("No--------->", No);
-        InvoiceSchema
-          .update({ level1ApprovalStatus: "Rejected", level1Date: new Date(), level1rejectInvoicedoc: document  }, { where: { No: No } })
+        InvoiceSchema.update(
+          {
+            level1ApprovalStatus: "Rejected",
+            level1Date: new Date(),
+            level1rejectInvoicedoc: document,
+          },
+          { where: { No: No } }
+        )
           .then((data) => {
             return res.status(200).json({
               status: "Success",
