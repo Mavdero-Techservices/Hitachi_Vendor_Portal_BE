@@ -222,7 +222,7 @@ router.post("/PoApprovalMail", poTeam.PoApprovalMail);
 
 //savepoTeam
 router.post("/savePo", poTeam.savePo);
-//RejectPo
+//RejectPoteam
 router.post("/RejectPo", poTeam.RejectPo);
 //updatePo
 router.get("/updatePo/:level2ApprovalStatus/:No",poTeam.updatePo);

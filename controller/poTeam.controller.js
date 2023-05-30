@@ -343,13 +343,10 @@ exports.updatePoInvoiceByMail = async (req, res) => {
       { where: { No: No } }
     );
     var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoInvoicePage/${level1ApprovalStatus}/${No}`;
-    console.log("URL::", url);
     const response = await axios.get(url);
     const html = response.data;
     res.status(200).send(html);
   } catch (error) {
-    var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoInvoicePage/${level1ApprovalStatus}/${No}`;
-    console.log("URL::", url);
     console.error("Error updating PO:", error);
     return res
       .status(500)
@@ -499,8 +496,6 @@ exports.updatePoInvoice = async (req, res) => {
       { level1ApprovalStatus: level1ApprovalStatus, level1Date: new Date() },
       { where: { No: No } }
     );
-
-    console.log("Updated successfullyPO::");
     var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoPage/${level1ApprovalStatus}/${No}`;
     console.log("URL::", url);
     const response = await axios.get(url);
