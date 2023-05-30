@@ -19,9 +19,10 @@ exports.postEddDetails = async (req, res) => {
     if (err) return err;
 
     const record = JSON.parse(result.body).value;
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(record));
+    // res.writeHead(200, { 'Content-Type': 'application/json' });
+    // res.end(JSON.stringify(record));
 
+    console.log("record---->", record);
 
     InvoiceSchema.findOne({
       where: {
@@ -38,19 +39,19 @@ exports.postEddDetails = async (req, res) => {
             Line_No: req.body.Line_No,
           },
         })
-        // .then(() => {
-        //   res.status(200).send({
-        //     message: "Invoice Portal Detail was updated successfully!",
-        //     status: "success",
-        //   });
-        // })
-        // .catch((err) => {
-        //   res.status(500).send({
-        //     message:
-        //       err.message ||
-        //       "Some error occurred while updating the Bankdetail schema.",
-        //   });
-        // });
+        .then(() => {
+          res.status(200).send({
+            message: "Invoice Portal Detail was updated successfully!",
+            status: "success",
+          });
+        })
+        .catch((err) => {
+          res.status(500).send({
+            message:
+              err.message ||
+              "Some error occurred while updating the Bankdetail schema.",
+          });
+        });
 
       } else {
 
