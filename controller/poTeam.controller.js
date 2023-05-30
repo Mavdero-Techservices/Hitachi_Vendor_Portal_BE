@@ -21,12 +21,104 @@ const storage = multer.diskStorage({
   filename: function (req, file, cb) {
     const ext = path.extname(file.originalname);
     cb(null, "rejectinvoicedoc-" + Date.now() + ext);
-    console.log("ext", ext);
   },
 });
 
 const upload = multer({ storage: storage });
 
+//RejectPo
+exports.RejectPo = (req, res) => {
+  const Po = {
+    Document_Type: req.body.Document_Type,
+    No: req.body.No,
+    Order_Date: req.body.Order_Date,
+    Payment_Terms_Code: req.body.Payment_Terms_Code,
+    Buy_from_Vendor_Name: req.body.Buy_from_Vendor_Name,
+    Customer_Name: req.body.Customer_Name,
+    Buy_from_Vendor_No: req.body.Buy_from_Vendor_No,
+    Ship_to_Name: req.body.Ship_to_Name,
+    Amount_to_Vendor: req.body.Amount_to_Vendor,
+    Billed_Amount: req.body.Billed_Amount,
+    Unbilled_Amount: req.body.Unbilled_Amount,
+    level1ApprovalStatus: req.body.level1ApprovalStatus,
+    level1Date: new Date(),
+    Posting_Date: req.body.Posting_Date,
+  };
+  upload.single("level1rejectpodoc")(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      console.log("Multer Error:", err);
+      res.status(400).json({ error: "File upload error" });
+    } else if (err) {
+      console.log("Error:", err);
+      res.status(500).json({ error: "Server error" });
+    } else {
+      const { level1rejectpodoc, level1ApprovalStatus, comment, No } = req.body;
+      const uploadedFile = req.file;
+      const filePath = path.join(directory_name, uploadedFile.filename);
+      pOSchema
+        .findOne({ where: { No: req.body.No } })
+        .then((polist) => {
+          if (!polist) {
+            pOSchema
+              .create({
+                Document_Type: req.body.Document_Type,
+                No: req.body.No,
+                Order_Date: req.body.Order_Date,
+                Payment_Terms_Code: req.body.Payment_Terms_Code,
+                Buy_from_Vendor_Name: req.body.Buy_from_Vendor_Name,
+                Customer_Name: req.body.Customer_Name,
+                Buy_from_Vendor_No: req.body.Buy_from_Vendor_No,
+                Ship_to_Name: req.body.Ship_to_Name,
+                Amount_to_Vendor: req.body.Amount_to_Vendor,
+                Billed_Amount: req.body.Billed_Amount,
+                Unbilled_Amount: req.body.Unbilled_Amount,
+                level1ApprovalStatus: req.body.level1ApprovalStatus,
+                level1Date: new Date(),
+                Posting_Date: req.body.Posting_Date,
+                level1rejectpodoc: filePath,
+              })
+              .then((data) => {
+                var email = "apitestmail4@gmail.com";
+                var subject = `Hitachi Vendor Request Rejected`;
+                var emailContent = `
+                          <h4>Hi</h4>
+                          <p>PO request is Rejected by Purchase Team because of, ${comment}</p>
+                          </div>`;
+                exports.mailRejectPo_Order(
+                  req,
+                  res,
+                  subject,
+                  emailContent,
+                  email,
+                  filePath
+                );
+
+                return res
+                  .status(200)
+                  .json({ msg: "success", result: "rejected" });
+              })
+              .catch((err) => {
+                return res.status(200).json({
+                  status: "error",
+                  data: { message: "Error Response", err },
+                });
+              });
+          } else {
+            return res.status(200).json({
+              msg: "success",
+              result: `Already ${req.body.level1ApprovalStatus}`,
+            });
+          }
+        })
+        .catch((err) => {
+          return res.status(200).json({
+            status: "error",
+            data: { message: "Error Response", err },
+          });
+        });
+    }
+  });
+};
 //savePO
 exports.savePo = (req, res) => {
   const Po = {
@@ -45,119 +137,23 @@ exports.savePo = (req, res) => {
     level1Date: new Date(),
     Posting_Date: req.body.Posting_Date,
   };
-  console.log("status::", Po.level1ApprovalStatus);
-  if (Po.level1ApprovalStatus === "Approved") {
-    pOSchema
-      .findOne({ where: { No: Po.No } })
-      .then((polist) => {
-        if (!polist) {
-          pOSchema
-            .create(Po)
-            .then((data) => {
-              const email = req.body.email;
-              const username = req.body.username;
-              var subject = `Hitachi PO Approval`;
-              var emailContent = `
+  pOSchema
+    .findOne({ where: { No: Po.No } })
+    .then((polist) => {
+      if (!polist) {
+        pOSchema
+          .create(Po)
+          .then((data) => {
+            const email = req.body.email;
+            const username = req.body.username;
+            var subject = `Hitachi PO Approval`;
+            var emailContent = `
           <h4>Hi ${username}</h4>
           <p>Po team approved ${Po.Buy_from_Vendor_Name} request and proceeded for the next stage of Approval.</p>
-          <p>Thanks & regards,</p>
+          <p>Thanks & regards,hitachi</p>
         `;
-              exports.PoApprovalMail(req, res, subject, emailContent, email);
-              return res
-                .status(200)
-                .json({ msg: "success", result: "Approved" });
-            })
-            .catch((err) => {
-              return res.status(200).json({
-                status: "error",
-                data: { message: "Error Response", err },
-              });
-            });
-        } else {
-          return res.status(200).json({
-            msg: "success",
-            result: `Already ${Po.level1ApprovalStatus}`,
-          });
-        }
-      })
-      .catch((err) => {
-        return res
-          .status(200)
-          .json({ status: "error", data: { message: "Error Response", err } });
-      });
-  } else {
-    upload.single("level1rejectpodoc")(req, res, (err) => {
-      if (err instanceof multer.MulterError) {
-        console.log("Multer Error:", err);
-        res.status(400).json({ error: "File upload error" });
-      } else if (err) {
-        console.log("Error:", err);
-        res.status(500).json({ error: "Server error" });
-      } else {
-        const { level1rejectpodoc, level1ApprovalStatus, comment, No } =
-          req.body;
-        const uploadedFile = req.file;
-
-        console.log("rejectDoc:", level1rejectpodoc);
-        console.log("ApprovalStatus:", level1ApprovalStatus);
-        console.log("uploadedFile:", uploadedFile);
-
-        // Construct the full file path
-        const filePath = path.join(directory_name, uploadedFile.filename);
-        pOSchema
-          .findOne({ where: { No: req.body.No } })
-          .then((polist) => {
-            if (!polist) {
-              pOSchema
-                .create({
-                  Document_Type: req.body.Document_Type,
-                  No: req.body.No,
-                  Order_Date: req.body.Order_Date,
-                  Payment_Terms_Code: req.body.Payment_Terms_Code,
-                  Buy_from_Vendor_Name: req.body.Buy_from_Vendor_Name,
-                  Customer_Name: req.body.Customer_Name,
-                  Buy_from_Vendor_No: req.body.Buy_from_Vendor_No,
-                  Ship_to_Name: req.body.Ship_to_Name,
-                  Amount_to_Vendor: req.body.Amount_to_Vendor,
-                  Billed_Amount: req.body.Billed_Amount,
-                  Unbilled_Amount: req.body.Unbilled_Amount,
-                  level1ApprovalStatus: req.body.level1ApprovalStatus,
-                  level1Date: new Date(),
-                  Posting_Date: req.body.Posting_Date,
-                  level1rejectpodoc: filePath,
-                })
-                .then((data) => {
-                  var email = "apitestmail4@gmail.com";
-                  var subject = `Hitachi Vendor Request Rejected`;
-                  var emailContent = `
-                          <h4>Hi</h4>
-                          <p>PO request is Rejected by Purchase Team because of, ${comment}</p>
-                          </div>`;
-                  exports.mailRejectPo_Order(
-                    req,
-                    res,
-                    subject,
-                    emailContent,
-                    email,
-                    filePath
-                  );
-
-                  return res
-                    .status(200)
-                    .json({ msg: "success", result: "rejected" });
-                })
-                .catch((err) => {
-                  return res.status(200).json({
-                    status: "error",
-                    data: { message: "Error Response", err },
-                  });
-                });
-            } else {
-              return res.status(200).json({
-                msg: "success",
-                result: `Already ${req.body.level1ApprovalStatus}`,
-              });
-            }
+            exports.PoApprovalMail(req, res, subject, emailContent, email);
+            return res.status(200).json({ msg: "success", result: "Approved" });
           })
           .catch((err) => {
             return res.status(200).json({
@@ -165,9 +161,18 @@ exports.savePo = (req, res) => {
               data: { message: "Error Response", err },
             });
           });
+      } else {
+        return res.status(200).json({
+          msg: "success",
+          result: `Already ${Po.level1ApprovalStatus}`,
+        });
       }
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
     });
-  }
 };
 //updateFinanceInvoiceApproval
 exports.updateFinanceInvoiceApproval = (req, res) => {
@@ -184,7 +189,6 @@ exports.updateFinanceInvoiceApproval = (req, res) => {
           { where: { No: No } }
         )
           .then((updateFinanceInvoice) => {
-            console.log("update::", updateFinanceInvoice);
             const email = req.body.email;
             const username = req.body.username;
             var subject = `Hitachi PO Approval`;
@@ -240,15 +244,9 @@ exports.updateFinanceInvoiceReject = (req, res) => {
     } else {
       const { level2rejectpodoc, level2ApprovalStatus, comment, No } = req.body;
       const uploadedFile = req.file;
-
-      console.log("rejectDoc:", level2rejectpodoc);
-      console.log("ApprovalStatus:", level2ApprovalStatus);
-      console.log("uploadedFile:", uploadedFile.path);
-
       const filePath = path.join(directory_name, uploadedFile.filename);
       InvoiceSchema.findOne({ where: { No: req.body.No } })
         .then((polist) => {
-          console.log("level2ApprovalStatus", level2ApprovalStatus);
           InvoiceSchema.update(
             {
               level2ApprovalStatus: level2ApprovalStatus,
@@ -258,7 +256,6 @@ exports.updateFinanceInvoiceReject = (req, res) => {
             { where: { No: No } }
           )
             .then((data) => {
-              console.log("data::", data);
               var email = "apitestmail4@gmail.com";
               var subject = `Hitachi Purchase Order Request Rejected`;
               var emailContent = `
