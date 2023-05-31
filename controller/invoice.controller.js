@@ -473,9 +473,10 @@ exports.saveInvoiceInfo = async (req, res) => {
     
   ]);
   await upload(req, res, function (err) {
+    console.log(" req.body---------------->>>>>>",  req.body);
     InvoiceSchema.findOne({
       where: {
-        No: req.body.No,
+        id: req.body.id,
       },
     }).then(async (poDetails) => {
       if (poDetails) {
@@ -614,7 +615,6 @@ exports.saveInvoiceInfo = async (req, res) => {
         } else {
           customExRate = customExRateDocPath;
         }
-
         req.body.eWayBill = eWayBill;
         req.body.transportDocument = transportDocument;
         req.body.miscDocs = miscDocs;
@@ -637,7 +637,7 @@ exports.saveInvoiceInfo = async (req, res) => {
 
         InvoiceSchema.update(req.body, {
           where: {
-            No: req.body.No,
+            id: req.body.id,
           },
         })
           .then(() => {
