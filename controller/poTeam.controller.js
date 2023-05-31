@@ -599,7 +599,6 @@ exports.getMailIdbyvendorNo = (req, res) => {
           if (err) {
             console.error(err);
           } else {
-            console.log(result.body);
             const record = JSON.parse(result.body).value[0];
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(JSON.stringify(record));
@@ -823,7 +822,6 @@ exports.mailRejectInvoice = (req, res) => {
 };
 
 exports.mailRejectPOInvoice = (req, res) => {
-  console.log("req------------------------>", req.params.No);
   const id = req.params.No;
   return res.status(200).header("Content-Type", "text/html").send(`
     <html>
@@ -1016,7 +1014,6 @@ exports.mailRejectPo_Order = (
 };
 
 exports.POInvoiceMailApprove = async (req, res) => {
-  console.log("req----->", req.body);
   InvoiceSchema.findOne({ where: { id: req.body.id } })
     .then(async (poList) => {
       if (poList) {
@@ -1060,12 +1057,12 @@ exports.POInvoiceMailApprove = async (req, res) => {
           </table>
         `;
         const approveButton = `
-            <a href="localhost:12707/updatePoInvoiceByMail/Approved/${req.body.id}" target="_blank" style="text-decoration: none;">
+            <a href="${process.env.HOST}:${process.env.PORT}/updatePoInvoiceByMail/Approved/${req.body.id}" target="_blank" style="text-decoration: none;">
             <button style="background-color: green;border:none;border-radius:15px; color: white; padding: 10px;">Approve</button>
             </a>
           `;
         const rejectButton = `
-          <a href="localhost:12707/mailRejectPOInvoice/${req.body.id}" target="_blank" style="text-decoration: none;">
+          <a href="${process.env.HOST}:${process.env.PORT}/mailRejectPOInvoice/${req.body.id}" target="_blank" style="text-decoration: none;">
             <button style="background-color: red;border:none;border-radius:15px; color: white; padding: 10px;">Reject</button>
             </a>
           `;
@@ -1100,7 +1097,6 @@ exports.POInvoiceMailApprove = async (req, res) => {
 };
 
 exports.mailApprovePo_Invoice = (req, res) => {
-  console.log("req::", req.body);
   const tableContent = `
        <table style="border-collapse: collapse; border: 1px solid black; border-radius:10px;">
          <thead>
@@ -1209,8 +1205,6 @@ exports.updateRejectPOInvoice = (req, res) => {
   const upload = multer({ storage: storage }).single("document");
 
   upload(req, res, function (err) {
-    console.log("body", req.body);
-    console.log("files--------------->", req.file);
     if (err) {
       return res
         .status(200)
@@ -1219,14 +1213,12 @@ exports.updateRejectPOInvoice = (req, res) => {
     const comment = req.body.comment;
     const id = req.body.id;
     const document = req.file.path;
-    console.log("document---->", document);
     InvoiceSchema.findOne({
       where: {
         id: id,
       },
     })
       .then((data) => {
-        console.log("id--------->", id);
         InvoiceSchema.update(
           {
             level1ApprovalStatus: "Rejected",
@@ -1236,7 +1228,6 @@ exports.updateRejectPOInvoice = (req, res) => {
           { where: { id: id } }
         )
           .then((data) => {
-            console.log("data------------>", data);
             return res.status(200).json({
               status: "Success",
               data: { message: "updated successfully" },
