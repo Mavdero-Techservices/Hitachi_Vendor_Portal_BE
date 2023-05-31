@@ -330,7 +330,7 @@ exports.updatePo = async (req, res) => {
 
 exports.updatePoInvoiceByMail = async (req, res) => {
   const level1ApprovalStatus = req.params.level1ApprovalStatus;
-  const id = req.params.id;
+  const id = req.params.No;
   try {
     const invoice = await InvoiceSchema.findOne({ where: { id: id } });
     if (!invoice) {
@@ -342,7 +342,7 @@ exports.updatePoInvoiceByMail = async (req, res) => {
       { level1ApprovalStatus: level1ApprovalStatus, level1Date: new Date() },
       { where: { id: id } }
     );
-    var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoInvoicePage/${level1ApprovalStatus}/${No}`;
+    var url = `${process.env.HOST}:${process.env.PORT}/getUpdatePoInvoicePage/${level1ApprovalStatus}/${id}`;
     const response = await axios.get(url);
     const html = response.data;
     res.status(200).send(html);
@@ -823,7 +823,8 @@ exports.mailRejectInvoice = (req, res) => {
 };
 
 exports.mailRejectPOInvoice = (req, res) => {
-  const id = req.params.id;
+  console.log("req------------------------>", req.params.No);
+  const id = req.params.No;
   return res.status(200).header("Content-Type", "text/html").send(`
     <html>
       <head>
@@ -961,7 +962,6 @@ exports.mailRejectPOInvoice = (req, res) => {
 
             setTimeout(function() {
               successPopup.classList.remove('show-popup');
-              window.location.href = '${process.env.HOST}:3000';
             }, 3000);
           }
         </script>
@@ -1016,6 +1016,7 @@ exports.mailRejectPo_Order = (
 };
 
 exports.POInvoiceMailApprove = async (req, res) => {
+  console.log("req----->", req.body);
   InvoiceSchema.findOne({ where: { id: req.body.id } })
     .then(async (poList) => {
       if (poList) {
@@ -1059,12 +1060,12 @@ exports.POInvoiceMailApprove = async (req, res) => {
           </table>
         `;
         const approveButton = `
-            <a href="${process.env.HOST}:${process.env.PORT}/updatePoInvoiceByMail/Approved/${req.body.id}" target="_blank" style="text-decoration: none;">
+            <a href="localhost:12707/updatePoInvoiceByMail/Approved/${req.body.id}" target="_blank" style="text-decoration: none;">
             <button style="background-color: green;border:none;border-radius:15px; color: white; padding: 10px;">Approve</button>
             </a>
           `;
         const rejectButton = `
-          <a href="${process.env.HOST}:${process.env.PORT}/mailRejectPOInvoice/${req.body.id}" target="_blank" style="text-decoration: none;">
+          <a href="localhost:12707/mailRejectPOInvoice/${req.body.id}" target="_blank" style="text-decoration: none;">
             <button style="background-color: red;border:none;border-radius:15px; color: white; padding: 10px;">Reject</button>
             </a>
           `;
@@ -1217,7 +1218,7 @@ exports.updateRejectPOInvoice = (req, res) => {
     }
     const comment = req.body.comment;
     const id = req.body.id;
-    const document = req.file;
+    const document = req.file.path;
     console.log("document---->", document);
     InvoiceSchema.findOne({
       where: {
@@ -1235,6 +1236,7 @@ exports.updateRejectPOInvoice = (req, res) => {
           { where: { id: id } }
         )
           .then((data) => {
+            console.log("data------------>", data);
             return res.status(200).json({
               status: "Success",
               data: { message: "updated successfully" },
