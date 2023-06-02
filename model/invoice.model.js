@@ -72,6 +72,9 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
         ETag: {
             type: Sequelize.STRING,
         },
+        key: {
+            type: Sequelize.STRING,
+        },
         vendorName: {
             type: Sequelize.STRING,
         },
