@@ -26,10 +26,10 @@ var financial_data_DocPath = "";
 var financial_data2_DocPath = "";
 var approverFile_DocPath = "";
 const config = require("../config/auth.config");
-const fs = require("fs");
-const SibApiV3Sdk = require("sib-api-v3-sdk");
+const fs = require('fs');
+const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
-const apiKey = defaultClient.authentications["api-key"];
+const apiKey = defaultClient.authentications['api-key'];
 apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
@@ -60,16 +60,13 @@ exports.emailUpdateTabNotification = (
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
+  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(
-    function (data) {
-      console.log("mail sent successfully: " + JSON.stringify(data));
-    },
-    function (error) {
-      console.error(error);
-    }
-  );
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function (error) {
+    console.error(error);
+  });
 };
 
 var storage = multer.diskStorage({
@@ -80,6 +77,7 @@ var storage = multer.diskStorage({
     var filetype = "";
 
     if (file.fieldname === "bankdetailDoc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -93,10 +91,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "GST_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -110,10 +116,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "PAN_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -127,10 +141,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "form_10f_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -144,10 +166,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "PE_Declaration_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -161,10 +191,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "TAN_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -178,10 +216,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "MSME_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -195,10 +241,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "Tax_residency_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -212,10 +266,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "financial_data") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -229,10 +291,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "financial_data2") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -246,10 +316,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "approverFile") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -263,10 +341,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "RPD_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -280,10 +366,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "COC_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -297,10 +391,18 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "NDA_Doc") {
+
       let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
       let filedirect = file.originalname.split(".");
@@ -314,7 +416,14 @@ var storage = multer.diskStorage({
         "." +
         filedirect[1];
 
-      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+      cb(
+        null,
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
+      );
     }
 
     if (file.fieldname === "fileDisclosure") {
@@ -641,6 +750,7 @@ exports.updateAllCollection = async (req, res) => {
       where: { userId: req.params.userId },
     });
 
+
     let approverFileDoc = approverFile_DocPath;
 
     if (basicData.approverFile === req.body.approverFile) {
@@ -671,7 +781,7 @@ exports.updateAllCollection = async (req, res) => {
       Vendor_Type: req.body.Vendor_Type,
       Vendor_Account_Manager: req.body.Vendor_Account_Manager,
       mkDenialCheque: req.body.mkDenialCheque,
-      approverFile: approverFileDoc,
+      approverFile: approverFileDoc
     };
 
     const communicationDetails = {
@@ -735,6 +845,7 @@ exports.updateAllCollection = async (req, res) => {
         });
       }
     }
+
 
     if (statDetails.PAN_Doc === req.body.PAN_Doc) {
       PAN_Doc = req.body.PAN_Doc;

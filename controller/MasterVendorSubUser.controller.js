@@ -4,16 +4,18 @@ const MasterVendorSubUserSchema = db.MasterVendorSubUser;
 const VendorCodeSchema = db.vendorCode;
 const bcrypt = require("bcrypt");
 const fs = require('fs');
-const config = require("../config/auth.config");
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const config = require("../config/auth.config");
 const apiKey = defaultClient.authentications['api-key'];
 apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
-// var nodemailer = require("nodemailer");
+var nodemailer = require("nodemailer");
+// const config = require("../config/auth.config");
 // const user = config.user;
 // const pass = config.pass;
+
 // var transporter = nodemailer.createTransport({
 //   service: "gmail",
 //   // service: 'Outlook365',
@@ -35,9 +37,9 @@ exports.emailUserCreationReg = (
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
-  }, function(error) {
+  }, function (error) {
     console.error(error);
   });
 };
@@ -110,10 +112,9 @@ exports.saveMasterVendorSubUser = (req, res) => {
           );
           return res.status(200).json({
             status: "success",
-            data: { message: "Sub User saved successfully"},
+            data: { message: "Sub User saved successfully" },
           });
         })
-
         .catch((err) => {
           return res.status(200).json({
             status: "error",
@@ -211,47 +212,38 @@ exports.UpdateMasterVendorSubUserById = async (req, res) => {
   //       .status(200)
   //       .json({ status: "error", data: { message: "Error Response", err } });
   //   });
-  // var SubUserId = req.body.SubUserId;
-  // var city_vendorCode_Pincode = req.body.city_vendorCode_Pincode;
-
-  // MasterVendorSubUserSchema.update(
-  //   // {
-  //   //   Name: Name,
-  //   //   designation: designation,
-  //   //   Department: Department,
-  //   //   emailId: emailId,
-  //   //   mobileNo: mobileNo,
-  //   //   loginId: loginId,
-  //   //   password: password,
-  //   //   roles: roles,
-  //   //   city_vendorCode_Pincode: city_vendorCode_Pincode,
-  //   // },
-  //   // { where: { SubUserId: SubUserId } }
-  // )
-  //   .then( async (result) => {
-  //     console.log("result--->", result);
-  //     for (let i = 0; i < req.body.vendorCode.length; i++) {
-  //       console.log("req---->", req.body.vendorCode[i].vendorCode);
-  //       const user = await new VendorCodeSchema({
-  //         SubUserId: SubUserId,
-  //         vendorCode: req.body.vendorCode[i].vendorCode,
-  //         city: req.body.vendorCode[i].city,
-  //         Pincode: row.vendorCode[i].Pincode,
-  //       });
-  //       user.save();
-  //     }
-  //     console.log("user--->", user);
-  //     return res
-
-  //       .status(200)
-  //       .json({ status: "success", message: "updated Successfully", result });
-  //   })
-  //   .catch((err) => {
-  //     return res
-  //       .status(200)
-  //       .json({ status: "error", data: { message: "Error Response", err } });
-  //   });
+  // 
 };
+
+exports.UpdateMasterSubUserById = async (req, res) => {
+
+
+
+
+  const subId = req.body.SubUserId;
+  const updates = req.body;
+  // check if there are any empty fields
+  for (const key in updates) {
+    if (!updates[key]) {
+      updates[key] = null;
+    }
+  }
+  const updateResult = await MasterVendorSubUserSchema.update(req.body, {
+    where: { SubUserId : subId },
+  });
+  if (updateResult[0]) {
+    res.status(200).json({
+      status: "success",
+      message: "Contact Team details updated successfully",
+    });
+  } else {
+    res.status(404).json({
+      status: "error",
+      message: "Contact Team details not found",
+    });
+  }
+
+}
 
 exports.deleteMasterVendorSubUserById = (req, res) => {
   const id = req.params.id;

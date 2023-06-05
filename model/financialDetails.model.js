@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         yearOfAuditedFinancial: {
-            type: Sequelize.INTEGER, 
+            type: Sequelize.STRING, 
         },
         Revenue: {
             type: Sequelize.STRING,    
