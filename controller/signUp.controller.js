@@ -4,9 +4,9 @@ const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 const config = require("../config/auth.config");
-const SibApiV3Sdk = require('sib-api-v3-sdk');
+const SibApiV3Sdk = require("sib-api-v3-sdk");
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
-const apiKey = defaultClient.authentications['api-key'];
+const apiKey = defaultClient.authentications["api-key"];
 apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -194,7 +194,7 @@ exports.postLogin = (req, res) => {
                 userId: user.userId,
                 userName: user.userName,
                 role: user.role,
-                Ticket_ID: user.Ticket_ID
+                Ticket_ID: user.Ticket_ID,
               },
             });
           } else {
@@ -225,7 +225,7 @@ exports.resetPasswordByCode = (req, res, next) => {
       if (!user) {
         return res.status(200).json({ status: "error", data: "invalid user" });
       } else {
-        console.log("user.emailId", user.emailId)
+        console.log("user.emailId", user.emailId);
         var subject = `confirmation mail for Reset Password`;
         var emailContent = `<h1>Reset password</h1>
     <h2>Hello ${user.contactPerson}</h2>
@@ -235,19 +235,28 @@ exports.resetPasswordByCode = (req, res, next) => {
         const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
         sendSmtpEmail.subject = `${subject}`;
         sendSmtpEmail.htmlContent = `${emailContent}`;
-        sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+        sendSmtpEmail.sender = {
+          name: "Sender Name",
+          email: "sender@example.com",
+        };
         sendSmtpEmail.to = [{ email: `${user.emailId}` }];
-        apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
-          console.log('mail sent successfully: ' + JSON.stringify(data));
-        }, function (error) {
-          console.error(error);
-        });
+        apiInstance.sendTransacEmail(sendSmtpEmail).then(
+          function (data) {
+            console.log("mail sent successfully: " + JSON.stringify(data));
+          },
+          function (error) {
+            console.error(error);
+          }
+        );
         await SignUpSchema.update(
           { mailConfirmationCode: mailConfirmationCode },
           { where: { id: user.id } }
         ).then((code) => {
           console.log("send password Code", code);
-          return res.status(200).json({ status: "success", data: "check your email,to reset your password" });
+          return res.status(200).json({
+            status: "success",
+            data: "check your email,to reset your password",
+          });
         });
       }
     })
@@ -272,12 +281,15 @@ exports.resetPassword = (req, res, next) => {
       } else {
         await SignUpSchema.findAll({
           where: {
-            username: userName
-          }
+            username: userName,
+          },
         })
-          .then(data => {
+          .then((data) => {
             if (data.length > 0) {
-              return res.status(200).json({ status: "error", data: "Username already exists. Please choose a different username." });
+              return res.status(200).json({
+                status: "error",
+                data: "Username already exists. Please choose a different username.",
+              });
             } else {
               bcrypt.hash(password, 12).then(async (hashedPassword) => {
                 await SignUpSchema.update(
@@ -288,17 +300,20 @@ exports.resetPassword = (req, res, next) => {
                   },
                   { where: { id: user.id } }
                 ).then((code) => {
-                  return res.status(200).json({ status: "success", data: "password reset successfully" });
+                  return res.status(200).json({
+                    status: "success",
+                    data: "password reset successfully",
+                  });
                 });
               });
             }
           })
-          .catch(err => {
-            return res.status(500).json({ status: 'error', data: { message: 'Error Response', err } });
+          .catch((err) => {
+            return res.status(500).json({
+              status: "error",
+              data: { message: "Error Response", err },
+            });
           });
-
-
-
       }
     })
     .catch((err) => console.log(err));
@@ -348,13 +363,16 @@ exports.emailNotification = async (
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
-    console.log('mail sent successfully: ' + JSON.stringify(data));
-  }, function (error) {
-    console.error(error);
-  });
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(
+    function (data) {
+      console.log("mail sent successfully: " + JSON.stringify(data));
+    },
+    function (error) {
+      console.error(error);
+    }
+  );
 };
 
 function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
@@ -474,8 +492,8 @@ function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
 //     });
 // };
 
-
 exports.saveUser = (req, res) => {
+
   var pass = "";
   var str =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
@@ -487,52 +505,69 @@ exports.saveUser = (req, res) => {
   }
 
   SignUpSchema.findOne({
-    where: { emailId: req.body.emailId, phoneNumber: req.body.phoneNumber },
+    where: { emailId: req.body.emailId },
   }).then((user) => {
     if (user) {
       return res
         .status(200)
-        .json({ status: "success", message: "User already exist" });
+        .json({ status: "success", message: "User Email already exist" });
     } else {
-      const companyName = req.body.companyName;
-      const phoneNumber = req.body.phoneNumber;
-      const contactPerson = req.body.contactPerson;
-      const emailId = req.body.emailId;
-      const verifiedUser = "Pending";
-      const userId = contactPerson.replace(/\s/g, '') + Math.floor(100000 + Math.random() * 900000);
-      const vendorId = "vendor" + Math.floor(100000 + Math.random() * 900000);
-      const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
-      const phoneNoConfirmationCode = Math.floor(
-        100000 + Math.random() * 900000
-      );
-      const userName = contactPerson.replace(/\s/g, '') + Math.floor(100000 + Math.random() * 900000);
-      const role = "user";
-      const password = pass;
-      console.log("password::", pass);
-      const Ticket_ID = "VCR" + Math.floor(100000 + Math.random() * 900000);
-      bcrypt.hash(password, 12).then((hashedPassword) => {
-        const user = new SignUpSchema({
-          companyName: companyName,
-          phoneNumber: phoneNumber,
-          contactPerson: contactPerson,
-          emailId: emailId,
-          mailConfirmationCode: mailConfirmationCode,
-          phoneNoConfirmationCode: phoneNoConfirmationCode,
-          verifiedUser: verifiedUser,
-          vendorId: vendorId,
-          userId: userId,
-          userName: userName,
-          password: hashedPassword,
-          confirmPassword: hashedPassword,
-          role: role,
-          Ticket_ID: Ticket_ID,
-        });
-        user
-          .save()
-          .then(async (result) => {
-            console.log("result", result);
-            var subject = `confirmation mail for userName and password`;
-            var emailContent = `<h1>Email Confirmation</h1>
+      SignUpSchema.findOne({
+        where: { phoneNumber: req.body.phoneNumber },
+      }).then((user2) => {
+        if (user2) {
+          return res.status(200).json({
+            status: "success",
+            message: "User Phone No already exist",
+          });
+        } else {
+
+          const companyName = req.body.companyName;
+          const phoneNumber = req.body.phoneNumber;
+          const contactPerson = req.body.contactPerson;
+          const emailId = req.body.emailId;
+          const verifiedUser = "Pending";
+          const userId =
+            contactPerson.replace(/\s/g, "") +
+            Math.floor(100000 + Math.random() * 900000);
+          const vendorId =
+            "vendor" + Math.floor(100000 + Math.random() * 900000);
+          const mailConfirmationCode = Math.floor(
+            100000 + Math.random() * 900000
+          );
+          const phoneNoConfirmationCode = Math.floor(
+            100000 + Math.random() * 900000
+          );
+          const userName =
+            contactPerson.replace(/\s/g, "") +
+            Math.floor(100000 + Math.random() * 900000);
+          const role = "user";
+          const password = pass;
+          console.log("password::", pass);
+          const Ticket_ID = "VCR" + Math.floor(100000 + Math.random() * 900000);
+          bcrypt.hash(password, 12).then((hashedPassword) => {
+            const user = new SignUpSchema({
+              companyName: companyName,
+              phoneNumber: phoneNumber,
+              contactPerson: contactPerson,
+              emailId: emailId,
+              mailConfirmationCode: mailConfirmationCode,
+              phoneNoConfirmationCode: phoneNoConfirmationCode,
+              verifiedUser: verifiedUser,
+              vendorId: vendorId,
+              userId: userId,
+              userName: userName,
+              password: hashedPassword,
+              confirmPassword: hashedPassword,
+              role: role,
+              Ticket_ID: Ticket_ID,
+            });
+            user
+              .save()
+              .then(async (result) => {
+                console.log("result", result);
+                var subject = `confirmation mail for userName and password`;
+                var emailContent = `<h1>Email Confirmation</h1>
             <h2>Hello ${contactPerson}</h2>
             <p>Your Username is ${userName} and password is ${password}</p>
             <p>please click the link below to verify your email address.</p>
@@ -540,29 +575,39 @@ exports.saveUser = (req, res) => {
             <p>Visit the link below to create a new username and password.</p>
             <a href=${process.env.HOST}:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
             </div>`;
-            try {
-              sendSmtpEmail.subject = `${subject}`;
-              sendSmtpEmail.htmlContent = `${emailContent}`;
-              sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-              sendSmtpEmail.to = [{ email: `${result.emailId}` }];
-              apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
-                console.log('mail sent successfully: ' + JSON.stringify(data));
-              }, function (error) {
-                console.error(error);
+                try {
+                  sendSmtpEmail.subject = `${subject}`;
+                  sendSmtpEmail.htmlContent = `${emailContent}`;
+                  sendSmtpEmail.sender = {
+                    name: "Sender Name",
+                    email: "sender@example.com",
+                  };
+                  sendSmtpEmail.to = [{ email: `${result.emailId}` }];
+                  apiInstance.sendTransacEmail(sendSmtpEmail).then(
+                    function (data) {
+                      console.log(
+                        "mail sent successfully: " + JSON.stringify(data)
+                      );
+                    },
+                    function (error) {
+                      console.error(error);
+                    }
+                  );
+                  return res.status(200).json({
+                    status: "success",
+                    message: "Registered Successfully",
+                    result,
+                  });
+                } catch (error) {
+                  console.log("error::", error);
+                  return res.status(500).json({ error: "Server error" });
+                }
+              })
+              .catch((err) => {
+                return res.status(500).json({ error: "Server error" });
               });
-              return res.status(200).json({
-                status: "success",
-                message: "Registered Successfully",
-                result,
-              });
-            } catch (error) {
-              console.log("error::", error);
-              return res.status(500).json({ error: "Server error" });
-            }
-          })
-          .catch((err) => {
-            return res.status(500).json({ error: "Server error" });
           });
+        }
       });
     }
   });
@@ -580,11 +625,9 @@ exports.saveMasterLogin = async (req, res) => {
   const companyName = req.body.companyName;
   const mastervendor_email = req.body.mastervendor_email;
   const verifiedUser = "Pending";
-  const userId =
-    "Master" + Math.floor(100000 + Math.random() * 900000);
+  const userId = "Master" + Math.floor(100000 + Math.random() * 900000);
   const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
-  const userName =
-    "Master" + Math.floor(100000 + Math.random() * 900000);
+  const userName = "Master" + Math.floor(100000 + Math.random() * 900000);
   const role = "Admin";
 
   const password = pass;
@@ -592,18 +635,21 @@ exports.saveMasterLogin = async (req, res) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
-    const [user, created] = await SignUpSchema.upsert({
-      companyName: companyName,
-      emailId: mastervendor_email,
-      mailConfirmationCode: mailConfirmationCode,
-      verifiedUser: verifiedUser,
-      userId: userId,
-      userName: userName,
-      password: hashedPassword,
-      confirmPassword: hashedPassword,
-      role: role,
-      Ticket_ID: Ticket_ID,
-    }, { returning: true });
+    const [user, created] = await SignUpSchema.upsert(
+      {
+        companyName: companyName,
+        emailId: mastervendor_email,
+        mailConfirmationCode: mailConfirmationCode,
+        verifiedUser: verifiedUser,
+        userId: userId,
+        userName: userName,
+        password: hashedPassword,
+        confirmPassword: hashedPassword,
+        role: role,
+        Ticket_ID: Ticket_ID,
+      },
+      { returning: true }
+    );
 
     if (!created) {
       return res
@@ -620,14 +666,17 @@ exports.saveMasterLogin = async (req, res) => {
 
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
     sendSmtpEmail.to = [{ email: `${user.emailId}` }];
 
-    apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
-      console.log('mail sent successfully: ' + JSON.stringify(data));
-    }, function (error) {
-      console.error(error);
-    });
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(
+      function (data) {
+        console.log("mail sent successfully: " + JSON.stringify(data));
+      },
+      function (error) {
+        console.error(error);
+      }
+    );
 
     return res.status(200).json({
       status: "success",
@@ -646,8 +695,8 @@ exports.verifyUserByMail = (req, res) => {
   SignUpSchema.findOne({
     where: {
       emailId: mastervendor_email,
-      mailConfirmationCode: mailConfirmationCode
-    }
+      mailConfirmationCode: mailConfirmationCode,
+    },
   }).then((user) => {
     if (!user) {
       return res.status(400).json({
@@ -658,8 +707,9 @@ exports.verifyUserByMail = (req, res) => {
     SignUpSchema.update(
       { verifiedUser: "approved" },
       { where: { emailId: mastervendor_email } }
-    ).then((result) => {
-      return res.status(200).header('Content-Type', 'text/html').send(`
+    )
+      .then((result) => {
+        return res.status(200).header("Content-Type", "text/html").send(`
       <html>
         <head>
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -697,11 +747,12 @@ exports.verifyUserByMail = (req, res) => {
         </body>
       </html>
     `);
-    }).catch((error) => {
-      return res.status(500).json({
-        status: "error",
-        message: "Unable to update verified user",
+      })
+      .catch((error) => {
+        return res.status(500).json({
+          status: "error",
+          message: "Unable to update verified user",
+        });
       });
-    });
   });
-}
+};
