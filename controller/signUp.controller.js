@@ -518,7 +518,7 @@ exports.saveUser = (req, res) => {
         if (user2) {
           return res.status(200).json({
             status: "success",
-            message: "User Phone No already exist",
+            message: "User Phone Number already exist",
           });
         } else {
 
