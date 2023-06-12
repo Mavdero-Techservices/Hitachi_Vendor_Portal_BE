@@ -244,8 +244,7 @@ exports.getStateAndcityByzipcode = async (req, res, next) => {
   }
 };
 
-
-// var nodemailer = require("nodemailer");
+var nodemailer = require("nodemailer");
 // const config = require("../config/auth.config");
 // const user = config.user;
 // const pass = config.pass;
@@ -259,16 +258,17 @@ exports.getStateAndcityByzipcode = async (req, res, next) => {
 //     pass: pass,
 //   },
 // });
-// let transporter = nodemailer.createTransport({
-//   host: 'smtp.office365.com',
-//   port: 587,
-//   secure: false,
-//   requireTLS: true,
-//   auth: {
-//       user: 'apitestmail4@gmail.com',
-//       pass: 'gmlubwghcqtqkldm'
-//   }
-// });
+
+let transporter = nodemailer.createTransport({
+  host: 'smtp.office365.com',
+  port: 587,
+  secure: false,
+  requireTLS: true,
+  auth: {
+    user: 'apitestmail4@gmail.com',
+    pass: 'gmlubwghcqtqkldm'
+  }
+});
 
 exports.emailSubmitNotification = async (
   req,
@@ -283,9 +283,9 @@ exports.emailSubmitNotification = async (
     sendSmtpEmail.htmlContent = `${emailContent}`;
     sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
-    apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
       console.log('mail sent successfully: ' + JSON.stringify(data));
-    }, function(error) {
+    }, function (error) {
       console.error(error);
     });
   } catch (error) {
@@ -302,8 +302,9 @@ exports.updateVendor = async (req, res) => {
     var submitEmailId = await SignUpSchema.findOne({
       where: { userId: req.params.userId },
     });
+    console.log("emailID::", submitEmailId);
 
-    const emailId = submitEmailId.emailId; 
+    const emailId = submitEmailId.emailId;
     var subject = `Hitachi Vendor Creation Submit Status`;
     var emailContent = `
                         <h4>Hi ${userId}</h4>

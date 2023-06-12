@@ -8,10 +8,16 @@ var rejectFile1DocPath = "";
 const bcrypt = require('bcrypt');
 var jwt = require("jsonwebtoken");
 const excel = require('exceljs');
-var jwt = require("jsonwebtoken");
+const httpntlm = require('httpntlm');
+const config = require("../config/auth.config");
 const fs = require('fs');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
-const httpntlm = require('httpntlm');
+const defaultClient = SibApiV3Sdk.ApiClient.instance;
+const apiKey = defaultClient.authentications['api-key'];
+apiKey.apiKey = config.apiKey;
+const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+
+const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -43,19 +49,19 @@ var storage = multer.diskStorage({
   },
 });
 
-var nodemailer = require("nodemailer");
-const config = require("../config/auth.config");
-const user = config.user;
-const pass = config.pass;
+// var nodemailer = require("nodemailer");
+// const config = require("../config/auth.config");
+// const user = config.user;
+// const pass = config.pass;
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  // service: 'Outlook365',
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
+// var transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   // service: 'Outlook365',
+//   auth: {
+//     user: user,
+//     pass: pass,
+//   },
+// });
 
 exports.emailApprovalNotification = (
   req,
@@ -63,18 +69,18 @@ exports.emailApprovalNotification = (
   subject,
   emailContent,
   returnFlag,
-  // emailId
+  emailId
 ) => {
   var mailOptions = {
     from: user,
-    to: "ajayaravind797@gmail.com",
+    to: `${emailId}`,
     subject: subject,
     html: emailContent,
   };
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${"ajayaravind797@gmail.com"}` }];
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
   }, function (error) {
@@ -577,36 +583,35 @@ exports.emailApprovalLedgeDetails = (
 
 exports.approveAccStatementDetail = (req, res) => {
 
-  console.log("req--->", req.body);
-  var emailId = "ajayaravind797@gmail.com"
+  var emailId = "abcd@gmail.com"
   var subject = `Approval Mail From Account Statement`;
   var emailContent = `<h1>Account Statement Confirmation</h1>
-            <h2>Hi ${req.body.Vendor_Name}</h2>
-            <table style="border-collapse: collapse;width: 100%">
-            <tr>
-            <th style="border: 1px solid #808080;text-align: left">Name</th>
-            <th style="border: 1px solid #808080;text-align: left">Document Date</th>
-            <th style="border: 1px solid #808080;text-align: left">External Document No</th>
-            <th style="border: 1px solid #808080;text-align: left">Purchase Order No</th>
-            <th style="border: 1px solid #808080;text-align: left">TDS No</th>
-            <th style="border: 1px solid #808080;text-align: left">Remaining Amount</th>
-            </tr>
-
-            <tr>
-            <td style="border: 1px solid #808080;text-align: left">${req.body.Vendor_Name}</td>
-            <td style="border: 1px solid #808080;text-align: left">${req.body.Document_Date}</td>
-            <td style="border: 1px solid #808080;text-align: left">${req.body.External_Document_No}</td>
-            <td style="border: 1px solid #808080;text-align: left">${req.body.Purchase_Order_No}</td>
-            <td style="border: 1px solid #808080;text-align: left">${req.body.TDS_Amt}</td>
-            <td style="border: 1px solid #808080;text-align: left">${req.body.Remaining_Amount}</td>
-            </tr>
+              <h2>Hi ${req.body.Vendor_Name}</h2>
+              <table style="border-collapse: collapse;width: 100%">
+              <tr>
+              <th style="border: 1px solid #808080;text-align: left">Name</th>
+              <th style="border: 1px solid #808080;text-align: left">Document Date</th>
+              <th style="border: 1px solid #808080;text-align: left">External Document No</th>
+              <th style="border: 1px solid #808080;text-align: left">Purchase Order No</th>
+              <th style="border: 1px solid #808080;text-align: left">TDS No</th>
+              <th style="border: 1px solid #808080;text-align: left">Remaining Amount</th>
+              </tr>
   
-            </table>
-            </div>`;
+              <tr>
+              <td style="border: 1px solid #808080;text-align: left">${req.body.Vendor_Name}</td>
+              <td style="border: 1px solid #808080;text-align: left">${req.body.Document_Date}</td>
+              <td style="border: 1px solid #808080;text-align: left">${req.body.External_Document_No}</td>
+              <td style="border: 1px solid #808080;text-align: left">${req.body.Purchase_Order_No}</td>
+              <td style="border: 1px solid #808080;text-align: left">${req.body.TDS_Amt}</td>
+              <td style="border: 1px solid #808080;text-align: left">${req.body.Remaining_Amount}</td>
+              </tr>
+    
+              </table>
+              </div>`;
   try {
     const defaultClient = SibApiV3Sdk.ApiClient.instance;
     const apiKey = defaultClient.authentications['api-key'];
-    apiKey.apiKey = 'Replace-apikey';
+    apiKey.apiKey = config.apiKey;
     const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
     const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
@@ -649,7 +654,7 @@ exports.rejectAccStatementDetail = async (req, res) => {
       const record = JSON.parse(result.body).value;
       let ledgerIndId = record.filter((ledEntries) => {
         return ledEntries.Entry_No == EntryNo
-      }) 
+      })
       var upload = multer({ storage: storage }).fields([
         { name: "rejectdoc", maxCount: 1 },
       ]);
@@ -657,17 +662,17 @@ exports.rejectAccStatementDetail = async (req, res) => {
         const comments = req.body.comment;
         const file = rejectFile1DocPath;
         const format = rejectFile1DocPath.split("/");
-         var emailId = "ajayaravind797@gmail.com"
+        var emailId = "abcd@gmail.com"
         var subject = `Rejection Mail From Account Statement`;
         var emailContent = `<h1>Account Statement Confirmation</h1>
-                <h2>Hi ${ledgerIndId[0].Vendor_Name}</h2>
-                <p>Your Reason For Rejection is ${comments}</p>
-                </div>`;
+                  <h2>Hi ${ledgerIndId[0].Vendor_Name}</h2>
+                  <p>Your Reason For Rejection is ${comments}</p>
+                  </div>`;
         try {
           const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
           const defaultClient = SibApiV3Sdk.ApiClient.instance;
           const apiKey = defaultClient.authentications['api-key'];
-          apiKey.apiKey = 'Replace-apikey';
+          apiKey.apiKey = config.apiKey;
           const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
           const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
           attachment.name = "attachment." + format[1];
@@ -693,8 +698,4 @@ exports.rejectAccStatementDetail = async (req, res) => {
       });
     }
   );
-
-  
-
-
 }

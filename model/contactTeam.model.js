@@ -32,6 +32,9 @@ module.exports = (sequelize, Sequelize) => {
         },
         contactNumber3: {
             type: Sequelize.STRING,
+        },
+        Ticket_ID:{
+            type: Sequelize.STRING  
         }
 
     })

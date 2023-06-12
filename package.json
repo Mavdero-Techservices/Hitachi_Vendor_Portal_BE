@@ -4,8 +4,9 @@
   "description": "Backend Hitachi Vendor Portal",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "node -r dotenv/config app.js",
+    "start:prod": "NODE_ENV=production node -r dotenv/config app.js",
+    "start:dev": "NODE_ENV=development node -r dotenv/config app.js"
   },
   "repository": {
     "type": "git",
@@ -29,13 +30,16 @@
     "express": "^4.18.2",
     "express-validator": "^6.14.2",
     "geonames-country-zipcode-lookup": "^1.1.2",
+    "http-status": "^1.6.2",
     "httpntlm": "^1.8.2",
+    "joi": "^17.9.2",
     "jsonwebtoken": "^9.0.0",
     "multer": "^1.4.5-lts.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "node-client-ntlm": "^0.0.5",
     "node-latest-version": "^1.0.16",
+    "node-ntlm-client": "^0.1.2",
     "nodemailer": "^6.8.0",
     "nodemon": "^2.0.20",
     "pdfkit": "^0.13.0",
@@ -46,7 +50,7 @@
     "sequelize": "^6.26.0",
     "sib-api-v3-sdk": "^8.5.0",
     "twilio": "^4.8.0",
-    "winston": "^3.8.2",
+    "winston": "^3.9.0",
     "winston-daily-rotate-file": "^4.7.1",
     "zipcoderd": "^0.1.2",
     "zipcodes": "^8.0.0",
@@ -54,6 +58,7 @@
     "zips": "^1.1.2"
   },
   "devDependencies": {
-    "request-ntlm-lite": "^0.2.4"
+    "request-ntlm-lite": "^0.2.4",
+    "sp-request": "^2.1.3"
   }
 }
