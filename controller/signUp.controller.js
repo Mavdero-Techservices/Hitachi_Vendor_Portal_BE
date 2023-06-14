@@ -236,8 +236,8 @@ exports.resetPasswordByCode = (req, res, next) => {
         sendSmtpEmail.subject = `${subject}`;
         sendSmtpEmail.htmlContent = `${emailContent}`;
         sendSmtpEmail.sender = {
-          name: "Sender Name",
-          email: "sender@example.com",
+          name: config.name,
+          email:config.email,
         };
         sendSmtpEmail.to = [{ email: `${user.emailId}` }];
         apiInstance.sendTransacEmail(sendSmtpEmail).then(
@@ -363,7 +363,10 @@ exports.emailNotification = async (
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(
     function (data) {
@@ -579,8 +582,8 @@ exports.saveUser = (req, res) => {
                   sendSmtpEmail.subject = `${subject}`;
                   sendSmtpEmail.htmlContent = `${emailContent}`;
                   sendSmtpEmail.sender = {
-                    name: "Sender Name",
-                    email: "sender@example.com",
+                    name: config.name,
+                    email:config.email,
                   };
                   sendSmtpEmail.to = [{ email: `${result.emailId}` }];
                   apiInstance.sendTransacEmail(sendSmtpEmail).then(
@@ -666,7 +669,10 @@ exports.saveMasterLogin = async (req, res) => {
 
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${user.emailId}` }];
 
     apiInstance.sendTransacEmail(sendSmtpEmail).then(

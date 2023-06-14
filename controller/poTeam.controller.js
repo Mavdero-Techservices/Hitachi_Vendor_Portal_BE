@@ -617,7 +617,10 @@ exports.getMailIdbyvendorNo = (req, res) => {
 exports.PoApprovalMail = (req, res, subject, emailContent, email) => {
   sendSmtpEmail.subject = subject;
   sendSmtpEmail.htmlContent = emailContent;
-  sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: email }];
 
   apiInstance
@@ -986,7 +989,10 @@ exports.mailRejectPo_Order = (
     attachment.content = fs.readFileSync(filePath).toString("base64");
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${email}` }];
     sendSmtpEmail.attachment = [attachment];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(
@@ -1000,7 +1006,10 @@ exports.mailRejectPo_Order = (
   } else {
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${email}` }];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(
       function (data) {
@@ -1069,8 +1078,8 @@ exports.POInvoiceMailApprove = async (req, res) => {
         sendSmtpEmail.subject = `${subject}`;
         sendSmtpEmail.htmlContent = `${emailContent}<br>${tableContent}<br>${approveButton} ${rejectButton}`;
         sendSmtpEmail.sender = {
-          name: "Sender Name",
-          email: "sender@example.com",
+          name: config.name,
+          email:config.email,
         };
         sendSmtpEmail.to = [{ email: `${email}` }];
         apiInstance.sendTransacEmail(sendSmtpEmail).then(
@@ -1142,7 +1151,10 @@ exports.mailApprovePo_Invoice = (req, res) => {
   const emailContent = "test";
   sendSmtpEmail.subject = "hi";
   sendSmtpEmail.htmlContent = `${emailContent}<br>${tableContent}<br>${approveButton} ${rejectButton}`;
-  sendSmtpEmail.sender = { name: "Sender Name", email: "sender@example.com" };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: "apitestmail4@gmail.com" }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(
     function (data) {

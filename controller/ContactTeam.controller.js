@@ -60,7 +60,10 @@ exports.emailUpdateTabNotification = (
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));

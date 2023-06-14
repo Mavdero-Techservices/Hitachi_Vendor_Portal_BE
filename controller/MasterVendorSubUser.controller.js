@@ -35,7 +35,10 @@ exports.emailUserCreationReg = (
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
@@ -136,7 +139,21 @@ exports.getAllMasterVendorSubUser = (req, res) => {
         .json({ status: "error", data: { message: "Error Response", err } });
     });
 };
-
+exports.getMasterVendorById = (req, res) => {
+  var userId = req.body.userId;
+  console.log("userID",userId);
+  MasterVendorSubUserSchema.findAll({
+    where: { userId: userId },
+  })
+  .then((data) => {
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
+};
 exports.getMasterVendorSubUserById = (req, res) => {
   var SubUserId = req.body.SubUserId;
   MasterVendorSubUserSchema.findOne({

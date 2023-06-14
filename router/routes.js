@@ -163,7 +163,7 @@ router.put("/updateVendorFile/:userId", vendorFile.updateVendorFiles);
 router.post('/saveMasterVendorSubUser',MasterVendorSubUser.saveMasterVendorSubUser);
 router.post("/getMasterVendorSubUserById",MasterVendorSubUser.getMasterVendorSubUserById);
 router.get("/getAllMasterVendorSubUser",MasterVendorSubUser.getAllMasterVendorSubUser);
-
+router.post("/getMasterVendorById",MasterVendorSubUser.getMasterVendorById);
 router.put("/UpdateMasterSubUserById",MasterVendorSubUser.UpdateMasterSubUserById);
 
 router.put("/UpdateMasterVendorSubUserById",MasterVendorSubUser.UpdateMasterVendorSubUserById);

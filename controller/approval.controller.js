@@ -185,7 +185,10 @@ exports.emailApprovalNotification = (
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
@@ -224,7 +227,10 @@ exports.emailRejectNotification = (
     attachment.content = fs.readFileSync(level1rejectFileDoc).toString('base64');
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
     sendSmtpEmail.attachment = [attachment];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
@@ -235,7 +241,10 @@ exports.emailRejectNotification = (
   } else {
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
       console.log('mail sent successfully: ' + JSON.stringify(data));
@@ -261,7 +270,10 @@ exports.emailJapanApprovalNotification = (
   // };
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
@@ -299,7 +311,10 @@ exports.emailJapanRejectNotification = (
   // attachment.content = fs.readFileSync(level2rejectFileDoc).toString('base64');
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
   // sendSmtpEmail.attachment = [attachment];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
@@ -319,7 +334,10 @@ exports.emailMRTApprovalNotification = (
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
@@ -357,7 +375,10 @@ exports.emailMRTRejectNotification = (
     attachment.content = fs.readFileSync(level3rejectFileDoc).toString('base64');
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
     sendSmtpEmail.attachment = [attachment];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
@@ -368,7 +389,10 @@ exports.emailMRTRejectNotification = (
   } else {
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
       console.log('mail sent successfully: ' + JSON.stringify(data));
