@@ -5,7 +5,7 @@ module.exports = {
     // user: "vms@hisysmc.com",
     // pass: "May64863", 
     // service: 'gmail',
-  // user: 'apitestmail4@gmail.com',
-  // pass: 'gmlubwghcqtqkldm'
-  apiKey:'Replace-apikey'
+  apiKey:'Replace-Apikey',
+  name: "Hitachi-systems",
+  email: "sudhir.kumar.dp@hitachi-systems.com",
   };

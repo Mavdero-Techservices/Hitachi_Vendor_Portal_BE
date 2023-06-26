@@ -30,16 +30,16 @@ var storage = multer.diskStorage({
     cb(
       null,
       filedirect[0] +
-        "_" +
-        randomNumber +
-        "." +
-        filedirect[1]
+      "_" +
+      randomNumber +
+      "." +
+      filedirect[1]
     );
   },
 });
 
 exports.saveBankDetail = (req, res) => {
-  bankdetailDocPath = "";
+ bankdetailDocPath = "";
 
   var upload = multer({ storage: storage }).fields([
     { name: "bankdetailDoc", maxCount: 1 },
@@ -54,6 +54,8 @@ exports.saveBankDetail = (req, res) => {
           userId: req.body.userId,
         },
       }).then(async (user) => {
+
+
         if (!user) {
           const bankdetailDoc = bankdetailDocPath;
           const bankId = "bank" + Math.floor(100000 + Math.random() * 900000);
@@ -89,23 +91,23 @@ exports.saveBankDetail = (req, res) => {
           var bDetails = await BankdetailSchema.findOne({
             where: { userId: req.body.userId },
           });
-      
-      
+
+
           if (err) {
             console.log("InsideErr", err);
             return "err";
           } else {
             if (req.files.bankdetailDoc) {
               let bankdetailDoc = bankdetailDocPath;
-      
+
               if (bDetails.bankdetailDoc === req.body.bankdetailDoc) {
                 bankdetailDoc = req.body.bankdetailDoc;
               } else {
                 bankdetailDoc = bankdetailDocPath;
                 directoryDelete = bDetails.bankdetailDoc;
-      
+
                 console.log("directoryDelete", directoryDelete);
-      
+
                 if (directoryDelete) {
                   fs.unlink(directoryDelete, (err) => {
                     if (err) {
@@ -114,7 +116,7 @@ exports.saveBankDetail = (req, res) => {
                   });
                 }
               }
-      
+
               req.body.bankdetailDoc = bankdetailDoc;
               BankdetailSchema.update(req.body, {
                 where: {
@@ -136,7 +138,7 @@ exports.saveBankDetail = (req, res) => {
                 });
             } else {
               let bankdetailDoc = bankdetailDocPath;
-      
+
               if (bDetails.bankdetailDoc === req.body.bankdetailDoc) {
                 bankdetailDoc = req.body.bankdetailDoc;
               } else {
@@ -150,7 +152,7 @@ exports.saveBankDetail = (req, res) => {
                   });
                 }
               }
-      
+
               req.body.bankdetailDoc = bankdetailDoc;
               BankdetailSchema.update(req.body, {
                 where: {

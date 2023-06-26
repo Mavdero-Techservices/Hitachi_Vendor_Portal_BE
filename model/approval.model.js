@@ -3,6 +3,12 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
         userId: {
             type: Sequelize.STRING,
         },
+        companyName: {
+            type: Sequelize.STRING,
+        },
+        image: {
+            type: Sequelize.TEXT('long'),
+        },
         level1Status: {
             type: Sequelize.STRING,
         },

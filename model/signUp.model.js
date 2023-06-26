@@ -50,7 +50,10 @@ module.exports = (sequelize, Sequelize) => {
         },
         Ticket_ID:{
             type: Sequelize.STRING  
-        }
+        },
+        Country_Region_Code: {
+            type: Sequelize.STRING,
+        },
     });
     return SignUpSchema;
 };

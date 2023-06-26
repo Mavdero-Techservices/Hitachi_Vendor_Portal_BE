@@ -6,45 +6,7 @@ const PDFDocument = require("pdfkit");
 const PDFDocument2 = require("pdfkit-table");
 const fs = require("fs");
 const blobStream = require("blob-stream");
-// exports.postCompdetail = [
-//     //validate form
-//     check("RPD_Doc")
-//         .not()
-//         .isEmpty()
-//         .withMessage("RPD_Doc is required"),
-//     check("COC_Doc")
-//         .not()
-//         .isEmpty()
-//         .withMessage("COC_Doc is required"),
-//     check("NDA_Doc")
-//         .not()
-//         .isEmpty()
-//         .withMessage("NDA_Doc is required"),
-//     async (req, res) => {
-//         const errors = validationResult(req);
-//         if (!errors.isEmpty()) {
-//             return res.status(422).json({ errors: errors.array() });
-//         }
-//         try {
-//             const compdetail = await CompdetailSchema.create({
-//                 userid: req.body.userid,
-//                 RPD_Doc: req.body.RPD_Doc,
-//                 COC_Doc: req.body.COC_Doc,
-//                 NDA_Doc: req.body.NDA_Doc,
-//             });
-//             res.send({
-//                 message: "compdetail created successfully",
-//                 status: "success",
-//                 compdetail: compdetail,
-//             });
-//         } catch (error) {
-//             res.status(500).json({
-//                 message: "Error creating compdetail",
-//                 error: error.message,
-//             });
-//         }
-//     },
-// ];
+
 //saveComplianceDetail
 let directory_name = "uploads";
 const path = require("path");
@@ -76,10 +38,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -101,10 +63,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
 
@@ -126,10 +88,10 @@ var storage = multer.diskStorage({
       cb(
         null,
         filedirect[0] +
-          "_" +
-          randomNumber +
-          "." +
-          filedirect[1]
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1]
       );
     }
   },
@@ -137,7 +99,7 @@ var storage = multer.diskStorage({
 
 exports.saveComplianceDetail = (req, res) => {
   RPD_DocPath = "";
-  COC_DocPath = "";
+   COC_DocPath = "";
   NDA_DocPath = "";
 
   var upload = multer({ storage: storage }).fields([
@@ -164,11 +126,13 @@ exports.saveComplianceDetail = (req, res) => {
           // id: req.body.id,
         },
       }).then(async (user) => {
+
+       
+        
         if (!user) {
-          console.log("save api call");
-          const NDA_Doc = NDA_DocPath;
-          const COC_Doc = COC_DocPath;
-          const RPD_Doc = RPD_DocPath;
+          const NDA_Doc = RPD_DocPath
+          const COC_Doc = COC_DocPath
+          const RPD_Doc = NDA_DocPath
           const complianceId =
             "compliance" + Math.floor(100000 + Math.random() * 900000);
           const userId = req.body.userId;
@@ -190,7 +154,7 @@ exports.saveComplianceDetail = (req, res) => {
           var cDetails = await CompliancedetailSchema.findOne({
             where: { userId: req.body.userId },
           });
-      
+
           if (err) {
             return "err";
           } else {
@@ -202,7 +166,7 @@ exports.saveComplianceDetail = (req, res) => {
               let RPD_Doc = RPD_DocPath;
               let COC_Doc = COC_DocPath;
               let NDA_Doc = NDA_DocPath;
-      
+
               if (cDetails.RPD_Doc === req.body.RPD_Doc) {
                 RPD_Doc = req.body.RPD_Doc;
               } else {
@@ -216,7 +180,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (cDetails.COC_Doc === req.body.COC_Doc) {
                 COC_Doc = req.body.COC_Doc;
               } else {
@@ -230,7 +194,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (cDetails.NDA_Doc === req.body.NDA_Doc) {
                 NDA_Doc = req.body.NDA_Doc;
               } else {
@@ -244,7 +208,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               req.body.NDA_Doc = NDA_Doc;
               req.body.COC_Doc = COC_Doc;
               req.body.RPD_Doc = RPD_Doc;
@@ -270,7 +234,7 @@ exports.saveComplianceDetail = (req, res) => {
               let RPD_Doc = RPD_DocPath;
               let COC_Doc = COC_DocPath;
               let NDA_Doc = NDA_DocPath;
-      
+
               if (cDetails.RPD_Doc === req.body.RPD_Doc) {
                 RPD_Doc = req.body.RPD_Doc;
               } else {
@@ -284,7 +248,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (cDetails.COC_Doc === req.body.COC_Doc) {
                 COC_Doc = req.body.COC_Doc;
               } else {
@@ -298,7 +262,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               if (cDetails.NDA_Doc === req.body.NDA_Doc) {
                 NDA_Doc = req.body.NDA_Doc;
               } else {
@@ -312,7 +276,7 @@ exports.saveComplianceDetail = (req, res) => {
                   });
                 }
               }
-      
+
               req.body.NDA_Doc = NDA_Doc;
               req.body.COC_Doc = COC_Doc;
               req.body.RPD_Doc = RPD_Doc;
@@ -528,7 +492,7 @@ exports.downloadPdfUploads = (req, res, next) => {
 exports.readPdf = (req, res, next) => {
   const fs = require("fs");
   var hostName = req.header("host");
-  const baseUrl = `http://localhost:12707/downloadPdf/`;
+  const baseUrl = `${process.env.HOST}:${process.env.PORT}/downloadPdf/`;
   let directory_name = "pdf";
   fs.readdir(directory_name, function (err, files) {
     if (err) {
@@ -555,7 +519,7 @@ exports.readPdf = (req, res, next) => {
 exports.readPdfUploads = (req, res, next) => {
   const fs = require("fs");
   var hostName = req.header("host");
-  const baseUrl = `http://localhost:12707/downloadPdfUploads/`;
+  const baseUrl = `${process.env.HOST}:${process.env.PORT}/downloadPdfUploads/`;
   let directory_name = "uploads";
   fs.readdir(directory_name, function (err, files) {
     if (err) {

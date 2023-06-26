@@ -232,20 +232,29 @@ exports.getCountry = (req, res, next) => {
 const axios = require("axios");
 //getState&cityByzipcode
 exports.getStateAndcityByzipcode = async (req, res, next) => {
+ 
   try {
     const code = req.params.code;
     const Post_Code = req.params.Post_Code;
     const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${Post_Code}&country=${code}&username=karthiga&style=full`;
+
     const result = await axios.get(url);
-    return res.json({ status: "success", data: result.data });
+    const codes = result.data.postalcodes;
+
+
+    const filteredCodes = codes.filter((item) => {
+      return item.postalcode === Post_Code
+    })
+
+    return res.json({ status: "success", postalcodes: filteredCodes });
+
   } catch (err) {
     console.error(err);
     return res.status(500).json({ status: "error", message: "Internal server error" });
   }
 };
 
-
-// var nodemailer = require("nodemailer");
+var nodemailer = require("nodemailer");
 // const config = require("../config/auth.config");
 // const user = config.user;
 // const pass = config.pass;
@@ -259,16 +268,17 @@ exports.getStateAndcityByzipcode = async (req, res, next) => {
 //     pass: pass,
 //   },
 // });
-// let transporter = nodemailer.createTransport({
-//   host: 'smtp.office365.com',
-//   port: 587,
-//   secure: false,
-//   requireTLS: true,
-//   auth: {
-//       user: 'apitestmail4@gmail.com',
-//       pass: 'gmlubwghcqtqkldm'
-//   }
-// });
+
+let transporter = nodemailer.createTransport({
+  host: 'smtp.office365.com',
+  port: 587,
+  secure: false,
+  requireTLS: true,
+  auth: {
+    user: 'apitestmail4@gmail.com',
+    pass: 'gmlubwghcqtqkldm'
+  }
+});
 
 exports.emailSubmitNotification = async (
   req,
@@ -281,11 +291,14 @@ exports.emailSubmitNotification = async (
   try {
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
-    apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
       console.log('mail sent successfully: ' + JSON.stringify(data));
-    }, function(error) {
+    }, function (error) {
       console.error(error);
     });
   } catch (error) {
@@ -302,8 +315,9 @@ exports.updateVendor = async (req, res) => {
     var submitEmailId = await SignUpSchema.findOne({
       where: { userId: req.params.userId },
     });
+    console.log("emailID::", submitEmailId);
 
-    const emailId = submitEmailId.emailId; 
+    const emailId = submitEmailId.emailId;
     var subject = `Hitachi Vendor Creation Submit Status`;
     var emailContent = `
                         <h4>Hi ${userId}</h4>

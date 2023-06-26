@@ -11,12 +11,13 @@ var rejectFile1DocPath = "";
 var rejectFile2DocPath = "";
 var rejectFile3DocPath = "";
 const bcrypt = require('bcrypt');
+const config = require("../config/auth.config");
 var jwt = require("jsonwebtoken");
 const fs = require('fs');
 const SibApiV3Sdk = require('sib-api-v3-sdk');
 const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const apiKey = defaultClient.authentications['api-key'];
-apiKey.apiKey = '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';
+apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -160,20 +161,19 @@ var storage = multer.diskStorage({
   },
 });
 
-var nodemailer = require("nodemailer");
-const config = require("../config/auth.config");
-const { log } = require("winston");
-const user = config.user;
-const pass = config.pass;
+// var nodemailer = require("nodemailer");
+// const config = require("../config/auth.config");
+// const user = config.user;
+// const pass = config.pass;
 
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  // service: 'Outlook365',
-  auth: {
-    user: user,
-    pass: pass,
-  },
-});
+// var transporter = nodemailer.createTransport({
+//   service: "gmail",
+//   // service: 'Outlook365',
+//   auth: {
+//     user: user,
+//     pass: pass,
+//   },
+// });
 
 exports.emailApprovalNotification = (
   req,
@@ -185,11 +185,14 @@ exports.emailApprovalNotification = (
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
-  }, function(error) {
+  }, function (error) {
     console.error(error);
   });
 };
@@ -203,7 +206,7 @@ exports.emailRejectNotification = (
   emailId,
   level1rejectFileDoc
 ) => {
-  if (level1rejectFileDoc){
+  if (level1rejectFileDoc) {
     const format = level1rejectFileDoc.split(".");
 
     // var mailOptions = {
@@ -224,7 +227,10 @@ exports.emailRejectNotification = (
     attachment.content = fs.readFileSync(level1rejectFileDoc).toString('base64');
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
     sendSmtpEmail.attachment = [attachment];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
@@ -232,10 +238,13 @@ exports.emailRejectNotification = (
     }, function (error) {
       console.error(error);
     });
-  }else{
+  } else {
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
       console.log('mail sent successfully: ' + JSON.stringify(data));
@@ -243,7 +252,6 @@ exports.emailRejectNotification = (
       console.error(error);
     });
   }
-  
 };
 
 exports.emailJapanApprovalNotification = (
@@ -252,21 +260,24 @@ exports.emailJapanApprovalNotification = (
   subject,
   emailContent,
   returnFlag,
-  mVendoremailId
+  emailId
 ) => {
-  var mailOptions = {
-    from: user,
-    to: `${mVendoremailId}`,
-    subject: subject,
-    html: emailContent,
-  };
+  // var mailOptions = {
+  //   from: user,
+  //   to: `${emailId}`,
+  //   subject: subject,
+  //   html: emailContent,
+  // };
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
-  }, function(error) {
+  }, function (error) {
     console.error(error);
   });
 };
@@ -277,7 +288,7 @@ exports.emailJapanRejectNotification = (
   subject,
   emailContent,
   returnFlag,
-  mVendoremailId,
+  emailId,
 ) => {
   // const format = level2rejectFileDoc.split(".");
 
@@ -300,12 +311,15 @@ exports.emailJapanRejectNotification = (
   // attachment.content = fs.readFileSync(level2rejectFileDoc).toString('base64');
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
   // sendSmtpEmail.attachment = [attachment];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
-  }, function(error) {
+  }, function (error) {
     console.error(error);
   });
 };
@@ -316,15 +330,18 @@ exports.emailMRTApprovalNotification = (
   subject,
   emailContent,
   returnFlag,
-  mVendoremailId
+  emailId
 ) => {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${mVendoremailId}` }];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
     console.log('mail sent successfully: ' + JSON.stringify(data));
-  }, function(error) {
+  }, function (error) {
     console.error(error);
   });
 };
@@ -338,46 +355,51 @@ exports.emailMRTRejectNotification = (
   emailId,
   level3rejectFileDoc
 ) => {
-  if (level3rejectFileDoc){
-  const format = level3rejectFileDoc.split(".");
-
-  // var mailOptions = {
-  //   from: user,
-  //   to: `${emailId}`,
-  //   subject: subject,
-  //   html: emailContent,
-  //   attachments: [
-  //     {
-  //       // utf-8 string as an attachment
-  //       filename: "attachment." + format[1],
-  //       path: level3rejectFileDoc,
-  //     },
-  //   ],
-  // };
-  const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
-  attachment.name = "attachment." + format[1];
-  attachment.content = fs.readFileSync(level3rejectFileDoc).toString('base64');
-  sendSmtpEmail.subject = `${subject}`;
-  sendSmtpEmail.htmlContent = `${emailContent}`;
-  sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
-  sendSmtpEmail.to = [{ email: `${emailId}` }];
-  sendSmtpEmail.attachment = [attachment];
-  apiInstance.sendTransacEmail(sendSmtpEmail).then(function(data) {
-    console.log('mail sent successfully: ' + JSON.stringify(data));
-  }, function(error) {
-    console.error(error);
-  });
-}else{
+  if (level3rejectFileDoc) {
+    const format = level3rejectFileDoc.split(".");
+    // var mailOptions = {
+    //   from: user,
+    //   to: `${emailId}`,
+    //   subject: subject,
+    //   html: emailContent,
+    //   attachments: [
+    //     {
+    //       // utf-8 string as an attachment
+    //       filename: "attachment." + format[1],
+    //       path: level3rejectFileDoc,
+    //     },
+    //   ],
+    // };
+    const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
+    attachment.name = "attachment." + format[1];
+    attachment.content = fs.readFileSync(level3rejectFileDoc).toString('base64');
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
-    sendSmtpEmail.sender = { name: 'Sender Name', email: 'sender@example.com' };
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
+    sendSmtpEmail.to = [{ email: `${emailId}` }];
+    sendSmtpEmail.attachment = [attachment];
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
+      console.log('mail sent successfully: ' + JSON.stringify(data));
+    }, function (error) {
+      console.error(error);
+    });
+  } else {
+    sendSmtpEmail.subject = `${subject}`;
+    sendSmtpEmail.htmlContent = `${emailContent}`;
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
     sendSmtpEmail.to = [{ email: `${emailId}` }];
     apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
       console.log('mail sent successfully: ' + JSON.stringify(data));
     }, function (error) {
       console.error(error);
     });
-}
+  }
 };
 
 exports.saveApprovalStatus = (req, res) => {
@@ -415,100 +437,106 @@ exports.saveApprovalStatus = (req, res) => {
       }
     } else {
 
-    var userEmailId = await SignUpSchema.findOne({
-      where: { userId: req.body.userId },
-    });
-    if (err) {
-      return "err";
-    } else {
-      var file = req.files;
-      // var path = Object.entries(file).map(([key, value]) => {
-      //   Object.entries(value).map(([key2, value2]) => {
-      //     if (value2.fieldname === "level1rejectFileDoc") {
-      //       rejectFile1DocPath = value2.path;
-      //     }
-      //     if (value2.fieldname === "level2rejectFileDoc") {
-      //       rejectFile2DocPath = value2.path;
-      //     }
-      //   });
-      // });
-      const level1rejectFileDoc = rejectFile1DocPath;
-      const level2rejectFileDoc = rejectFile2DocPath;
-      const level3rejectFileDoc = rejectFile3DocPath;
-      const userId = req.body.userId;
-      const emailId = userEmailId.emailId;
-      if (req.body.level1Status==='rejected'){
-        req.body.submitStatus ="rejected"
-        const vdetail = await VdetailSchema.update(req.body,{
-          where: { userId: userId }
-        }) 
-      }
-      const user = new ApprovalSchema({
-        userId: userId,
-        level1Status: req.body.level1Status,
-        level1RejectComment: req.body.level1RejectComment,
-        level1rejectFileDoc: level1rejectFileDoc,
-        level2Status: req.body.level2Status,
-        level2RejectComment: req.body.level2RejectComment,
-        level2rejectFileDoc: level2rejectFileDoc,
-        level2Date: null,
-        level3Status: req.body.level3Status,
-        level3RejectComment: req.body.level3RejectComment,
-        level3rejectFileDoc: level3rejectFileDoc,
-        level3Date: null,
+      var userEmailId = await SignUpSchema.findOne({
+        where: { userId: req.body.userId },
       });
-      user
-        .save()
-        .then((data) => {
-          if (data.level1Status === "approved") {
-            var subject = `Hitachi Vendor Approval`;
-            var emailContent = `
+
+      var basicData = await VdetailSchema.findOne({
+        where: { userId: req.body.userId },
+      });
+      if (err) {
+        return "err";
+      } else {
+        var file = req.files;
+        // var path = Object.entries(file).map(([key, value]) => {
+        //   Object.entries(value).map(([key2, value2]) => {
+        //     if (value2.fieldname === "level1rejectFileDoc") {
+        //       rejectFile1DocPath = value2.path;
+        //     }
+        //     if (value2.fieldname === "level2rejectFileDoc") {
+        //       rejectFile2DocPath = value2.path;
+        //     }
+        //   });
+        // });
+        const level1rejectFileDoc = rejectFile1DocPath;
+        const level2rejectFileDoc = rejectFile2DocPath;
+        const level3rejectFileDoc = rejectFile3DocPath;
+        const userId = req.body.userId;
+        const emailId = userEmailId.emailId;
+        if (req.body.level1Status === 'rejected') {
+          req.body.submitStatus = "rejected"
+          const vdetail = await VdetailSchema.update(req.body, {
+            where: { userId: userId }
+          })
+        }
+        const user = new ApprovalSchema({
+          userId: userId,
+          companyName: userEmailId?.companyName,
+          image: basicData?.image,
+          level1Status: req.body.level1Status,
+          level1RejectComment: req.body.level1RejectComment,
+          level1rejectFileDoc: level1rejectFileDoc,
+          level2Status: req.body.level2Status,
+          level2RejectComment: req.body.level2RejectComment,
+          level2rejectFileDoc: level2rejectFileDoc,
+          level2Date: null,
+          level3Status: req.body.level3Status,
+          level3RejectComment: req.body.level3RejectComment,
+          level3rejectFileDoc: level3rejectFileDoc,
+          level3Date: null,
+        });
+        user
+          .save()
+          .then((data) => {
+            if (data.level1Status === "approved") {
+              var subject = `Hitachi Vendor Approval`;
+              var emailContent = `
                         <h4>Hi ${data.userId}</h4>
                         <p>Your Vendor Registration request is approved by Vendor Creation Team and proceeded for next stage of Approval.</p>
                         <p>Thanks & regards,</p>
                         </div>`;
-            var returnFlag = false;
-            exports.emailApprovalNotification(
-              req,
-              res,
-              subject,
-              emailContent,
-              returnFlag,
-              emailId
-            );
-          } else {
-            var subject = `Hitachi Vendor Request Rejected`;
-            var emailContent = `
+              var returnFlag = false;
+              exports.emailApprovalNotification(
+                req,
+                res,
+                subject,
+                emailContent,
+                returnFlag,
+                emailId
+              );
+            } else {
+              var subject = `Hitachi Vendor Request Rejected`;
+              var emailContent = `
                         <h4>Hi ${data.userId}</h4>
                         <p>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.level1RejectComment}</p>
                         </div>`;
-            var returnFlag = false;
-            exports.emailRejectNotification(
-              req,
-              res,
-              subject,
-              emailContent,
-              returnFlag,
-              emailId,
-              level1rejectFileDoc
-            );
-          }
+              var returnFlag = false;
+              exports.emailRejectNotification(
+                req,
+                res,
+                subject,
+                emailContent,
+                returnFlag,
+                emailId,
+                level1rejectFileDoc
+              );
+            }
 
-          return res.status(200).json({
-            status: "success",
-            message: "Approval Detail Saved Successfully",
-            data,
+            return res.status(200).json({
+              status: "success",
+              message: "Approval Detail Saved Successfully",
+              data,
+            });
+          })
+          .catch((err) => {
+            return res.status(500).json({
+              message:
+                err.message ||
+                "Some error occurred while creating the ApprovalDetail schema.",
+            });
           });
-        })
-        .catch((err) => {
-          return res.status(500).json({
-            message:
-              err.message ||
-              "Some error occurred while creating the ApprovalDetail schema.",
-          });
-        });
+      }
     }
-  }
   });
 };
 
@@ -600,126 +628,127 @@ exports.updateApprovalStatus = async (req, res) => {
     }
 
     async function NewData() {
+      var userEmailId = await SignUpSchema.findOne({
+        where: { userId: req.body.userId },
+      });
 
-    var userEmailId = await SignUpSchema.findOne({
-      where: { userId: req.body.userId },
-    });
-
-    var masterVendoremail = await vendorCommunicationDetailsSchema.findOne({
-      where: { userId: req.body.userId },
-    });
+      var masterVendoremail = await vendorCommunicationDetailsSchema.findOne({
+        where: { userId: req.body.userId },
+      });
 
 
-    if (err) {
-      return "err";
-    } else {
-      const level1rejectFileDoc = rejectFile1DocPath;
-      const level2rejectFileDoc = rejectFile2DocPath;
-      const level3rejectFileDoc = rejectFile3DocPath;
-      req.body.level1rejectFileDoc = level1rejectFileDoc;
-      req.body.level2rejectFileDoc = level2rejectFileDoc;
-      req.body.level3rejectFileDoc = level3rejectFileDoc;
-      const emailId = userEmailId.emailId;
-      const mVendoremailId = masterVendoremail.mastervendor_email;
-      const name = masterVendoremail.financeSpoccontactName;
-      if ((req.body.level2Status === "approved")|| req.body.level3Status === "approved") {
-        // let vendorCode = 'VDIS-' + Math.floor(1000 + Math.random() * 9000);
-        req.body.finalStatus = "Approved";
-        SignUpSchema.update(req.body, {
+      if (err) {
+        return "err";
+      } else {
+        const level1rejectFileDoc = rejectFile1DocPath;
+        const level2rejectFileDoc = rejectFile2DocPath;
+        const level3rejectFileDoc = rejectFile3DocPath;
+        req.body.level1rejectFileDoc = level1rejectFileDoc;
+        req.body.level2rejectFileDoc = level2rejectFileDoc;
+        req.body.level3rejectFileDoc = level3rejectFileDoc;
+        const emailId = userEmailId.emailId;
+        const mVendoremailId = masterVendoremail.mastervendor_email;
+        const name = masterVendoremail.financeSpoccontactName;
+        console.log("emailIDReject::", userEmailId.emailId);
+        console.log("masteremailApprove::", mVendoremailId);
+        if ((req.body.level2Status === "approved") || req.body.level3Status === "approved") {
+          // let vendorCode = 'VDIS-' + Math.floor(1000 + Math.random() * 9000);
+          req.body.finalStatus = "Approved";
+          SignUpSchema.update(req.body, {
+            where: { userId: userId },
+          })
+        }
+        if (req.body.level3Status === 'rejected') {
+          req.body.submitStatus = "rejected"
+          const vdetail = await VdetailSchema.update(req.body, {
+            where: { userId: userId }
+          })
+        }
+        ApprovalSchema.update(req.body, {
           where: { userId: userId },
         })
-      }
-      if (req.body.level3Status === 'rejected') {
-        req.body.submitStatus = "rejected"
-        const vdetail = await VdetailSchema.update(req.body, {
-          where: { userId: userId }
-        })
-      }
-      ApprovalSchema.update(req.body, {
-        where: { userId: userId },
-      })
-        .then(() => {
-          if (req.body.level2Status === "approved") {
-            var subject = `Hitachi Japan Team Approval`;
-            var emailContent = `
+          .then(() => {
+            if (req.body.level2Status === "approved") {
+              var subject = `Hitachi Japan Team Approval`;
+              var emailContent = `
                   <h4>Hi ${userId}</h4>
                   <p>Your Vendor Registration request is approved by Japan Team and proceeded for next stage of Approval.</p>
                   <p>Thanks & regards,</p>
                   </div>`;
-            var returnFlag = false;
-            exports.emailJapanApprovalNotification(
-              req,
-              res,
-              subject,
-              emailContent,
-              returnFlag,
-              mVendoremailId
-            );
-          }
-          if (req.body.level2Status === "rejected") {
-            var subject = `Hitachi Japan Team Request Rejected`;
-            var emailContent = `
+              var returnFlag = false;
+              exports.emailJapanApprovalNotification(
+                req,
+                res,
+                subject,
+                emailContent,
+                returnFlag,
+                emailId
+              );
+            }
+            if (req.body.level2Status === "rejected") {
+              var subject = `Hitachi Japan Team Request Rejected`;
+              var emailContent = `
                         <h4>Hi ${req.body.userId}</h4>
                         <p>Your Vendor Registration request is Rejected by Japan Team </p>
                         </div>`;
-            var returnFlag = false;
-            exports.emailJapanRejectNotification(
-              req,
-              res,
-              subject,
-              emailContent,
-              returnFlag,
-              emailId,
-            );
-          }
-          if (req.body.level3Status === "approved") {
-            var subject = `Hitachi MRT Team Approval`;
-            var emailContent = `
+              var returnFlag = false;
+              exports.emailJapanRejectNotification(
+                req,
+                res,
+                subject,
+                emailContent,
+                returnFlag,
+                emailId,
+              );
+            }
+            if (req.body.level3Status === "approved") {
+              var subject = `Hitachi MRT Team Approval`;
+              var emailContent = `
                   <h4>Hi ${userId}</h4>
                   <p>Your Vendor Registration request is approved by MRT Team and proceeded for next stage of Approval.</p>
                   <p>Thanks & regards,</p>
                   </div>`;
-            var returnFlag = false;
-            exports.emailMRTApprovalNotification(
-              req,
-              res,
-              subject,
-              emailContent,
-              returnFlag,
-              mVendoremailId
-            );
-          }
-          if (req.body.level3Status === "rejected") {
-            var subject = `Hitachi MRT Request Rejected`;
-            var emailContent = `
+              var returnFlag = false;
+              exports.emailMRTApprovalNotification(
+                req,
+                res,
+                subject,
+                emailContent,
+                returnFlag,
+                emailId
+              );
+            }
+            if (req.body.level3Status === "rejected") {
+              var subject = `Hitachi MRT Request Rejected`;
+              var emailContent = `
                         <h2>Hi ${req.body.userId}</h2>
                         <p>Your Vendor Registration request is Rejected by MRT Team because of, ${req.body.level3RejectComment}</p>
                         </div>`;
-            var returnFlag = false;
-            exports.emailMRTRejectNotification(
-              req,
-              res,
-              subject,
-              emailContent,
-              returnFlag,
-              emailId,
-              level3rejectFileDoc
-            );
-          }
-          res.status(200).send({
-            message: "ApprovalStatus was updated successfully!",
-            status: "success",
+              var returnFlag = false;
+              exports.emailMRTRejectNotification(
+                req,
+                res,
+                subject,
+                emailContent,
+                returnFlag,
+                emailId,
+                level3rejectFileDoc
+              );
+            }
+            res.status(200).send({
+              message: "ApprovalStatus was updated successfully!",
+              status: "success",
+            });
+          })
+          .catch((err) => {
+            res.status(500).send({
+              message:
+                err.message ||
+                "Some error occurred while updating the ApprovalStatus schema.",
+            });
           });
-        })
-        .catch((err) => {
-          res.status(500).send({
-            message:
-              err.message ||
-              "Some error occurred while updating the ApprovalStatus schema.",
-          });
-        });
+      }
     }
-  }
   });
 };
 

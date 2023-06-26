@@ -51,7 +51,7 @@ exports.savePeriodicRequest = (req, res) => {
       return "err";
     } else {
       const documentFileDoc = documentFileDocPath;
-      let vendor = req.body.vendorCode;
+      let vendor = req.body.Vendor_No;
       const user = new PeriodicReqSchema({
         quaterly: req.body.quaterly,
         userId: req.body.userId,
@@ -85,7 +85,7 @@ exports.updatePeriodicRequest = async (req, res) => {
     let row = { ...req.body[i] };
 
     PeriodicReqSchema.update(row, {
-      where: { userId: row.userId },
+      where: { id: row.id },
       validate: true,
       returning: true,
     });
@@ -111,7 +111,7 @@ exports.updatePeriodicRequest = async (req, res) => {
           userId: row.userId,
           docName: row.documentFileDoc,
           periodic_id: row.id,
-          vendorId: row.vendorCode[j].vendorCode,
+          vendorId: row.vendorCode[j].Vendor_No,
         });
         user.save();
       } else {
@@ -120,7 +120,7 @@ exports.updatePeriodicRequest = async (req, res) => {
           userId: row.userId,
           docName: row.documentFileDoc,
           periodic_id: row.id,
-          vendorId: row.vendorCode[j].vendorCode,
+          vendorId: row.vendorCode[j].Vendor_No,
         });
         user.save();
       }

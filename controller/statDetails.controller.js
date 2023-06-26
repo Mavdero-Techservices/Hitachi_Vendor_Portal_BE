@@ -319,14 +319,16 @@ var storage = multer.diskStorage({
 });
 //savestatutory
 exports.saveStatutoryDetail = (req, res) => {
-  GST_DocPath = "";
-  PAN_DocPath = "";
-  form_10f_DocPath = "";
-  TAN_DocPath = "";
-  PE_Declaration_DocPath = "";
-  MSME_DocPath = "";
-  Tax_residency_DocPath = "";
-  fileDisclosure_DocPath = "";
+
+GST_DocPath = ""; 
+PAN_DocPath = "";
+form_10f_DocPath = "";
+PE_Declaration_DocPath = "";
+TAN_DocPath = "";
+MSME_DocPath = "";
+Tax_residency_DocPath = "";
+fileDisclosure_DocPath = "";
+  
 
   var upload = multer({ storage: storage }).fields([
     {
@@ -375,6 +377,11 @@ exports.saveStatutoryDetail = (req, res) => {
           userId: req.body.userId,
         },
       }).then(async (user) => {
+
+        console.log("req--->", req.files);
+
+      
+
         if (!user) {
           const GST_Vendor_Type = req.body.GST_Vendor_Type;
           const GST_Registration_No = req.body.GST_Registration_No;
