@@ -196,6 +196,7 @@ exports.postLogin = (req, res) => {
                 role: user.role,
                 Ticket_ID: user.Ticket_ID,
                 Country_Region_Code:user.Country_Region_Code,
+                subUserId: user.subUserId,
               },
             });
           } else {

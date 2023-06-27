@@ -12,6 +12,7 @@ apiKey.apiKey = config.apiKey;
 const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
 const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 var nodemailer = require("nodemailer");
+const VendorIdSchema = db.vendorId;
 // const config = require("../config/auth.config");
 // const user = config.user;
 // const pass = config.pass;
@@ -279,3 +280,36 @@ exports.deleteMasterVendorSubUserById = (req, res) => {
         .json({ status: "error", data: { message: "Error Response", err } });
     });
 };
+
+exports.getSubuserId = async(req, res) => {
+
+  subUserId = req.params.subUserId;
+
+  VendorCodeSchema.findAll({
+    where: { SubUserId : subUserId }
+  })
+    .then((data) => {
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+  });
+
+}
+
+exports.getDocuments = async(req, res) => {
+
+
+  VendorIdSchema.findAll()
+    .then((data) => {
+      return res.status(200).json({ msg: "success", result: data });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+  });
+
+}

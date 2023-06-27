@@ -218,6 +218,10 @@ router.get('/getErpPurchaseOrdersLists', ErpAccess.getErpPurchaseOrdersLists);
 
 router.get('/getuserIdByVcode/:vCode', ErpAccess.getuserIdByVcode);
 
+router.get('/getSubuserId/:subUserId', MasterVendorSubUser.getSubuserId);
+
+router.get('/getDocuments', MasterVendorSubUser.getDocuments);
+
 //poTeam
 router.post("/PoApprovalMail", poTeam.PoApprovalMail);
 
