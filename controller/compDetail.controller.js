@@ -99,7 +99,7 @@ var storage = multer.diskStorage({
 
 exports.saveComplianceDetail = (req, res) => {
   RPD_DocPath = "";
-   COC_DocPath = "";
+  COC_DocPath = "";
   NDA_DocPath = "";
 
   var upload = multer({ storage: storage }).fields([
@@ -130,9 +130,10 @@ exports.saveComplianceDetail = (req, res) => {
        
         
         if (!user) {
-          const NDA_Doc = RPD_DocPath
+          const NDA_Doc = NDA_DocPath
           const COC_Doc = COC_DocPath
-          const RPD_Doc = NDA_DocPath
+          const RPD_Doc = RPD_DocPath
+
           const complianceId =
             "compliance" + Math.floor(100000 + Math.random() * 900000);
           const userId = req.body.userId;
