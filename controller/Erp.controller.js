@@ -416,6 +416,34 @@ exports.getErpVendor_APIByP_A_N_No = (req, res) => {
   });
 };
 
+//ticketid  ---- PAN_NO 
+exports.getErpVendor_APIByVendorId = (req, res) => {
+
+  const Ticket_ID = req.params.ticketID;
+  console.log("req-----##############--------", Ticket_ID)
+  httpntlm.get({
+    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json&$filter=Entry_No eq '" + Ticket_ID + "'",
+    username: 'ERP-API',
+    password: 'HSI@#543DCVB',
+    workstation: '',
+    domain: '',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json;odata.metadata=minimal',
+      'User-Agent': 'nodejs/httpntlm',
+    }
+  }, async function (err, result) {
+    console.log("result--------------erp--->>>", JSON.parse(result.body).value)
+    if (err) {
+      console.error(err);
+    } else {
+      const response = JSON.parse(result.body).value;
+      res.status(200).json({ response, message: "success" });
+    }
+  });
+};
+
+
 //vendorCode
 exports.getuserIdByVcode = async (req, res) => {
   const vCode = req.params.vCode;

@@ -87,6 +87,7 @@ router.get("/getPOfileDownload", tutorialApi.getPOfileDownload);
 router.post("/saveVdetail", vdetail.postVdetail);
 // update vdetail
 router.put("/updateVdetail/:userId", vdetail.updateVendor);
+router.put('/updateVdetail/userStatus/:userid', vdetail.UpdateUserStatusByUserId);
 //save vendor-communication details
 router.post("/SaveVendorCommunication", vdetail.SaveVendorCommunication);
 //update communication details
@@ -209,6 +210,7 @@ router.post('/postErpResourcePortalVendorlist', ErpAccess.postErpResourcePortalV
 router.put('/updateErpResourcePortalVendorlist/:Refrence_Entry_No', ErpAccess.updateErpResourcePortalVendorlist);
 router.get('/getErpVendor_APIByParent_Vendor_Code/:Parent_Vendor_Code', ErpAccess.getErpVendor_APIByParent_Vendor_Code);
 router.get('/getErpVendor_APIByP_A_N_No/:Ticket_ID', ErpAccess.getErpVendor_APIByP_A_N_No);
+router.get('/getErpVendor_APIByVendorId/:ticketID', ErpAccess.getErpVendor_APIByVendorId);
 router.post("/saveMasterLogin", signUp.saveMasterLogin);
 router.get('/verifyUSerByMail/:mastervendor_email/:mailConfirmationCode',signUp.verifyUserByMail);
 router.get('/getErpPurchaseOrder_API', ErpAccess.getErpPurchaseOrder_API);

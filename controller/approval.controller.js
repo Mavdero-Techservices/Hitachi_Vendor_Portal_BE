@@ -484,6 +484,7 @@ exports.saveApprovalStatus = (req, res) => {
           level3RejectComment: req.body.level3RejectComment,
           level3rejectFileDoc: level3rejectFileDoc,
           level3Date: null,
+          userStatus: basicData.userStatus,
         });
         user
           .save()

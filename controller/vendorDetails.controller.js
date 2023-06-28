@@ -28,65 +28,68 @@ exports.postNewRegVdetail = async (req, res, next) => {
   //   `${contactPerson}` + Math.floor(100000 + Math.random() * 900000);
   const subUserid = `${masterId}` + Math.floor(100000 + Math.random() * 900000);
   const userName = contactPerson + Math.floor(100000 + Math.random() * 900000);
+  const Ticket_ID = "VCR" + Math.floor(100000 + Math.random() * 900000);
   // const role = "master";
   // const password = 'pass';
   // bcrypt.hash(password, 12).then((hashedPassword) => {
   const user = new SignUpSchema({
     emailId: master ? master.emailId : null,
     // userId: userId,
-    userType: "subUser",
-    subUserId: masterId,
+    userType: masterId,
+    // subUserId: masterId,
     userId: subUserid,
+    companyName: master ? master.companyName : "",
     // userName: userName,
     // password: hashedPassword,
     // confirmPassword: hashedPassword,
-    // role: role,
+    role: "user",
+    Ticket_ID: Ticket_ID,
   });
   user
     .save()
 
     .then((data) => {
       // return res.status(200).json({ msg: "success", result: data });
-      if (data.dataValues.userId) {
-        const VendorDetails = new VdetailSchema({
-          Address: req.body.Address,
-          Address_2: req.body.Address_2,
-          City: req.body.City,
-          state: req.body.state,
-          Country_Region_Code: req.body.Country_Region_Code,
-          Post_Code: req.body.Post_Code,
-          contactName: req.body.contactName,
-          companyName: req.body.companyName,
-          image: req.body.image,
-          Vendor_Type: req.body.Vendor_Type,
-          Vendor_Account_Manager: req.body.Vendor_Account_Manager,
-          mkDenialCheque: req.body.mkDenialCheque,
-          userId: data.dataValues.userId,
-          submitStatus: req.body.submitStatus,
-          submitDate: req.body.submitDate,
-        });
-        VendorDetails.save()
-          .then((data) => {
-            return res.status(200).json({
-              status: "success",
-              result: data,
-              message: "Vendor details saved Successfully",
-            });
-          })
-          .catch((err) => {
-            return res
-              .status(404)
-              .json({ status: "error", err, message: "Error Response" });
-          });
-      }
+      // if (data.dataValues.userId) {
+      //   const VendorDetails = new VdetailSchema({
+      //     Address: req.body.Address,
+      //     Address_2: req.body.Address_2,
+      //     City: req.body.City,
+      //     state: req.body.state,
+      //     Country_Region_Code: req.body.Country_Region_Code,
+      //     Post_Code: req.body.Post_Code,
+      //     contactName: req.body.contactName,
+      //     companyName: req.body.companyName,
+      //     image: req.body.image,
+      //     Vendor_Type: req.body.Vendor_Type,
+      //     Vendor_Account_Manager: req.body.Vendor_Account_Manager,
+      //     mkDenialCheque: req.body.mkDenialCheque,
+      //     userId: data.dataValues.userId,
+      //     submitStatus: req.body.submitStatus,
+      //     submitDate: req.body.submitDate,
+      //   });
+      //   VendorDetails.save()
+      // .then((data) => {
+      return res.status(200).json({
+        status: "success",
+        result: data,
+        message: "Vendor details saved Successfully",
+      });
     })
     .catch((err) => {
-      return res.status(200).json({
-        status: "error",
-        data: { message: "Error Response", err },
-      });
+      return res
+        .status(404)
+        .json({ status: "error", err, message: "Error Response" });
     });
-};
+}
+    // })
+    // .catch((err) => {
+    //   return res.status(200).json({
+    //     status: "error",
+    //     data: { message: "Error Response", err },
+    //   });
+    // });
+// };
 
 exports.postVdetail = (req, res, next) => {
   const userId = req.body.userId;
@@ -104,6 +107,7 @@ exports.postVdetail = (req, res, next) => {
   const mkDenialCheque = req.body.mkDenialCheque;
   const submitStatus = req.body.submitStatus;
   const submitDate = req.body.submitDate;
+  const userStatus = req.body.userStatus;
 
   VdetailSchema.findOne({
     where: {
@@ -128,6 +132,7 @@ exports.postVdetail = (req, res, next) => {
         userId: userId,
         submitStatus: submitStatus,
         submitDate: submitDate,
+        userStatus: userStatus
       });
       VendorDetails.save()
         .then((data) => {
@@ -406,4 +411,26 @@ exports.AllRejectVendorList = (req, res, next) => {
         .status(200)
         .json({ status: "error", data: { message: "Error Response", err } });
     });
+};
+
+exports.UpdateUserStatusByUserId = async (req, res) => {
+  console.log("req.params.userId-----##########-------", req.params.userid)
+  const userId = req.params.userid;
+  const updates = req.body;
+  req.body.userStatus = "MasterData"
+  const updateResult = await VdetailSchema.update(req.body, {
+    where: { userId },
+  });
+
+  if (updateResult[0]) {
+    res.status(200).json({
+      status: "success",
+      message: "Vendor Basic details updated successfully",
+    });
+  } else {
+    res.status(404).json({
+      status: "error",
+      message: "Vendor not found",
+    });
+  }
 };

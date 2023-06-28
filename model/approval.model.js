@@ -41,7 +41,10 @@ module.exports = (sequelize, Sequelize,DataTypes) => {
         },
         level3Date: {
             type: Sequelize.DATE,
-        }
+        },
+        userStatus: {
+            type: Sequelize.STRING,
+        },
     })
     return ApprovalSchema;
 }
