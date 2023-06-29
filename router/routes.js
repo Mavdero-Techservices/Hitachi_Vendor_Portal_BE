@@ -221,7 +221,7 @@ router.get('/getErpPurchaseOrdersLists', ErpAccess.getErpPurchaseOrdersLists);
 router.get('/getuserIdByVcode/:vCode', ErpAccess.getuserIdByVcode);
 
 router.get('/getSubuserId/:subUserId', MasterVendorSubUser.getSubuserId);
-
+router.get('/getOutOfIndiaVcode/:ticketId', ErpAccess.getOutOfIndiaVcode);
 router.get('/getDocuments', MasterVendorSubUser.getDocuments);
 
 //poTeam
@@ -263,5 +263,7 @@ router.get('/getInvoiceinfo', invoice.getInvoiceinfo);
 router.post("/postEddDetails", edd.postEddDetails);
 router.post("/getMasterVendorById",MasterVendorSubUser.getMasterVendorById);
 router.post('/createsharepointFolderByTicketId', ErpAccess.createsharepointFolderByTicketId);
+
+router.post('/uploadDocbyVendorCode', ErpAccess.uploadDocbyVendorCode);
 
 module.exports = router;

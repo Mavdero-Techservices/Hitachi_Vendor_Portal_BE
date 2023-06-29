@@ -2,8 +2,42 @@ const httpntlm = require('httpntlm');
 const db = require("../model");
 const SignUpSchema = db.singUp;
 const xml2js = require('xml2js');
+let directory_name = "uploads";
 const path = require('path');
+var multer = require("multer");
 const fs = require('fs');
+
+var vendorCodeDocPath = "";
+
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+
+
+    cb(null, path.join(directory_name, "/"));
+  },
+  filename: (req, file, cb) => {
+
+
+    if (file.fieldname === "docName") {
+      let randomNumber = Math.floor(100000 + Math.random() * 900000);
+
+      let filedirect = file.originalname.split(".");
+
+      vendorCodeDocPath =
+        directory_name +
+        "/" +
+        filedirect[0] +
+        "_" +
+        randomNumber +
+        "." +
+        filedirect[1];
+
+      cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
+    }
+  },
+});
+
+
 
 //getErpVendor_API
 exports.getErpVendor_API = (req, res) => {
@@ -712,134 +746,161 @@ exports.createsharepointFolderByTicketId = (req, res) => {
   }
 };
 
-// exports.createsharepointFolderByTicketId = (req, res) => {
-//   const username = 'ERP-API';
-//   const password = 'HSI@#543DCVB';
-//   const ipAddress = '10.83.152.248';
-//   const port = '42916';
-//   const sharepointUrl = `http://${ipAddress}:${port}/sites/Hitachi/ERP-DMS-PROTECTED/`;
+exports.getOutOfIndiaVcode = async (req, res) => {
+  const ticketId = req.params.ticketId;
 
-//   httpntlm.post({
-//     url: sharepointUrl + '_api/contextinfo',
-//     username: username,
-//     password: password
-//   }, function (err, response) {
-//     if (err) {
-//       console.log(err);
-//       return res.status(500).json({ error: 'Error retrieving form digest value' });
-//     }
+  httpntlm.get({
+    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json&$filter=Entry_No eq '" + ticketId + "'",
+    username: 'ERP-API',
+    password: 'HSI@#543DCVB',
+    workstation: '',
+    domain: '',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json;odata.metadata=minimal',
+      'User-Agent': 'nodejs/httpntlm',
+    }
+  }, async function (err, result) {
+    if (err) {
+      console.error(err);
+    } else {
+      const data = JSON.parse(result.body).value;
 
-//     const xmlResponse = response.body;
+      if (data.length > 0) {
 
-//     const parser = new xml2js.Parser();
-//     parser.parseString(xmlResponse, function (parseErr, result) {
-//       if (parseErr) {
-//         console.log(parseErr);
-//         return res.status(500).json({ error: 'Error parsing XML response' });
-//       }
-// console.log("resultparsing::",result);
-//       const formDigestValue = result['d:GetContextWebInformation']['d:FormDigestValue'][0];
-//       const folderName = req.body.Ticket_ID;
-//       const folderUrl = `${sharepointUrl}Shared%20Documents/${folderName}`;
+        
+        if (err) return err;
+        res.status(200).json(data);
+      } else {
+        res.status(200).json({ message: 'Vendor No not found' });
+      }
+    }
+  });
+};
 
-//       const createFolderPayload = {
-//         __metadata: { type: 'SP.Folder' },
-//         ServerRelativeUrl: folderUrl
-//       };
+exports.uploadDocbyVendorCode = async(req, res) => {
 
-//       const createFolderUrl = `${sharepointUrl}/_api/web/GetFolderByServerRelativeUrl('${folderUrl}')/Folders`;
+  vendorCodeDocPath = "";
 
-//       httpntlm.post({
-//         url: createFolderUrl,
-//         username: username,
-//         password: password,
-//         headers: {
-//           'Accept': 'application/json;odata=verbose',
-//           'Content-Type': 'application/json;odata=verbose',
-//           'X-RequestDigest': formDigestValue
-//         },
-//         body: JSON.stringify(createFolderPayload)
-//       }, function (folderErr, folderResponse) {
-//         if (folderErr) {
-//           console.log('Error creating folder:', folderErr);
-//           return res.status(500).json({ error: 'Error creating folder' });
-//         } else {
-//           console.log('Folder created successfully:', folderUrl);
-//           const documentFields = req.body;
-//           const subfolders = [];
-//           for (const key in documentFields) {
-//             if (documentFields.hasOwnProperty(key)) {
-//               const value = documentFields[key];
-//               if (value && value !== undefined && value !== null && value !=="undefined" && value !== "null") {
-//                 const subfolderName = key;
-//                 const subfolderUrl = `${folderUrl}/${subfolderName}`;
-//                 subfolders.push(subfolderUrl);
+  var upload = multer({ storage: storage }).fields([
 
-//                 const createSubfolderPayload = {
-//                   __metadata: { type: 'SP.Folder' },
-//                   ServerRelativeUrl: subfolderUrl
-//                 };
+    { name: "docName", maxCount: 1, },
+    
+  ]);
 
-//                 const createSubfolderUrl = `${sharepointUrl}/_api/web/GetFolderByServerRelativeUrl('${subfolderUrl}')/Folders`;
+  await upload(req, res, function (err) {
 
-//                 httpntlm.post({
-//                   url: createSubfolderUrl,
-//                   username: username,
-//                   password: password,
-//                   headers: {
-//                     'Accept': 'application/json;odata=verbose',
-//                     'Content-Type': 'application/json;odata=verbose',
-//                     'X-RequestDigest': formDigestValue
-//                   },
-//                   body: JSON.stringify(createSubfolderPayload)
-//                 }, function (subfolderErr, subfolderResponse) {
-//                   if (subfolderErr) {
-//                     console.log('Error creating subfolder:', subfolderErr);
-//                   } else {
-//                     console.log('Subfolder created successfully:', subfolderUrl);
-//                     console.log("documents",req.body.RPD_Doc);
-//                     if ( key === 'logo'||key === 'GST_Doc'|| key === 'PAN_Doc'|| key === 'MSME_Doc'|| key === 'form_10f'|| key === 'PE_Declaration_Doc'|| key === 'Tax_residency_Doc'|| key === 'fileDisclosure'|| key === 'TAN_Doc'|| key === 'RPD_Doc'|| key === 'COC_Doc'|| key === 'NDA_Doc'|| key === 'financial_data'|| key === 'financial_data2'|| key === 'bankdetailDoc') {
-//                      const uploadsDir = path.join(__dirname, '..', 'uploads');
-//                       const fileName = value.split('/').pop(); 
-//                       const sanitizedFileName = fileName.replace(/[\\#%*:<>?/|]/g, ''); 
-//                       const filePath = path.join(__dirname, '..', 'uploads', sanitizedFileName);
-//                       const fileContent = fs.readFileSync(filePath);
-//                       console.log("directory::",filePath);
-//                       console.log("fileName::",fileName);
-//                       const siteUrl = `http://${ipAddress}:${port}/sites/Hitachi/ERP-DMS-PROTECTED`;
-//                       const folderRelativeUrl = `/sites/Hitachi/ERP-DMS-PROTECTED/Shared%20Documents/${req.body.Ticket_ID}/${key}`;
-//                       const uploadUrl = `${siteUrl}/_api/web/getfolderbyserverrelativeurl('${folderRelativeUrl}')/Files/add(url='${fileName}', overwrite=true)`;
-//                      console.log("uploadurll:::",uploadUrl);
-//                       httpntlm.post({
-//                         url: uploadUrl,
-//                         username: username,
-//                         password: password,
-//                         headers: {
-//                 'X-RequestDigest': formDigestValue,
-//                           "Accept": "application/json; odata=verbose",  
-//                           "Content-Type": "application/octet-stream"
-//                         },
-//                         body: fileContent,
-//                       }, function (uploadErr, uploadResponse) {
-//                         if (uploadErr) {
-//                           console.log("uploadErr", uploadErr);
-//                           return res.status(500).json({ msg: "error", result: uploadErr });
-//                         } else {
-//                           console.log("uploadResponse", uploadUrl);
-                          
-//                         }
-//                       });
-                      
-//                     }
-//                   }
-//                 });
-//               }
-//             }
-//           }
+    console.log("req", req.body);
+    console.log("req", req.files);
+    const username = 'ERP-API';
+    const password = 'HSI@#543DCVB';
+    const ipAddress = '10.83.152.248';
+    const port = '42916';
+    const sharepointUrl = `http://${ipAddress}:${port}/sites/Hitachi/ERP-DMS-PROTECTED/`;
 
-//           return res.status(200).json({ message: 'success',result:"File Uploaded to sharepoint successfully" });
-//         }
-//       });
-//     });
-//   });
-// };
+    try {
+      httpntlm.post({
+        url: sharepointUrl + '_api/contextinfo',
+        username: username,
+        password: password
+      }, function (err, response) {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ error: 'Error retrieving form digest value' });
+        }
+
+        const xmlResponse = response.body;
+
+        const parser = new xml2js.Parser();
+        parser.parseString(xmlResponse, function (parseErr, result) {
+          if (parseErr) {
+            console.log(parseErr);
+            return res.status(500).json({ error: 'Error parsing XML response' });
+          }
+
+          try {
+            const formDigestValue = result['d:GetContextWebInformation']['d:FormDigestValue'][0];
+            const folderName = req.body.vendorId;
+
+            console.log("folderName------------->", folderName);
+
+            const folderUrl = `${sharepointUrl}Shared%20Documents/${folderName}`;
+
+            const createFolderPayload = {
+              __metadata: { type: 'SP.Folder' },
+              ServerRelativeUrl: folderUrl
+            };
+
+            const createFolderUrl = `${sharepointUrl}/_api/web/GetFolderByServerRelativeUrl('${folderUrl}')/Folders`;
+
+            httpntlm.post({
+              url: createFolderUrl,
+              username: username,
+              password: password,
+              headers: {
+                'Accept': 'application/json;odata=verbose',
+                'Content-Type': 'application/json;odata=verbose',
+                'X-RequestDigest': formDigestValue
+              },
+              body: JSON.stringify(createFolderPayload)
+            }, function (folderErr, folderResponse) {
+              if (folderErr) {
+                console.log('Error creating folder:', folderErr);
+                return res.status(500).json({ error: 'Error creating folder' });
+              } else {
+                console.log('Folder created successfully:', folderUrl);
+
+                const vendorCodeDoc = vendorCodeDocPath;
+
+                if (vendorCodeDoc) {
+                  try {
+                    
+                    const siteUrl = `http://${ipAddress}:${port}/sites/Hitachi/ERP-DMS-PROTECTED`;
+                    const folderRelativeUrl = `/sites/Hitachi/ERP-DMS-PROTECTED/Shared%20Documents/${req.body.vendorId}/${vendorCodeDoc}`;
+                    const uploadUrl = `${siteUrl}/_api/web/getfolderbyserverrelativeurl('${folderRelativeUrl}')/Files/add(url='${vendorCodeDoc}', overwrite=true)`;
+                    console.log("uploadurll:::", uploadUrl);
+                    httpntlm.post({
+                      url: uploadUrl,
+                      username: username,
+                      password: password,
+                      headers: {
+                        'X-RequestDigest': formDigestValue,
+                        "Accept": "application/json; odata=verbose",
+                        "Content-Type": "application/octet-stream"
+                      },
+                      body: fileContent,
+                    }, function (uploadErr, uploadResponse) {
+                      if (uploadErr) {
+                        console.log("uploadErr", uploadErr);
+                        return res.status(500).json({ msg: "error", result: uploadErr });
+                      } else {
+                        console.log("uploadResponse", uploadUrl);
+                      }
+                    });
+                  } catch (uploadErr) {
+                    console.log("Error uploading file:", uploadErr);
+                    return res.status(500).json({ error: 'Error uploading file' });
+                  }
+                }
+
+
+                return res.status(200).json({ message: 'success', result: "File Uploaded to SharePoint successfully" });
+              }
+            });
+          } catch (err) {
+            console.log('Error retrieving form digest value:', err);
+            return res.status(500).json({ error: 'Error retrieving form digest value' });
+          }
+        });
+      });
+    } catch (err) {
+      console.log('Error performing SharePoint operation:', err);
+      return res.status(500).json({ error: 'Error performing SharePoint operation' });
+    }
+  
+    
+  });
+}
+
+
+

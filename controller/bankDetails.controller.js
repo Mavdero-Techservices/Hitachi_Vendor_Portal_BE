@@ -13,7 +13,6 @@ var storage = multer.diskStorage({
     cb(null, path.join(directory_name, "/"));
   },
   filename: (req, file, cb) => {
-
     let randomNumber = Math.floor(100000 + Math.random() * 900000);
 
     let filedirect = file.originalname.split(".");
@@ -27,24 +26,19 @@ var storage = multer.diskStorage({
       "." +
       filedirect[1];
 
-    cb(
-      null,
-      filedirect[0] +
-      "_" +
-      randomNumber +
-      "." +
-      filedirect[1]
-    );
+    cb(null, filedirect[0] + "_" + randomNumber + "." + filedirect[1]);
   },
 });
 
 exports.saveBankDetail = (req, res) => {
- bankdetailDocPath = "";
+  bankdetailDocPath = "";
 
   var upload = multer({ storage: storage }).fields([
     { name: "bankdetailDoc", maxCount: 1 },
   ]);
+
   upload(req, res, function (err) {
+    
     if (err) {
       console.log("InsideErr", err);
       return "err";
@@ -54,8 +48,6 @@ exports.saveBankDetail = (req, res) => {
           userId: req.body.userId,
         },
       }).then(async (user) => {
-
-
         if (!user) {
           const bankdetailDoc = bankdetailDocPath;
           const bankId = "bank" + Math.floor(100000 + Math.random() * 900000);
@@ -91,7 +83,6 @@ exports.saveBankDetail = (req, res) => {
           var bDetails = await BankdetailSchema.findOne({
             where: { userId: req.body.userId },
           });
-
 
           if (err) {
             console.log("InsideErr", err);
@@ -190,10 +181,14 @@ exports.updateBankDetail = async (req, res) => {
   ]);
 
   upload(req, res, async function (err) {
+
+    console.log("req", req);
+    console.log("req", req.body);
+    console.log("req", req.files);
+    
     var bDetails = await BankdetailSchema.findOne({
       where: { userId: req.params.userId },
     });
-
 
     if (err) {
       console.log("InsideErr", err);
