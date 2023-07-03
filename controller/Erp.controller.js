@@ -252,8 +252,7 @@ exports.getErpResourcePortalVendorlistById = (req, res) => {
 //update
 exports.updateErpResourcePortalVendorlist = (req, res) => {
   const Refrence_Entry_No = req.params.Refrence_Entry_No;
-  const url1 = 'http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/Company(\'Hitachi%20Systems%20India%20Pvt%20Ltd\')/APITestingOData?$format=json&$filter=Entry_No%20eq%2016';
-  httpntlm.get({
+ httpntlm.get({
     url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json&$filter=Refrence_Entry_No eq '" + Refrence_Entry_No + "'",
     username: 'ERP-API',
     password: 'HSI@#543DCVB',
@@ -275,9 +274,9 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
       console.log("replacedStr:", replacedStr);
       const ETag = `W/"'${replacedStr}'"`;
       console.log("ETag", ETag)
-      const url2 = 'http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/APITestingOData(Entry_No=16)?company=Hitachi%20Systems%20India%20Pvt%20Ltd';
+      const url2 = 'http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/APITestingOData(Entry_No=VCR2207)?company=Hitachi%20Systems%20India%20Pvt%20Ltd';
       const payload = {
-        Detail: "karthigaPalani",
+        State_Code: "TND",
       };
 
       httpntlm.put({
@@ -416,7 +415,7 @@ exports.getErpVendor_APIByP_A_N_No = (req, res) => {
         console.log("panNo::", data[0].P_A_N_No);
         const P_A_N_No = data[0].P_A_N_No;
         httpntlm.get({
-          url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/Vendor_API?$format=json&$filter=P_A_N_No eq '" + P_A_N_No + "'",
+          url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json&$filter=P_A_N_No eq '" + P_A_N_No + "'",
           username: 'ERP-API',
           password: 'HSI@#543DCVB',
           workstation: '',
@@ -437,7 +436,7 @@ exports.getErpVendor_APIByP_A_N_No = (req, res) => {
                 State_Code: item.State_Code,
                 Country_Region_Code: item.Country_Region_Code,
                 Post_Code: item.Post_Code,
-                No: item.No
+                No: item.Vendor_No
               };
             });
             res.status(200).json({response, message: "success"});
@@ -851,7 +850,8 @@ exports.uploadDocbyVendorCode = async(req, res) => {
                 console.log('Folder created successfully:', folderUrl);
 
                 const vendorCodeDoc = vendorCodeDocPath;
-
+                console.log("filename", req.body.docName);
+console.log("docpath::",vendorCodeDocPath);
                 if (vendorCodeDoc) {
                   try {
                     
