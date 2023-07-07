@@ -1,5 +1,6 @@
 const db = require("../model");
 const SignUpSchema = db.singUp;
+const UserLogSchema = db.userLogs;
 const { check, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
@@ -181,6 +182,18 @@ exports.postLogin = (req, res) => {
                 expiresIn: "1h",
               }
             );
+            // User IP logs
+            try {
+              const userLogData = new UserLogSchema({
+                userId: user.id,
+                userIp: req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress
+              });
+            
+              await userLogData.save();
+              console.info("User IP recorded!");
+            } catch (error) {
+              console.error("Couldn't record IP:", error);
+            }            
             // save user token
             user.token = token;
             return res.status(200).json({
