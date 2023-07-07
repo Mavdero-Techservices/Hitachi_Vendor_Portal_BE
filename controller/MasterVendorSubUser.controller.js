@@ -94,7 +94,8 @@ exports.saveMasterVendorSubUser = (req, res) => {
         role: roles,
         phoneNumber: mobileNo,
         subUserId: SubUserId,
-        verifiedUser:"approved"
+        verifiedUser:"approved",
+        Country_Region_Code: "IND"
       });
       user
         .save()
