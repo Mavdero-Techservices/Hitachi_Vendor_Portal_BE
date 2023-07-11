@@ -492,7 +492,7 @@ exports.saveApprovalStatus = (req, res) => {
             if (data.level1Status === "approved") {
               var subject = `Hitachi Vendor Approval`;
               var emailContent = `
-                        <h4>Hi ${data.userId}</h4>
+                        <h4>Hi ${data.companyName}</h4>
                         <p>Your Vendor Registration request is approved by Vendor Creation Team and proceeded for next stage of Approval.</p>
                         <p>Thanks & regards,</p>
                         </div>`;
@@ -508,7 +508,7 @@ exports.saveApprovalStatus = (req, res) => {
             } else {
               var subject = `Hitachi Vendor Request Rejected`;
               var emailContent = `
-                        <h4>Hi ${data.userId}</h4>
+                        <h4>Hi ${data.companyName}</h4>
                         <p>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.level1RejectComment}</p>
                         </div>`;
               var returnFlag = false;
@@ -672,7 +672,7 @@ exports.updateApprovalStatus = async (req, res) => {
             if (req.body.level2Status === "approved") {
               var subject = `Hitachi Japan Team Approval`;
               var emailContent = `
-                  <h4>Hi ${userId}</h4>
+                  <h4>Hi ${approvalValidate.companyName}</h4>
                   <p>Your Vendor Registration request is approved by Japan Team and proceeded for next stage of Approval.</p>
                   <p>Thanks & regards,</p>
                   </div>`;
@@ -689,7 +689,7 @@ exports.updateApprovalStatus = async (req, res) => {
             if (req.body.level2Status === "rejected") {
               var subject = `Hitachi Japan Team Request Rejected`;
               var emailContent = `
-                        <h4>Hi ${req.body.userId}</h4>
+                        <h4>Hi ${approvalValidate.companyName}</h4>
                         <p>Your Vendor Registration request is Rejected by Japan Team </p>
                         </div>`;
               var returnFlag = false;
@@ -705,7 +705,7 @@ exports.updateApprovalStatus = async (req, res) => {
             if (req.body.level3Status === "approved") {
               var subject = `Hitachi MRT Team Approval`;
               var emailContent = `
-                  <h4>Hi ${userId}</h4>
+                  <h4>Hi ${approvalValidate.companyName}</h4>
                   <p>Your Vendor Registration request is approved by MRT Team and proceeded for next stage of Approval.</p>
                   <p>Thanks & regards,</p>
                   </div>`;
@@ -722,7 +722,7 @@ exports.updateApprovalStatus = async (req, res) => {
             if (req.body.level3Status === "rejected") {
               var subject = `Hitachi MRT Request Rejected`;
               var emailContent = `
-                        <h2>Hi ${req.body.userId}</h2>
+                        <h2>Hi ${approvalValidate.companyName}</h2>
                         <p>Your Vendor Registration request is Rejected by MRT Team because of, ${req.body.level3RejectComment}</p>
                         </div>`;
               var returnFlag = false;

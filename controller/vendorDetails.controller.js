@@ -315,6 +315,16 @@ exports.updateVendor = async (req, res) => {
   console.log("req--->", req.body);
   const userId = req.params.userId;
   const updates = req.body;
+  const vendorExists = await VdetailSchema.findOne({
+    where: { userId: userId },
+  });
+
+  if (!vendorExists) {
+    return res.status(200).json({
+      status: "error",
+      message: "Vendor not found",
+    });
+  }
   if (req.body.submitStatus === "Submitted") {
 
     var submitEmailId = await SignUpSchema.findOne({
@@ -367,7 +377,7 @@ exports.updateVendor = async (req, res) => {
       message: "Vendor updated successfully",
     });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       status: "error",
       message: "Vendor not found",
     });

@@ -1007,15 +1007,15 @@ exports.updateAllCollection = async (req, res) => {
       NDA_Doc: NDA_Doc,
     };
 
-    let financial_data = financial_data_DocPath;
-    let financial_data2 = financial_data2_DocPath;
-
-    if (fDetails.financial_data === req.body.financial_data) {
+    let financial_data = financial_data_DocPath || "";
+    let financial_data2 = financial_data2_DocPath || "";
+    
+    if (fDetails && fDetails.financial_data === req.body.financial_data) {
       financial_data = req.body.financial_data;
     } else {
       financial_data = financial_data_DocPath;
-      directoryFiananceOneDelete = fDetails.financial_data;
-      if (directoryFiananceOneDelete && !req.body.financial_data) {
+      directoryFiananceOneDelete = fDetails && fDetails.financial_data;
+      if (fDetails && directoryFiananceOneDelete && !req.body.financial_data) {
         fs.unlink(directoryFiananceOneDelete, (err) => {
           if (err) {
             throw err;
@@ -1023,13 +1023,13 @@ exports.updateAllCollection = async (req, res) => {
         });
       }
     }
-
-    if (fDetails.financial_data2 === req.body.financial_data2) {
+    
+    if (fDetails && fDetails.financial_data2 === req.body.financial_data2) {
       financial_data2 = req.body.financial_data2;
     } else {
       financial_data2 = financial_data2_DocPath;
-      directoryFiananceTwoDelete = fDetails.financial_data2;
-      if (directoryFiananceTwoDelete && !req.body.financial_data2) {
+      directoryFiananceTwoDelete = fDetails && fDetails.financial_data2;
+      if (fDetails && directoryFiananceTwoDelete && !req.body.financial_data2) {
         fs.unlink(directoryFiananceTwoDelete, (err) => {
           if (err) {
             throw err;
@@ -1037,7 +1037,6 @@ exports.updateAllCollection = async (req, res) => {
         });
       }
     }
-
     const financeDetails = {
       userId: req.body.userId,
       financial_data: financial_data,

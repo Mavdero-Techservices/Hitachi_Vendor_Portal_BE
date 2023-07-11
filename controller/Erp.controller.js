@@ -118,8 +118,9 @@ exports.postErpVendor_API = (req, res) => {
 };
 //updateErpVendor_API
 exports.updateErpVendor_API = (req, res) => {
+  const entryNo = "A003";
   // const url1 = 'http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/Company(\'Hitachi%20Systems%20India%20Pvt%20Ltd\')/APITestingOData?$format=json&$filter=Entry_No%20eq%20\'A0029\'';
-  const url1 = 'http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/Company(\'Hitachi%20Systems%20India%20Pvt%20Ltd\')/Vendor_API?$format=json&$filter=Parent_Vendor_Code%20eq%20A0029';
+  const url1 = 'http://10.83.152.111:4049/NAVTestDB2/OData/Company(\'Hitachi%20Systems%20India%20Pvt%20Ltd\')/Vendor_API?$format=json&$filter=No%20eq%20A003';
   httpntlm.get({
     url: url1,
     username: 'ERP-API',
@@ -142,9 +143,9 @@ exports.updateErpVendor_API = (req, res) => {
       console.log("replacedStr:", replacedStr);
       const ETag = `W/"'${replacedStr}'"`;
       console.log("ETag", ETag)
-      const url2 = 'http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/Vendor_API(Parent_Vendor_Code=A0029)?company=Hitachi%20Systems%20India%20Pvt%20Ltd';
+      const url2 = 'http://10.83.152.111:4049/NAVTestDB2/OData/Vendor_API(No=${entryNo})?company=Hitachi%20Systems%20India%20Pvt%20Ltd';
       const payload = {
-        Ticket_ID: ""
+        Name: "rthi"
       };
 
       httpntlm.put({
@@ -166,15 +167,6 @@ exports.updateErpVendor_API = (req, res) => {
           console.error(err);
           res.end(err);
         } else {
-          const errorResponse = {
-            "odata.error": {
-              "code": "",
-              "message": {
-                "lang": "en-US",
-                "value": "Another user has already changed the record."
-              }
-            }
-          };
           console.log('PUT request successful.');
           console.log("error", errorResponse["odata.error"].message.value);
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -250,10 +242,76 @@ exports.getErpResourcePortalVendorlistById = (req, res) => {
 //   })
 //   };
 //update
+// exports.updateErpResourcePortalVendorlist = (req, res) => {
+//   const Refrence_Entry_No = req.params.Refrence_Entry_No;
+//   const entryNo = req.body.Entry_No;
+//   const odataUrl = `http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?Entry_No=VCR170877?$format=json`;
+//   const data = req.body;
+  
+//   // Check if the resource exists
+//   const exists = httpntlm.get({
+//   url: odataUrl,
+//   username: 'ERP-API',
+//   password: 'HSI@#543DCVB',
+//   workstation: '',
+//   domain: '',
+//   headers: {
+//     'Content-Type': 'application/json',
+//     'Accept': 'application/json;odata.metadata=minimal',
+//     'User-Agent': 'nodejs/httpntlm',
+//   }
+//   });
+  
+//   if (!exists) {
+//   // The resource does not exist, so we cannot update it
+//   const errorObj = {
+//   msg: 'error',
+//   error: 'Resource does not exist',
+//   };
+//   res.status(404).json(errorObj);
+//   } else {
+//   // The resource exists, so we can update it
+//   httpntlm.put({
+//   url: odataUrl,
+//   username: 'ERP-API',
+//   password: 'HSI@#543DCVB',
+//   workstation: '',
+//   domain: '',
+//   headers: {
+//   'Content-Type': 'application/json',
+//   'Accept': 'application/json;odata.metadata=minimal',
+//   'OData-Version': '1.0',
+//   'User-Agent': 'nodejs/httpntlm',
+//   },
+//   body: JSON.stringify(data),
+//   }, function (err, result) {
+//   if (err) {
+//   console.error(err);
+//   const errorObj = {
+//   msg: 'error',
+//   error: err.message,
+//   };
+//   res.status(500).json(errorObj);
+//   } else {
+//   console.log("response",result)
+//   const resultObj = JSON.parse(result.body);
+//   const responseObj = {
+//   msg: 'success',
+//   Result: resultObj,
+//   };
+//   res.status(200).json(responseObj);
+//   }
+//   });
+//   }
+  
+  
+
+// };
 exports.updateErpResourcePortalVendorlist = (req, res) => {
-  const Refrence_Entry_No = req.params.Refrence_Entry_No;
- httpntlm.get({
-    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json&$filter=Refrence_Entry_No eq '" + Refrence_Entry_No + "'",
+  const Entry_No = req.params.Entry_No;
+  const url1 = `http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json&$filter=Entry_No%20eq%20%27${Entry_No}%27`;
+  httpntlm.get({
+    url: url1,
     username: 'ERP-API',
     password: 'HSI@#543DCVB',
     workstation: '',
@@ -266,19 +324,101 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
   }, function (err, result) {
     if (err) {
       console.error(err);
+      res.status(500).json({ error: 'Error occurred while making the GET request' });
     } else {
       const responseObject = JSON.parse(result.body);
-      console.log('eq::', responseObject.value[0].ETag);
+      console.log('eq::', responseObject);
       const str = responseObject.value[0].ETag;
       const replacedStr = str.replace(/;/g, "%3b");
       console.log("replacedStr:", replacedStr);
       const ETag = `W/"'${replacedStr}'"`;
       console.log("ETag", ETag)
-      const url2 = 'http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/APITestingOData(Entry_No=VCR2207)?company=Hitachi%20Systems%20India%20Pvt%20Ltd';
-      const payload = {
-        State_Code: "TND",
-      };
 
+      const url2 = `http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/ResourcePortalVendorlist1(Entry_No='${Entry_No}')?company=Hitachi%20Systems%20India%20Pvt%20Ltd`;
+     console.log("req.body::",req.body);
+      const payload = {
+        Ticket_ID: req.body.Ticket_ID,
+        Name:req.body.Name,
+       Address:req.body.Address,
+       Address_2:req.body.Address_2,
+       Post_Code:req.body.Post_Code,
+       City:req.body.City,
+       Country_Region_Code:req.body.Country_Region_Code,
+       E_Mail:req.body.E_Mail,
+      P_A_N_No:req.body.P_A_N_No,
+      GST_Vendor_Type:req.body.GST_Vendor_Type,
+      Account_Holder_Name:req.body.Account_Holder_Name,
+      Bank_Name:req.body.Bank_Name,
+     Account_No:req.body.Account_No,
+     IFSC_Code:req.body.IFSC_Code,
+     Vendor_Account_Manager:req.body.Vendor_Account_Manager,
+      };
+      // const ERPData = {
+      //   Entry_No: req.body.TicketID,
+      //   Vendor_Type: req.body.Vendor_Type,
+      //   Name: req.body.companyName,
+      //   Address: req.body.Address,
+      //   Address_2: req.body.Address_2,
+      //   City: req.body.City,
+      //   MSMED_Number: req.body.MSME_No,
+      //   MSMED: req.body.MSME_status,   
+      //   MSMED_Vendor_Type: req.body.MSME_Type,
+      //   Country_Region_Code: req.body.countryRegionCode,
+      //   Post_Code: req.body.Post_Code,
+      //   E_Mail: req.body.mastervendor_email,
+      //   P_A_N_No: req.body.PAN_No,
+      //   CIN_No: req.body.CIN_No,
+      //   TAN_No: req.body.TAN_No,
+      //   Vendor_Account_Manager: req.body.Vendor_Account_Manager,
+      //   // State_Code: "UTP",
+      //   // Finance_Contact_Name: fs_ContactName || undefined,
+      //   // Finance_Contact_Designation: fs_Designation || undefined,
+      //   // Finance_Contact_Phone_No: fs_PhoneNo || undefined,
+      //   // Finance_Contact_E_Mail: fs_Email || undefined,
+      //   // Operation_Contact_Name: ops_ContactName || undefined,
+      //   // Operation_Contact_Designation: ops_Designation || undefined,
+      //   // Operation_Contact_Phone_No: ops_PhoneNo || undefined,
+      //   // Operation_Contact_E_Mail: ops_Email || undefined,
+      //   // Collection_Contact_Name: colls_ContactName || undefined,
+      //   // Collection_Contact_Designation: colls_Designation || undefined,
+      //   // Collection_Contact_Phone_No: colls_PhoneNo || undefined,
+      //   // Collection_Contact_E_Mail: colls_Email || undefined,
+      //   // Management_Contact_Name: mngs_ContactName || undefined,
+      //   // Management_Contact_Designation: mngs_Designation || undefined,
+      //   // Management_Contact_Phone_No: mngs_PhoneNo || undefined,
+      //   // Management_Contact_E_Mail: mngs_Email || undefined,
+      //   // Others_Contact_Name: others_ContactName || undefined,
+      //   // Others_Contact_Designation: others_Designation || undefined,
+      //   // Others_Contact_Phone_No: others_PhoneNo || undefined,
+      //   // Others_Contact_E_Mail: others_Email || undefined,
+      //   // Master_Vendor_E_Mail_ID: mastervendor_email || undefined,
+      //   // MICR_Swift_Code: MICRcode || undefined,
+      //   // Year_of_audited_financials: yearOfAuditedFinancial || undefined,
+      //   // Revenue: Revenue || undefined,
+      //   // Profit: Profit || undefined,
+      //   // Networth: netWorth || undefined,
+      //   // Current_Assets: currentAssets || undefined,
+      //   // Director_Detail: directorDetails || undefined,
+      //   // GST_Registration_No: GST_No || undefined,
+      //   // GST_Vendor_Type: GST_type || undefined,
+      //   // Account_Holder_Name: bankAccountName || undefined,
+      //   // Account_No: bankAccountNumber || undefined,
+      //   // Bank_Name: bankName || undefined,
+      //   // Bank_Address: branchAddress || undefined,
+      //   // IFSC_Code: ifscCode || undefined,
+      //   // HSI_Contact_Name_1: name || undefined,
+      //   // HSI_Contact_E_Mail_1: email || undefined,
+      //   // HSI_Contact_Contact_No_1: contactNumber || undefined,
+      //   // HSI_Contact_Name_2: name2 || undefined,
+      //   // HSI_Contact_E_Mail_2: email2 || undefined,
+      //   // HSI_Contact_Contact_No_2: contactNumber2 || undefined,
+      //   // HSI_Contact_Name_3: name3 || undefined,
+      //   // HSI_Contact_E_Mail_3: email3 || undefined,
+      //   // HSI_Contact_Contact_No_3: contactNumber3 || undefined,
+      //   // Shareholder_Name: shareholderName || undefined,
+      //   // Organization_Type: organisationType || undefined,
+      // };
+console.log("request",req.body);
       httpntlm.put({
         url: url2,
         username: 'ERP-API',
@@ -296,21 +436,20 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
       }, function (err, result2) {
         if (err) {
           console.error(err);
-          res.end(err);
+          res.status(500).json({ error: 'Error occurred while making the PUT request' });
         } else {
-          const errorResponse = {
-            "odata.error": {
-              "code": "",
-              "message": {
-                "lang": "en-US",
-                "value": "Another user has already changed the record."
-              }
-            }
-          };
-          console.log('PUT request successful.');
-          console.log("error", errorResponse["odata.error"].message.value);
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(result2.body);
+          if (result2.body === "") {
+            const successResponse = {
+              message: 'PUT request successful.',
+              result: result2.body
+            };
+            console.log('PUT request successful.');
+            res.status(200).json(successResponse);
+          } else {
+            const errorResponse = JSON.parse(result2.body);
+            console.log('PUT request unsuccessful.');
+            res.status(result2.statusCode).json(errorResponse);
+          }
         }
       });
     }
@@ -326,6 +465,13 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
 exports.postErpResourcePortalVendorlist = (req, res) => {
   const odataUrl = 'http://10.83.152.111:4049/NAVTestDB2/OData/ResourcePortalVendorlist1?$format=json&company=Hitachi%20Systems%20India%20Pvt%20Ltd';
   const data = req.body;
+  if (data.MSMEDNumber === "") {
+    console.log("msmednumber::")
+    const errorObj = {
+      msg: 'error',
+      error: 'MSMEDNumber must be filled first before updating MSMED'
+    };
+  }
   httpntlm.post({
     url: odataUrl,
     username: 'ERP-API',
@@ -688,7 +834,7 @@ exports.createsharepointFolderByTicketId = (req, res) => {
                       } else {
                         console.log('Subfolder created successfully:', subfolderUrl);
                         console.log("documents",req.body.RPD_Doc);
-                        if ( key === 'logo'||key === 'GST_Doc'|| key === 'PAN_Doc'|| key === 'MSME_Doc'|| key === 'form_10f'|| key === 'PE_Declaration_Doc'|| key === 'Tax_residency_Doc'|| key === 'fileDisclosure'|| key === 'TAN_Doc'|| key === 'RPD_Doc'|| key === 'COC_Doc'|| key === 'NDA_Doc'|| key === 'financial_data'|| key === 'financial_data2'|| key === 'bankdetailDoc') {
+                        if ( key === 'GST_Doc'|| key === 'PAN_Doc'|| key === 'MSME_Doc'|| key === 'form_10f'|| key === 'PE_Declaration_Doc'|| key === 'Tax_residency_Doc'|| key === 'fileDisclosure'|| key === 'TAN_Doc'|| key === 'RPD_Doc'|| key === 'COC_Doc'|| key === 'NDA_Doc'|| key === 'financial_data'|| key === 'financial_data2'|| key === 'bankdetailDoc') {
                           try {
                             const uploadsDir = path.join(__dirname, '..', 'uploads');
                             const fileName = value.split('/').pop(); 

@@ -586,7 +586,7 @@ exports.saveUser = (req, res) => {
                 console.log("result", result,config.name,config.email);
                 var subject = `confirmation mail for userName and password`;
                 var emailContent = `<h1>Email Confirmation</h1>
-            <h2>Hello ${contactPerson}</h2>
+                <h2>Hello ${companyName}</h2>
             <p>Your Username is ${userName} and password is ${password}</p>
             <p>please click the link below to verify your email address.</p>
             <a href=${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${result.emailId}/${mailConfirmationCode}> Click here</a>
@@ -694,17 +694,32 @@ exports.saveMasterLogin = async (req, res) => {
     apiInstance.sendTransacEmail(sendSmtpEmail).then(
       function (data) {
         console.log("mail sent successfully: " + JSON.stringify(data));
+        return res.status(200).json({
+          status: "success",
+          message: "Master Registered Successfully",
+          result: user,
+        });
       },
       function (error) {
         console.error(error);
+
+        // Retry sending the email
+        apiInstance.sendTransacEmail(sendSmtpEmail).then(
+          function (data) {
+            console.log("mail sent successfully: " + JSON.stringify(data));
+            return res.status(200).json({
+              status: "success",
+              message: "Master Registered Successfully",
+              result: user,
+            });
+          },
+          function (error) {
+            console.error(error);
+            return res.status(500).json({ error: "Failed to send email" });
+          }
+        );
       }
     );
-
-    return res.status(200).json({
-      status: "success",
-      message: "Master Registered Successfully",
-      result: user,
-    });
   } catch (error) {
     console.log("error::", error);
     return res.status(500).json({ error: "Server error" });
