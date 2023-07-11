@@ -186,14 +186,22 @@ exports.postLogin = (req, res) => {
             try {
               const userLogData = new UserLogSchema({
                 userId: user.id,
-                userIp: req.headers['x-real-ip'] || req.headers['x-forwarded-for'] || req.connection.remoteAddress
+                userIp:
+                  req.headers["x-real-ip"] ||
+                  req.headers["x-forwarded-for"] ||
+                  req.connection.remoteAddress,
               });
-            
+
               await userLogData.save();
               console.info("User IP recorded!");
             } catch (error) {
               console.error("Couldn't record IP:", error);
-            }            
+              // Return an error response if IP logging fails
+              return res.status(200).json({
+                status: "error",
+                data: { message: "Error recording IP" },
+              });
+            }
             // save user token
             user.token = token;
             return res.status(200).json({
@@ -208,7 +216,7 @@ exports.postLogin = (req, res) => {
                 userName: user.userName,
                 role: user.role,
                 Ticket_ID: user.Ticket_ID,
-                Country_Region_Code:user.Country_Region_Code,
+                Country_Region_Code: user.Country_Region_Code,
                 subUserId: user.subUserId,
               },
             });
@@ -252,7 +260,7 @@ exports.resetPasswordByCode = (req, res, next) => {
         sendSmtpEmail.htmlContent = `${emailContent}`;
         sendSmtpEmail.sender = {
           name: config.name,
-          email:config.email,
+          email: config.email,
         };
         sendSmtpEmail.to = [{ email: `${user.emailId}` }];
         apiInstance.sendTransacEmail(sendSmtpEmail).then(
@@ -380,7 +388,7 @@ exports.emailNotification = async (
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = {
     name: config.name,
-    email:config.email,
+    email: config.email,
   };
   sendSmtpEmail.to = [{ email: `${emailId}` }];
   apiInstance.sendTransacEmail(sendSmtpEmail).then(
@@ -511,7 +519,6 @@ function smsintegration(req, res, phoneNoConfirmationCode, phoneNumber) {
 // };
 
 exports.saveUser = (req, res) => {
-
   var pass = "";
   var str =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
@@ -539,7 +546,6 @@ exports.saveUser = (req, res) => {
             message: "User Phone Number already exist",
           });
         } else {
-
           const companyName = req.body.companyName;
           const phoneNumber = req.body.phoneNumber;
           const contactPerson = req.body.contactPerson;
@@ -583,7 +589,7 @@ exports.saveUser = (req, res) => {
             user
               .save()
               .then(async (result) => {
-                console.log("result", result,config.name,config.email);
+                console.log("result", result, config.name, config.email);
                 var subject = `confirmation mail for userName and password`;
                 var emailContent = `<h1>Email Confirmation</h1>
                 <h2>Hello ${companyName}</h2>
@@ -598,7 +604,7 @@ exports.saveUser = (req, res) => {
                   sendSmtpEmail.htmlContent = `${emailContent}`;
                   sendSmtpEmail.sender = {
                     name: config.name,
-                    email:config.email,
+                    email: config.email,
                   };
                   sendSmtpEmail.to = [{ email: `${result.emailId}` }];
                   apiInstance.sendTransacEmail(sendSmtpEmail).then(
@@ -647,7 +653,7 @@ exports.saveMasterLogin = async (req, res) => {
   const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
   const userName = "Master" + Math.floor(100000 + Math.random() * 900000);
   const role = "Admin";
-  const Country_Region_Code=req.body.Country_Region_Code;
+  const Country_Region_Code = req.body.Country_Region_Code;
   const password = pass;
   const Ticket_ID = req.body.Ticket_ID;
 
@@ -665,7 +671,7 @@ exports.saveMasterLogin = async (req, res) => {
         confirmPassword: hashedPassword,
         role: role,
         Ticket_ID: Ticket_ID,
-        Country_Region_Code:Country_Region_Code,
+        Country_Region_Code: Country_Region_Code,
       },
       { returning: true }
     );
@@ -687,7 +693,7 @@ exports.saveMasterLogin = async (req, res) => {
     sendSmtpEmail.htmlContent = `${emailContent}`;
     sendSmtpEmail.sender = {
       name: config.name,
-      email:config.email,
+      email: config.email,
     };
     sendSmtpEmail.to = [{ email: `${user.emailId}` }];
 
@@ -792,4 +798,92 @@ exports.verifyUserByMail = (req, res) => {
         });
       });
   });
+};
+
+// 2 Factor Authentication
+exports.twoFactorOTP = (req, res, next) => {
+  const userName = req.body.userName;
+  SignUpSchema.findOne({
+    where: {
+      userName: userName,
+    },
+  })
+    .then(async (user) => {
+      const Otp2Factor = Math.floor(100000 + Math.random() * 900000);
+      if (!user) {
+        return res.status(200).json({ status: "error", data: "invalid user" });
+      } else {
+        console.log("user.emailId", user.emailId);
+        var subject = `2FA OTP for your login!`;
+        var emailContent =
+          `<h1>Reset password</h1>
+    <h2>Hello ${user.contactPerson}</h2>
+    <p>Please Use the OTP below to Login:</p>` +
+          Otp2Factor +
+          `
+    </div>`;
+        const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+        sendSmtpEmail.subject = `${subject}`;
+        sendSmtpEmail.htmlContent = `${emailContent}`;
+        sendSmtpEmail.sender = {
+          name: config.name,
+          email: config.email,
+        };
+        sendSmtpEmail.to = [{ email: `${user.emailId}` }];
+        apiInstance.sendTransacEmail(sendSmtpEmail).then(
+          function (data) {
+            console.log("mail sent successfully: " + JSON.stringify(data));
+          },
+          function (error) {
+            console.error(error);
+          }
+        );
+        await SignUpSchema.update(
+          { twoFactorOTP: Otp2Factor },
+          { where: { id: user.id } }
+        ).then((code) => {
+          console.log("send password Code", code);
+          return res.status(200).json({
+            status: "success",
+            data: "check your email,to reset your password",
+          });
+        });
+      }
+    })
+    .catch((err) => console.log(err));
+};
+
+exports.twoFactorOTPValidation = (req, res, next) => {
+  const userName = req.body.userName;
+  const otp = req.body.otp;
+  console.log("XXXXXX" + " " + userName + " "+ otp);
+  SignUpSchema.findOne({
+    where: {
+      userName: userName,
+    },
+  })
+    .then(async (user) => {
+      if (!user) {
+        return res.status(200).json({ status: "error", data: "invalid user" });
+      } else {
+        if (user.twoFactorOTP == otp) {
+          return res
+            .status(200)
+            .json({
+              status: "success",
+              data: "OTP verified, login successful!",
+            });
+        } else {
+          return res
+            .status(200)
+            .json({ status: "error", data: "Invalid OTP" });
+        }
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      return res
+        .status(200)
+        .json({ status: "error", data: "Error Handling data" });
+    });
 };

@@ -213,6 +213,8 @@ router.get('/getErpVendor_APIByP_A_N_No/:Ticket_ID', ErpAccess.getErpVendor_APIB
 router.get('/getErpVendor_APIByVendorId/:ticketID', ErpAccess.getErpVendor_APIByVendorId);
 router.post("/saveMasterLogin", signUp.saveMasterLogin);
 router.get('/verifyUSerByMail/:mastervendor_email/:mailConfirmationCode',signUp.verifyUserByMail);
+router.post('/twoFactorOTP', signUp.twoFactorOTP);
+router.post('/twoFactorOTPVerification', signUp.twoFactorOTPValidation);
 router.get('/getErpPurchaseOrder_API', ErpAccess.getErpPurchaseOrder_API);
 router.get('/getErpPurchaseOrderLineEDD_API', ErpAccess.getErpPurchaseOrderLineEDD_API);
 //getErpPurchaseOrdersLists

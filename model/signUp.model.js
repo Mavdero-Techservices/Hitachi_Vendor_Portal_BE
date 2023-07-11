@@ -54,6 +54,9 @@ module.exports = (sequelize, Sequelize) => {
         Country_Region_Code: {
             type: Sequelize.STRING,
         },
+        twoFactorOTP: {
+            type: Sequelize.STRING,
+        },
     });
     return SignUpSchema;
 };
