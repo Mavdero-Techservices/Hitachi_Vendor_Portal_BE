@@ -538,6 +538,8 @@ exports.getAllCollection = (req, res) => {
     } else {
       basicInfoArray.push(basicInfo);
     }
+  }).catch((err) => {
+    basicInfoArray.length = 0;
   });
   var p2 = vendorCommunicationDetails
     .findOne({
@@ -549,6 +551,8 @@ exports.getAllCollection = (req, res) => {
       } else {
         CommunicationDetailsArray.push(CommunicationDetails);
       }
+    }).catch((err) => {
+      CommunicationDetailsArray.length = 0;
     });
   var p3 = StatDetailSchema.findOne({
     where: { userId: userId },
@@ -558,6 +562,8 @@ exports.getAllCollection = (req, res) => {
     } else {
       StatDetailArray.push(StatDetail);
     }
+  }).catch((err) => {
+    StatDetailArray.length = 0;
   });
   var p4 = CompliancedetailSchema.findOne({
     where: { userId: userId },
@@ -567,6 +573,8 @@ exports.getAllCollection = (req, res) => {
     } else {
       CompliancedetailArray.push(Compliancedetail);
     }
+  }).catch((err) => {
+    CompliancedetailArray.length = 0;
   });
   var p5 = FdetailSchema.findOne({
     where: { userId: userId },
@@ -576,6 +584,8 @@ exports.getAllCollection = (req, res) => {
     } else {
       FdetailArray.push(Fdetail);
     }
+  }).catch((err) => {
+    FdetailArray.length = 0;
   });
   var p6 = BankdetailSchema.findOne({
     where: { userId: userId },
@@ -585,6 +595,8 @@ exports.getAllCollection = (req, res) => {
     } else {
       bankdetailArray.push(Bankdetail);
     }
+  }).catch((err) => {
+    bankdetailArray.length = 0;
   });
   var p7 = contactTeamSchema
     .findOne({
@@ -596,6 +608,8 @@ exports.getAllCollection = (req, res) => {
       } else {
         contactTeamArray.push(contactTeam);
       }
+    }).catch((err) => {
+      contactTeamArray.length = 0;
     });
   Promise.all([p1, p2, p3, p4, p5, p6, p7]).then((values) => {
     res.status(200).json({
