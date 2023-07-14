@@ -267,5 +267,7 @@ router.post("/getMasterVendorById",MasterVendorSubUser.getMasterVendorById);
 router.post('/createsharepointFolderByTicketId', ErpAccess.createsharepointFolderByTicketId);
 
 router.post('/uploadDocbyVendorCode', ErpAccess.uploadDocbyVendorCode);
+//updateMasterLogin
+router.put("/updateMasterLogin", signUp.updateMasterLogin);
 
 module.exports = router;

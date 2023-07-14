@@ -1149,6 +1149,7 @@ exports.updateAllCollection = async (req, res) => {
   });
 };
 
+
 exports.getvendorDetail = async (req, res) => {
   var userId = req.params.userId;
   VdetailSchema.findOne({

@@ -309,6 +309,14 @@ exports.getErpResourcePortalVendorlistById = (req, res) => {
 // };
 exports.updateErpResourcePortalVendorlist = (req, res) => {
   const Entry_No = req.params.Entry_No;
+  const data = req.body;
+  // if (data.MSMEDNumber === "") {
+  //   console.log("msmednumber::")
+  //   const errorObj = {
+  //     msg: 'error',
+  //     error: 'MSMEDNumber must be filled first before updating MSMED'
+  //   };
+  // }
   const url1 = `http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json&$filter=Entry_No%20eq%20%27${Entry_No}%27`;
   httpntlm.get({
     url: url1,
@@ -334,7 +342,7 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
       const ETag = `W/"'${replacedStr}'"`;
       console.log("ETag", ETag)
 
-      const url2 = `http://dnav-appserver.microclinic.in:4049/NAVTestDB2/OData/ResourcePortalVendorlist1(Entry_No='${Entry_No}')?company=Hitachi%20Systems%20India%20Pvt%20Ltd`;
+      const url2 = `http://10.83.152.111:4049/NAVTestDB2/OData/ResourcePortalVendorlist1(Entry_No='${Entry_No}')?company=Hitachi%20Systems%20India%20Pvt%20Ltd`;
      console.log("req.body::",req.body);
       const payload = {
         Ticket_ID: req.body.Ticket_ID,
@@ -371,52 +379,52 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
       //   TAN_No: req.body.TAN_No,
       //   Vendor_Account_Manager: req.body.Vendor_Account_Manager,
       //   // State_Code: "UTP",
-      //   // Finance_Contact_Name: fs_ContactName || undefined,
-      //   // Finance_Contact_Designation: fs_Designation || undefined,
-      //   // Finance_Contact_Phone_No: fs_PhoneNo || undefined,
-      //   // Finance_Contact_E_Mail: fs_Email || undefined,
-      //   // Operation_Contact_Name: ops_ContactName || undefined,
-      //   // Operation_Contact_Designation: ops_Designation || undefined,
-      //   // Operation_Contact_Phone_No: ops_PhoneNo || undefined,
-      //   // Operation_Contact_E_Mail: ops_Email || undefined,
-      //   // Collection_Contact_Name: colls_ContactName || undefined,
-      //   // Collection_Contact_Designation: colls_Designation || undefined,
-      //   // Collection_Contact_Phone_No: colls_PhoneNo || undefined,
-      //   // Collection_Contact_E_Mail: colls_Email || undefined,
-      //   // Management_Contact_Name: mngs_ContactName || undefined,
-      //   // Management_Contact_Designation: mngs_Designation || undefined,
-      //   // Management_Contact_Phone_No: mngs_PhoneNo || undefined,
-      //   // Management_Contact_E_Mail: mngs_Email || undefined,
-      //   // Others_Contact_Name: others_ContactName || undefined,
-      //   // Others_Contact_Designation: others_Designation || undefined,
-      //   // Others_Contact_Phone_No: others_PhoneNo || undefined,
-      //   // Others_Contact_E_Mail: others_Email || undefined,
-      //   // Master_Vendor_E_Mail_ID: mastervendor_email || undefined,
-      //   // MICR_Swift_Code: MICRcode || undefined,
-      //   // Year_of_audited_financials: yearOfAuditedFinancial || undefined,
-      //   // Revenue: Revenue || undefined,
-      //   // Profit: Profit || undefined,
-      //   // Networth: netWorth || undefined,
-      //   // Current_Assets: currentAssets || undefined,
-      //   // Director_Detail: directorDetails || undefined,
-      //   // GST_Registration_No: GST_No || undefined,
-      //   // GST_Vendor_Type: GST_type || undefined,
-      //   // Account_Holder_Name: bankAccountName || undefined,
-      //   // Account_No: bankAccountNumber || undefined,
-      //   // Bank_Name: bankName || undefined,
-      //   // Bank_Address: branchAddress || undefined,
-      //   // IFSC_Code: ifscCode || undefined,
-      //   // HSI_Contact_Name_1: name || undefined,
-      //   // HSI_Contact_E_Mail_1: email || undefined,
-      //   // HSI_Contact_Contact_No_1: contactNumber || undefined,
-      //   // HSI_Contact_Name_2: name2 || undefined,
-      //   // HSI_Contact_E_Mail_2: email2 || undefined,
-      //   // HSI_Contact_Contact_No_2: contactNumber2 || undefined,
-      //   // HSI_Contact_Name_3: name3 || undefined,
-      //   // HSI_Contact_E_Mail_3: email3 || undefined,
-      //   // HSI_Contact_Contact_No_3: contactNumber3 || undefined,
-      //   // Shareholder_Name: shareholderName || undefined,
-      //   // Organization_Type: organisationType || undefined,
+      //   // Finance_Contact_Name: req.body.fs_ContactName ,
+      //   // Finance_Contact_Designation: fs_Designation ,
+      //   // Finance_Contact_Phone_No: fs_PhoneNo ,
+      //   // Finance_Contact_E_Mail: fs_Email ,
+      //   // Operation_Contact_Name: ops_ContactName ,
+      //   // Operation_Contact_Designation: ops_Designation,
+      //   // Operation_Contact_Phone_No: ops_PhoneNo,
+      //   // Operation_Contact_E_Mail: ops_Email ,
+      //   // Collection_Contact_Name: colls_ContactName,
+      //   // Collection_Contact_Designation: colls_Designation,
+      //   // Collection_Contact_Phone_No: colls_PhoneNo,
+      //   // Collection_Contact_E_Mail: colls_Email,
+      //   // Management_Contact_Name: mngs_ContactName,
+      //   // Management_Contact_Designation: mngs_Designation,
+      //   // Management_Contact_Phone_No: mngs_PhoneNo,
+      //   // Management_Contact_E_Mail: mngs_Email,
+      //   // Others_Contact_Name: others_ContactName,
+      //   // Others_Contact_Designation: others_Designation,
+      //   // Others_Contact_Phone_No: others_PhoneNo,
+      //   // Others_Contact_E_Mail: others_Email,
+      //   // Master_Vendor_E_Mail_ID: mastervendor_email,
+      //   // MICR_Swift_Code: MICRcode ,
+      //   // Year_of_audited_financials: yearOfAuditedFinancial,
+      //   // Revenue: Revenue ,
+      //   // Profit: Profit ,
+      //   // Networth: netWorth ,
+      //   // Current_Assets: currentAssets ,
+      //   // Director_Detail: directorDetails ,
+      //   // GST_Registration_No: GST_No ,
+      //   // GST_Vendor_Type: GST_type ,
+      //   // Account_Holder_Name: bankAccountName ,
+      //   // Account_No: bankAccountNumber ,
+      //   // Bank_Name: bankName ,
+      //   // Bank_Address: branchAddress,
+      //   // IFSC_Code: ifscCode,
+      //   // HSI_Contact_Name_1: name,
+      //   // HSI_Contact_E_Mail_1: email,
+      //   // HSI_Contact_Contact_No_1: contactNumber,
+      //   // HSI_Contact_Name_2: name2 ,
+      //   // HSI_Contact_E_Mail_2: email2 ,
+      //   // HSI_Contact_Contact_No_2: contactNumber2 ,
+      //   // HSI_Contact_Name_3: name3 ,
+      //   // HSI_Contact_E_Mail_3: email3 ,
+      //   // HSI_Contact_Contact_No_3: contactNumber3,
+      //   // Shareholder_Name: shareholderName,
+      //   // Organization_Type: organisationType,
       // };
 console.log("request",req.body);
       httpntlm.put({
@@ -432,7 +440,9 @@ console.log("request",req.body);
           'User-Agent': 'nodejs/httpntlm',
           'If-Match': ETag
         },
-        body: JSON.stringify(payload),
+        body:JSON.stringify({
+          ...data
+        }),
       }, function (err, result2) {
         if (err) {
           console.error(err);
@@ -494,7 +504,7 @@ exports.postErpResourcePortalVendorlist = (req, res) => {
         msg: 'error',
         error: err.message
       };
-      res.status(500).json(errorObj);
+      res.status(200).json(errorObj);
     } else {
       const resultObj = JSON.parse(result.body);
       const responseObj = {
@@ -652,8 +662,13 @@ exports.getuserIdByVcode = async (req, res) => {
         });
 
         console.log("userID0----->", userID.userId);
-        if (err) return err;
-        res.status(200).json(userID.userId);
+        if (userID !== null&& userID !== '' && userID !== undefined) {
+          console.log("userID0----->", userID.userId);
+          res.status(200).json(userID.userId);
+        } else {
+          console.log("userID is null");
+          res.status(200).json({ message: 'No record found for the given Ticket_ID' });
+        }
       } else {
         res.status(200).json({ message: 'No record found for the given Ticket_ID' });
       }

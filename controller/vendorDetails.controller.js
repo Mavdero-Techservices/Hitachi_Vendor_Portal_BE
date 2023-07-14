@@ -220,7 +220,7 @@ exports.SaveVendorCommunication = (req, res) => {
             result: "Communication details updated successfully",
           });
         } else {
-          res.status(404).json({
+          res.status(200).json({
             msg: "error",
             result: "Vendor not found",
           });
@@ -255,7 +255,7 @@ exports.getStateAndcityByzipcode = async (req, res, next) => {
 
   } catch (err) {
     console.error(err);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res.status(200).json({ status: "error", message: "Internal server error" });
   }
 };
 
@@ -335,7 +335,7 @@ exports.updateVendor = async (req, res) => {
     const emailId = submitEmailId.emailId;
     var subject = `Hitachi Vendor Creation Submit Status`;
     var emailContent = `
-                        <h4>Hi ${userId}</h4>
+                        <h4>Hi ${submitEmailId.companyName}</h4>
                         <p>Your vendor creation request is submitted successful to Hitachi and your Ticket ID is ${submitEmailId.Ticket_ID}.</p>
                         <p>Thanks & regards,</p>
                         </div>`;
@@ -348,6 +348,22 @@ exports.updateVendor = async (req, res) => {
       returnFlag,
       emailId
     );
+var NotificationSubject = `Vendor approval request pending.`;
+var NotificationemailContent = `
+    <h4>Hi VCT team,</h4>
+    <p>You have a request pending for approval from${submitEmailId.companyName}.</p>       
+    <p>Please <a href=${process.env.HOST}:3000/login> Click</a> here to initiate the approval process</p>
+    <p>Thanks & regards,</p>
+    </div>`;
+    var GroupemailId=config.VctTeamEmail
+exports.NotificationEmail(
+req,
+res,
+NotificationSubject,
+NotificationemailContent,
+returnFlag,
+GroupemailId
+)
     const del = await ApprovalSchema.findOne({
       where: {
         userId: userId,
@@ -383,6 +399,7 @@ exports.updateVendor = async (req, res) => {
     });
   }
 };
+
 
 exports.updateCommunication = async (req, res) => {
   const userId = req.params.userId;
@@ -442,5 +459,31 @@ exports.UpdateUserStatusByUserId = async (req, res) => {
       status: "error",
       message: "Vendor not found",
     });
+  }
+};
+exports.NotificationEmail= async (
+  req,
+  res,
+  NotificationSubject,
+  NotificationemailContent,
+  returnFlag,
+  GroupemailId
+) => {
+  try {
+    sendSmtpEmail.subject = `${NotificationSubject}`;
+    sendSmtpEmail.htmlContent = `${NotificationemailContent}`;
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
+    sendSmtpEmail.to = [{ email: `${GroupemailId}` }];
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
+      console.log('Group mail sent successfully: ' + JSON.stringify(data));
+    }, function (error) {
+      console.error('Group mail Error: ',error);
+    });
+  } catch (error) {
+    console.error('Group mail Error: ',error);
+    return res.status(200).json({ status: "error", data: error });
   }
 };

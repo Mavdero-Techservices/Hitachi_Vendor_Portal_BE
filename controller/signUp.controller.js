@@ -887,3 +887,114 @@ exports.twoFactorOTPValidation = (req, res, next) => {
         .json({ status: "error", data: "Error Handling data" });
     });
 };
+
+exports.updateMasterLogin = async (req, res) => {
+  console.log("updateMasterLogin::", req.body);
+  const mailConfirmationCode = Math.floor(100000 + Math.random() * 900000);
+  const companyName=req.body.companyName;
+  const userName = "Master" + Math.floor(100000 + Math.random() * 900000);
+  var pass = "";
+  var str =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
+
+  for (let i = 1; i <= 8; i++) {
+    var char = Math.floor(Math.random() * str.length + 1);
+
+    pass += str.charAt(char);
+  }
+  const password = pass;
+  try {
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const users = await SignUpSchema.findAll({ 
+      where: {
+        Ticket_ID: req.body.Ticket_ID,
+        role: 'Admin'
+      }
+    });
+    console.log("users::",users);
+    if (users.length > 0) {
+      console.log("Users already exist:",users);
+      
+      const user = users[0]; 
+      
+      if (user.emailId === req.body.mastervendor_email) {
+        console.log("same user:");
+        return res.status(200).json({
+          status: "success",
+          message: "same user",
+          result:user.emailId,
+          updateResult:req.body.mastervendor_email
+        });
+      } else {
+        console.log("Different user-update masteremailid and send password via mail::");
+        SignUpSchema.update(
+          { emailId: req.body.mastervendor_email,
+            userName:userName,
+            verifiedUser:"Pending",
+            mailConfirmationCode:mailConfirmationCode,
+            password: hashedPassword },
+          { where: {
+            Ticket_ID: req.body.Ticket_ID,
+            role: 'Admin',
+          } }
+        )
+          .then((result) => {
+            var subject = `confirmation email for master login userName and password`;
+            var emailContent = `<h1>Email Confirmation</h1>
+            <h2>Hello ${companyName}</h2>
+            <p>Your Username is ${userName} and password is ${password},please click the link below to verify your email address.</p>
+            <a href=${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${req.body.mastervendor_email}/${mailConfirmationCode}> Click here</a>
+            </div>`;
+        
+            sendSmtpEmail.subject = `${subject}`;
+            sendSmtpEmail.htmlContent = `${emailContent}`;
+            sendSmtpEmail.sender = {
+              name: config.name,
+              email: config.email,
+            };
+            sendSmtpEmail.to = [{ email: `${req.body.mastervendor_email}` }];
+        
+            apiInstance.sendTransacEmail(sendSmtpEmail).then(
+              function (data) {
+                console.log("mail sent successfully: " + JSON.stringify(data));
+                return res.status(200).json({
+                  status: "success",
+                  message: "mastervendor_email Updated successfully and mail sent",
+                });
+              },
+              function (error) {
+                console.error(error);
+        
+                // Retry sending the email
+                apiInstance.sendTransacEmail(sendSmtpEmail).then(
+                  function (data) {
+                    console.log("mail sent successfully: " + JSON.stringify(data));
+                    return res.status(200).json({
+                      status: "success",
+                      message: "mastervendor_email Updated successfully",
+                    });
+                  },
+                  function (error) {
+                    console.error(error);
+                    return res.status(500).json({ error: "Failed to send email" });
+                  }
+                );
+              }
+            );
+          
+          })
+     
+      }
+    } else {
+      console.log("No users found for the given Ticket_ID and role.");
+      exports.saveMasterLogin(req, res);
+    }
+  } catch (error) {
+    console.error("Error occurred while fetching/updating users:", error);
+    return res.status(200).json({
+      status: "error",
+      message: "Error while updating master",
+      result: error,
+    });
+  }
+};
