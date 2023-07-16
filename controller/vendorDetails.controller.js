@@ -107,7 +107,6 @@ exports.postVdetail = (req, res, next) => {
   const mkDenialCheque = req.body.mkDenialCheque;
   const submitStatus = req.body.submitStatus;
   const submitDate = req.body.submitDate;
-  const userStatus = req.body.userStatus;
 
   VdetailSchema.findOne({
     where: {
@@ -132,7 +131,6 @@ exports.postVdetail = (req, res, next) => {
         userId: userId,
         submitStatus: submitStatus,
         submitDate: submitDate,
-        userStatus: userStatus
       });
       VendorDetails.save()
         .then((data) => {
@@ -143,6 +141,7 @@ exports.postVdetail = (req, res, next) => {
           });
         })
         .catch((err) => {
+          console.log(err, "YYYYYYYYYYYYYYYYYYYY");
           return res
             .status(404)
             .json({ status: "error", err, message: "Error Response" });
@@ -150,7 +149,12 @@ exports.postVdetail = (req, res, next) => {
     } else {
       console.log("call update Api:::");
     }
-  });
+  }).catch((err) => {
+    console.log(err, "XXXXXXXXXXXXXXXXXXXXXX");
+    return res
+      .status(200)
+      .json({ status: "error", err, message: "Couldn't Save Data, try again!" });
+  });;
 };
 
 //SaveVendorCommunication
