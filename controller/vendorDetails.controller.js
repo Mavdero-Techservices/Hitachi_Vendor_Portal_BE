@@ -248,14 +248,21 @@ exports.getStateAndcityByzipcode = async (req, res, next) => {
     const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${Post_Code}&country=${code}&username=karthiga&style=full`;
 
     const result = await axios.get(url);
-    const codes = result.data.postalcodes;
+    const codes = result?.data?.postalcodes;
 
+    if(codes.length > 0){
+      const filteredCodes = codes.filter((item) => {
+        return item.postalcode === Post_Code
+      });
+      return res.json({ status: "success", postalcodes: filteredCodes });
+    }
 
-    const filteredCodes = codes.filter((item) => {
-      return item.postalcode === Post_Code
-    })
+    else{
+      console.error(err);
+      return res.status(200).json({ status: "error", message: "Internal server error" });
+    }
 
-    return res.json({ status: "success", postalcodes: filteredCodes });
+   
 
   } catch (err) {
     console.error(err);
