@@ -182,17 +182,45 @@ exports.updateErpVendor_API = (req, res) => {
 
 //ResourcePortalVendorlist
 exports.getErpResourcePortalVendorlist = (req, res) => {
-  httpntlm.get({
-    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/ResourcePortalVendorlist1?$format=json",
-    username: 'ERP-API',
-    password: 'HSI@#543DCVB',
-    workstation: '',
-    domain: ''
-  }, function (err, result) {
-    if (err) return err;
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(result.body);
-  })
+  const baseUrl = "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/Vendor_API";
+  const username = 'ERP-API';
+  const password = 'HSI@#543DCVB';
+  const pageSize = 4000;
+  let totalLength = 0;
+  let allData = []; 
+  let page = 1; 
+
+  const makeRequest = (url) => {
+    httpntlm.get({
+      url: url,
+      username: username,
+      password: password,
+      workstation: '',
+      domain: ''
+    }, function (err, result) {
+      if (err) {
+        res.status(500).json({ error: err });
+      } else {
+        const data = JSON.parse(result.body);
+        const records = data.value;
+
+        if (records.length === 0) {
+          res.status(200).json({ value: allData }); 
+        } else {
+          totalLength += records.length; // Accumulate the length of the records
+          console.log("length:", records.length);
+          allData = allData.concat(records);
+          page++;
+
+          const nextPageUrl = `${baseUrl}?$format=json&$top=${pageSize}&$skip=${(page - 1) * pageSize}`;
+          makeRequest(nextPageUrl); 
+        }
+      }
+    });
+  };
+
+  const initialUrl = `${baseUrl}?$format=json&$top=${pageSize}&$skip=${(page - 1) * pageSize}`;
+  makeRequest(initialUrl);
 };
 ///getErpResourcePortalVendorlistById
 exports.getErpResourcePortalVendorlistById = (req, res) => {
