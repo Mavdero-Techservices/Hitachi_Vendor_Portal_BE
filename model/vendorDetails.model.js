@@ -48,9 +48,9 @@ module.exports = (sequelize, Sequelize) => {
         Ticket_ID:{
             type: Sequelize.STRING  
         },
-        userStatus: {
-            type: Sequelize.STRING,
-        },
+        // userStatus: {
+        //     type: Sequelize.STRING,
+        // },
     })
     return VdetailSchema;
 }
