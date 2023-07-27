@@ -816,8 +816,8 @@ exports.twoFactorOTP = (req, res, next) => {
         console.log("user.emailId", user.emailId);
         var subject = `2FA OTP for your login!`;
         var emailContent =
-          `<h1>Reset password</h1>
-    <h2>Hello ${user.contactPerson}</h2>
+          `<h1>OTP</h1>
+    <h2>Hello ${(user.contactPerson != "" && user.contactPerson != null) ? user.contactPerson : user.companyName}</h2>
     <p>Please Use the OTP below to Login:</p>` +
           Otp2Factor +
           `
