@@ -10,19 +10,19 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     GST_Registration_No: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(15),
     },
     GST_Doc: {
       type: Sequelize.STRING,
     },
     P_A_N_No: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(20),
     },
     PAN_Doc: {
       type: Sequelize.STRING,
     },
     CIN_No: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(21),
     },
     form_10f:
     {
@@ -42,7 +42,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     MSMED_Number: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(50),
     },
     MSME_Doc: {
       type: Sequelize.STRING,
@@ -51,7 +51,7 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.STRING,
     },
     TAN_No: {
-      type: Sequelize.STRING,
+      type: Sequelize.STRING(10),
     },
     TAN_Doc: {
       type: Sequelize.STRING,

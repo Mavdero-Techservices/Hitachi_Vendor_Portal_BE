@@ -457,7 +457,7 @@ exports.UpdateUserStatusByUserId = async (req, res) => {
       message: "Vendor Basic details updated successfully",
     });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       status: "error",
       message: "Vendor not found",
     });
