@@ -102,9 +102,9 @@ exports.saveMasterVendorSubUser = (req, res) => {
         .then((result) => {
           var subject = `Hitachi Multiple Sub User Creation`;
           var emailContent = `
-                <h4>Hi ${loginId}</h4>
+                <h4>Hi ${Name}</h4>
+                <p>Your Sub User Registration is Successfully Created.</p>
                 <p>Your LoginId is ${loginId} and password is ${password}.</p>
-                <p>Your Sub User Registration is SuccessFully Created.</p>
                 <p>Thanks & regards,</p>
                 </div>`;
           var returnFlag = false;

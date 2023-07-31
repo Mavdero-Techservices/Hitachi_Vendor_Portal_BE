@@ -97,6 +97,7 @@ exports.postVdetail = (req, res, next) => {
   const Address_2 = req.body.Address_2;
   const Country_Region_Code = req.body.Country_Region_Code;
   const state = req.body.state;
+  const stateCode = req.body.stateCode;
   const City = req.body.City;
   const Post_Code = req.body.Post_Code;
   const contactName = req.body.contactName;
@@ -107,6 +108,7 @@ exports.postVdetail = (req, res, next) => {
   const mkDenialCheque = req.body.mkDenialCheque;
   const submitStatus = req.body.submitStatus;
   const submitDate = req.body.submitDate;
+  const userStatus = req.body.userStatus;
 
   VdetailSchema.findOne({
     where: {
@@ -120,6 +122,7 @@ exports.postVdetail = (req, res, next) => {
         Address_2: Address_2,
         City: City,
         state: state,
+        stateCode:stateCode,
         Country_Region_Code: Country_Region_Code,
         Post_Code: Post_Code,
         contactName: contactName,
@@ -131,6 +134,7 @@ exports.postVdetail = (req, res, next) => {
         userId: userId,
         submitStatus: submitStatus,
         submitDate: submitDate,
+        userStatus: userStatus
       });
       VendorDetails.save()
         .then((data) => {
@@ -141,7 +145,6 @@ exports.postVdetail = (req, res, next) => {
           });
         })
         .catch((err) => {
-          console.log(err, "YYYYYYYYYYYYYYYYYYYY");
           return res
             .status(404)
             .json({ status: "error", err, message: "Error Response" });
@@ -149,12 +152,7 @@ exports.postVdetail = (req, res, next) => {
     } else {
       console.log("call update Api:::");
     }
-  }).catch((err) => {
-    console.log(err, "XXXXXXXXXXXXXXXXXXXXXX");
-    return res
-      .status(200)
-      .json({ status: "error", err, message: "Couldn't Save Data, try again!" });
-  });;
+  });
 };
 
 //SaveVendorCommunication
@@ -248,21 +246,14 @@ exports.getStateAndcityByzipcode = async (req, res, next) => {
     const url = `http://api.geonames.org/postalCodeLookupJSON?postalcode=${Post_Code}&country=${code}&username=karthiga&style=full`;
 
     const result = await axios.get(url);
-    const codes = result?.data?.postalcodes;
+    const codes = result.data.postalcodes;
 
-    if(codes.length > 0){
-      const filteredCodes = codes.filter((item) => {
-        return item.postalcode === Post_Code
-      });
-      return res.json({ status: "success", postalcodes: filteredCodes });
-    }
 
-    else{
-      console.error(err);
-      return res.status(200).json({ status: "error", message: "Internal server error" });
-    }
+    const filteredCodes = codes.filter((item) => {
+      return item.postalcode === Post_Code
+    })
 
-   
+    return res.json({ status: "success", postalcodes: filteredCodes });
 
   } catch (err) {
     console.error(err);
@@ -344,10 +335,10 @@ exports.updateVendor = async (req, res) => {
     console.log("emailID::", submitEmailId);
 
     const emailId = submitEmailId.emailId;
-    var subject = `Hitachi Vendor Creation Submit Status`;
+    var subject = `Hitachi Vendor Creation Submit Status for Ticket ID ${submitEmailId.Ticket_ID}`;
     var emailContent = `
                         <h4>Hi ${submitEmailId.companyName}</h4>
-                        <p>Your vendor creation request is submitted successful to Hitachi and your Ticket ID is ${submitEmailId.Ticket_ID}.</p>
+                        <p>Your vendor creation request is submitted successful to Hitachi and your Ticket ID is <b> ${submitEmailId.Ticket_ID}</b>.</p>
                         <p>Thanks & regards,</p>
                         </div>`;
     var returnFlag = false;
@@ -363,7 +354,7 @@ var NotificationSubject = `Vendor approval request pending.`;
 var NotificationemailContent = `
     <h4>Hi VCT team,</h4>
     <p>You have a request pending for approval from${submitEmailId.companyName}.</p>       
-    <p>Please <a href=${process.env.HOST}:3000/login> Click</a> here to initiate the approval process</p>
+    <p>Please <a href=${process.env.HOST}:3000/login><b>Click</b></a> here to initiate the approval process</p>
     <p>Thanks & regards,</p>
     </div>`;
     var GroupemailId=config.VctTeamEmail
