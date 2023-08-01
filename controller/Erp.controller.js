@@ -6,7 +6,7 @@ let directory_name = "uploads";
 const path = require('path');
 var multer = require("multer");
 const fs = require('fs');
-
+const StatDetailSchema = db.statdetail;
 var vendorCodeDocPath = "";
 
 var storage = multer.diskStorage({
@@ -1091,5 +1091,141 @@ console.log("docpath::",vendorCodeDocPath);
   });
 }
 
+exports.GenerateVendorCode = (req, res) => {
+  const username = 'ERP-API';
+  const password = 'HSI@#543DCVB';
+  const ticketID = req.body.ticketID;
+  const url = 'http://10.83.152.111:4048/NAVTestDB2/WS/Hitachi%20Systems%20India%20Pvt%20Ltd/Codeunit/CodeunitMultipleWork';
+  const soapEnvelope = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="urn:microsoft-dynamics-schemas/codeunit/CodeunitMultipleWork">
+    <soapenv:Header/>
+    <soapenv:Body>
+        <tns:Create_Vendor_Against_TicketID>
+            <tns:cdRefrenceEntryNo>${ticketID}</tns:cdRefrenceEntryNo>
+        </tns:Create_Vendor_Against_TicketID>
+    </soapenv:Body>
+</soapenv:Envelope>`;
+  const headers = {
+    'Content-Type': 'text/xml; charset=utf-8',
+    'SOAPAction': 'urn:microsoft-dynamics-schemas/codeunit/CodeunitMultipleWork:Create_Vendor_Against_TicketID',
+  };
+  const ntlmOptions = {
+    username: username,
+    password: password,
+  };
+  httpntlm.post({
+    url: url,
+    headers: headers,
+    username: ntlmOptions.username,
+    password: ntlmOptions.password,
+    body: soapEnvelope,
+  }, function (err, response) {
+    if (err) {
+      console.error('Error:', err);
+      return res.status(200).json({ message: 'error', err });
+    }
+ const xmlResponse = response.body;
+ const return_value = xmlResponse.match(/<return_value>(.*?)<\/return_value>/)[1];
 
+    return res.status(200).json({ message: 'success', data: response ,vendorCode:return_value});
+  });
+};
 
+exports.getErpStateCode = (req, res) => {
+  // let state = req.params.state;
+  // let normalizedState = state.replace('&', 'and').replace(/\s/g, ''); 
+  // let stateWithSpacesRegex = new RegExp('^' + normalizedState, 'i'); 
+  // let stateWithoutSpacesRegex = new RegExp('^' + normalizedState, 'i'); 
+
+  // httpntlm.get({
+  //   url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/States?$format=json",
+  //   username: 'ERP-API',
+  //   password: 'HSI@#543DCVB',
+  //   workstation: '',
+  //   domain: '',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Accept': 'application/json;odata.metadata=minimal',
+  //     'User-Agent': 'nodejs/httpntlm',
+  //   }
+  // }, function (err, result) {
+  //   if (err) {
+  //     console.error(err);
+  //     res.status(200).json({ message: 'An error occurred while fetching the data.' });
+  //   } else {
+  //     const data = JSON.parse(result.body);
+  //     const matchingStates = data.value.filter(({ Description }) => {
+  //       return stateWithSpacesRegex.test(Description.replace(/\s/g, '')) || stateWithoutSpacesRegex.test(Description.replace(/\s/g, ''));
+  //     });
+      
+  //     if (matchingStates.length > 0) {
+  //       const simplifiedData = matchingStates.map(({ Code, Description }) => ({ Code, Description }));
+  //       res.status(200).json({ message: 'Success', result: simplifiedData });
+  //     } else {
+  //       res.status(200).json({ message: 'State not found in ERP system.' });
+  //     }
+  //   }
+  // });
+};
+
+//findPan_no present or not
+exports.SearchpanNo= (req, res) => {
+console.log("pan")
+const requestedPanNo = req.params.P_A_N_No;
+StatDetailSchema.findOne({
+  where: {
+    P_A_N_No: requestedPanNo,
+  },
+}).then((users) => {
+    console.log("pan6")
+    if (users) {
+      console.log("pan7")
+      res.status(200).json({message:"success",result: "Pan no already exists!" });
+    } else {
+      console.log("pan8")
+      res.status(200).json({message:"error",result: "Requested pan_no not found" });
+    }
+  })
+  .catch((error) => {
+    res.status(200).json({ error: "Error occurred while querying the database." ,error});
+  });
+//  httpntlm.get({
+//     url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/Vendor_API?$format=json",
+//     username: 'ERP-API',
+//     password: 'HSI@#543DCVB',
+//     workstation: '',
+//     domain: ''
+//   }, function (err, result) {
+//     if (err) {
+//       return res.status(500).json({ error: "Error occurred while fetching data from the API." });
+//     }
+
+//     const data = JSON.parse(result.body).value;
+//     const requestedPanNo = req.params.P_A_N_No;
+
+//     const foundData = data.find((item) => item.P_A_N_No === requestedPanNo);
+//     console.log("pan2")
+//     if (foundData) {
+//       console.log("pan3")
+//       res.status(200).json(foundData);
+//     } else {
+//       console.log("pan4")
+//       StatDetailSchema.findOne({
+//         where: {
+//           P_A_N_No: requestedPanNo,
+//         },
+//       }).then((users) => {
+//           console.log("pan6")
+//           if (users && users.length > 0) {
+//             console.log("pan7")
+//             res.status(200).json(users);
+//           } else {
+//             console.log("pan8")
+//             res.status(404).json({ error: "Requested pan_no not found in both API and StatDetailSchema." });
+//           }
+//         })
+//         .catch((error) => {
+//           res.status(500).json({ error: "Error occurred while querying the database." });
+//         });
+//     }
+//   });
+}

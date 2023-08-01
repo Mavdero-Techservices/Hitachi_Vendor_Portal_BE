@@ -269,5 +269,9 @@ router.post('/createsharepointFolderByTicketId', ErpAccess.createsharepointFolde
 router.post('/uploadDocbyVendorCode', ErpAccess.uploadDocbyVendorCode);
 //updateMasterLogin
 router.put("/updateMasterLogin", signUp.updateMasterLogin);
-
+//getErpStateCode
+router.get("/getErpStateCode/:state",ErpAccess.getErpStateCode);
+router.post("/GenerateVendorCode",ErpAccess.GenerateVendorCode);
+//SearchpanNo
+router.get("/SearchpanNo/:P_A_N_No",ErpAccess.SearchpanNo);
 module.exports = router;

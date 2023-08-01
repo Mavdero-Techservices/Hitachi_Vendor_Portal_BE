@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         yearOfAuditedFinancial: {
-            type: Sequelize.STRING, 
+            type: Sequelize.STRING(10), 
         },
         Revenue: {
             type: Sequelize.STRING,    
@@ -19,10 +19,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,           
         },
         currentAssets: {
-            type: Sequelize.STRING,        
+            type: Sequelize.STRING(30),        
         },
         directorDetails: {
-            type: Sequelize.STRING,
+            type: Sequelize.STRING(30),
         },
         financial_data: {
             type: Sequelize.STRING,
@@ -34,7 +34,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         shareholderName:{
-            type: Sequelize.STRING,
+            type: Sequelize.STRING(100),
         },
     })
     return FdetailSchema;

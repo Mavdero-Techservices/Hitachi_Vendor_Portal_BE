@@ -100,27 +100,23 @@ exports.updatePeriodicRequest = async (req, res) => {
 
 
     for (let j = 0; j < row.vendorCode.length; j++) {
-
-
       if (ForeingId.length > 0) {
         ForeingId.map((item) => {
           item.destroy();
         })
-
         const user = await new VendorIdSchema({
           userId: row.userId,
           docName: row.documentFileDoc,
           periodic_id: row.id,
-          vendorId: row.vendorCode[j].Vendor_No,
+          vendorId: row.vendorCode[j].No,
         });
         user.save();
       } else {
-
         const user = await new VendorIdSchema({
           userId: row.userId,
           docName: row.documentFileDoc,
           periodic_id: row.id,
-          vendorId: row.vendorCode[j].Vendor_No,
+          vendorId: row.vendorCode[j].No,
         });
         user.save();
       }

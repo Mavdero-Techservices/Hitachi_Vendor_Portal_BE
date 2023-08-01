@@ -253,7 +253,7 @@ exports.resetPasswordByCode = (req, res, next) => {
         var emailContent = `<h1>Reset password</h1>
     <h2>Hello ${user.contactPerson}</h2>
     <p>please click the below link to Reset your password.</p>
-    <a href=${process.env.HOST}:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}> Click here</a>
+    <a href=${process.env.HOST}:3000/passwordGeneration/${user.emailId}/${mailConfirmationCode}/${userName}> Click here</a>
     </div>`;
         const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
         sendSmtpEmail.subject = `${subject}`;
@@ -308,28 +308,20 @@ exports.resetPassword = (req, res, next) => {
           },
         })
           .then((data) => {
-            if (data.length > 0) {
-              return res.status(200).json({
-                status: "error",
-                data: "Username already exists. Please choose a different username.",
-              });
-            } else {
-              bcrypt.hash(password, 12).then(async (hashedPassword) => {
-                await SignUpSchema.update(
-                  {
-                    password: hashedPassword,
-                    confirmPassword: hashedPassword,
-                    userName: userName,
-                  },
-                  { where: { id: user.id } }
-                ).then((code) => {
-                  return res.status(200).json({
-                    status: "success",
-                    data: "password reset successfully",
-                  });
+            bcrypt.hash(password, 12).then(async (hashedPassword) => {
+              await SignUpSchema.update(
+                {
+                  password: hashedPassword,
+                  confirmPassword: hashedPassword,
+                },
+                { where: { id: user.id } }
+              ).then((code) => {
+                return res.status(200).json({
+                  status: "success",
+                  data: "password reset successfully",
                 });
               });
-            }
+            });
           })
           .catch((err) => {
             return res.status(500).json({
@@ -593,11 +585,11 @@ exports.saveUser = (req, res) => {
                 var subject = `confirmation mail for userName and password`;
                 var emailContent = `<h1>Email Confirmation</h1>
                 <h2>Hello ${companyName}</h2>
-            <p>Your Username is ${userName} and password is ${password}</p>
-            <p>please click the link below to verify your email address.</p>
+            <p>Your Username is ${userName} and Password is ${password}</p>
+            <p>Please <b>click</b> the link below to <b>VERIFY</b> your email address.</p>
             <a href=${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${result.emailId}/${mailConfirmationCode}> Click here</a>
-            <p>Visit the link below to create a new username and password.</p>
-            <a href=${process.env.HOST}:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}> Click here</a>
+            <p>Visit the link below to <b>create a new username and password.</b></p>
+            <a href=${process.env.HOST}:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}/${result.userName}> Click here</a>
             </div>`;
                 try {
                   sendSmtpEmail.subject = `${subject}`;
@@ -685,7 +677,7 @@ exports.saveMasterLogin = async (req, res) => {
     var subject = `confirmation email for master login userName and password`;
     var emailContent = `<h1>Email Confirmation</h1>
     <h2>Hello ${companyName}</h2>
-    <p>Your Username is ${userName} and password is ${password},please click the link below to verify your email address.</p>
+    <p>Your Username is ${userName} and password is ${password},Please <b>Click </b>the link below to <b>Verify</b> your email address.</p>
     <a href=${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
     </div>`;
 
@@ -816,9 +808,9 @@ exports.twoFactorOTP = (req, res, next) => {
         console.log("user.emailId", user.emailId);
         var subject = `2FA OTP for your login!`;
         var emailContent =
-          `<h1>OTP</h1>
-    <h2>Hello ${(user.contactPerson != "" && user.contactPerson != null) ? user.contactPerson : user.companyName}</h2>
-    <p>Please Use the OTP below to Login:</p>` +
+        `<h1>OTP</h1>
+        <h2>Hello ${(user.contactPerson != "" && user.contactPerson != null) ? user.contactPerson : user.companyName}</h2>
+        <p>Please Use the OTP below to Login:</p>` +
           Otp2Factor +
           `
     </div>`;

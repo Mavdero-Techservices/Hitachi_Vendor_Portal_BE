@@ -509,7 +509,7 @@ exports.saveApprovalStatus = (req, res) => {
               var NotificationemailContent = `
                                   <h4>Hi Japan team,</h4>
                                   <p>You have a request pending for approval from ${data.companyName}.As the VCT team approved the Workflow.</p>       
-                                  <p>Please <a href=${process.env.HOST}:3000/login> Click</a> here to initiate the approval process</p>
+                                  <p>Please <a href=${process.env.HOST}:3000/login><b>Click</b></a> here to initiate the approval process</p>
                                   <p>Thanks & regards,</p>
                                   </div>`;
                                   var GroupemailId=config.JapanTeamEmail
@@ -659,7 +659,7 @@ exports.updateApprovalStatus = async (req, res) => {
         var subject = `Hitachi Japan Team Approval`;
         var emailContent = `
             <h4>Hi ${approvalValidate.companyName}</h4>
-            <p>Your Vendor Registration request is approved by Japan Team and proceeded for next stage of Approval.</p>
+            <p>You successfully onboarded as vendor of <b>Hitachi Systems India.</b></p>
             <p>Thanks & regards,</p>
             </div>`;
         var returnFlag = false;
@@ -676,7 +676,7 @@ exports.updateApprovalStatus = async (req, res) => {
         var subject = `Hitachi Japan Team Request Rejected`;
         var emailContent = `
                   <h4>Hi ${approvalValidate.companyName}</h4>
-                  <p>Your Vendor Registration request is Rejected by Japan Team </p>
+                  <p>Your Vendor Registration request is Rejected by Japan Team and the workflow is moved to Master Right Team for further processing.</p>
                   </div>`;
         var returnFlag = false;
          exports.emailJapanRejectNotification(
@@ -691,7 +691,7 @@ exports.updateApprovalStatus = async (req, res) => {
         var NotificationemailContent = `
                             <h4>Hi MRT team,</h4>
                             <p>You have a request pending for approval from ${approvalValidate.companyName}.As the Japan rejected the request.</p>       
-                            <p>Please <a href=${process.env.HOST}:3000/login> Click</a> here to initiate the approval process</p>
+                            <p>Please <a href=${process.env.HOST}:3000/login><b>Click</b></a> here to initiate the approval process</p>
                             <p>Thanks & regards,</p>
                             </div>`;
                             var GroupemailId= config.MrtTeamEmail;
@@ -708,7 +708,7 @@ exports.updateApprovalStatus = async (req, res) => {
         var subject = `Hitachi MRT Team Approval`;
         var emailContent = `
             <h4>Hi ${approvalValidate.companyName}</h4>
-            <p>Your Vendor Registration request is approved by MRT Team and proceeded for next stage of Approval.</p>
+            <p>Your Vendor Registration request is approved by MRT Team, and you are successfully onboarded as Vendor of<b> Hitachi Systems India</b>.</p>
             <p>Thanks & regards,</p>
             </div>`;
         var returnFlag = false;
@@ -725,7 +725,7 @@ exports.updateApprovalStatus = async (req, res) => {
         var subject = `Hitachi MRT Request Rejected`;
         var emailContent = `
                   <h2>Hi ${approvalValidate.companyName}</h2>
-                  <p>Your Vendor Registration request is Rejected by MRT Team because of, ${req.body.level3RejectComment}</p>
+                  <p>Your Vendor Registration request is Rejected by MRT Team because of,${req.body.level3RejectComment}</p>
                   </div>`;
         var returnFlag = false;
         exports.emailMRTRejectNotification(
