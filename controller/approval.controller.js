@@ -462,7 +462,7 @@ exports.saveApprovalStatus = (req, res) => {
         const level2rejectFileDoc = rejectFile2DocPath;
         const level3rejectFileDoc = rejectFile3DocPath;
         const userId = req.body.userId;
-        const emailId = userEmailId.emailId;
+        const emailId = userEmailId?.emailId;
         if (req.body.level1Status === 'rejected') {
           req.body.submitStatus = "rejected"
           const vdetail = await VdetailSchema.update(req.body, {
@@ -484,7 +484,7 @@ exports.saveApprovalStatus = (req, res) => {
           level3RejectComment: req.body.level3RejectComment,
           level3rejectFileDoc: level3rejectFileDoc,
           level3Date: null,
-          userStatus: basicData.userStatus,
+          // userStatus: basicData.userStatus,
         });
         user
           .save()
