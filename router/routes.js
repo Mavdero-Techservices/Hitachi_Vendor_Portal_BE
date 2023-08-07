@@ -47,6 +47,8 @@ router.post("/saveUser", signUp.saveUser);
 router.post("/fileUpload", fileUploadcontroller.fileUpload);
 //resetPassword
 router.post("/resetPassword", signUp.resetPassword);
+//resetUsernameAndPassword
+router.post("/resetUsernameAndPassword", signUp.resetUsernameAndPassword);
 //resetPasswordByCode
 router.post("/resetPasswordByCode", signUp.resetPasswordByCode);
 //imageUpload

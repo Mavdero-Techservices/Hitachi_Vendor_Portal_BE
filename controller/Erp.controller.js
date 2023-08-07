@@ -331,8 +331,7 @@ exports.getErpResourcePortalVendorlistById = (req, res) => {
 //   }
 //   });
 //   }
-  
-  
+   
 
 // };
 exports.updateErpResourcePortalVendorlist = (req, res) => {
@@ -689,9 +688,9 @@ exports.getuserIdByVcode = async (req, res) => {
           where: { Ticket_ID : EntryNo },
         });
 
-        console.log("userID0----->", userID.userId);
+       
         if (userID !== null&& userID !== '' && userID !== undefined) {
-          console.log("userID0----->", userID.userId);
+          
           res.status(200).json(userID.userId);
         } else {
           console.log("userID is null");
@@ -994,7 +993,7 @@ exports.uploadDocbyVendorCode = async(req, res) => {
       }, function (err, response) {
         if (err) {
           console.log(err);
-          return res.status(500).json({ error: 'Error retrieving form digest value' });
+          return res.status(200).json({ error: 'Error retrieving form digest value' });
         }
 
         const xmlResponse = response.body;
@@ -1003,7 +1002,7 @@ exports.uploadDocbyVendorCode = async(req, res) => {
         parser.parseString(xmlResponse, function (parseErr, result) {
           if (parseErr) {
             console.log(parseErr);
-            return res.status(500).json({ error: 'Error parsing XML response' });
+            return res.status(200).json({ error: 'Error parsing XML response' });
           }
 
           try {
@@ -1034,7 +1033,7 @@ exports.uploadDocbyVendorCode = async(req, res) => {
             }, function (folderErr, folderResponse) {
               if (folderErr) {
                 console.log('Error creating folder:', folderErr);
-                return res.status(500).json({ error: 'Error creating folder' });
+                return res.status(200).json({ error: 'Error creating folder' });
               } else {
                 console.log('Folder created successfully:', folderUrl);
 
@@ -1061,14 +1060,14 @@ console.log("docpath::",vendorCodeDocPath);
                     }, function (uploadErr, uploadResponse) {
                       if (uploadErr) {
                         console.log("uploadErr", uploadErr);
-                        return res.status(500).json({ msg: "error", result: uploadErr });
+                        return res.status(200).json({ msg: "error", result: uploadErr });
                       } else {
                         console.log("uploadResponse", uploadUrl);
                       }
                     });
                   } catch (uploadErr) {
                     console.log("Error uploading file:", uploadErr);
-                    return res.status(500).json({ error: 'Error uploading file' });
+                    return res.status(200).json({ error: 'Error uploading file' });
                   }
                 }
 
@@ -1078,13 +1077,13 @@ console.log("docpath::",vendorCodeDocPath);
             });
           } catch (err) {
             console.log('Error retrieving form digest value:', err);
-            return res.status(500).json({ error: 'Error retrieving form digest value' });
+            return res.status(200).json({ error: 'Error retrieving form digest value' });
           }
         });
       });
     } catch (err) {
       console.log('Error performing SharePoint operation:', err);
-      return res.status(500).json({ error: 'Error performing SharePoint operation' });
+      return res.status(200).json({ error: 'Error performing SharePoint operation' });
     }
   
     
@@ -1131,40 +1130,40 @@ exports.GenerateVendorCode = (req, res) => {
 };
 
 exports.getErpStateCode = (req, res) => {
-  // let state = req.params.state;
-  // let normalizedState = state.replace('&', 'and').replace(/\s/g, ''); 
-  // let stateWithSpacesRegex = new RegExp('^' + normalizedState, 'i'); 
-  // let stateWithoutSpacesRegex = new RegExp('^' + normalizedState, 'i'); 
+  let state = req.params.state;
+  let normalizedState = state.replace('&', 'and').replace(/\s/g, ''); 
+  let stateWithSpacesRegex = new RegExp('^' + normalizedState, 'i'); 
+  let stateWithoutSpacesRegex = new RegExp('^' + normalizedState, 'i'); 
 
-  // httpntlm.get({
-  //   url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/States?$format=json",
-  //   username: 'ERP-API',
-  //   password: 'HSI@#543DCVB',
-  //   workstation: '',
-  //   domain: '',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     'Accept': 'application/json;odata.metadata=minimal',
-  //     'User-Agent': 'nodejs/httpntlm',
-  //   }
-  // }, function (err, result) {
-  //   if (err) {
-  //     console.error(err);
-  //     res.status(200).json({ message: 'An error occurred while fetching the data.' });
-  //   } else {
-  //     const data = JSON.parse(result.body);
-  //     const matchingStates = data.value.filter(({ Description }) => {
-  //       return stateWithSpacesRegex.test(Description.replace(/\s/g, '')) || stateWithoutSpacesRegex.test(Description.replace(/\s/g, ''));
-  //     });
+  httpntlm.get({
+    url: "http://10.83.152.111:4049/NAVTestDB2/OData/Company('Hitachi%20Systems%20India%20Pvt%20Ltd')/States?$format=json",
+    username: 'ERP-API',
+    password: 'HSI@#543DCVB',
+    workstation: '',
+    domain: '',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json;odata.metadata=minimal',
+      'User-Agent': 'nodejs/httpntlm',
+    }
+  }, function (err, result) {
+    if (err) {
+      console.error(err);
+      res.status(200).json({ message: 'An error occurred while fetching the data.' });
+    } else {
+      const data = JSON.parse(result.body);
+      const matchingStates = data.value.filter(({ Description }) => {
+        return stateWithSpacesRegex.test(Description.replace(/\s/g, '')) || stateWithoutSpacesRegex.test(Description.replace(/\s/g, ''));
+      });
       
-  //     if (matchingStates.length > 0) {
-  //       const simplifiedData = matchingStates.map(({ Code, Description }) => ({ Code, Description }));
-  //       res.status(200).json({ message: 'Success', result: simplifiedData });
-  //     } else {
-  //       res.status(200).json({ message: 'State not found in ERP system.' });
-  //     }
-  //   }
-  // });
+      if (matchingStates.length > 0) {
+        const simplifiedData = matchingStates.map(({ Code, Description }) => ({ Code, Description }));
+        res.status(200).json({ message: 'Success', result: simplifiedData });
+      } else {
+        res.status(200).json({ message: 'State not found in ERP system.' });
+      }
+    }
+  });
 };
 
 //findPan_no present or not

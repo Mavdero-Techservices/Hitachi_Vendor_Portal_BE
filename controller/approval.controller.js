@@ -484,7 +484,7 @@ exports.saveApprovalStatus = (req, res) => {
           level3RejectComment: req.body.level3RejectComment,
           level3rejectFileDoc: level3rejectFileDoc,
           level3Date: null,
-          // userStatus: basicData.userStatus,
+          userStatus: basicData?.userStatus,
         });
         user
           .save()
@@ -585,7 +585,7 @@ exports.updateApprovalStatus = async (req, res) => {
     if (err) {
       // Handle upload errors
       console.log('Error occurred during file upload:', err);
-      return res.status(500).json({ error: 'Error occurred during file upload' });
+      return res.status(200).json({ error: 'Error occurred during file upload' });
     }
 
     if (req.body.level2Status) {
@@ -745,7 +745,7 @@ exports.updateApprovalStatus = async (req, res) => {
       });
     } catch (err) {
       console.log('Error updating approval status:', err);
-      return res.status(500).send({
+      return res.status(200).send({
         message: "Some error occurred while updating the ApprovalStatus schema.",
       });
     }

@@ -218,6 +218,8 @@ exports.postLogin = (req, res) => {
                 Ticket_ID: user.Ticket_ID,
                 Country_Region_Code: user.Country_Region_Code,
                 subUserId: user.subUserId,
+                phoneNumber:user.phoneNumber,
+                contactPerson: user.contactPerson,
               },
             });
           } else {
@@ -332,6 +334,47 @@ exports.resetPassword = (req, res, next) => {
       }
     })
     .catch((err) => console.log(err));
+};
+exports.resetUsernameAndPassword = (req, res, next) => {
+  const emailId = req.body.emailId;
+  const mailConfirmationCode = req.body.mailConfirmationCode;
+  const confirmPassword = req.body.confirmPassword;
+  const password = req.body.password;
+  const userName = req.body.userName;
+
+  SignUpSchema.findOne({
+    where: {
+      emailId: emailId,
+      mailConfirmationCode: mailConfirmationCode,
+    },
+  })
+    .then(async (user) => {
+      if (!user) {
+        return res.status(200).json({ status: "error", data: "invalid user" });
+      } else {
+        bcrypt.hash(password, 12).then(async (hashedPassword) => {
+          await SignUpSchema.update(
+            {
+              password: hashedPassword,
+              confirmPassword: hashedPassword,
+              userName:userName,
+            },
+            { where: { id: user.id } }
+          ).then((code) => {
+            return res.status(200).json({
+              status: "success",
+              data: "password reset successfully",
+            });
+          });
+        });
+      }
+    })
+    .catch((err) => {
+      return res.status(200).json({
+        status: "error",
+        data: { message: "Error Response", err },
+      });
+    });
 };
 exports.signout = (req, res) => {
   res.clearCookie("t");
@@ -589,7 +632,7 @@ exports.saveUser = (req, res) => {
             <p>Please <b>click</b> the link below to <b>VERIFY</b> your email address.</p>
             <a href=${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${result.emailId}/${mailConfirmationCode}> Click here</a>
             <p>Visit the link below to <b>create a new username and password.</b></p>
-            <a href=${process.env.HOST}:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}/${result.userName}> Click here</a>
+            <a href=${process.env.HOST}:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}/${result.userName}/New> Click here</a>
             </div>`;
                 try {
                   sendSmtpEmail.subject = `${subject}`;
@@ -802,6 +845,7 @@ exports.twoFactorOTP = (req, res, next) => {
   })
     .then(async (user) => {
       const Otp2Factor = Math.floor(100000 + Math.random() * 900000);
+      const subuserName = userName.replace(/\d/g, "");
       if (!user) {
         return res.status(200).json({ status: "error", data: "invalid user" });
       } else {
@@ -809,7 +853,7 @@ exports.twoFactorOTP = (req, res, next) => {
         var subject = `2FA OTP for your login!`;
         var emailContent =
         `<h1>OTP</h1>
-        <h2>Hello ${(user.contactPerson != "" && user.contactPerson != null) ? user.contactPerson : user.companyName}</h2>
+        <h2>Hello ${((user.contactPerson !== "" && user.contactPerson !== null) || (user.companyName !== "" && user.companyName !== null)) ? (user.contactPerson || user.companyName) : subuserName}</h2>
         <p>Please Use the OTP below to Login:</p>` +
           Otp2Factor +
           `

@@ -109,7 +109,8 @@ exports.postVdetail = (req, res, next) => {
   const submitStatus = req.body.submitStatus;
   const submitDate = req.body.submitDate;
   const userStatus = req.body.userStatus;
-
+  const phoneNumber = req.body.phoneNumber;
+  const contactPerson = req.body.contactPerson;
   VdetailSchema.findOne({
     where: {
       userId: userId,
@@ -134,7 +135,10 @@ exports.postVdetail = (req, res, next) => {
         userId: userId,
         submitStatus: submitStatus,
         submitDate: submitDate,
-        userStatus: userStatus
+        userStatus: userStatus,
+        contactPerson:contactPerson,
+        phoneNumber:phoneNumber,
+
       });
       VendorDetails.save()
         .then((data) => {
