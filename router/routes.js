@@ -202,6 +202,7 @@ router.post("/saveNewRegVendordetail", vdetail.postNewRegVdetail);
 //ErpAccess
 router.get('/getErpVendor_API', ErpAccess.getErpVendor_API);
 router.get('/getVendorLedgerEntries', ErpAccess.getVendorLedgerEntries);
+router.get('/getVendorLedgerEntriesById/:Vendor_No', ErpAccess.getVendorLedgerEntriesById);
 router.get('/getErpVendor_APIById/:No', ErpAccess.getErpVendor_APIById);
 router.post('/postErpVendor_API', ErpAccess.postErpVendor_API);
 router.put('/updateErpVendor_API', ErpAccess.updateErpVendor_API);
@@ -275,5 +276,5 @@ router.put("/updateMasterLogin", signUp.updateMasterLogin);
 router.get("/getErpStateCode/:state",ErpAccess.getErpStateCode);
 router.post("/GenerateVendorCode",ErpAccess.GenerateVendorCode);
 //SearchpanNo
-router.get("/SearchpanNo/:P_A_N_No",ErpAccess.SearchpanNo);
+router.get("/SearchpanNo/:P_A_N_No/:userId",ErpAccess.SearchpanNo);
 module.exports = router;

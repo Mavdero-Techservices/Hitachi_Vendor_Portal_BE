@@ -111,6 +111,7 @@ exports.postVdetail = (req, res, next) => {
   const userStatus = req.body.userStatus;
   const phoneNumber = req.body.phoneNumber;
   const contactPerson = req.body.contactPerson;
+  const masterId=req.body.masterId;
   VdetailSchema.findOne({
     where: {
       userId: userId,
@@ -138,6 +139,7 @@ exports.postVdetail = (req, res, next) => {
         userStatus: userStatus,
         contactPerson:contactPerson,
         phoneNumber:phoneNumber,
+        masterId:masterId,
 
       });
       VendorDetails.save()
@@ -251,7 +253,7 @@ exports.getStateAndcityByzipcode = async (req, res, next) => {
 
     const result = await axios.get(url);
     const codes = result.data.postalcodes;
-
+console.log("postalCodes::",result.data.postalcodes);
 
     const filteredCodes = codes.filter((item) => {
       return item.postalcode === Post_Code

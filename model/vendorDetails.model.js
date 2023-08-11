@@ -54,6 +54,9 @@ module.exports = (sequelize, Sequelize) => {
         stateCode:{
             type: Sequelize.STRING(10) 
         },
+        masterId: {
+            type: Sequelize.STRING,
+        },
     })
     return VdetailSchema;
 }
