@@ -1,22 +1,22 @@
 module.exports = (sequelize, Sequelize) => {
     const SignUpSchema = sequelize.define("signUp", {
         companyName: {
-            type: Sequelize.STRING(100),
+            type: Sequelize.STRING,
         },
         phoneNumber: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         contactPerson: {
-            type: Sequelize.STRING(30)
+            type: Sequelize.STRING
         },
         emailId: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         password: {
-            type: Sequelize.STRING(100)
+            type: Sequelize.STRING
         },
         confirmPassword: {
-            type: Sequelize.STRING(100)
+            type: Sequelize.STRING
         },
         verifiedUser: {
             type: Sequelize.STRING
@@ -31,7 +31,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING
         },
         userName:{
-            type: Sequelize.STRING(100) 
+            type: Sequelize.STRING 
         },
         userId:{
             type: Sequelize.STRING 
@@ -52,7 +52,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING  
         },
         Country_Region_Code: {
-            type: Sequelize.STRING(10),
+            type: Sequelize.STRING,
         },
         twoFactorOTP: {
             type: Sequelize.STRING,

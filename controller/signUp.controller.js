@@ -285,7 +285,11 @@ exports.resetPasswordByCode = (req, res, next) => {
         });
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
 };
 //ResetPassword
 exports.resetPassword = (req, res, next) => {
@@ -333,7 +337,11 @@ exports.resetPassword = (req, res, next) => {
           });
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
 };
 exports.resetUsernameAndPassword = (req, res, next) => {
   const emailId = req.body.emailId;
@@ -669,6 +677,10 @@ exports.saveUser = (req, res) => {
         }
       });
     }
+  }).catch((err) => {
+    return res
+      .status(200)
+      .json({ status: "error", data: { message: "Error Response", err } });
   });
 };
 exports.saveMasterLogin = async (req, res) => {
@@ -832,6 +844,10 @@ exports.verifyUserByMail = (req, res) => {
           message: "Unable to update verified user",
         });
       });
+  }).catch((err) => {
+    return res
+      .status(200)
+      .json({ status: "error", data: { message: "Error Response", err } });
   });
 };
 
@@ -886,7 +902,11 @@ exports.twoFactorOTP = (req, res, next) => {
         });
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
 };
 
 exports.twoFactorOTPValidation = (req, res, next) => {
@@ -917,10 +937,9 @@ exports.twoFactorOTPValidation = (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       return res
         .status(200)
-        .json({ status: "error", data: "Error Handling data" });
+        .json({ status: "error", data: { message: "Error Response", err } });
     });
 };
 
@@ -1018,7 +1037,11 @@ exports.updateMasterLogin = async (req, res) => {
               }
             );
           
-          })
+          }).catch((err) => {
+            return res
+              .status(200)
+              .json({ status: "error", data: { message: "Error Response", err } });
+          });
      
       }
     } else {
@@ -1034,3 +1057,61 @@ exports.updateMasterLogin = async (req, res) => {
     });
   }
 };
+const VdetailSchema = db.vdetail;
+const { Op } = require('sequelize');
+
+exports.ReviewNewRegisteredVendorByMaster = (req, res) => {
+  const userId = req.params.userId;
+
+  SignUpSchema.findAll({
+    where: { userType: userId },
+  })
+    .then((userData) => {
+      const userIds = userData.map((user) => user.userId);
+
+      VdetailSchema.findAll({
+        where: {
+          submitStatus: {
+            [Op.or]: ['Submitted', 'rejected', 'approved'],
+          },
+          userId: userIds,
+        },
+      })
+        .then((submittedData) => {
+          const matchedUserData = userData.filter((user) =>
+            submittedData.some((submittedUser) => submittedUser.userId === user.userId)
+          );
+
+          return res
+            .status(200)
+            .json({ msg: 'success', result: matchedUserData });
+        })
+        .catch((err) => {
+          return res.status(200).json({
+            status: 'error',
+            data: { message: 'Error Response', err },
+          });
+        });
+    })
+    .catch((err) => {
+      return res.status(200).json({
+        status: 'error',
+        data: { message: 'Error Response', err },
+      });
+    });
+};
+
+// exports.ReviewNewRegisteredVendorByMaster = (req, res) => {
+//   const userId = req.params.userId;
+//   SignUpSchema.findAll({
+//     where: { userType: userId },
+//   })
+//     .then((data) => {
+//       return res.status(200).json({ msg: "success", result: data });
+//     })
+//     .catch((err) => {
+//       return res
+//         .status(200)
+//         .json({ status: "error", data: { message: "Error Response", err } });
+//     });
+// };

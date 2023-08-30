@@ -10,19 +10,19 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.TEXT,
         },
         Country_Region_Code: {
-            type: Sequelize.STRING(10),
+            type: Sequelize.STRING,
         },
         state: {
-            type: Sequelize.STRING(100),
+            type: Sequelize.STRING,
         },
         City: {
-            type: Sequelize.STRING(30),
+            type: Sequelize.STRING,
         },
         Post_Code: {
-            type: Sequelize.STRING(20),
+            type: Sequelize.STRING,
         },
         companyName: {
-            type: Sequelize.STRING(100),
+            type: Sequelize.STRING,
         },
         image: {
             type: Sequelize.TEXT('long'),
@@ -31,7 +31,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         Vendor_Account_Manager: {
-            type: Sequelize.STRING(50)        
+            type: Sequelize.STRING        
         },
         mkDenialCheque: {
             type: Sequelize.STRING
@@ -48,15 +48,18 @@ module.exports = (sequelize, Sequelize) => {
         Ticket_ID:{
             type: Sequelize.STRING  
         },
-        userStatus: {
+        phoneNumber: {
             type: Sequelize.STRING,
         },
-        stateCode:{
-            type: Sequelize.STRING(10) 
+        contactPerson: {
+            type: Sequelize.STRING
         },
-        masterId: {
-            type: Sequelize.STRING,
+        stateCode: {
+            type: Sequelize.STRING
         },
+        // userStatus: {
+        //     type: Sequelize.STRING,
+        // },
     })
     return VdetailSchema;
 }

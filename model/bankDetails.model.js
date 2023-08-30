@@ -7,22 +7,22 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         Account_Holder_Name: {
-            type: Sequelize.STRING(100),
+            type: Sequelize.STRING,
         },
         Bank_Name: {
-            type: Sequelize.STRING(30),
+            type: Sequelize.STRING,
         },
         Account_No: {
-            type: Sequelize.STRING(20),
+            type: Sequelize.STRING,
         },
         IFSC_Code: {
-            type: Sequelize.STRING(20),
+            type: Sequelize.STRING,
         },
         MICRcode: {
-            type: Sequelize.STRING(30),
+            type: Sequelize.STRING,
         },
         Bank_Address: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         bankdetailDoc: {
             type: Sequelize.STRING,        

@@ -468,7 +468,7 @@ fileDisclosure_DocPath = "";
               } else {
                 GST_Doc = GST_DocPath;
                 StatOneDelete = statDetails.GST_Doc;
-                if (StatOneDelete && !req.body.GST_Doc) {
+                if (StatOneDelete && !req.body.GST_Doc && fs.existsSync(StatOneDelete)) {
                   fs.unlink(StatOneDelete, (err) => {
                     if (err) {
                       throw err;
@@ -482,7 +482,7 @@ fileDisclosure_DocPath = "";
               } else {
                 PAN_Doc = PAN_DocPath;
                 StatTwoDelete = statDetails.PAN_Doc;
-                if (StatTwoDelete && !req.body.PAN_Doc) {
+                if (StatTwoDelete && !req.body.PAN_Doc && fs.existsSync(StatTwoDelete)) {
                   fs.unlink(StatTwoDelete, (err) => {
                     if (err) {
                       throw err;
@@ -496,7 +496,7 @@ fileDisclosure_DocPath = "";
               } else {
                 form_10f_Doc = form_10f_DocPath;
                 StatThreeDelete = statDetails.form_10f_Doc;
-                if (StatThreeDelete && !req.body.form_10f_Doc) {
+                if (StatThreeDelete && !req.body.form_10f_Doc && fs.existsSync(StatThreeDelete)) {
                   fs.unlink(StatThreeDelete, (err) => {
                     if (err) {
                       throw err;
@@ -510,7 +510,7 @@ fileDisclosure_DocPath = "";
               } else {
                 TAN_Doc = TAN_DocPath;
                 StatFourDelete = statDetails.TAN_Doc;
-                if (StatFourDelete && !req.body.TAN_Doc) {
+                if (StatFourDelete && !req.body.TAN_Doc && fs.existsSync(StatFourDelete)) {
                   fs.unlink(StatFourDelete, (err) => {
                     if (err) {
                       throw err;
@@ -526,7 +526,7 @@ fileDisclosure_DocPath = "";
               } else {
                 PE_Declaration_Doc = PE_Declaration_DocPath;
                 StatFiveDelete = statDetails.PE_Declaration_Doc;
-                if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+                if (StatFiveDelete && !req.body.PE_Declaration_Doc && fs.existsSync(StatFiveDelete)) {
                   fs.unlink(StatFiveDelete, (err) => {
                     if (err) {
                       throw err;
@@ -540,7 +540,7 @@ fileDisclosure_DocPath = "";
               } else {
                 MSME_Doc = MSME_DocPath;
                 StatSixDelete = statDetails.MSME_Doc;
-                if (StatSixDelete && !req.body.MSME_Doc) {
+                if (StatSixDelete && !req.body.MSME_Doc && fs.existsSync(StatSixDelete)) {
                   fs.unlink(StatSixDelete, (err) => {
                     if (err) {
                       throw err;
@@ -556,7 +556,7 @@ fileDisclosure_DocPath = "";
               } else {
                 Tax_residency_Doc = Tax_residency_DocPath;
                 StatsevenDelete = statDetails.Tax_residency_Doc;
-                if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+                if (StatsevenDelete && !req.body.Tax_residency_Doc && fs.existsSync(StatsevenDelete)) {
                   fs.unlink(StatsevenDelete, (err) => {
                     if (err) {
                       throw err;
@@ -570,7 +570,7 @@ fileDisclosure_DocPath = "";
               } else {
                 fileDisclosure = fileDisclosure_DocPath;
                 StatEightDelete = statDetails.fileDisclosure;
-                if (StatEightDelete && !req.body.fileDisclosure) {
+                if (StatEightDelete && !req.body.fileDisclosure && fs.existsSync(StatEightDelete)) {
                   fs.unlink(StatEightDelete, (err) => {
                     if (err) {
                       throw err;
@@ -655,7 +655,7 @@ fileDisclosure_DocPath = "";
               } else {
                 GST_Doc = GST_DocPath;
                 StatOneDelete = statDetails.GST_Doc;
-                if (StatOneDelete && !req.body.GST_Doc) {
+                if (StatOneDelete && !req.body.GST_Doc && fs.existsSync(StatOneDelete)) {
                   fs.unlink(StatOneDelete, (err) => {
                     if (err) {
                       throw err;
@@ -669,7 +669,7 @@ fileDisclosure_DocPath = "";
               } else {
                 PAN_Doc = PAN_DocPath;
                 StatTwoDelete = statDetails.PAN_Doc;
-                if (StatTwoDelete && !req.body.PAN_Doc) {
+                if (StatTwoDelete && !req.body.PAN_Doc && fs.existsSync(StatTwoDelete)) {
                   fs.unlink(StatTwoDelete, (err) => {
                     if (err) {
                       throw err;
@@ -683,7 +683,7 @@ fileDisclosure_DocPath = "";
               } else {
                 form_10f_Doc = form_10f_DocPath;
                 StatThreeDelete = statDetails.form_10f_Doc;
-                if (StatThreeDelete && !req.body.form_10f_Doc) {
+                if (StatThreeDelete && !req.body.form_10f_Doc && fs.existsSync(StatThreeDelete)) {
                   fs.unlink(StatThreeDelete, (err) => {
                     if (err) {
                       throw err;
@@ -697,7 +697,7 @@ fileDisclosure_DocPath = "";
               } else {
                 TAN_Doc = TAN_DocPath;
                 StatFourDelete = statDetails.TAN_Doc;
-                if (StatFourDelete && !req.body.TAN_Doc) {
+                if (StatFourDelete && !req.body.TAN_Doc && fs.existsSync(StatFourDelete)) {
                   fs.unlink(StatFourDelete, (err) => {
                     if (err) {
                       throw err;
@@ -713,7 +713,7 @@ fileDisclosure_DocPath = "";
               } else {
                 PE_Declaration_Doc = PE_Declaration_DocPath;
                 StatFiveDelete = statDetails.PE_Declaration_Doc;
-                if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+                if (StatFiveDelete && !req.body.PE_Declaration_Doc && fs.existsSync(StatFiveDelete)) {
                   fs.unlink(StatFiveDelete, (err) => {
                     if (err) {
                       throw err;
@@ -727,7 +727,7 @@ fileDisclosure_DocPath = "";
               } else {
                 MSME_Doc = MSME_DocPath;
                 StatSixDelete = statDetails.MSME_Doc;
-                if (StatSixDelete && !req.body.MSME_Doc) {
+                if (StatSixDelete && !req.body.MSME_Doc && fs.existsSync(StatSixDelete)) {
                   fs.unlink(StatSixDelete, (err) => {
                     if (err) {
                       throw err;
@@ -743,7 +743,7 @@ fileDisclosure_DocPath = "";
               } else {
                 Tax_residency_Doc = Tax_residency_DocPath;
                 StatsevenDelete = statDetails.Tax_residency_Doc;
-                if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+                if (StatsevenDelete && !req.body.Tax_residency_Doc && fs.existsSync(StatsevenDelete)) {
                   fs.unlink(StatsevenDelete, (err) => {
                     if (err) {
                       throw err;
@@ -757,7 +757,7 @@ fileDisclosure_DocPath = "";
               } else {
                 fileDisclosure = fileDisclosure_DocPath;
                 StatEightDelete = statDetails.fileDisclosure;
-                if (StatEightDelete && !req.body.fileDisclosure) {
+                if (StatEightDelete && !req.body.fileDisclosure && fs.existsSync(StatEightDelete)) {
                   fs.unlink(StatEightDelete, (err) => {
                     if (err) {
                       throw err;
@@ -912,7 +912,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           GST_Doc = GST_DocPath;
           StatOneDelete = statDetails.GST_Doc;
-          if (StatOneDelete && !req.body.GST_Doc) {
+          if (StatOneDelete && !req.body.GST_Doc && fs.existsSync(StatOneDelete)) {
             fs.unlink(StatOneDelete, (err) => {
               if (err) {
                 throw err;
@@ -926,7 +926,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           PAN_Doc = PAN_DocPath;
           StatTwoDelete = statDetails.PAN_Doc;
-          if (StatTwoDelete && !req.body.PAN_Doc) {
+          if (StatTwoDelete && !req.body.PAN_Doc && fs.existsSync(StatTwoDelete)) {
             fs.unlink(StatTwoDelete, (err) => {
               if (err) {
                 throw err;
@@ -940,7 +940,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           form_10f_Doc = form_10f_DocPath;
           StatThreeDelete = statDetails.form_10f_Doc;
-          if (StatThreeDelete && !req.body.form_10f_Doc) {
+          if (StatThreeDelete && !req.body.form_10f_Doc && fs.existsSync(StatThreeDelete)) {
             fs.unlink(StatThreeDelete, (err) => {
               if (err) {
                 throw err;
@@ -954,7 +954,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           TAN_Doc = TAN_DocPath;
           StatFourDelete = statDetails.TAN_Doc;
-          if (StatFourDelete && !req.body.TAN_Doc) {
+          if (StatFourDelete && !req.body.TAN_Doc && fs.existsSync(StatFourDelete)) {
             fs.unlink(StatFourDelete, (err) => {
               if (err) {
                 throw err;
@@ -968,7 +968,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           PE_Declaration_Doc = PE_Declaration_DocPath;
           StatFiveDelete = statDetails.PE_Declaration_Doc;
-          if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+          if (StatFiveDelete && !req.body.PE_Declaration_Doc && fs.existsSync(StatFiveDelete)) {
             fs.unlink(StatFiveDelete, (err) => {
               if (err) {
                 throw err;
@@ -982,7 +982,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           MSME_Doc = MSME_DocPath;
           StatSixDelete = statDetails.MSME_Doc;
-          if (StatSixDelete && !req.body.MSME_Doc) {
+          if (StatSixDelete && !req.body.MSME_Doc && fs.existsSync(StatSixDelete)) {
             fs.unlink(StatSixDelete, (err) => {
               if (err) {
                 throw err;
@@ -996,7 +996,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           Tax_residency_Doc = Tax_residency_DocPath;
           StatsevenDelete = statDetails.Tax_residency_Doc;
-          if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+          if (StatsevenDelete && !req.body.Tax_residency_Doc && fs.existsSync(StatsevenDelete)) {
             fs.unlink(StatsevenDelete, (err) => {
               if (err) {
                 throw err;
@@ -1010,7 +1010,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           fileDisclosure = fileDisclosure_DocPath;
           StatEightDelete = statDetails.fileDisclosure;
-          if (StatEightDelete && !req.body.fileDisclosure) {
+          if (StatEightDelete && !req.body.fileDisclosure && fs.existsSync(StatEightDelete)) {
             fs.unlink(StatEightDelete, (err) => {
               if (err) {
                 throw err;
@@ -1093,7 +1093,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           GST_Doc = GST_DocPath;
           StatOneDelete = statDetails.GST_Doc;
-          if (StatOneDelete && !req.body.GST_Doc) {
+          if (StatOneDelete && !req.body.GST_Doc && fs.existsSync(StatOneDelete)) {
             fs.unlink(StatOneDelete, (err) => {
               if (err) {
                 throw err;
@@ -1107,7 +1107,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           PAN_Doc = PAN_DocPath;
           StatTwoDelete = statDetails.PAN_Doc;
-          if (StatTwoDelete && !req.body.PAN_Doc) {
+          if (StatTwoDelete && !req.body.PAN_Doc && fs.existsSync(StatTwoDelete)) {
             fs.unlink(StatTwoDelete, (err) => {
               if (err) {
                 throw err;
@@ -1121,7 +1121,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           form_10f_Doc = form_10f_DocPath;
           StatThreeDelete = statDetails.form_10f_Doc;
-          if (StatThreeDelete && !req.body.form_10f_Doc) {
+          if (StatThreeDelete && !req.body.form_10f_Doc && fs.existsSync(StatThreeDelete)) {
             fs.unlink(StatThreeDelete, (err) => {
               if (err) {
                 throw err;
@@ -1135,7 +1135,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           TAN_Doc = TAN_DocPath;
           StatFourDelete = statDetails.TAN_Doc;
-          if (StatFourDelete && !req.body.TAN_Doc) {
+          if (StatFourDelete && !req.body.TAN_Doc && fs.existsSync(StatFourDelete)) {
             fs.unlink(StatFourDelete, (err) => {
               if (err) {
                 throw err;
@@ -1149,7 +1149,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           PE_Declaration_Doc = PE_Declaration_DocPath;
           StatFiveDelete = statDetails.PE_Declaration_Doc;
-          if (StatFiveDelete && !req.body.PE_Declaration_Doc) {
+          if (StatFiveDelete && !req.body.PE_Declaration_Doc && fs.existsSync(StatFiveDelete)) {
             fs.unlink(StatFiveDelete, (err) => {
               if (err) {
                 throw err;
@@ -1163,7 +1163,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           MSME_Doc = MSME_DocPath;
           StatSixDelete = statDetails.MSME_Doc;
-          if (StatSixDelete && !req.body.MSME_Doc) {
+          if (StatSixDelete && !req.body.MSME_Doc && fs.existsSync(StatSixDelete)) {
             fs.unlink(StatSixDelete, (err) => {
               if (err) {
                 throw err;
@@ -1177,7 +1177,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           Tax_residency_Doc = Tax_residency_DocPath;
           StatsevenDelete = statDetails.Tax_residency_Doc;
-          if (StatsevenDelete && !req.body.Tax_residency_Doc) {
+          if (StatsevenDelete && !req.body.Tax_residency_Doc && fs.existsSync(StatsevenDelete)) {
             fs.unlink(StatsevenDelete, (err) => {
               if (err) {
                 throw err;
@@ -1191,7 +1191,7 @@ exports.updateStatutoryDetail = async (req, res) => {
         } else {
           fileDisclosure = fileDisclosure_DocPath;
           StatEightDelete = statDetails.fileDisclosure;
-          if (StatEightDelete && !req.body.fileDisclosure) {
+          if (StatEightDelete && !req.body.fileDisclosure && fs.existsSync(StatEightDelete)) {
             fs.unlink(StatEightDelete, (err) => {
               if (err) {
                 throw err;

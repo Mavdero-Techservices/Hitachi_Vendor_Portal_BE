@@ -7,31 +7,31 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
         },
         contactName1: {
-            type: Sequelize.STRING(30),
+            type: Sequelize.STRING,
         },
         emailId1: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         contactNumber1: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         contactName2: {
-            type: Sequelize.STRING(30),
+            type: Sequelize.STRING,
         },
         emailId2: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         contactNumber2: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         contactName3: {
-            type: Sequelize.STRING(30),
+            type: Sequelize.STRING,
         },
         emailId3: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         contactNumber3: {
-            type: Sequelize.STRING(50),
+            type: Sequelize.STRING,
         },
         Ticket_ID:{
             type: Sequelize.STRING  

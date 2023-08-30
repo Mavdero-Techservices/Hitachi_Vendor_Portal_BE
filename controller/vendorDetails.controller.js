@@ -111,7 +111,6 @@ exports.postVdetail = (req, res, next) => {
   const userStatus = req.body.userStatus;
   const phoneNumber = req.body.phoneNumber;
   const contactPerson = req.body.contactPerson;
-  const masterId=req.body.masterId;
   VdetailSchema.findOne({
     where: {
       userId: userId,
@@ -139,7 +138,6 @@ exports.postVdetail = (req, res, next) => {
         userStatus: userStatus,
         contactPerson:contactPerson,
         phoneNumber:phoneNumber,
-        masterId:masterId,
 
       });
       VendorDetails.save()
@@ -253,7 +251,7 @@ exports.getStateAndcityByzipcode = async (req, res, next) => {
 
     const result = await axios.get(url);
     const codes = result.data.postalcodes;
-console.log("postalCodes::",result.data.postalcodes);
+
 
     const filteredCodes = codes.filter((item) => {
       return item.postalcode === Post_Code
@@ -262,8 +260,8 @@ console.log("postalCodes::",result.data.postalcodes);
     return res.json({ status: "success", postalcodes: filteredCodes });
 
   } catch (err) {
-    console.error(err);
-    return res.status(200).json({ status: "error", message: "Internal server error" });
+    console.error("PincodeError::",err);
+    return res.status(200).json({ status: "error", message: "Internal server error" ,err});
   }
 };
 
@@ -356,13 +354,57 @@ exports.updateVendor = async (req, res) => {
       returnFlag,
       emailId
     );
-var NotificationSubject = `Vendor approval request pending.`;
+var NotificationSubject = `Vendor approval request pending for Ticket ID ${submitEmailId.Ticket_ID}.`;
 var NotificationemailContent = `
     <h4>Hi VCT team,</h4>
-    <p>You have a request pending for approval from${submitEmailId.companyName}.</p>       
+    <p>You have a request pending for approval from ${submitEmailId.companyName}.</p>  
+    <p>Please find below the approval status:</p>
+    <div class="table-box"> 
+    <table style="border-collapse: collapse; width: 100%;">
+    <tr>
+        <th>Department</th>
+        <th>Status</th>
+    </tr>
+    <tr>
+        <td>VCT</td>
+        <td>Pending</td>
+    </tr>
+    <tr>
+        <td>Japan</td>
+        <td>Pending</td>
+    </tr>
+    <tr>
+        <td>MRT</td>
+        <td>Pending</td>
+    </tr>
+</table> 
+</div>   
     <p>Please <a href=${process.env.HOST}:3000/login><b>Click</b></a> here to initiate the approval process</p>
     <p>Thanks & regards,</p>
     </div>`;
+    var NotificationemailStyles = `
+  <style>
+    .table-box {
+      border: 1px solid #ccc;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+`;
+
+NotificationemailContent = NotificationemailStyles + NotificationemailContent;
+
     var GroupemailId=config.VctTeamEmail
 exports.NotificationEmail(
 req,

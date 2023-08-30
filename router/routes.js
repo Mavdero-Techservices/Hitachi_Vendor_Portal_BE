@@ -268,6 +268,8 @@ router.get('/getInvoiceinfo', invoice.getInvoiceinfo);
 router.post("/postEddDetails", edd.postEddDetails);
 router.post("/getMasterVendorById",MasterVendorSubUser.getMasterVendorById);
 router.post('/createsharepointFolderByTicketId', ErpAccess.createsharepointFolderByTicketId);
+//Refreshsharepoint
+router.get('/getSharepointFolders', ErpAccess.getSharepointFolders);
 
 router.post('/uploadDocbyVendorCode', ErpAccess.uploadDocbyVendorCode);
 //updateMasterLogin
@@ -277,4 +279,5 @@ router.get("/getErpStateCode/:state",ErpAccess.getErpStateCode);
 router.post("/GenerateVendorCode",ErpAccess.GenerateVendorCode);
 //SearchpanNo
 router.get("/SearchpanNo/:P_A_N_No/:userId",ErpAccess.SearchpanNo);
+router.get("/ReviewNewRegisteredVendorByMaster/:userId", signUp.ReviewNewRegisteredVendorByMaster);
 module.exports = router;

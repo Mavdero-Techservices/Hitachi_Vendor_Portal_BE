@@ -73,6 +73,7 @@ var storage = multer.diskStorage({
       cb(null, "level1rejectFileDoc-" + Date.now() + "." + filetype);
     }
     if (file.fieldname === "level2rejectFileDoc") {
+      console.log("level1rejectFileDocsaved::")
       if (file.mimetype === "image/gif") {
         filetype = "gif";
         rejectFile2DocPath =
@@ -183,6 +184,7 @@ exports.emailApprovalNotification = (
   returnFlag,
   emailId
 ) => {
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = {
@@ -222,6 +224,7 @@ exports.emailRejectNotification = (
     //     },
     //   ],
     // };
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
     const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
     attachment.name = "attachment." + format[1];
     attachment.content = fs.readFileSync(level1rejectFileDoc).toString('base64');
@@ -268,6 +271,7 @@ exports.emailJapanApprovalNotification = (
   //   subject: subject,
   //   html: emailContent,
   // };
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = {
@@ -289,26 +293,31 @@ exports.emailJapanRejectNotification = (
   emailContent,
   returnFlag,
   emailId,
+  level2rejectFileDoc
 ) => {
-  // const format = level2rejectFileDoc.split(".");
-
-  // var mailOptions = {
-  //   from: user,
-  //   to: `${mVendoremailId}`,
-  //   subject: subject,
-  //   html: emailContent,
-  //   attachments: [
-  //     {
-  //       // utf-8 string as an attachment
-  //       filename: "attachment." + format[1],
-  //       path: level2rejectFileDoc,
-  //     },
-  //   ],
-  // };
-
-  // const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
-  // attachment.name = "attachment." + format[1];
-  // attachment.content = fs.readFileSync(level2rejectFileDoc).toString('base64');
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+  if (level2rejectFileDoc) {
+    console.log("levell2rejectDoc::");
+    const format = level2rejectFileDoc.split(".");
+    const attachment = new SibApiV3Sdk.SendSmtpEmailAttachment();
+    attachment.name = "attachment." + format[1];
+    attachment.content = fs.readFileSync(level2rejectFileDoc).toString('base64');
+    sendSmtpEmail.subject = `${subject}`;
+    sendSmtpEmail.htmlContent = `${emailContent}`;
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
+    sendSmtpEmail.to = [{ email: `${emailId}` }];
+    sendSmtpEmail.attachment = [attachment];
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
+      console.log('mail sent successfully: ' + JSON.stringify(data));
+    }, function (error) {
+      console.error(error);
+    });
+  }
+ else
+ {
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = {
@@ -322,6 +331,7 @@ exports.emailJapanRejectNotification = (
   }, function (error) {
     console.error(error);
   });
+ }
 };
 
 exports.emailMRTApprovalNotification = (
@@ -332,6 +342,7 @@ exports.emailMRTApprovalNotification = (
   returnFlag,
   emailId
 ) => {
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
   sendSmtpEmail.subject = `${subject}`;
   sendSmtpEmail.htmlContent = `${emailContent}`;
   sendSmtpEmail.sender = {
@@ -355,6 +366,7 @@ exports.emailMRTRejectNotification = (
   emailId,
   level3rejectFileDoc
 ) => {
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
   if (level3rejectFileDoc) {
     const format = level3rejectFileDoc.split(".");
     // var mailOptions = {
@@ -406,7 +418,7 @@ exports.saveApprovalStatus = (req, res) => {
   rejectFile1DocPath = "";
   rejectFile2DocPath = "";
   rejectFile3DocPath = "";
-
+console.log("filelevel2req::",req.body);
   var upload = multer({ storage: storage }).fields([
     { name: "level1rejectFileDoc", maxCount: 1 },
     { name: "level2rejectFileDoc", maxCount: 1 },
@@ -462,7 +474,7 @@ exports.saveApprovalStatus = (req, res) => {
         const level2rejectFileDoc = rejectFile2DocPath;
         const level3rejectFileDoc = rejectFile3DocPath;
         const userId = req.body.userId;
-        const emailId = userEmailId?.emailId;
+        const emailId = userEmailId.emailId;
         if (req.body.level1Status === 'rejected') {
           req.body.submitStatus = "rejected"
           const vdetail = await VdetailSchema.update(req.body, {
@@ -484,13 +496,13 @@ exports.saveApprovalStatus = (req, res) => {
           level3RejectComment: req.body.level3RejectComment,
           level3rejectFileDoc: level3rejectFileDoc,
           level3Date: null,
-          userStatus: basicData?.userStatus,
+          userStatus: basicData.userStatus,
         });
         user
           .save()
           .then((data) => {
             if (data.level1Status === "approved") {
-              var subject = `Hitachi Vendor Approval`;
+              var subject = `Hitachi Vendor Approval for Ticket ID ${userEmailId.Ticket_ID}`;
               var emailContent = `
                         <h4>Hi ${data.companyName}</h4>
                         <p>Your Vendor Registration request is approved by Vendor Creation Team and proceeded for next stage of Approval.</p>
@@ -505,13 +517,57 @@ exports.saveApprovalStatus = (req, res) => {
                 returnFlag,
                 emailId
               );
-              var NotificationSubject = `Vendor approval request pending.`;
+              var NotificationSubject = `Vendor approval request pending for Ticket ID ${userEmailId.Ticket_ID}.`;
               var NotificationemailContent = `
                                   <h4>Hi Japan team,</h4>
-                                  <p>You have a request pending for approval from ${data.companyName}.As the VCT team approved the Workflow.</p>       
+                                  <p>You have a request pending for approval from  ${data.companyName}.As the VCT team approved the Workflow.</p> 
+                                  <p>Please find below the approval status:</p>
+                                  <div class="table-box">
+                                  <table style="border-collapse: collapse; width: 100%;">
+                                      <tr>
+                                          <th>Department</th>
+                                          <th>Status</th>
+                                      </tr>
+                                      <tr>
+                                          <td>VCT</td>
+                                          <td>approved</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Japan</td>
+                                          <td>Pending</td>
+                                      </tr>
+                                      <tr>
+                                          <td>MRT</td>
+                                          <td>Pending</td>
+                                      </tr>
+                                  </table>  
+                                  </div>    
                                   <p>Please <a href=${process.env.HOST}:3000/login><b>Click</b></a> here to initiate the approval process</p>
                                   <p>Thanks & regards,</p>
                                   </div>`;
+                                  var NotificationemailStyles = `
+  <style>
+    .table-box {
+      border: 1px solid #ccc;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+`;
+
+NotificationemailContent = NotificationemailStyles + NotificationemailContent;
+
                                   var GroupemailId=config.JapanTeamEmail
               exports.NotificationEmail(
                 req,
@@ -558,6 +614,7 @@ exports.saveApprovalStatus = (req, res) => {
 };
 
 exports.updateApprovalStatus = async (req, res) => {
+  console.log("level2updatereq::",req.body);
   var approvalValidate = await ApprovalSchema.findOne({
     where: { userId: req.params.userId },
   });
@@ -628,7 +685,13 @@ exports.updateApprovalStatus = async (req, res) => {
       var masterVendoremail = await vendorCommunicationDetailsSchema.findOne({
         where: { userId: req.body.userId },
       });
-
+console.log("req.body.level1rejectFileDoc",req.body)
+if (req.files && req.files.level2rejectFileDoc) {
+  rejectFile2DocPath = req.files?.level2rejectFileDoc[0].path;
+}
+if (req.files && req.files.level3rejectFileDoc) {
+  rejectFile3DocPath = req.files.level3rejectFileDoc[0].path;
+}
       const level1rejectFileDoc = rejectFile1DocPath;
       const level2rejectFileDoc = rejectFile2DocPath;
       const level3rejectFileDoc = rejectFile3DocPath;
@@ -673,10 +736,11 @@ exports.updateApprovalStatus = async (req, res) => {
         );
       }
       if (req.body.level2Status === "rejected") {
-        var subject = `Hitachi Japan Team Request Rejected`;
+        console.log("rejectdoclevel2:::",level2rejectFileDoc);
+        var subject = `Hitachi Japan Team Request Rejected for Ticket ID ${userEmailId.Ticket_ID}`;
         var emailContent = `
                   <h4>Hi ${approvalValidate.companyName}</h4>
-                  <p>Your Vendor Registration request is Rejected by Japan Team and the workflow is moved to Master Right Team for further processing.</p>
+                  <p>Your Vendor Registration request is Rejected by Japan Team because of,${req.body.level2RejectComment} and the workflow is moved to Master Right Team for further processing.</p>
                   </div>`;
         var returnFlag = false;
          exports.emailJapanRejectNotification(
@@ -686,14 +750,59 @@ exports.updateApprovalStatus = async (req, res) => {
           emailContent,
           returnFlag,
           emailId,
+          level2rejectFileDoc
         );
-        var NotificationSubject = `Vendor approval request pending.`;
+        var NotificationSubject = `Vendor approval request pending for Ticket ID ${userEmailId.Ticket_ID}.`;
         var NotificationemailContent = `
                             <h4>Hi MRT team,</h4>
-                            <p>You have a request pending for approval from ${approvalValidate.companyName}.As the Japan rejected the request.</p>       
+                            <p>You have a request pending for approval from ${approvalValidate.companyName}.As the Japan rejected the request.</p> 
+                            <p>Please find below the approval status:</p>
+                            <div class="table-box">
+                            <table style="border-collapse: collapse; width: 100%;">
+                                <tr>
+                                    <th>Department</th>
+                                    <th>Status</th>
+                                </tr>
+                                <tr>
+                                    <td>VCT</td>
+                                    <td>approved</td>
+                                </tr>
+                                <tr>
+                                    <td>Japan</td>
+                                    <td>Rejected</td>
+                                </tr>
+                                <tr>
+                                    <td>MRT</td>
+                                    <td>Pending</td>
+                                </tr>
+                            </table> 
+                            </div>     
                             <p>Please <a href=${process.env.HOST}:3000/login><b>Click</b></a> here to initiate the approval process</p>
                             <p>Thanks & regards,</p>
                             </div>`;
+                            var NotificationemailStyles = `
+  <style>
+    .table-box {
+      border: 1px solid #ccc;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+`;
+
+NotificationemailContent = NotificationemailStyles + NotificationemailContent;
+
                             var GroupemailId= config.MrtTeamEmail;
                             await exports.NotificationEmail(
           req,
@@ -794,9 +903,11 @@ exports.NotificationEmail= async (
   NotificationSubject,
   NotificationemailContent,
   returnFlag,
-  GroupemailId
+  GroupemailId,
 ) => {
+  console.log("NotificationemailContent",NotificationemailContent);
   try {
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
     sendSmtpEmail.subject = `${NotificationSubject}`;
     sendSmtpEmail.htmlContent = `${NotificationemailContent}`;
     sendSmtpEmail.sender = {
