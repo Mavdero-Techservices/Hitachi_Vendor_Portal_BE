@@ -48,6 +48,35 @@ exports.emailUserCreationReg = (
   });
 };
 
+exports.InvalidemailUserCreationReg = (
+  req,
+  res,
+  subjectForInvalidMail,
+  emailContentForInvalidMail,
+  returnFlag,
+  emailId
+) => {
+  const SibApiV3Sdk = require('sib-api-v3-sdk');
+  const defaultClient = SibApiV3Sdk.ApiClient.instance;
+  const config = require("../config/auth.config");
+  const apiKey = defaultClient.authentications['api-key'];
+  apiKey.apiKey = config.apiKey;
+  const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
+  const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+  sendSmtpEmail.subject = `${subjectForInvalidMail}`;
+  sendSmtpEmail.htmlContent = `${emailContentForInvalidMail}`;
+  sendSmtpEmail.sender = {
+    name: config.name,
+    email:config.email,
+  };
+  sendSmtpEmail.to = [{ email: `${emailId}` }];
+  apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
+    console.log('mail sent successfully: ' + JSON.stringify(data));
+  }, function (error) {
+    console.error(error);
+  });
+};
+
 exports.saveMasterVendorSubUser = (req, res) => {
   var pass = "";
   var str =
@@ -104,7 +133,8 @@ exports.saveMasterVendorSubUser = (req, res) => {
           var emailContent = `
                 <h4>Hi ${Name}</h4>
                 <p>Your Sub User Registration is Successfully Created.</p>
-                <p>Your LoginId is ${loginId} and password is ${password}.</p>
+                <h3>Your Username and Password is</h3>
+                <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${loginId}</b>;<br>Password: <b>${password}</b>;</p>
                 <p>Thanks & regards,</p>
                 </div>`;
           var returnFlag = false;
@@ -235,51 +265,178 @@ exports.UpdateMasterVendorSubUserById = async (req, res) => {
   // 
 };
 
+// exports.UpdateMasterSubUserById = async (req, res) => {
+
+
+
+
+//   const subId = req.body.SubUserId;
+//   const updates = req.body;
+//   // check if there are any empty fields
+//   for (const key in updates) {
+//     if (!updates[key]) {
+//       updates[key] = null;
+//     }
+//   }
+//   const updateResult = await MasterVendorSubUserSchema.update(req.body, {
+//     where: { SubUserId : subId },
+//   });
+//   if (updateResult[0]) {
+//     res.status(200).json({
+//       status: "success",
+//       message: "Contact Team details updated successfully",
+//     });
+//   } else {
+//     res.status(404).json({
+//       status: "error",
+//       message: "Contact Team details not found",
+//     });
+//   }
+
+// }
 exports.UpdateMasterSubUserById = async (req, res) => {
-
-
-
-
-  const subId = req.body.SubUserId;
-  const updates = req.body;
-  // check if there are any empty fields
-  for (const key in updates) {
-    if (!updates[key]) {
-      updates[key] = null;
+  try {
+    const subId = req.body.SubUserId;
+    const updates = req.body;
+    console.log("previous emailid::")
+    console.log("incoming emailid::",req.body.emailId)
+  
+    for (const key in updates) {
+      if (!updates[key]) {
+        updates[key] = null;
+      }
     }
-  }
-  const updateResult = await MasterVendorSubUserSchema.update(req.body, {
-    where: { SubUserId : subId },
-  });
-  if (updateResult[0]) {
+
+    const existingUser = await MasterVendorSubUserSchema.findOne({
+      where: { SubUserId: subId },
+    });
+
+    if (req.body.emailId !== existingUser.emailId) {
+      console.log("notmatched create new signup");
+      const loginId = `${req.body.Name}` + Math.floor(10000 + Math.random() * 90000);
+      var pass = "";
+      var str =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
+    
+      for (let i = 1; i <= 8; i++) {
+        var char = Math.floor(Math.random() * str.length);
+        pass += str.charAt(char);
+      }
+      const hashedPassword = await bcrypt.hash(pass, 12);
+      updates.password = hashedPassword;
+      updates.userName = loginId;
+      await SignUpSchema.update(
+        { emailId: req.body.emailId,
+          userName:loginId,
+          password:hashedPassword },
+        { where: { subUserId: req.body.SubUserId } }
+      );
+      var subjectForInvalidMail = `Your Sub User Account Deactivated`;
+      var emailContentForInvalidMail = `
+          <h4>Hi ${existingUser.Name}</h4>
+          <p>We want to inform you that your Sub User account has been deactivated by the Master. This means you no longer have access to our services.</p>
+          <p>Thanks & regards,</p>
+          </div>`;
+  
+      const returnFlag = false;
+     exports.InvalidemailUserCreationReg(
+        req,
+        res,
+        subjectForInvalidMail,
+        emailContentForInvalidMail,
+        returnFlag,
+        existingUser.emailId
+      );
+      var subject = `Hitachi Multiple Sub User Creation`;
+      var emailContent = `
+            <h4>Hi ${req.body.Name}</h4>
+            <p>Your Sub User Registration is Successfully Created.</p>
+            <h3>Your Username and Password is</h3>
+            <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${loginId}</b>;<br>Password: <b>${pass}</b>;</p>
+            <p>Thanks & regards,</p>
+            </div>`;
+      
+     
+      exports.emailUserCreationReg(
+        req,
+        res,
+        subject,
+        emailContent,
+        returnFlag,
+        req.body.emailId
+      );
+    }
+    const updateResult = await MasterVendorSubUserSchema.update(updates, {
+      where: { SubUserId: subId },
+    });
+
+    if (updateResult[0]) {
+      res.status(200).json({
+        status: "success",
+        message: "sub user updated successfully",
+      });
+    } else {
+      res.status(200).json({
+        status: "error",
+        message: "Failed to update subuser details",
+      });
+    }
+  } catch (error) {
+    console.error(error);
     res.status(200).json({
-      status: "success",
-      message: "Contact Team details updated successfully",
-    });
-  } else {
-    res.status(404).json({
       status: "error",
-      message: "Contact Team details not found",
+      message: "Internal Server Error",
     });
   }
+};
 
-}
-
-exports.deleteMasterVendorSubUserById = (req, res) => {
-  const id = req.params.id;
-  MasterVendorSubUserSchema.destroy({
-    where: { id: id },
-  })
-    .then((data) => {
-      return res
-        .status(200)
-        .json({ msg: "success", result: "deleted successfully" });
-    })
-    .catch((err) => {
-      return res
-        .status(200)
-        .json({ status: "error", data: { message: "Error Response", err } });
+exports.deleteMasterVendorSubUserById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const existingUser = await MasterVendorSubUserSchema.findOne({
+      where: { id: id },
     });
+    console.log("existingUser::",existingUser);
+    var subject = `Your Sub User Account Deactivated`;
+    var emailContent = `
+        <h4>Hi ${existingUser.Name}</h4>
+        <p>We want to inform you that your Sub User account has been deactivated by the Master. This means you no longer have access to our services.</p>
+        <p>Thanks & regards,</p>
+        </div>`;
+
+    const returnFlag = false;
+   exports.emailUserCreationReg(
+      req,
+      res,
+      subject,
+      emailContent,
+      returnFlag,
+      existingUser.emailId
+    );
+
+    await SignUpSchema.destroy({
+      where: { subUserId: existingUser.SubUserId },
+    });
+
+    const deletionResult = await MasterVendorSubUserSchema.destroy({
+      where: { id: id },
+    });
+
+    if (deletionResult) {
+      return res.status(200).json({ msg: "success", result: "deleted successfully" });
+    } else {
+      return res.status(500).json({
+        status: "error",
+        data: { message: "Error Response", err: "Deletion failed" },
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      status: "error",
+      data: { message: "Internal Server Error", err },
+    });
+  }
 };
 
 exports.getSubuserId = async(req, res) => {

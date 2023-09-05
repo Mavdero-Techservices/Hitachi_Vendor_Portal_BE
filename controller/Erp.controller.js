@@ -425,7 +425,7 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
     Shareholder_Name: req.body.Shareholder_Name,
     Organization_Type: req.body.Organization_Type,
   };
-  // Replace this with your actual update data
+
   const updatedData = {
     Name: 'Updated Name',
     Address: 'Updated Address',

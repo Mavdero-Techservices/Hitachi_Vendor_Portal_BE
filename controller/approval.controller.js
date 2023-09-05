@@ -814,6 +814,25 @@ NotificationemailContent = NotificationemailStyles + NotificationemailContent;
         )
       }
       if (req.body.level3Status === "approved") {
+        const status=req.body.level3Status;
+        var japanmailId=config.JapanTeamEmail;
+        console.log("sendmailTojapan::");
+        var mrtStatusMailToJapanSubject = `MRT team Status for Ticket Id ${userEmailId.Ticket_ID}`;
+        var mrtStatusMailToJapanemailContent = `
+                                                <h4>Hi Japan team,</h4>
+                                                <p>Vendor <b> ${approvalValidate.companyName} </b> request is <b> ${status} </b> by MRT Team</p>
+                                                <p>please click the below link to login and see the status.</p>
+                                                <a href=${process.env.HOST}:3000/login> Click here</a>
+                                                <p>Thanks & regards,</p>
+                                                </div>`;
+        exports.mrtStatusMailToJapan(
+    req,
+    res,
+    status,
+    mrtStatusMailToJapanSubject,
+    mrtStatusMailToJapanemailContent,
+    japanmailId,
+  );
         var subject = `Hitachi MRT Team Approval`;
         var emailContent = `
             <h4>Hi ${approvalValidate.companyName}</h4>
@@ -831,6 +850,23 @@ NotificationemailContent = NotificationemailStyles + NotificationemailContent;
         );
       }
       if (req.body.level3Status === "rejected") {
+        const status=req.body.level3Status;
+        var japanmailId=config.JapanTeamEmail;
+        console.log("sendmailTojapan::");
+        var mrtStatusMailToJapanSubject = `MRT team Status for Ticket Id ${userEmailId.Ticket_ID}`;
+        var mrtStatusMailToJapanemailContent = `
+                                                <h4>Hi Japan team</h4>
+                                                <p>Vendor ${approvalValidate.companyName} request is ${status} by MRT Team</p>
+                                                <p>Thanks & regards,</p>
+                                                </div>`;
+        exports.mrtStatusMailToJapan(
+    req,
+    res,
+    status,
+    mrtStatusMailToJapanSubject,
+    mrtStatusMailToJapanemailContent,
+    japanmailId,
+  );
         var subject = `Hitachi MRT Request Rejected`;
         var emailContent = `
                   <h2>Hi ${approvalValidate.companyName}</h2>
@@ -922,6 +958,35 @@ exports.NotificationEmail= async (
     });
   } catch (error) {
     console.error('Group mail Error: ',error);
+    return res.status(200).json({ status: "error", data: error });
+  }
+};
+
+exports.mrtStatusMailToJapan= async (
+  req,
+  res,
+  status,
+  mrtStatusMailToJapanSubject,
+  mrtStatusMailToJapanemailContent,
+  japanmailId,
+) => {
+  console.log("mrtStatusMailToJapanemailContent");
+  try {
+    const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
+    sendSmtpEmail.subject = `${mrtStatusMailToJapanSubject}`;
+    sendSmtpEmail.htmlContent = `${mrtStatusMailToJapanemailContent}`;
+    sendSmtpEmail.sender = {
+      name: config.name,
+      email:config.email,
+    };
+    sendSmtpEmail.to = [{ email: `${japanmailId}` }];
+    apiInstance.sendTransacEmail(sendSmtpEmail).then(function (data) {
+      console.log('japan notification mail sent : ' + JSON.stringify(data));
+    }, function (error) {
+      console.error('Group mail Error: ',error);
+    });
+  } catch (error) {
+    console.error('japan notification mail Error: ',error);
     return res.status(200).json({ status: "error", data: error });
   }
 };

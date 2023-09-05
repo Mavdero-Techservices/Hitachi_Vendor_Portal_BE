@@ -634,14 +634,23 @@ exports.saveUser = (req, res) => {
               .then(async (result) => {
                 console.log("result", result, config.name, config.email);
                 var subject = `confirmation mail for userName and password`;
-                var emailContent = `<h1>Email Confirmation</h1>
-                <h2>Hello ${companyName}</h2>
-            <p>Your Username is ${userName} and Password is ${password}</p>
-            <p>Please <b>click</b> the link below to <b>VERIFY</b> your email address.</p>
-            <a href=${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${result.emailId}/${mailConfirmationCode}> Click here</a>
-            <p>Visit the link below to <b>create a new username and password.</b></p>
-            <a href=${process.env.HOST}:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}/${result.userName}/New> Click here</a>
-            </div>`;
+                var emailContent = `
+                <h1>Email Confirmation</h1>
+                <h2>Hello ${companyName},</h2>
+                
+                <h3>Verify Your Email</h3>
+                <p>Please <b>click</b> the button below to <b>VERIFY</b> your email address:</p>
+                <br/>
+                <a style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; font-weight: bold; border-radius: 5px;" href="${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${result.emailId}/${mailConfirmationCode}">Verify Email</a>
+          <br/>
+                <h3>Your Username and Password is</h3>
+                <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${userName}</b><br>Password: <b>${password}</b></p>
+              
+                <h3>Change Username and Password</h3>
+                <p>If you need to <b>create a new username and password.</b>, you can do so by clicking the button below:</p>
+                <br/>
+                <a style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; font-weight: bold; border-radius: 5px;" href="${process.env.HOST}:3000/passwordGeneration/${result.emailId}/${result.mailConfirmationCode}/${result.userName}/New">Change Username and Password</a>
+              `;
                 try {
                   sendSmtpEmail.subject = `${subject}`;
                   sendSmtpEmail.htmlContent = `${emailContent}`;
@@ -732,9 +741,15 @@ exports.saveMasterLogin = async (req, res) => {
     var subject = `confirmation email for master login userName and password`;
     var emailContent = `<h1>Email Confirmation</h1>
     <h2>Hello ${companyName}</h2>
-    <p>Your Username is ${userName} and password is ${password},Please <b>Click </b>the link below to <b>Verify</b> your email address.</p>
-    <a href=${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}> Click here</a>
-    </div>`;
+
+    <h3>Verify Your Email</h3>
+    <p>Please click the button below to verify your email address:</p>
+    <br/>
+    <a style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; font-weight: bold; border-radius: 5px;" href="${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}">Verify Email</a>
+    <br/>
+    <h3>Your Username and Password is</h3>
+                <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${userName}</b><br>Password: <b>${password}</b></p>
+               </div>`;
 
     sendSmtpEmail.subject = `${subject}`;
     sendSmtpEmail.htmlContent = `${emailContent}`;
@@ -870,8 +885,8 @@ exports.twoFactorOTP = (req, res, next) => {
         var emailContent =
         `<h1>OTP</h1>
         <h2>Hello ${((user.contactPerson !== "" && user.contactPerson !== null) || (user.companyName !== "" && user.companyName !== null)) ? (user.contactPerson || user.companyName) : subuserName}</h2>
-        <p>Please Use the OTP below to Login:</p>` +
-          Otp2Factor +
+        <p style="font-size: 16px;">Please Use the <b>OTP</b> below to Login:</p>` +
+         <b style="font-size: 18px;"> Otp2Factor </b> +
           `
     </div>`;
         const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
@@ -997,9 +1012,15 @@ exports.updateMasterLogin = async (req, res) => {
             var subject = `confirmation email for master login userName and password`;
             var emailContent = `<h1>Email Confirmation</h1>
             <h2>Hello ${companyName}</h2>
-            <p>Your Username is ${userName} and password is ${password},please click the link below to verify your email address.</p>
-            <a href=${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${req.body.mastervendor_email}/${mailConfirmationCode}> Click here</a>
-            </div>`;
+            <br/>
+            <h3>Verify Your Email</h3>
+            <p>Please click the button below to verify your email address:</p>
+            <br/>
+            <a style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; font-weight: bold; border-radius: 5px;" href="${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${mastervendor_email}/${mailConfirmationCode}">Verify Email</a>
+            <br/>
+            <h3>Your Username and Password is</h3>
+            <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${userName}</b><br>Password: <b>${password}</b></p>
+                       </div>`;
         
             sendSmtpEmail.subject = `${subject}`;
             sendSmtpEmail.htmlContent = `${emailContent}`;
