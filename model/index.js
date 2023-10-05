@@ -44,6 +44,8 @@ db.invoice = require("./invoice.model")(sequelize, Sequelize);
 db.edd = require("./edd.model")(sequelize, Sequelize);
 db.pO = require("./poTeam.model")(sequelize, Sequelize);
 db.userLogs = require("./userLogs.model")(sequelize, Sequelize);
+db.EditLog= require("./EditLog.model")(sequelize, Sequelize);
+
 
 db.periodicRequest.hasMany(db.vendorId, {
     foreignKey: 'periodic_id',

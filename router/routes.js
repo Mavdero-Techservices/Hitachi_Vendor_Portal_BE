@@ -280,4 +280,7 @@ router.post("/GenerateVendorCode",ErpAccess.GenerateVendorCode);
 //SearchpanNo
 router.get("/SearchpanNo/:P_A_N_No/:userId",ErpAccess.SearchpanNo);
 router.get("/ReviewNewRegisteredVendorByMaster/:userId", signUp.ReviewNewRegisteredVendorByMaster);
+//getEditLogOfAllcollection
+router.get("/getEditLogOfAllcollection/:userId", contactTeam.getEditLogOfAllcollection);
+
 module.exports = router;

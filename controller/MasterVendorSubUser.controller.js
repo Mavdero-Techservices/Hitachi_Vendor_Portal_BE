@@ -134,7 +134,7 @@ exports.saveMasterVendorSubUser = (req, res) => {
                 <h4>Hi ${Name}</h4>
                 <p>Your Sub User Registration is Successfully Created.</p>
                 <h3>Your Username and Password is</h3>
-                <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${loginId}</b>;<br>Password: <b>${password}</b>;</p>
+                <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${loginId}</b> <br>Password: <b>${password}</b> </p>
                 <p>Thanks & regards,</p>
                 </div>`;
           var returnFlag = false;
@@ -331,10 +331,10 @@ exports.UpdateMasterSubUserById = async (req, res) => {
           password:hashedPassword },
         { where: { subUserId: req.body.SubUserId } }
       );
-      var subjectForInvalidMail = `Your Sub User Account Deactivated`;
+      var subjectForInvalidMail = `Your Sub User Account Changed by Master`;
       var emailContentForInvalidMail = `
           <h4>Hi ${existingUser.Name}</h4>
-          <p>We want to inform you that your Sub User account has been deactivated by the Master. This means you no longer have access to our services.</p>
+          <p>We want to inform you that your Sub User email has been changed from <b> ${existingUser.emailId} </b> to <b> ${req.body.emailId} </b> </p>
           <p>Thanks & regards,</p>
           </div>`;
   
@@ -352,7 +352,7 @@ exports.UpdateMasterSubUserById = async (req, res) => {
             <h4>Hi ${req.body.Name}</h4>
             <p>Your Sub User Registration is Successfully Created.</p>
             <h3>Your Username and Password is</h3>
-            <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${loginId}</b>;<br>Password: <b>${pass}</b>;</p>
+            <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${loginId}</b> <br>Password: <b>${pass}</b> </p>
             <p>Thanks & regards,</p>
             </div>`;
       

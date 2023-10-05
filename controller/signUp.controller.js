@@ -885,9 +885,9 @@ exports.twoFactorOTP = (req, res, next) => {
         var emailContent =
         `<h1>OTP</h1>
         <h2>Hello ${((user.contactPerson !== "" && user.contactPerson !== null) || (user.companyName !== "" && user.companyName !== null)) ? (user.contactPerson || user.companyName) : subuserName}</h2>
-        <p style="font-size: 16px;">Please Use the <b>OTP</b> below to Login:</p>` +
-         <b style="font-size: 18px;"> Otp2Factor </b> +
-          `
+        <p style="font-size: 16px;">Please Use the OTP below to Login:</p>` +
+        Otp2Factor +
+        `
     </div>`;
         const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
         sendSmtpEmail.subject = `${subject}`;

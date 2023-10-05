@@ -6,6 +6,7 @@ const StatDetailSchema = db.statdetail;
 const CompliancedetailSchema = db.complianceDetail;
 const FdetailSchema = db.fdetail;
 const BankdetailSchema = db.bankdetail;
+const EditLogSchema = db.EditLog;
 var database = require("../config/db.config");
 let directory_name = "uploads";
 const path = require("path");
@@ -766,7 +767,341 @@ exports.updateAllCollection = async (req, res) => {
     var basicData = await VdetailSchema.findOne({
       where: { userId: req.params.userId },
     });
+    var commuDetails = await vendorCommunicationDetails.findOne({
+      where: { userId: req.params.userId },
+    });
+    var contactTeamDetails = await contactTeamSchema.findOne({
+      where: { userId: req.params.userId },
+    });
+    const editedFields = [];
+    if (basicData && basicData.Address !== req.body.Address) {
+      editedFields.push("Address");
+    }
+    if (basicData && basicData.Address_2 !== req.body.Address_2) {
+      editedFields.push("Address_2");
+    }
+    if (basicData && basicData.companyName !== req.body.companyName) {
+      editedFields.push("companyName");
+    }
+    if (basicData && basicData.Country_Region_Code !== req.body.Country_Region_Code) {
+      editedFields.push("Country_Region_Code");
+    }
+    if (basicData && basicData.state !== req.body.state) {
+      editedFields.push("state");
+    }
+    if (basicData && basicData.City !== req.body.City) {
+      editedFields.push("City");
+    }
+    if (basicData && basicData.Post_Code !== req.body.Post_Code) {
+      editedFields.push("Post_Code");
+    }
+    if (basicData && basicData.Vendor_Type !== req.body.Vendor_Type) {
+      editedFields.push("Vendor_Type");
+    }
+    if (basicData && basicData.Vendor_Account_Manager !== req.body.Vendor_Account_Manager) {
+      editedFields.push("Vendor_Account_Manager");
+    }
+    if (basicData && basicData.mkDenialCheque !== req.body.mkDenialCheque) {
+      editedFields.push("mkDenialCheque");
+    }
+    if (basicData && basicData.approverFile !== req.body.approverFile) {
+      editedFields.push("approverFile");
+    }
+    if (
+      commuDetails && commuDetails.financeSpoccontactName !== req.body.financeSpoccontactName
+    ) {
+      editedFields.push("financeSpoccontactName");
+    }
+    if (
+      commuDetails && commuDetails.financeSpocdesignation !== req.body.financeSpocdesignation
+    ) {
+      editedFields.push("financeSpocdesignation");
+    }
+    if (commuDetails && commuDetails.financeSpocphoneNo !== req.body.financeSpocphoneNo) {
+      editedFields.push("financeSpocphoneNo");
+    }
+    if (commuDetails.financeSpocemail !== req.body.financeSpocemail) {
+      editedFields.push("financeSpocemail");
+    }
+    if (
+      commuDetails && commuDetails.operationSpoccontactName !==
+      req.body.operationSpoccontactName
+    ) {
+      editedFields.push("operationSpoccontactName");
+    }
+    if (
+      commuDetails && commuDetails.operationSpocdesignation !==
+      req.body.operationSpocdesignation
+    ) {
+      editedFields.push("operationSpocdesignation");
+    }
+    if (commuDetails && commuDetails.operationSpocphoneNo !== req.body.operationSpocphoneNo) {
+      editedFields.push("operationSpocdesignation");
+    }
+    if (commuDetails && commuDetails.operationSpocemail !== req.body.operationSpocemail) {
+      editedFields.push("operationSpocemail");
+    }
+    if (
+      commuDetails && commuDetails.collectionSpoccontactName !==
+      req.body.collectionSpoccontactName
+    ) {
+      editedFields.push("collectionSpoccontactName");
+    }
+    if (
+      commuDetails && commuDetails.collectionSpocdesignation !==
+      req.body.collectionSpocdesignation
+    ) {
+      editedFields.push("collectionSpocdesignation");
+    }
+    if (commuDetails && commuDetails.collectionSpocphoneNo !== req.body.collectionSpocphoneNo) {
+      editedFields.push("collectionSpocphoneNo");
+    }
+    if (commuDetails && commuDetails.collectionSpocemail !== req.body.collectionSpocemail) {
+      editedFields.push("collectionSpocemail");
+    }
+    if (
+      commuDetails && commuDetails.managementSpoccontactName !==
+      req.body.managementSpoccontactName
+    ) {
+      editedFields.push("managementSpoccontactName");
+    }
+    if (
+      commuDetails && commuDetails.managementSpocdesignation !==
+      req.body.managementSpocdesignation
+    ) {
+      editedFields.push("managementSpocdesignation");
+    }
+    if (commuDetails && commuDetails.managementSpocphoneNo !== req.body.managementSpocphoneNo) {
+      editedFields.push("managementSpocphoneNo");
+    }
+    if (commuDetails && commuDetails.managementSpocemail !== req.body.managementSpocemail) {
+      editedFields.push("managementSpocemail");
+    }
+    if (commuDetails && commuDetails.contactName !== req.body.contactName) {
+      editedFields.push("contactName");
+    }
+    if (commuDetails && commuDetails.designation !== req.body.designation) {
+      editedFields.push("designation");
+    }
+    if (commuDetails && commuDetails.phoneNo !== req.body.phoneNo) {
+      editedFields.push("phoneNo");
+    }
+    if (commuDetails && commuDetails.email !== req.body.others_Email) {
+      editedFields.push("email");
+    }
+    if (commuDetails && commuDetails.mastervendor_email !== req.body.mastervendor_email) {
+      editedFields.push("mastervendor_email");
+    }
+    if (statDetails && statDetails.GST_Doc !== req.body.GST_Doc) {
+      editedFields.push("GST_Doc");
+    }
+    if (statDetails && statDetails.fileDisclosure !== req.body.fileDisclosure) {
+      editedFields.push("fileDisclosure");
+    }
+    if (statDetails && statDetails.PAN_Doc !== req.body.PAN_Doc) {
+      editedFields.push("PAN_Doc");
+    }
 
+    if (statDetails && statDetails.form_10f_Doc !== req.body.form_10f_Doc) {
+      editedFields.push("form_10f_Doc");
+    }
+
+    if (statDetails && statDetails.TAN_Doc !== req.body.TAN_Doc) {
+      editedFields.push("TAN_Doc");
+    }
+
+    if (statDetails && statDetails.PE_Declaration_Doc !== req.body.PE_Declaration_Doc) {
+      editedFields.push("PE_Declaration_Doc");
+    }
+
+    if (statDetails && statDetails.MSME_Doc !== req.body.MSME_Doc) {
+      editedFields.push("MSME_Doc");
+    }
+
+    if (statDetails && statDetails.Tax_residency_Doc !== req.body.Tax_residency_Doc) {
+      editedFields.push("Tax_residency_Doc");
+    }
+
+    if (statDetails && statDetails.GST_Vendor_Type !== req.body.GST_Vendor_Type) {
+      editedFields.push("GST_Vendor_Type");
+    }
+    if (statDetails && statDetails.GST_Registration_No !== req.body.GST_Registration_No) {
+      editedFields.push("GST_Registration_No");
+    }
+    if (statDetails && statDetails.P_A_N_No !== req.body.P_A_N_No) {
+      editedFields.push("P_A_N_No");
+    }
+    if (statDetails && statDetails.CIN_No !== req.body.CIN_No) {
+      editedFields.push("CIN_No");
+    }
+    if (statDetails && statDetails.MSMED !== req.body.MSMED) {
+      editedFields.push("MSMED");
+    }
+    if (statDetails && statDetails.MSMED_Number !== req.body.MSMED_Number) {
+      editedFields.push("MSMED_Number");
+    }
+    if (statDetails && statDetails.MSMED_Vendor_Type !== req.body.MSMED_Vendor_Type) {
+      editedFields.push("MSMED_Vendor_Type");
+    }
+    if (statDetails && statDetails.TAN_No !== req.body.TAN_No) {
+      editedFields.push("TAN_No");
+    }
+    if (cDetails && cDetails.RPD_Doc !== req.body.RPD_Doc) {
+      editedFields.push("RPD_Doc");
+    }
+
+    if (cDetails && cDetails.COC_Doc !== req.body.COC_Doc) {
+      editedFields.push("COC_Doc");
+    }
+
+    if (cDetails && cDetails.NDA_Doc !== req.body.NDA_Doc) {
+      editedFields.push("NDA_Doc");
+    }
+
+    if (fDetails && fDetails.financial_data !== req.body.financial_data) {
+      editedFields.push("financial_data");
+    }
+
+    if (fDetails && fDetails.financial_data2 !== req.body.financial_data2) {
+      editedFields.push("financial_data2");
+    }
+
+    if (fDetails && fDetails.yearOfAuditedFinancial !== req.body.yearOfAuditedFinancial) {
+      editedFields.push("yearOfAuditedFinancial");
+    }
+
+    if (fDetails && fDetails.Revenue !== req.body.Revenue) {
+      editedFields.push("Revenue");
+    }
+
+    if (fDetails && fDetails.Profit !== req.body.Profit) {
+      editedFields.push("Profit");
+    }
+
+    if (fDetails && fDetails.netWorth !== req.body.netWorth) {
+      editedFields.push("netWorth");
+    }
+
+    if (fDetails && fDetails.currentAssets !== req.body.currentAssets) {
+      editedFields.push("currentAssets");
+    }
+
+    if (fDetails && fDetails.directorDetails !== req.body.directorDetails) {
+      editedFields.push("directorDetails");
+    }
+
+    if (fDetails && fDetails.organisationType !== req.body.organisationType) {
+      editedFields.push("organisationType");
+    }
+
+    if (fDetails && fDetails.shareholderName !== req.body.shareholderName) {
+      editedFields.push("shareholderName");
+    }
+
+    if (bDetails && bDetails.bankdetailDoc !== req.body.bankdetailDoc) {
+      editedFields.push("bankdetailDoc");
+    }
+
+    if (bDetails && bDetails.Account_Holder_Name !== req.body.Account_Holder_Name) {
+      editedFields.push("Account_Holder_Name");
+    }
+
+    if (bDetails && bDetails.Bank_Name !== req.body.Bank_Name) {
+      editedFields.push("Bank_Name");
+    }
+
+    if (bDetails && bDetails.Account_No !== req.body.Account_No) {
+      editedFields.push("Account_No");
+    }
+
+    if (bDetails && bDetails.IFSC_Code !== req.body.IFSC_Code) {
+      editedFields.push("IFSC_Code");
+    }
+
+    if (bDetails && bDetails.MICRcode !== req.body.MICRcode) {
+      editedFields.push("MICRcode");
+    }
+
+    if (bDetails && bDetails.Bank_Address !== req.body.Bank_Address) {
+      editedFields.push("Bank_Address");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.contactName1 !== req.body.name) {
+      editedFields.push("contactName1");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.emailId1 !== req.body.email) {
+      editedFields.push("emailId1");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.contactNumber1 !== req.body.contactNumber) {
+      editedFields.push("contactNumber1");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.contactName2 !== req.body.name2) {
+      editedFields.push("contactName2");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.emailId2 !== req.body.email2) {
+      editedFields.push("emailId2");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.contactNumber2 !== req.body.contactNumber2) {
+      editedFields.push("contactNumber2");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.contactName3 !== req.body.name3) {
+      editedFields.push("contactName3");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.emailId3 !== req.body.email3) {
+      editedFields.push("emailId3");
+    }
+
+    if (contactTeamDetails && contactTeamDetails.contactNumber3 !== req.body.contactNumber3) {
+      editedFields.push("contactNumber3");
+    }
+
+    if (req.body.role === "MRT") {
+      console.log("SaveEditlogbyuserId::");
+      const newEditLogEntry = {
+        userId: req.body.userId,
+        EditedFields: JSON.stringify(editedFields),
+        role: req.body.role,
+      };
+      EditLogSchema.findOne({
+        where: { userId: req.body.userId },
+      })
+        .then((record) => {
+          if (record) {
+            const existingEditedFields = JSON.parse(record.EditedFields);
+            const mergedEditedFields = Array.from(
+              new Set(existingEditedFields.concat(editedFields))
+            );
+            record
+              .update({
+                EditedFields: JSON.stringify(mergedEditedFields),
+              })
+              .then((updatedRecord) => {
+                console.log("Record updated:", updatedRecord.get());
+              })
+              .catch((updateError) => {
+                console.error("Error updating record:", updateError);
+              });
+          } else {
+            EditLogSchema.create(newEditLogEntry)
+              .then((createdRecord) => {
+                console.log("New record created:", createdRecord.get());
+              })
+              .catch((createError) => {
+                console.error("Error creating record:", createError);
+              });
+          }
+        })
+        .catch((error) => {
+          console.error("Error finding record:", error);
+        });
+    }
 
     let approverFileDoc = approverFile_DocPath;
 
@@ -798,7 +1133,7 @@ exports.updateAllCollection = async (req, res) => {
       Vendor_Type: req.body.Vendor_Type,
       Vendor_Account_Manager: req.body.Vendor_Account_Manager,
       mkDenialCheque: req.body.mkDenialCheque,
-      approverFile: approverFileDoc
+      approverFile: approverFileDoc,
     };
 
     const communicationDetails = {
@@ -862,7 +1197,6 @@ exports.updateAllCollection = async (req, res) => {
         });
       }
     }
-
 
     if (statDetails.PAN_Doc === req.body.PAN_Doc) {
       PAN_Doc = req.body.PAN_Doc;
@@ -965,7 +1299,7 @@ exports.updateAllCollection = async (req, res) => {
       TAN_No: req.body.TAN_No,
       TAN_Doc: TAN_Doc,
       Tax_residency_Doc: Tax_residency_Doc,
-      fileDisclosure: fileDisclosure
+      fileDisclosure: fileDisclosure,
     };
 
     let RPD_Doc = RPD_DocPath;
@@ -1023,7 +1357,7 @@ exports.updateAllCollection = async (req, res) => {
 
     let financial_data = financial_data_DocPath || "";
     let financial_data2 = financial_data2_DocPath || "";
-    
+
     if (fDetails && fDetails.financial_data === req.body.financial_data) {
       financial_data = req.body.financial_data;
     } else {
@@ -1037,7 +1371,7 @@ exports.updateAllCollection = async (req, res) => {
         });
       }
     }
-    
+
     if (fDetails && fDetails.financial_data2 === req.body.financial_data2) {
       financial_data2 = req.body.financial_data2;
     } else {
@@ -1130,6 +1464,7 @@ exports.updateAllCollection = async (req, res) => {
         communicationDetails,
         contactDetails,
       ] = await Promise.all(promises);
+      console.log("editedfields:::", editedFields);
       res.status(200).json({
         status: "success",
         basicDetails,
@@ -1139,6 +1474,7 @@ exports.updateAllCollection = async (req, res) => {
         complianceDetails,
         financeDetails,
         contactDetails,
+        editedFields,
       });
     } catch (err) {
       res.status(500).json({
@@ -1147,6 +1483,23 @@ exports.updateAllCollection = async (req, res) => {
       });
     }
   });
+};
+exports.getEditLogOfAllcollection = async (req, res) => {
+  var userId = req.params.userId;
+  EditLogSchema.findOne({
+    where: { userId: userId },
+  })
+    .then((response) => {
+      res.status(200).json({
+        status: "success",
+        Result: response,
+      });
+    })
+    .catch((err) => {
+      return res
+        .status(200)
+        .json({ status: "error", data: { message: "Error Response", err } });
+    });
 };
 
 

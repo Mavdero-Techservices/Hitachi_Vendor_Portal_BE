@@ -180,10 +180,60 @@ exports.saveAccountApprovalStatus = (req, res) => {
             );
           } else {
             var subject = `Hitachi Vendor Request Rejected`;
+            // var emailContent = `
+            //                                             <h4>Hi ${data.userId}</h4>
+            //                                             <p>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.rejectComment}</p>
+            //                                             </div>`;
             var emailContent = `
-                                                        <h4>Hi ${data.userId}</h4>
+                             <h4>Hi ${data.userId}</h4>
                                                         <p>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.rejectComment}</p>
-                                                        </div>`;
+                                                        <p>Please find below the approval status:</p>
+                                                        </div>
+                                  <div class="table-box">
+                                  <table style="border-collapse: collapse; width: 100%;">
+                                      <tr>
+                                          <th>Department</th>
+                                          <th>Status</th>
+                                      </tr>
+                                      <tr>
+                                          <td>VCT</td>
+                                          <td>Rejected</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Japan</td>
+                                          <td>Pending</td>
+                                      </tr>
+                                      <tr>
+                                          <td>MRT</td>
+                                          <td>Pending</td>
+                                      </tr>
+                                  </table>  
+                                  </div>    
+                                  <p>Please <a href=${process.env.HOST}:3000/login><b>Click</b></a> here to login</p>
+                                  <p>Thanks & regards,</p>
+                                  </div>`;
+                                  var emailStyles = `
+  <style>
+    .table-box {
+      border: 1px solid #ccc;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+`;
+
+emailContent = emailStyles + emailContent;
             var returnFlag = false;
             exports.emailRejectNotification(
               req,
@@ -253,10 +303,60 @@ exports.updateAccountApprovalStatus = async (req, res) => {
             );
           } else {
             var subject = `Hitachi Vendor Request Rejected`;
+            // var emailContent = `
+            //                                         <h4>Hi ${data.userId}</h4>
+            //                                         <p>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.rejectComment}</p>
+            //                                         </div>`;
             var emailContent = `
-                                                    <h4>Hi ${data.userId}</h4>
-                                                    <p>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.rejectComment}</p>
-                                                    </div>`;
+                             <h4>Hi ${data.userId}</h4>
+                                                        <p>Your Vendor Registration request is Rejected by Vendor Creation Team because of, ${data.rejectComment}</p>
+                                                        <p>Please find below the approval status:</p>
+                                                        </div>
+                                  <div class="table-box">
+                                  <table style="border-collapse: collapse; width: 100%;">
+                                      <tr>
+                                          <th>Department</th>
+                                          <th>Status</th>
+                                      </tr>
+                                      <tr>
+                                          <td>VCT</td>
+                                          <td>Rejected</td>
+                                      </tr>
+                                      <tr>
+                                          <td>Japan</td>
+                                          <td>Pending</td>
+                                      </tr>
+                                      <tr>
+                                          <td>MRT</td>
+                                          <td>Pending</td>
+                                      </tr>
+                                  </table>  
+                                  </div>    
+                                  <p>Please <a href=${process.env.HOST}:3000/login><b>Click</b></a> here to login</p>
+                                  <p>Thanks & regards,</p>
+                                  </div>`;
+                                  var emailStyles = `
+  <style>
+    .table-box {
+      border: 1px solid #ccc;
+      margin: 10px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+`;
+
+emailContent = emailStyles + emailContent;
             var returnFlag = false;
             exports.emailRejectNotification(
               req,

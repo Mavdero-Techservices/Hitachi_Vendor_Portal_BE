@@ -425,7 +425,7 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
     Shareholder_Name: req.body.Shareholder_Name,
     Organization_Type: req.body.Organization_Type,
   };
-
+  // Replace this with your actual update data
   const updatedData = {
     Name: 'Updated Name',
     Address: 'Updated Address',
@@ -448,6 +448,7 @@ exports.updateErpResourcePortalVendorlist = (req, res) => {
       res.status(500).json({ error: 'Error occurred while retrieving ETag' });
     } else {
       try {
+        console.log("result::",result);
               const responseObject = JSON.parse(result.body);
       console.log('eq::', responseObject);
       const str = responseObject.value[0].ETag;
