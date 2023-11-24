@@ -906,7 +906,7 @@ exports.createnonDisclosure = async (req, res, next) => {
   const content001 = `is entered into by and between`;
   const content2 = `Hitachi Systems India Private Limited `;
   const content02 = `a company incorporated under the provisions of Companies Act 2013 and having its principal place of business `;
-  const content002 = `at E-44/2, Okhla Industrial Area, Phase-2, New Delhi-110020 `;
+  const content002 = `at 04th Floor, Building 10B, Cybercity, DLF Phase-2, Gurgaon - 122002`;
   const content0002 = `(hereinafter referred to as `;
   const content00002 = `“Party.” `;
   const content000002 = `which expression shall mean and include its parent, affiliates, sister concerns, subsidiaries and assigns),`;

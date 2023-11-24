@@ -637,12 +637,15 @@ exports.saveUser = (req, res) => {
                 var emailContent = `
                 <h1>Email Confirmation</h1>
                 <h2>Hello ${companyName},</h2>
-                
                 <h3>Verify Your Email</h3>
                 <p>Please <b>click</b> the button below to <b>VERIFY</b> your email address:</p>
                 <br/>
                 <a style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; font-weight: bold; border-radius: 5px;" href="${process.env.HOST}:${process.env.PORT}/verifyUSerByMail/${result.emailId}/${mailConfirmationCode}">Verify Email</a>
-          <br/>
+                
+                <br/>
+                <p style="color: red;">EMAIL verification is mandatory*</p>
+                
+                <br/>
                 <h3>Your Username and Password is</h3>
                 <p style="font-size: 18px; margin-bottom: 10px;">Username: <b>${userName}</b><br>Password: <b>${password}</b></p>
               
